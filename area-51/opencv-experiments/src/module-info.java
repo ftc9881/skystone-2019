@@ -1,0 +1,3 @@
+module opencvExperiments {
+	requires opencv;
+}
