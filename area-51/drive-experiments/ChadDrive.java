@@ -25,7 +25,7 @@ public class ChadDrive {
 	double relStrafeDir, PIDVel, PIDRotation;
 
 	//0 is in positive x direction
-	double robotDir, absStrafeDir, robotVel, robotX, robotY, prevX, prevY, prevDir, prevVel;
+	double robotDir, robotVel, robotX, robotY, prevX, prevY, prevDir, prevVel;
 
 	//output to wheels
 	double RFDrive, LFDrive, RBDrive, LBDrive; 
@@ -37,6 +37,24 @@ public class ChadDrive {
 
 	public ChadDrive () {
 		//have mapping stuff later	
+		robotDir = 0;
+		robotVel = 0;
+		robotX = 0;
+		robotY = 0;
+		prevX = 0;
+		prevY = 0;
+		prevDir = 0;
+		prevVel = 0;
+
+		RFDrive = 0;
+		LFDrive = 0;
+		RBDrive = 0;
+		LBDrive = 0;
+
+		lastUpdate = 0;
+		
+		//call updatePID, -1 is error
+		time = -1;
 	}
 	//returns an array of doubles representing motor values based on:
 	//desired velocity (inches/s)?
@@ -63,6 +81,8 @@ public class ChadDrive {
 
 		//calculate absolute direction to strafe towards w/ diff between robot pos and set pos
 		absStrafeDir = Math.atan((ySet - robotY)/(xSet - robotX));
+		relStrafeDir = strafeDir - robotDir;
+
 		//atan range stuff (account for atan (-1/-1) returns the same as atan(1/1))
 		if (ySet - robotY < 0) absStrafeDir += Math.PI;
 		
@@ -70,9 +90,8 @@ public class ChadDrive {
 		//actual pid part
 		PIDVel = VEL_P * ((robotVel - velSet) + (VEL_I * intVel) - (VEL_D * dVel));
 		PIDRotation = DIR_P * ((robotDir - dirSet) + (DIR_I * intDir) - (DIR_D * dDir));
-		relStrafeDir = strafeDir - robotDir;
 
-		//logic here
+		//logic here, can probably be improved
 		hasPoint = !atPoint();
 		if (!hasPoint) {
 			//does trig stuff, dm for more info ._. 
@@ -109,5 +128,23 @@ public class ChadDrive {
 	public void dump() {
 		System.out.printf("Time: %f \n", time);
 		System.out.printf("Time since last update: %f \n", dTime);
+		System.out.printf("===BASIC ROBOT INFORMATION===\n");
+		System.out.printf("Location: X=%d, Y=%f\n", robotX, robotY);
+		System.out.printf("Directions: RIGHT IS 0\n");
+		System.out.printf("Absolute Strafe Direction: %f\n", absStrafeDir);
+		System.out.printf("Relative Strafe Direction: %f\n", relStrafeDir);
+		System.out.printf("Robot Direction: %f\n", robotDir);
+		System.out.printf("===PID I/O     INFORMATION===\n");
+		System.out.printf("X Set=%f Y Set=%f Velocity Set=%f Direction Set=%f\n", xSet, ySet, velSet, dirSet);
+		System.out.printf("Velocity: Integral=%f Derivative=%f\n", intVel, dVel);
+		System.out.printf("Direction: Integral=%f Derivative=%f\n", intDir, dDir);
+		System.out.printf("Rotation output: %f\n", PIDRotation);
+		System.out.printf("Strafe output: %f\n", relStrafeDir);
+		System.out.printf("Velocity output: %f \n", PIDVel);
+		System.out.printf("===DRIVE       INFORMATION===\n");
+		System.out.printf("RF out: %f\n", RFDrive);
+		System.out.printf("LF out: %f\n", LFDrive);
+		System.out.printf("RB out: %f\n", RBDrive);
+		System.out.printf("LB out: %f\n", LBDrive);
 	}
 }
