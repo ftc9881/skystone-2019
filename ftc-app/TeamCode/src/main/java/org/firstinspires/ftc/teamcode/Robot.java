@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -21,21 +22,21 @@ public class Robot {
     public DcMotor lb;
     public DcMotor rb;
 
-    Servo someServo;
+//    Servo someServo;
 
     public Robot(LinearOpMode opMode) {
         this.opMode = opMode;
 
-        lf = opMode.hardwareMap.dcMotor.get("lf");
-        rf = opMode.hardwareMap.dcMotor.get("rf");
-        lb = opMode.hardwareMap.dcMotor.get("lb");
-        rb = opMode.hardwareMap.dcMotor.get("rb");
+        lf = opMode.hardwareMap.dcMotor.get("front_left");
+        rf = opMode.hardwareMap.dcMotor.get("front_right");
+        lb = opMode.hardwareMap.dcMotor.get("back_left");
+        rb = opMode.hardwareMap.dcMotor.get("back_right");
 
-        someServo = opMode.hardwareMap.servo.get("servo");
+//        someServo = opMode.hardwareMap.servo.get("servo");
 
         lf.setDirection(DcMotor.Direction.FORWARD);
-        rf.setDirection(DcMotor.Direction.FORWARD);
-        lb.setDirection(DcMotor.Direction.FORWARD);
+        rf.setDirection(DcMotor.Direction.REVERSE);
+        lb.setDirection(DcMotor.Direction.REVERSE);
         rb.setDirection(DcMotor.Direction.FORWARD);
 
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

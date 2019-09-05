@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
@@ -13,6 +15,8 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Button;
  * @author Trinity Chung
  * @version 0.0
  */
+@TeleOp(name = "ExampleDrive", group = "TeamCode")
+//@Disabled
 public class ExampleDrive extends LinearOpMode {
 
     private Robot robot;
@@ -27,19 +31,22 @@ public class ExampleDrive extends LinearOpMode {
     @Override
     public void runOpMode() {
         try {
+
             robot = new Robot(this);
 
             waitForStart();
             while (opModeIsActive()) {
                 // Driver Input
                 double driveY = gamepad1.right_stick_y;
+                double driveX = gamepad1.right_stick_x;
+                double driveR= gamepad1.left_stick_x;
                 button.update(gamepad1.a);
 
                 // Calculate Power
-                lfPower = Range.clip(driveY, -1.0, 1.0);
-                rfPower = Range.clip(driveY, -1.0, 1.0);
-                lbPower = Range.clip(driveY, -1.0, 1.0);
-                rbPower = Range.clip(driveY, -1.0, 1.0);
+                lfPower = Range.clip(driveY + driveR + driveX, -1.0, 1.0);
+                rfPower = Range.clip(driveY - driveR - driveX, -1.0, 1.0);
+                lbPower = Range.clip(driveY + driveR + driveX, -1.0, 1.0);
+                rbPower = Range.clip(driveY - driveR - driveX, -1.0, 1.0);
 
                 robot.lf.setPower(lfPower);
                 robot.rf.setPower(rfPower);
@@ -55,7 +62,6 @@ public class ExampleDrive extends LinearOpMode {
         } catch (RuntimeException e) {
 
             robot.log("Error in ExampleDrive", e.getMessage());
-
         }
     }
 
