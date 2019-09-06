@@ -43,10 +43,10 @@ public class ExampleDrive extends LinearOpMode {
                 button.update(gamepad1.a);
 
                 // Calculate Power
-                lfPower = Range.clip(driveY + driveR + driveX, -1.0, 1.0);
-                rfPower = Range.clip(driveY - driveR - driveX, -1.0, 1.0);
-                lbPower = Range.clip(driveY + driveR + driveX, -1.0, 1.0);
-                rbPower = Range.clip(driveY - driveR - driveX, -1.0, 1.0);
+                lfPower = Range.clip(driveY - driveR + driveX, -1.0, 1.0);
+                rfPower = Range.clip(driveY + driveR - driveX, -1.0, 1.0);
+                lbPower = Range.clip(driveY - driveR - driveX, -1.0, 1.0);
+                rbPower = Range.clip(driveY + driveR + driveX, -1.0, 1.0);
 
                 robot.lf.setPower(lfPower);
                 robot.rf.setPower(rfPower);
@@ -57,6 +57,10 @@ public class ExampleDrive extends LinearOpMode {
                 // Telemetry
                 telemetry.addData("Power", driveY);
                 telemetry.addData("A Button is held", button.is(Button.State.HELD));
+                telemetry.addData("Bearing (right negative)", robot.imu.getAngularOrientation().firstAngle);
+                telemetry.addData("Pitch", robot.imu.getAngularOrientation().secondAngle);
+                telemetry.addData("Roll", robot.imu.getAngularOrientation().thirdAngle);
+                telemetry.update();
             }
 
         } catch (RuntimeException e) {
