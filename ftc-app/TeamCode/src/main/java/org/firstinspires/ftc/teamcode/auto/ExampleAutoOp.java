@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  * @version 0.0
  */
 @Autonomous(name = "ExampleAuto", group = "TeamCode")
-@Disabled
+//@Disabled
 public class ExampleAutoOp extends LinearOpMode {
 
     @Override
