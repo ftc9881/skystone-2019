@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.content.Context;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,6 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
+import com.vuforia.Vuforia;
 
 /**
  * The Robot class has references to all the hardware devices.
@@ -26,7 +29,9 @@ public class Robot {
 
     public BNO055IMU imu;
 
-//    Servo someServo;
+
+    // for locating files
+    public Context fileContext;
 
     public Robot(LinearOpMode opMode) {
         this.opMode = opMode;
@@ -35,8 +40,6 @@ public class Robot {
         rf = opMode.hardwareMap.dcMotor.get("front_right");
         lb = opMode.hardwareMap.dcMotor.get("back_left");
         rb = opMode.hardwareMap.dcMotor.get("back_right");
-
-//        someServo = opMode.hardwareMap.servo.get("servo");
 
         lf.setDirection(DcMotor.Direction.FORWARD);
         rf.setDirection(DcMotor.Direction.REVERSE);
@@ -70,13 +73,16 @@ public class Robot {
         // and named "imu".
         imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+
+        fileContext = opMode.hardwareMap.appContext;
     }
 
 
     public void log(String tag, String message, boolean showTelemetry) {
         RobotLog.ee(tag, message);
         if (showTelemetry) {
-            opMode.telemetry.addData(tag, message);
+            opMode.telemetry.addData("%%%%%%%%% DEBUG LOG: " + tag, message);
             opMode.telemetry.update();
         }
     }

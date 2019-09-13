@@ -25,6 +25,7 @@ public class AutoRunner {
 
     public AutoRunner(String name, LinearOpMode opMode) {
         this.name = name;
+        this.opMode = opMode;
 
         robot = new Robot(opMode);
         config = new Configuration(name + ".json");
@@ -58,7 +59,7 @@ public class AutoRunner {
             switch (command.getString("command")) {
                 case "test": {
                     robot.log("JSONTEST", "in execute", true);
-                    android.os.SystemClock.sleep(5000);
+                    robot.log("JSONTEST",command.getString("a"));
                 }
             }
         } catch (JSONException e) {
