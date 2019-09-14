@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.auto.utility.Configuration;
@@ -42,7 +43,7 @@ public class AutoRunner {
 
             for (int i = 0; i < config.commands.length(); i++) {
                 JSONObject command = config.commands.getJSONObject(i);
-                robot.log("JSONTEST", command.toString());
+                robot.log("AUTO COMMAND", command.toString());
                 execute(command);
             }
 
@@ -56,11 +57,48 @@ public class AutoRunner {
 
     public void execute(JSONObject command) {
         try {
-            switch (command.getString("command")) {
-                case "test": {
+            switch (command.getString("command").toUpperCase()) {
+
+                case "VUFORIAORIENT": {
+                    // update coordinates based on vuforia
+                }
+
+                case "MOVE": {
+                    // move to coordinate on field
+                    // properties: x, y, rotation
+                }
+
+                case "LOOKSKYSTONE": {
+                    // strafe while looking
+                    // while loop:
+                    //
+                    // Vuforia.look()
+                    // wait for completion or timeout
+                    // skystone position = something
+                }
+
+                case "GETSKYSTONE": {
+                    // move arm and pick up skystone
+                }
+
+                case "FORKLIFT": {
+                    // pickup or putdown, which is just toggling the servos
+                }
+
+                case "STARTPUTSTONE": {
+                    // begin putting stone on foundation
+                }
+
+                case "WAITPUTSTONE": {
+                    // wait for until stone placing is done
+                }
+
+                // for debugging
+                case "TEST": {
                     robot.log("JSONTEST", "in execute", true);
                     robot.log("JSONTEST",command.getString("a"));
                 }
+
             }
         } catch (JSONException e) {
             robot.log("JSON", e.getMessage());

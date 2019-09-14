@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
@@ -15,9 +14,9 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Button;
  * @author Trinity Chung
  * @version 0.0
  */
-@TeleOp(name = "ExampleDrive", group = "TeamCode")
+@TeleOp(name = "Drive", group = "TeamCode")
 //@Disabled
-public class ExampleDrive extends LinearOpMode {
+public class Drive extends LinearOpMode {
 
     private Robot robot;
 
@@ -26,7 +25,7 @@ public class ExampleDrive extends LinearOpMode {
     private double lbPower = 0;
     private double rbPower = 0;
 
-    private Button button = new Button();
+    private Button slowButton = new Button();
 
     @Override
     public void runOpMode() {
@@ -40,7 +39,8 @@ public class ExampleDrive extends LinearOpMode {
                 double driveY = gamepad1.right_stick_y;
                 double driveX = gamepad1.right_stick_x;
                 double driveR= gamepad1.left_stick_x;
-                button.update(gamepad1.a);
+                slowButton.update(gamepad1.a);
+                double powerFactor = slowButton.is(Button.State.HELD) ? 0.5 : 1.0;
 
                 // Calculate Power
                 lfPower = Range.clip(driveY - driveR + driveX, -1.0, 1.0);
@@ -48,15 +48,15 @@ public class ExampleDrive extends LinearOpMode {
                 lbPower = Range.clip(driveY - driveR - driveX, -1.0, 1.0);
                 rbPower = Range.clip(driveY + driveR + driveX, -1.0, 1.0);
 
-                robot.lf.setPower(lfPower);
-                robot.rf.setPower(rfPower);
-                robot.lb.setPower(lbPower);
-                robot.rb.setPower(rbPower);
+                robot.lf.setPower(lfPower * powerFactor);
+                robot.rf.setPower(rfPower * powerFactor);
+                robot.lb.setPower(lbPower * powerFactor);
+                robot.rb.setPower(rbPower * powerFactor);
 
 
                 // Telemetry
                 telemetry.addData("Power", driveY);
-                telemetry.addData("A Button is held", button.is(Button.State.HELD));
+                telemetry.addData("Power Factor", powerFactor);
                 telemetry.addData("Bearing (right negative)", robot.imu.getAngularOrientation().firstAngle);
                 telemetry.addData("Pitch", robot.imu.getAngularOrientation().secondAngle);
                 telemetry.addData("Roll", robot.imu.getAngularOrientation().thirdAngle);
