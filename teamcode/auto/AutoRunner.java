@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.auto;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Odometry;
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.Position;
 import org.firstinspires.ftc.teamcode.auto.utility.Configuration;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +25,7 @@ public class AutoRunner {
     private LinearOpMode opMode;
     private Configuration config;
     private Robot robot;
+    private Odometry odometry;
 
     public AutoRunner(String name, LinearOpMode opMode) {
         this.name = name;
@@ -66,14 +69,45 @@ public class AutoRunner {
                 case "MOVE": {
                     // move to coordinate on field
                     // properties: x, y, rotation
+                    // Every cycle:
+                    // 1: get position from odometry
+                    // 2: feed x, y, rotation to pid
+                    // 3: set drives to pid output
+
+                    /*
+
+                    double targetX = command.getDouble("x");
+                    double targetY = command.getDouble("y");
+                    double targetR = command.getDouble("r");
+                    Position targetPosition = new Position(targetX, targetY, targetR);
+
+                    Position curPosition = odometry.getPosition();
+
+                    //variables we'll need to provide values for;
+                    Position prevPosition = curPosition;
+                    double prevT;
+                    double currT;
+                    while (Position.distance(curPosition, targetPosition) < 1) {
+                        curPosition = odometry.getPosition();
+
+                        //
+
+
+
+                        prevPosition = curPosition;
+                    }
+
+
+                     */
+
                 }
 
                 case "LOOKSKYSTONE": {
                     // strafe while looking
                     // while loop:
-                    //
-                    // Vuforia.look()
-                    // wait for completion or timeout
+                    //     check if vuforia found
+                    //     if found, stop moving
+                    //     if timeout, stop moving
                     // skystone position = something
                 }
 
