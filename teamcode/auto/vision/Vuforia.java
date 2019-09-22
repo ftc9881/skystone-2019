@@ -29,24 +29,21 @@
 
 package org.firstinspires.ftc.teamcode.auto.vision;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.Position;
 import org.firstinspires.ftc.teamcode.Robot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
+import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.RADIANS;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
@@ -97,7 +94,14 @@ public class Vuforia {
     private float phoneZRotate    = 0;
     private VuforiaTrackables trackables = null;
 
+    private Robot robot;
+    private Position lastPose = null;
+    private boolean looking = false;
+    private LookRunnable lookRunnable;
+
     public Vuforia(Robot robot) {
+        this.robot = robot;
+
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
@@ -263,69 +267,84 @@ public class Vuforia {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
         }
 
-    }
 
-
-    public void look() {
 
         trackables.activate();
-        //TODO: QUESTION: Does activation take up time?
-
-        //TODO: Look for targets in a thread
-
-
-        while (!targetVisible) {
-            
-        }
-//        class Multi3 implements Runnable{
-//            public void run(){
-//                System.out.println("thread is running...");
-//            }
-//
-//            public static void main(String args[]){
-//                Multi3 m1=new Multi3();
-//                Thread t1 =new Thread(m1);
-//                t1.start();
-//            }
-//        }
-//
-//        while (!isStopRequested()) {
-//
-//            // check all the trackable targets to see which one (if any) is visible.
-//            targetVisible = false;
-//            for (VuforiaTrackable trackable : allTrackables) {
-//                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
-//                    telemetry.addData("Visible Target", trackable.getName());
-//                    targetVisible = true;
-//
-//                    // getUpdatedRobotLocation() will return null if no new information is available since
-//                    // the last time that call was made, or if the trackable is not currently visible.
-//                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
-//                    if (robotLocationTransform != null) {
-//                        lastLocation = robotLocationTransform;
-//                    }
-//                    break;
-//                }
-//            }
-//
-//            // Provide feedback as to where the robot is located (if we know).
-//            if (targetVisible) {
-//                // express position (translation) of robot in inches.
-//                VectorF translation = lastLocation.getTranslation();
-//                telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-//                        translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-//
-//                // express the rotation of the robot in degrees.
-//                Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-//                telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-//            } else {
-//                telemetry.addData("Visible Target", "none");
-//            }
-//            telemetry.update();
-//        }
-
-        // Disable Tracking when we are done;
-        trackables.deactivate();
+        robot.log("VUFORIA", "Vuforia initialization complete", true);
     }
+
+    class LookRunnable implements Runnable {
+        boolean needWait = false;
+
+        public void run() {
+            needWait = true;
+
+            List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+            allTrackables.addAll(trackables);
+
+            // check all the trackable targets to see which one (if any) is visible.
+            targetVisible = false;
+
+            while (!targetVisible) {
+
+                for (VuforiaTrackable trackable : allTrackables) {
+                    if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                        targetVisible = true;
+
+                        // getUpdatedRobotLocation() will return null if no new information is available since
+                        // the last time that call was made, or if the trackable is not currently visible.
+                        OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
+                        if (robotLocationTransform != null) {
+                            lastLocation = robotLocationTransform;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            double x = lastLocation.getTranslation().get(0);
+            double y = lastLocation.getTranslation().get(1);
+            double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, RADIANS).thirdAngle;
+
+            Position pose = new Position(x, y, r);
+            lastPose = pose;
+
+            // Disable Tracking when we are done;
+            trackables.deactivate();
+
+            synchronized (this) {
+                this.needWait = false;
+                this.notify();
+            }
+        }
+    }
+
+    public void startLook() {
+        //TODO: QUESTION: Does activation take up time?
+        looking = true;
+        lookRunnable = new LookRunnable();
+        Thread t = new Thread(lookRunnable);
+        t.start();
+    }
+
+    public void stopLook() {
+        looking = false;
+        try {
+            while (lookRunnable.needWait) {
+                lookRunnable.wait();
+            }
+        } catch (InterruptedException e) {
+            robot.log("VUFORIA", "Thread was interrupted", true);
+        }
+    }
+
+    public boolean found() {
+        return lastPose != null;
+    }
+
+    public Position getPose() {
+        return lastPose;
+    }
+
 
 }

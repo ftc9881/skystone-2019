@@ -7,9 +7,12 @@ import org.firstinspires.ftc.teamcode.Odometry;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.Position;
 import org.firstinspires.ftc.teamcode.auto.utility.Configuration;
+import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.os.SystemClock.sleep;
 
 /**
  * AutoRunner is the root for all autonomous OpModes.
@@ -26,6 +29,7 @@ public class AutoRunner {
     private Configuration config;
     private Robot robot;
     private Odometry odometry;
+    private Vuforia vuforia;
 
     public AutoRunner(String name, LinearOpMode opMode) {
         this.name = name;
@@ -33,6 +37,7 @@ public class AutoRunner {
 
         robot = new Robot(opMode);
         config = new Configuration(name + ".json");
+        vuforia = new Vuforia(robot);
     }
 
     public void run() {
@@ -109,10 +114,22 @@ public class AutoRunner {
                     //     if found, stop moving
                     //     if timeout, stop moving
                     // skystone position = something
+
+//                    robot.move();
+                    vuforia.startLook();
+                    while (!vuforia.found()) {
+                        sleep(50);
+                    }
+
+//                    robot.stop();
+                    vuforia.stopLook();
+                    robot.log("LOOK", vuforia.getPose().toString(), true);
+                    sleep(1000);
                 }
 
                 case "GETSKYSTONE": {
                     // move arm and pick up skystone
+                    // vuforia.getPose();
                 }
 
                 case "FORKLIFT": {
