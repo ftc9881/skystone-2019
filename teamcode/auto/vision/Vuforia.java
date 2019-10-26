@@ -36,7 +36,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.Position;
+import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.Robot;
 
 import java.util.ArrayList;
@@ -58,6 +58,7 @@ public class Vuforia {
     //
     // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     //
+
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     //TODO: will our phone be portrait?
     private static final boolean PHONE_IS_PORTRAIT = true;
@@ -95,9 +96,31 @@ public class Vuforia {
     private VuforiaTrackables trackables = null;
 
     private Robot robot;
-    private Position lastPose = null;
+    private Pose lastPose = null;
     private boolean looking = false;
     private LookRunnable lookRunnable;
+
+    public enum TargetType {SKYSTONE, BRIDGE, PERIMETER}
+    public enum Target {
+        SKYSTONE(0),
+        BLUE_REAR_BRIDGE(1),
+        RED_REAR_BRIDGE(2),
+        RED_FRONT_BRIDGE(3),
+        BLUE_FRONT_BRIDGE(4),
+        RED_PERIMETER_1(5),
+        RED_PERIMETER_2(6),
+        FRONT_PERIMETER_1(7),
+        FRONT_PERIMETER_2(8),
+        BLUE_PERIMETER_1(9),
+        BLUE_PERIMETER_2(10),
+        REAR_PERIMETER_1(11),
+        REAR_PERIMETER_2(12);
+
+        public final int index;
+        Target(int index) {
+            this.index = index;
+        }
+    }
 
     public Vuforia(Robot robot) {
         this.robot = robot;
@@ -119,31 +142,31 @@ public class Vuforia {
         // sets are stored in the 'assets' part of our application.
         trackables = vuforiaLocalizer.loadTrackablesFromAsset("Skystone");
 
-        VuforiaTrackable stoneTarget = trackables.get(0);
+        VuforiaTrackable stoneTarget = trackables.get(Target.SKYSTONE.index);
         stoneTarget.setName("Stone Target");
-        VuforiaTrackable blueRearBridge = trackables.get(1);
+        VuforiaTrackable blueRearBridge = trackables.get(Target.BLUE_REAR_BRIDGE.index);
         blueRearBridge.setName("Blue Rear Bridge");
-        VuforiaTrackable redRearBridge = trackables.get(2);
+        VuforiaTrackable redRearBridge = trackables.get(Target.RED_REAR_BRIDGE.index);
         redRearBridge.setName("Red Rear Bridge");
-        VuforiaTrackable redFrontBridge = trackables.get(3);
+        VuforiaTrackable redFrontBridge = trackables.get(Target.RED_FRONT_BRIDGE.index);
         redFrontBridge.setName("Red Front Bridge");
-        VuforiaTrackable blueFrontBridge = trackables.get(4);
+        VuforiaTrackable blueFrontBridge = trackables.get(Target.BLUE_FRONT_BRIDGE.index);
         blueFrontBridge.setName("Blue Front Bridge");
-        VuforiaTrackable red1 = trackables.get(5);
+        VuforiaTrackable red1 = trackables.get(Target.RED_PERIMETER_1.index);
         red1.setName("Red Perimeter 1");
-        VuforiaTrackable red2 = trackables.get(6);
+        VuforiaTrackable red2 = trackables.get(Target.RED_PERIMETER_2.index);
         red2.setName("Red Perimeter 2");
-        VuforiaTrackable front1 = trackables.get(7);
+        VuforiaTrackable front1 = trackables.get(Target.FRONT_PERIMETER_1.index);
         front1.setName("Front Perimeter 1");
-        VuforiaTrackable front2 = trackables.get(8);
+        VuforiaTrackable front2 = trackables.get(Target.FRONT_PERIMETER_2.index);
         front2.setName("Front Perimeter 2");
-        VuforiaTrackable blue1 = trackables.get(9);
+        VuforiaTrackable blue1 = trackables.get(Target.BLUE_PERIMETER_1.index);
         blue1.setName("Blue Perimeter 1");
-        VuforiaTrackable blue2 = trackables.get(10);
+        VuforiaTrackable blue2 = trackables.get(Target.BLUE_PERIMETER_2.index);
         blue2.setName("Blue Perimeter 2");
-        VuforiaTrackable rear1 = trackables.get(11);
+        VuforiaTrackable rear1 = trackables.get(Target.REAR_PERIMETER_1.index);
         rear1.setName("Rear Perimeter 1");
-        VuforiaTrackable rear2 = trackables.get(12);
+        VuforiaTrackable rear2 = trackables.get(Target.REAR_PERIMETER_2.index);
         rear2.setName("Rear Perimeter 2");
 
         // For convenience, gather together all the trackable objects in one easily-iterable collection */
@@ -267,27 +290,54 @@ public class Vuforia {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
         }
 
-
-
         trackables.activate();
-        robot.log("VUFORIA", "Vuforia initialization complete", true);
+        robot.log("Vuforia initialization complete", true);
     }
 
     class LookRunnable implements Runnable {
-        boolean needWait = false;
+        boolean needWait;
+        TargetType target;
+
+        public LookRunnable(TargetType target) {
+            this.needWait = false;
+            this.target = target;
+        }
 
         public void run() {
             needWait = true;
 
-            List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
-            allTrackables.addAll(trackables);
+            List<VuforiaTrackable> trackingTrackables= new ArrayList();
+            switch (target) {
+                case SKYSTONE:
+                    trackingTrackables.add(trackables.get(Target.SKYSTONE.index));
+                    break;
+                case BRIDGE:
+                    trackingTrackables.add(trackables.get(Target.BLUE_REAR_BRIDGE.index));
+                    trackingTrackables.add(trackables.get(Target.RED_REAR_BRIDGE.index));
+                    trackingTrackables.add(trackables.get(Target.RED_FRONT_BRIDGE.index));
+                    trackingTrackables.add(trackables.get(Target.BLUE_FRONT_BRIDGE.index));
+                    break;
+                case PERIMETER:
+                    trackingTrackables.add(trackables.get(Target.RED_PERIMETER_1.index));
+                    trackingTrackables.add(trackables.get(Target.RED_PERIMETER_2.index));
+                    trackingTrackables.add(trackables.get(Target.FRONT_PERIMETER_1.index));
+                    trackingTrackables.add(trackables.get(Target.FRONT_PERIMETER_2.index));
+                    trackingTrackables.add(trackables.get(Target.BLUE_PERIMETER_1.index));
+                    trackingTrackables.add(trackables.get(Target.BLUE_PERIMETER_2.index));
+                    trackingTrackables.add(trackables.get(Target.REAR_PERIMETER_1.index));
+                    trackingTrackables.add(trackables.get(Target.REAR_PERIMETER_2.index));
+                    break;
+                default:
+//                    throw IllegalArgumentException();
+                    break;
+            }
 
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
 
             while (!targetVisible) {
 
-                for (VuforiaTrackable trackable : allTrackables) {
+                for (VuforiaTrackable trackable : trackingTrackables) {
                     if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                         targetVisible = true;
 
@@ -306,7 +356,7 @@ public class Vuforia {
             double y = lastLocation.getTranslation().get(1);
             double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, RADIANS).thirdAngle;
 
-            Position pose = new Position(x, y, r);
+            Pose pose = new Pose(x, y, r);
             lastPose = pose;
 
             // Disable Tracking when we are done;
@@ -319,10 +369,9 @@ public class Vuforia {
         }
     }
 
-    public void startLook() {
-        //TODO: QUESTION: Does activation take up time?
+    public void startLook(TargetType target) {
         looking = true;
-        lookRunnable = new LookRunnable();
+        lookRunnable = new LookRunnable(target);
         Thread t = new Thread(lookRunnable);
         t.start();
     }
@@ -334,7 +383,7 @@ public class Vuforia {
                 lookRunnable.wait();
             }
         } catch (InterruptedException e) {
-            robot.log("VUFORIA", "Thread was interrupted", true);
+            robot.log("Thread was interrupted", true);
         }
     }
 
@@ -342,7 +391,7 @@ public class Vuforia {
         return lastPose != null;
     }
 
-    public Position getPose() {
+    public Pose getPose() {
         return lastPose;
     }
 

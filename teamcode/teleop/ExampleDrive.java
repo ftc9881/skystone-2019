@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
@@ -66,7 +65,7 @@ public class ExampleDrive extends LinearOpMode {
 
         } catch (RuntimeException e) {
 
-            robot.log("Error in ExampleDrive", e.getMessage());
+            robot.log(e.getMessage());
         }
     }
 

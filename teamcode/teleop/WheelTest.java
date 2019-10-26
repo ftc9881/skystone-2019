@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 /**
  * WheelTest enables you to control each wheel using gamepad buttons.
@@ -38,12 +36,11 @@ public class WheelTest extends LinearOpMode {
                 robot.lb.setPower(gamepad1.x ? 0.5 : 0);
                 robot.rb.setPower(gamepad1.a ? 0.5 : 0);
 
-
             }
 
         } catch (RuntimeException e) {
 
-            robot.log("Error in ExampleDrive", e.getMessage());
+            robot.log(e.getMessage());
         }
     }
 

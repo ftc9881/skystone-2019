@@ -42,7 +42,6 @@ public class MaxSonarI2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch> implemen
     @Override
     public String getDeviceName()
     {
-
         return "MaxSonar I2CXL";
     }
 

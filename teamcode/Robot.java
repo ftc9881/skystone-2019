@@ -3,14 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import android.content.Context;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
-import com.vuforia.Vuforia;
 
 /**
  * The Robot class has references to all the hardware devices.
@@ -27,7 +24,12 @@ public class Robot {
     public DcMotor lb;
     public DcMotor rb;
 
+    public DcMotor rightOdometry;
+    public DcMotor leftOdometry;
+    public DcMotor centerOdometry;
+
     public BNO055IMU imu;
+    public MaxSonarI2CXL sonarSensor;
 
 
     // for locating files
@@ -40,6 +42,11 @@ public class Robot {
         rf = opMode.hardwareMap.dcMotor.get("front_right");
         lb = opMode.hardwareMap.dcMotor.get("back_left");
         rb = opMode.hardwareMap.dcMotor.get("back_right");
+
+        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         lf.setDirection(DcMotor.Direction.FORWARD);
         rf.setDirection(DcMotor.Direction.REVERSE);
@@ -55,6 +62,18 @@ public class Robot {
         rf.setPower(0);
         lb.setPower(0);
         rb.setPower(0);
+
+        // The lf/rf/lb/rb wheels do not have encoders plugged in
+        // Instead, the encoder is connected to the tracking wheels.
+        leftOdometry = lf;
+        rightOdometry = rf;
+        centerOdometry = lb;
+
+
+        // Custom sonar device
+        sonarSensor = opMode.hardwareMap.get(MaxSonarI2CXL.class, "sonar");
+        sonarSensor.setI2cAddress(I2cAddr.create8bit(0xE0));
+//        sonarSensor.startAutoPing(100);
 
 
         // Set up the parameters with which we will use our IMU. Note that integration
@@ -78,16 +97,41 @@ public class Robot {
         fileContext = opMode.hardwareMap.appContext;
     }
 
+    public void drive(double x, double y, double r) {
+        drive(x, y, r, 1);
+    }
 
-    public void log(String tag, String message, boolean showTelemetry) {
-        RobotLog.ee(tag, message);
+    public void drive(double x, double y, double r, double powerFactor) {
+        // Calculate Power
+        double lfp = Range.clip(x - r + y, -1.0, 1.0);
+        double rfp = Range.clip(x + r - y, -1.0, 1.0);
+        double lbp = Range.clip(x - r - y, -1.0, 1.0);
+        double rbp = Range.clip(x + r + y, -1.0, 1.0);
+
+        lf.setPower(lfp * powerFactor);
+        rf.setPower(rfp * powerFactor);
+        lb.setPower(lbp * powerFactor);
+        rb.setPower(rbp * powerFactor);
+    }
+
+
+    public void drive(Pose pose) {
+        drive(pose.x, pose.y, pose.r);
+    }
+
+    public void drive(Pose pose, double powerFactor) {
+        drive(pose.x, pose.y, pose.r, powerFactor);
+    }
+
+    public void log(String message, boolean showTelemetry) {
+        RobotLog.d(message);
         if (showTelemetry) {
-            opMode.telemetry.addData("%%%%%%%%% DEBUG LOG: " + tag, message);
+            opMode.telemetry.addData("%%%LOG", message);
             opMode.telemetry.update();
         }
     }
 
-    public void log(String tag, String message) {
-        log(tag, message, true);
+    public void log(String message) {
+        log(message, true);
     }
 }
