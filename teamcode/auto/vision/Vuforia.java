@@ -332,7 +332,7 @@ public class Vuforia {
                     break;
             }
 
-            // check all the trackable targets to see which one (if any) is visible.
+            // isTrue all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
 
             while (!targetVisible) {

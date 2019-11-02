@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.Odometry;
 import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.auto.Actions.Action;
 import org.firstinspires.ftc.teamcode.auto.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.utility.Configuration;
+import org.firstinspires.ftc.teamcode.auto.utility.EndCondition;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 import static android.os.SystemClock.sleep;
@@ -46,6 +46,14 @@ public class AutoRunner {
         robot.log(Integer.toString(length));
     }
 
+    public void runTask(Action action, EndCondition endCondition) {
+        action.run();
+        while (!endCondition.isTrue() && !action.isDone()) {
+            sleep(50);
+        }
+        action.stop();
+    }
+
     public void run() {
         robot.log("Running AutoRunner");
 
@@ -75,6 +83,24 @@ public class AutoRunner {
             }
 
             case "MOVE": {
+                // relative movement
+                final int CLICKS_PER_INCH = 2000;
+
+
+            }
+
+            case "ODOMETRY_MOVE": {
+
+//                double targetX = command.getDouble("x", 0.0);
+//                double targetY = command.getDouble("y", 0.0);
+//                double targetR = command.getDouble("r", 0.0);
+//                double powerFactor = command.getDouble("power", 0.6);
+//                Action action = new Action(targetR);
+//                EndCondition endCondition = new Timeout(laksjdf);
+//                runTask(action, endCondition);
+
+
+                // end goal: runTask(OdometryMove(x, y, z), endCond());
                 // move to coordinate on field
                 // properties: x, y, rotation
                 // Every cycle:
@@ -136,7 +162,7 @@ public class AutoRunner {
             case "LOOKSKYSTONE": {
                 // strafe while looking
                 // while loop:
-                //     check if vuforia found
+                //     isTrue if vuforia found
                 //     if found, stop moving
                 //     if timeout, stop moving
                 // skystone position = something
@@ -154,15 +180,22 @@ public class AutoRunner {
 
             case "GETSKYSTONE": {
                 // move arm and pick up skystone
-                // vuforia.getPose();
             }
 
             case "FORKLIFT": {
                 // pickup or putdown, which is just toggling the servos
+                boolean pickup = command.getBoolean("pickup", false);
+                if (pickup) {
+                    // move servo
+                } else {
+                    // move servo
+                }
             }
 
             case "STARTPUTSTONE": {
                 // begin putting stone on foundation
+                // move some servos
+
             }
 
             case "WAITPUTSTONE": {

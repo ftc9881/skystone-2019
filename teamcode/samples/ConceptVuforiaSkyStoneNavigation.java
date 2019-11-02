@@ -320,7 +320,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
         targetsSkyStone.activate();
         while (!isStopRequested()) {
 
-            // check all the trackable targets to see which one (if any) is visible.
+            // isTrue all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
