@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode.auto.utility;
+package org.firstinspires.ftc.teamcode.auto.structure;
 
 
 import com.qualcomm.robotcore.util.RobotLog;
 
+import org.firstinspires.ftc.teamcode.auto.structure.actions.RelativeMove;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,6 +52,34 @@ public class Command {
         try {
             String rawValue = json.getString(key).toLowerCase();
             value = rawValue.contains("true") || rawValue.contains("y") || rawValue.contains("1");
+        } catch (JSONException ex) {
+            RobotLog.e("Missing JSON key: " + key);
+        }
+        return value;
+    }
+
+    public RelativeMove.Direction getDirection(String key, RelativeMove.Direction defaultValue) {
+        RelativeMove.Direction value = defaultValue;
+        try {
+            String rawValue = json.getString(key).toLowerCase();
+            switch (rawValue) {
+                case "front":
+                case"f":
+                    value = RelativeMove.Direction.FRONT;
+                    break;
+                case "left":
+                case"l":
+                    value = RelativeMove.Direction.LEFT;
+                    break;
+                case "right":
+                case"r":
+                    value = RelativeMove.Direction.RIGHT;
+                    break;
+                case "back":
+                case"b":
+                    value = RelativeMove.Direction.BACK;
+                    break;
+            }
         } catch (JSONException ex) {
             RobotLog.e("Missing JSON key: " + key);
         }

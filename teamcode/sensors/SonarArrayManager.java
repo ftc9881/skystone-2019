@@ -1,11 +1,7 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.sensors;
 
-import com.qualcomm.robotcore.util.TypeConversion;
-
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Vector;
 
 /**
  * Created by dkrider on 10/27/2017.

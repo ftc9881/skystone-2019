@@ -1,15 +1,18 @@
 package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Odometry;
 import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.auto.Actions.Action;
-import org.firstinspires.ftc.teamcode.auto.utility.Command;
-import org.firstinspires.ftc.teamcode.auto.utility.Configuration;
-import org.firstinspires.ftc.teamcode.auto.utility.EndCondition;
+import org.firstinspires.ftc.teamcode.auto.structure.Action;
+import org.firstinspires.ftc.teamcode.auto.structure.ActionFactory;
+import org.firstinspires.ftc.teamcode.auto.structure.Command;
+import org.firstinspires.ftc.teamcode.auto.structure.Configuration;
+import org.firstinspires.ftc.teamcode.auto.structure.EndCondition;
+import org.firstinspires.ftc.teamcode.auto.structure.actions.RelativeMove;
+import org.firstinspires.ftc.teamcode.auto.structure.actions.OdometryMove;
+import org.firstinspires.ftc.teamcode.auto.structure.endConditions.Timeout;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 
 
@@ -29,6 +32,7 @@ public class AutoRunner {
     private LinearOpMode opMode;
     private Configuration config;
     private Robot robot;
+    private ActionFactory actionFactory;
     private Odometry odometry;
     private Vuforia vuforia;
     private Pose pose;
@@ -39,8 +43,7 @@ public class AutoRunner {
 
         robot = new Robot(opMode);
         config = new Configuration(name + ".json");
-//        vuforia = new Vuforia(robot);
-        odometry = new Odometry(robot);
+        actionFactory = new ActionFactory(robot);
 
         int length = config.commands.size();
         robot.log(Integer.toString(length));
@@ -83,80 +86,27 @@ public class AutoRunner {
             }
 
             case "MOVE": {
-                // relative movement
-                final int CLICKS_PER_INCH = 2000;
+                RelativeMove.Direction direction = command.getDirection("direction", RelativeMove.Direction.FRONT);
+                double timeoutMs = command.getDouble("timeout", 0.0);
+                double clicksToMove = command.getInt("clicksToMove", 0);
 
+                RelativeMove relativeMove = actionFactory.relativeMove(clicksToMove, direction);
+                EndCondition timeoutCondition = new Timeout(timeoutMs);
 
+                runTask(relativeMove, timeoutCondition);
             }
 
             case "ODOMETRY_MOVE": {
-
-//                double targetX = command.getDouble("x", 0.0);
-//                double targetY = command.getDouble("y", 0.0);
-//                double targetR = command.getDouble("r", 0.0);
-//                double powerFactor = command.getDouble("power", 0.6);
-//                Action action = new Action(targetR);
-//                EndCondition endCondition = new Timeout(laksjdf);
-//                runTask(action, endCondition);
-
-
-                // end goal: runTask(OdometryMove(x, y, z), endCond());
-                // move to coordinate on field
-                // properties: x, y, rotation
-                // Every cycle:
-                // 1: get position from odometry
-                // 2: feed x, y, rotation to pid
-                // 3: set drives to pid output
-
                 double targetX = command.getDouble("x", 0.0);
                 double targetY = command.getDouble("y", 0.0);
                 double targetR = command.getDouble("r", 0.0);
                 double powerFactor = command.getDouble("power", 0.6);
+                double timeoutMs = command.getDouble("timeout", 1.0);
 
-                Pose targetPose = new Pose(targetX, targetY, targetR);
+                OdometryMove odometryMove = actionFactory.odometryMove(targetX, targetY, targetR, powerFactor);
+                EndCondition timeoutCondition = new Timeout(timeoutMs);
 
-                Pose currentPose = odometry.getPose();
-
-                //variables we'll need to provide values for;
-                Pose pastPose = currentPose;
-
-                while ( (currentPose.distanceTo(targetPose) > 1 || Math.abs(currentPose.r - targetPose.r) > 0.3) ) {
-//                            && elapsedTime < timeout) {
-                    odometry.updatePose();
-                    currentPose = odometry.getPose();
-
-                    Pose errorPose = targetPose.subtract(currentPose);
-                    Pose drivePose = new Pose(0,0,0);
-
-                    drivePose.r = Range.clip(targetPose.r - currentPose.r, -1, 1);
-
-                    double absAngleDir = Math.atan(errorPose.y / errorPose.x);
-                    if (errorPose.x < 0) absAngleDir += Math.PI;
-
-                    double relAngleError = absAngleDir + currentPose.r;
-
-                    double XYMagnitude = Math.sqrt(Math.pow(errorPose.x, 2) + Math.pow(errorPose.y, 2));
-
-                    drivePose.x = Range.clip(-XYMagnitude * Math.cos(relAngleError), -1, 1);
-                    drivePose.y = Range.clip(XYMagnitude * Math.sin(relAngleError), -1, 1);
-
-                    // only proportional correction
-                    robot.drive(drivePose, powerFactor);
-                    opMode.telemetry.addData("CurrentPose", currentPose.toString());
-                    robot.log(drivePose.toString());
-
-//                        if (obstacleDetection) {
-//                            while (obstacle.stillThere()) {
-//                                sleep(50);
-//
-//                            }
-//                        }
-
-                    pastPose = currentPose;
-                }
-                robot.drive(0, 0, 0);
-                robot.log("Done with move");
-
+                runTask(odometryMove, timeoutCondition);
             }
 
             case "LOOKSKYSTONE": {

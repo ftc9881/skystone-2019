@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.auto.Actions;
+package org.firstinspires.ftc.teamcode.auto.structure.actions;
 
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
 import static android.os.SystemClock.sleep;
 
 public class RelativeTurn extends Action {
 
-    private static final double CLICKS_PER_INCH = 200.0;
     private static final double DEGREES_ERROR_RANGE = 5;
 
     double angleToTurn;

@@ -1,6 +1,8 @@
-package org.firstinspires.ftc.teamcode.auto.Actions;
+package org.firstinspires.ftc.teamcode.auto.structure.actions;
 
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.auto.structure.Action;
+
 import static android.os.SystemClock.sleep;
 
 public class RelativeMove extends Action {

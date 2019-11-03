@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode.auto.utility;
+package org.firstinspires.ftc.teamcode.auto.structure;
 
 import android.os.Environment;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;

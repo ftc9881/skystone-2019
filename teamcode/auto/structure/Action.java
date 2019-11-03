@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.auto.Actions;
+package org.firstinspires.ftc.teamcode.auto.structure;
 
 public abstract class Action {
-    boolean isStopped=false;
-    boolean isDone=false;
+    protected boolean isStopped=false;
+    protected boolean isDone=false;
 
     public abstract void run();
 
