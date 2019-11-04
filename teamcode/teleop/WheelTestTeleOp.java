@@ -40,7 +40,7 @@ public class WheelTestTeleOp extends LinearOpMode {
 
         } catch (RuntimeException e) {
 
-            robot.log(e.getMessage());
+            robot.logTelemetry(e.getMessage());
         }
     }
 

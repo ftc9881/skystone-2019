@@ -19,14 +19,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 public class DriveVerboseTeleOp extends LinearOpMode {
 
     private Robot robot;
-
-    private double lfPower = 0;
-    private double rfPower = 0;
-    private double lbPower = 0;
-    private double rbPower = 0;
-
     private Button slowButton = new Button();
-
     private Odometry odometry;
 
     @Override
@@ -71,7 +64,7 @@ public class DriveVerboseTeleOp extends LinearOpMode {
 
         } catch (RuntimeException e) {
 
-            robot.log(e.getMessage());
+            robot.logTelemetry(e.getMessage());
         }
     }
 

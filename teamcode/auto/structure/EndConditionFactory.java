@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.auto.endConditions.SkystoneRecognition;
+import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
+import org.firstinspires.ftc.teamcode.auto.endConditions.VuforiaLook;
 import org.firstinspires.ftc.teamcode.auto.endConditions.Timeout;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 
@@ -18,8 +19,12 @@ public class EndConditionFactory {
         return new Timeout(milliseconds);
     }
 
-    public SkystoneRecognition skystoneRecognition() {
-        return new SkystoneRecognition(vuforia);
+    public VuforiaLook vuforiaLook(Vuforia.TargetType targetType) {
+        return new VuforiaLook(vuforia, targetType);
+    }
+
+    public ObstacleDetect obstacleDetect(double distance) {
+        return new ObstacleDetect(robot, distance);
     }
 
 }

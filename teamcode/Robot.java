@@ -26,6 +26,8 @@ public class Robot {
     private final double GRABBER_LEFT_RELEASE_POSITION = 0;
     private final double GRABBER_RIGHT_GRAB_POSITION = 0;
     private final double GRABBER_RIGHT_RELEASE_POSITION = 0;
+    private final double ARM_GRAB_POSITION = 0;
+    private final double ARM_RELEASE_POSITION = 0;
 
     private LinearOpMode opMode;
 
@@ -41,10 +43,10 @@ public class Robot {
     private Servo foundationGrabberLeft;
     private Servo foundationGrabberRight;
 
-    public Servo armServo;
+    private Servo armServo;
 
-    public DcMotor elevatorLeft;
-    public DcMotor elevatorRight;
+    private DcMotor elevatorLeft;
+    private DcMotor elevatorRight;
 
     public BNO055IMU imu;
     public MaxSonarI2CXL sonarSensor;
@@ -121,30 +123,40 @@ public class Robot {
     public double getOdometryCenterPosition() {
         return odometryCenter.getCurrentPosition();
     }
-
     public double getOdometryLeftPosition() {
         return odometryLeft.getCurrentPosition();
     }
-
     public double getOdometryRightPosition() {
         return odometryRight.getCurrentPosition();
     }
 
-    public void foundationGrab() {
+
+    public void grabFoundation() {
         foundationGrabberLeft.setPosition(GRABBER_LEFT_GRAB_POSITION);
         foundationGrabberRight.setPosition(GRABBER_RIGHT_GRAB_POSITION);
     }
-
-    public void foundationRelease() {
+    public void releaseFoundation() {
         foundationGrabberLeft.setPosition(GRABBER_LEFT_RELEASE_POSITION);
         foundationGrabberRight.setPosition(GRABBER_RIGHT_RELEASE_POSITION);
     }
 
+    public void grabStone() {
+        armServo.setPosition(ARM_GRAB_POSITION);
+    }
 
+    public void placeStone() {
+        armServo.setPosition(ARM_RELEASE_POSITION);
+    }
+
+    public void drive(Pose pose) {
+        drive(pose.x, pose.y, pose.r);
+    }
+    public void drive(Pose pose, double powerFactor) {
+        drive(pose.x, pose.y, pose.r, powerFactor);
+    }
     public void drive(double x, double y, double r) {
         drive(x, y, r, 1);
     }
-
     public void drive(double x, double y, double r, double powerFactor) {
         // Calculate power for mecanum drive
         double lfp = Range.clip(x - r + y, -1.0, 1.0);
@@ -158,29 +170,13 @@ public class Robot {
         rb.setPower(rbp * powerFactor);
     }
 
-    public void drive(Pose pose) {
-        drive(pose.x, pose.y, pose.r);
-    }
-
-    public void drive(Pose pose, double powerFactor) {
-        drive(pose.x, pose.y, pose.r, powerFactor);
-    }
-
-
     public void stop() {
         drive(0, 0, 0);
     }
 
-
-    public void log(String message, boolean showTelemetry) {
+    public void logTelemetry(String message) {
         RobotLog.d(message);
-        if (showTelemetry) {
-            opMode.telemetry.addData("%%%LOG", message);
-            opMode.telemetry.update();
-        }
-    }
-
-    public void log(String message) {
-        log(message, true);
+        opMode.telemetry.addData("%%%LOG", message);
+        opMode.telemetry.update();
     }
 }

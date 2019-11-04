@@ -2,9 +2,12 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.auto.endConditions.SkystoneRecognition;
+import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
+import org.firstinspires.ftc.teamcode.auto.endConditions.VuforiaLook;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
+import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.EndConditionFactory;
+import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.utility.Pose;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.auto.structure.ActionFactory;
@@ -24,7 +27,7 @@ import static android.os.SystemClock.sleep;
  * and execute them in order.
  *
  * @author Trinity Chung
- * @version 0.0
+ * @version 1.0
  */
 public class AutoRunner {
 
@@ -52,7 +55,7 @@ public class AutoRunner {
 
     public void run() {
         for (Command command : config.commands) {
-            robot.log(command.toString());
+            robot.logTelemetry(command.toString());
             execute(command);
         }
     }
@@ -61,74 +64,94 @@ public class AutoRunner {
     private void execute(Command command) {
         switch (command.name) {
 
-            case "VUFORIA ORIENT": {
-                // update coordinates based on vuforia
-
-
-//                vuforia.startLook(Vuforia.TargetType.PERIMETER);
-//                while (!vuforia.found()) {
-//                    sleep(50);
-//                }
-//                pose = vuforia.getPose();
-                break;
-            }
-
             case "MOVE": {
                 Direction direction = command.getDirection("direction", Direction.FRONT);
-                double timeoutMs = command.getDouble("timeout", 0.0);
-                double clicksToMove = command.getInt("clicksToMove", 0);
+                int clicksToMove = command.getInt("clicksToMove", 0);
+                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
 
-                RelativeMove relativeMove = actionFactory.relativeMove(clicksToMove, direction);
-                IEndCondition timeoutCondition = new Timeout(timeoutMs);
+                Action relativeMove = actionFactory.relativeMove(clicksToMove, direction);
+                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
 
                 runTask(relativeMove, timeoutCondition);
                 break;
             }
 
-            case "ODOMETRY_MOVE": {
+            case "TURN": {
+                double angle = command.getDouble("angle", 0.0);
+                double power = command.getDouble("power", 1.0);
+                double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
+                Action relativeTurn = actionFactory.relativeTurn(angle, power);
+                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+
+                runTask(relativeTurn, timeoutCondition);
+                break;
+            }
+
+            case "ODOMETRY MOVE": {
                 double targetX = command.getDouble("x", 0.0);
                 double targetY = command.getDouble("y", 0.0);
                 double targetR = command.getDouble("r", 0.0);
-                Pose targetPose = new Pose(targetX, targetY, targetR);
                 double powerFactor = command.getDouble("power", 0.6);
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
+                double obstacleDistance = command.getDouble("obstacle distance", 10);
 
-                OdometryMove odometryMove = actionFactory.odometryMove(targetPose, powerFactor);
+                Pose targetPose = new Pose(targetX, targetY, targetR);
+                OdometryMove odometryMove = actionFactory.odometryMove(pose, targetPose, powerFactor);
+
                 Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                ObstacleDetect obstacleCondition = conditionFactory.obstacleDetect(obstacleDistance);
+                CombinedConditions conditions = new CombinedConditions();
+                conditions
+                    .add(timeoutCondition)
+                    .add(obstacleCondition);
 
-                runTask(odometryMove, timeoutCondition);
+                runTask(odometryMove, conditions);
                 pose = odometryMove.getPose();
+                break;
+            }
+
+            case "VUFORIA ORIENT": {
+                // strafe while looking
+                double maxDistance = command.getDouble("distance", 30);
+
+                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, Direction.LEFT);
+                VuforiaLook vuforiaCondition = conditionFactory.vuforiaLook(Vuforia.TargetType.PERIMETER);
+
+                runTask(relativeMove, vuforiaCondition);
+                pose = vuforiaCondition.getPose();
                 break;
             }
 
             case "SEARCH SKYSTONE": {
                 // strafe while looking
-                RelativeMove relativeMove = actionFactory.relativeMove(99, Direction.LEFT);
-                SkystoneRecognition skystoneCondition = conditionFactory.skystoneRecognition();
+                double maxDistance = command.getDouble("distance", 30);
+
+                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, Direction.LEFT);
+                VuforiaLook skystoneCondition = conditionFactory.vuforiaLook(Vuforia.TargetType.SKYSTONE);
+
                 runTask(relativeMove, skystoneCondition);
                 break;
             }
 
-            case "GET SKYSTONE": {
+            case "GRAB STONE": {
                 // move arm and pick up skystone
+                robot.grabStone();
                 break;
             }
 
-            case "GRAB":
             case "GRAB FOUNDATION": {
-                robot.foundationGrab();
+                robot.grabFoundation();
                 break;
             }
 
-            case "RELEASE":
             case "RELEASE FOUNDATION": {
-                robot.foundationRelease();
+                robot.releaseFoundation();
                 break;
             }
 
             case "PLACE STONE": {
-                // begin putting stone on foundation
-                // move some servos
+                // put stone on foundation
+                robot.placeStone();
                 break;
             }
 
@@ -149,7 +172,7 @@ public class AutoRunner {
         action.stop();
         endCondition.stop();
 
-        robot.log("task completed");
+        robot.logTelemetry("task completed");
     }
 
 }

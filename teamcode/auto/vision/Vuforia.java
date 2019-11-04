@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.auto.vision;
 
+import com.qualcomm.robotcore.util.RobotLog;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -36,6 +38,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.auto.structure.Action;
+import org.firstinspires.ftc.teamcode.auto.structure.IPoseChanger;
 import org.firstinspires.ftc.teamcode.utility.Pose;
 import org.firstinspires.ftc.teamcode.Robot;
 
@@ -50,7 +54,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 
-public class Vuforia {
+public class Vuforia implements IPoseChanger {
 
     public enum TargetType {SKYSTONE, BRIDGE, PERIMETER}
     public enum Target {
@@ -111,7 +115,7 @@ public class Vuforia {
     private Robot robot;
     private boolean initialized = false;
     private Pose lastPose = null;
-    private LookRunnable lookRunnable;
+    private LookAction lookAction;
 
 
     public Vuforia(Robot robot) {
@@ -126,34 +130,28 @@ public class Vuforia {
         applyPhoneOrientation();
         trackables.activate();
         initialized = true;
-        robot.log("Vuforia initialization complete", true);
+        RobotLog.v("Vuforia initialization complete", true);
     }
 
-    // TODO: Fix threading for Vuforia; probably factor into a separate Action
     public void startLook(TargetType target) {
+        lastPose = null;
         if (!initialized) {
-            throw new RuntimeException("Vuforia not initialized");
+            RobotLog.w("Vuforia not initizlized; initializing now");
+            initialize();
         }
-        lookRunnable = new LookRunnable(target);
-        Thread t = new Thread(lookRunnable);
-        t.start();
+        lookAction = new LookAction(target);
+        lookAction.start();
     }
 
     public void stopLook() {
-        try {
-            while (lookRunnable.targetVisible) {
-                lookRunnable.wait();
-            }
-        } catch (InterruptedException e) {
-            robot.log("Thread was interrupted", true);
-        }
-        lookRunnable = null;
+        lookAction.stop();
     }
 
     public boolean found() {
         return lastPose != null;
     }
 
+    @Override
     public Pose getPose() {
         return lastPose;
     }
@@ -295,31 +293,42 @@ public class Vuforia {
     }
 
 
-    class LookRunnable implements Runnable {
-        private boolean completed;
+    class LookAction extends Action {
         private boolean targetVisible;
-        private TargetType target;
+        private TargetType targetType;
         private OpenGLMatrix lastLocation;
+        private ArrayList<VuforiaTrackable> targetTrackables;
 
-        LookRunnable(TargetType target) {
-            this.completed = false;
-            this.targetVisible = false;
-            this.target = target;
-            this.lastLocation = null;
+        LookAction(TargetType targetType) {
+            this.targetType = targetType;
         }
 
-        public void run() {
-            while (!targetVisible) {
-                for (VuforiaTrackable trackable : getTrackingTrackables()) {
-                    targetVisible = ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible();
-                    if (targetVisible) {
-                        OpenGLMatrix robotTransform = getRobotTransform(trackable);
-                        lastLocation = robotTransform != null ? robotTransform : lastLocation;
-                        break;
-                    }
+        @Override
+        protected void onRun() {
+            targetVisible = false;
+            lastLocation = null;
+            targetTrackables = getTargetTrackables();
+        }
+
+        @Override
+        protected void insideRun() {
+            for (VuforiaTrackable trackable : targetTrackables) {
+                targetVisible = ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible();
+                if (targetVisible) {
+                    OpenGLMatrix robotTransform = getRobotTransform(trackable);
+                    lastLocation = robotTransform != null ? robotTransform : lastLocation;
+                    break;
                 }
             }
+        }
 
+        @Override
+        protected boolean runIsComplete() {
+            return targetVisible;
+        }
+
+        @Override
+        protected void onEndRun() {
             double x = lastLocation.getTranslation().get(0);
             double y = lastLocation.getTranslation().get(1);
             double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, RADIANS).thirdAngle;
@@ -327,16 +336,12 @@ public class Vuforia {
 
             // Disable Tracking when we are done;
             trackables.deactivate();
-
-            synchronized (this) {
-                this.completed = true;
-                this.notify();
-            }
         }
 
-        private ArrayList<VuforiaTrackable> getTrackingTrackables() {
+
+        private ArrayList<VuforiaTrackable> getTargetTrackables() {
             ArrayList<VuforiaTrackable> trackingTrackables = new ArrayList<VuforiaTrackable>();
-            switch (target) {
+            switch (targetType) {
                 case SKYSTONE:
                     trackingTrackables.add(trackables.get(Target.SKYSTONE.index));
                     break;

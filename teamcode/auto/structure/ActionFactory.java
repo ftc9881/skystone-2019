@@ -16,8 +16,8 @@ public class ActionFactory {
         this.odometry = new Odometry(robot);
     }
 
-    public OdometryMove odometryMove(Pose targetPose, double powerFactor) {
-        return new OdometryMove(robot, odometry, targetPose, powerFactor);
+    public OdometryMove odometryMove(Pose currentPose, Pose targetPose, double powerFactor) {
+        return new OdometryMove(robot, odometry, currentPose, targetPose, powerFactor);
     }
 
     public RelativeMove relativeMove(double inches, RelativeMove.Direction direction) {

@@ -5,8 +5,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Action implements Runnable {
 
+    private static final long SLEEP_INTERVAL = 50;
     private Thread thread;
-    private final long SLEEP_INTERVAL = 50;
     private AtomicBoolean running = new AtomicBoolean(false);
     private AtomicBoolean stopped = new AtomicBoolean(true);
 
@@ -16,7 +16,7 @@ public abstract class Action implements Runnable {
     protected abstract boolean runIsComplete();
 
     public void start() {
-        System.out.println("Action: start");
+        RobotLog.d("Action: Start");
         running.set(true);
         stopped.set(false);
 
@@ -33,7 +33,7 @@ public abstract class Action implements Runnable {
                 Thread.sleep(SLEEP_INTERVAL);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                RobotLog.d("ActionThread was interrupted");
+                RobotLog.d("Action thread was interrupted");
                 return;
             }
             insideRun();
@@ -41,12 +41,12 @@ public abstract class Action implements Runnable {
 
         onEndRun();
         stopped.set(true);
-        System.out.println("Action: completed");
+        RobotLog.d("Action: Completed");
     }
 
 
     public void stop() {
-        System.out.println("Action: stop");
+        RobotLog.d("Action: Stop");
 
         if (!isStopped())
             onEndRun();

@@ -20,13 +20,13 @@ public class OdometryMove extends Action implements IPoseChanger {
     private double powerFactor;
 
 
-    public OdometryMove (Robot robot, Odometry odometry, Pose targetPose, double power) {
+    public OdometryMove (Robot robot, Odometry odometry, Pose currentPose, Pose targetPose, double power) {
+        this.robot = robot;
         this.odometry = odometry;
+        this.currentPose = currentPose;
         this.targetPose = targetPose;
         this.powerFactor = power;
-        this.robot = robot;
     }
-
 
     @Override
     protected void onRun() {
@@ -60,7 +60,7 @@ public class OdometryMove extends Action implements IPoseChanger {
         drivePose.r = Range.clip(targetPose.r - currentPose.r, -1, 1);
 
         robot.drive(drivePose, powerFactor);
-        robot.log(drivePose.toString());
+        robot.logTelemetry(drivePose.toString());
     }
 
     @Override

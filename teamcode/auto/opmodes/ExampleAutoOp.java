@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
  * ExampleAuto is an example of an autonomous OpMode using AutoRunner.
  *
  * @author Trinity Chung
- * @version 0.0
+ * @version 1.0
  */
 @Autonomous(name = "ExampleAuto", group = "TeamCode")
 @Disabled

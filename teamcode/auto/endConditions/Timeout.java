@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.auto.endConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 
 public class Timeout implements IEndCondition {
-    double startTime;
-    double waitTime;
+    private double startTime;
+    private double waitTime;
 
     public Timeout(double milliseconds) {
         this.waitTime = milliseconds;
