@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.Odometry;
-import org.firstinspires.ftc.teamcode.auto.structure.actions.RelativeMove;
-import org.firstinspires.ftc.teamcode.auto.structure.actions.OdometryMove;
+import org.firstinspires.ftc.teamcode.auto.actions.RelativeTurn;
+import org.firstinspires.ftc.teamcode.utility.Odometry;
+import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
+import org.firstinspires.ftc.teamcode.auto.actions.OdometryMove;
+import org.firstinspires.ftc.teamcode.utility.Pose;
 
 public class ActionFactory {
     Robot robot;
@@ -14,12 +16,16 @@ public class ActionFactory {
         this.odometry = new Odometry(robot);
     }
 
-    public RelativeMove relativeMove(double inchesToMove, RelativeMove.Direction direction) {
-        return new RelativeMove(robot, inchesToMove, direction);
+    public OdometryMove odometryMove(Pose targetPose, double powerFactor) {
+        return new OdometryMove(robot, odometry, targetPose, powerFactor);
     }
 
-    public OdometryMove odometryMove(double targetX, double targetY, double targetR, double powerFactor) {
-        return new OdometryMove(robot, odometry, targetX, targetY, targetR, powerFactor);
+    public RelativeMove relativeMove(double inches, RelativeMove.Direction direction) {
+        return new RelativeMove(robot, inches, direction);
+    }
+
+    public RelativeTurn relativeTurn(double angle, double power) {
+        return new RelativeTurn(robot, angle, power);
     }
 
 }

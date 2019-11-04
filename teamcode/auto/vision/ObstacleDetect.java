@@ -13,6 +13,8 @@ public class ObstacleDetect {
     }
 
     class DetectRunnable implements Runnable {
+        boolean needWait;
+
         @Override
         public void run() {
 
@@ -22,30 +24,22 @@ public class ObstacleDetect {
         }
     }
 
-    public void startDetect() {
+    public void start() {
         looking = true;
         detectRunnable = new DetectRunnable();
         Thread t = new Thread(detectRunnable);
         t.start();
     }
 
-//    public void stopLook() {
-//        looking = false;
-//        try {
-//            while (lookRunnable.needWait) {
-//                lookRunnable.wait();
-//            }
-//        } catch (InterruptedException e) {
-//            robot.log("VUFORIA", "Thread was interrupted", true);
-//        }
-//    }
-//
-//    public boolean found() {
-//        return lastPose != null;
-//    }
-//
-//    public Pose getPose() {
-//        return lastPose;
-//    }
-//
+    public void stop() {
+        looking = false;
+        try {
+            while (detectRunnable.needWait) {
+                detectRunnable.wait();
+            }
+        } catch (InterruptedException e) {
+            robot.log("Thread was interrupted in ObstacleDetect", true);
+        }
+    }
+
 }

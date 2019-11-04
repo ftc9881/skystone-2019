@@ -1,22 +1,27 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.utility;
+
+import org.firstinspires.ftc.teamcode.Robot;
 
 import Jama.Matrix;
 
 //experiments with a possible odometry set up
 public class Odometry {
-    private static final String TAG = "%%Odometry";
 
-    private final double L_OFFSET_X = 3, L_OFFSET_Y = 7;
-    private final double L_OFFSET_DIST = Math.sqrt(Math.pow(L_OFFSET_X, 2) + Math.pow(L_OFFSET_Y, 2));
-    private final double R_OFFSET_X = 3, R_OFFSET_Y = 7;
-    private final double R_OFFSET_DIST = Math.sqrt(Math.pow(R_OFFSET_X, 2) + Math.pow(R_OFFSET_Y, 2));
-    private final double C_OFFSET_X = 3, C_OFFSET_Y = 0;
-    private final double C_OFFSET_DIST = Math.sqrt(Math.pow(C_OFFSET_X, 2) + Math.pow(C_OFFSET_Y, 2));
+    private final double L_OFFSET_X = 3;
+    private final double R_OFFSET_X = 3;
+    private final double C_OFFSET_X = 3;
+
+    private final double L_OFFSET_Y = 7;
+    private final double R_OFFSET_Y = 7;
+    private final double C_OFFSET_Y = 0;
+
+//    private final double L_OFFSET_DIST = Math.sqrt(Math.pow(L_OFFSET_X, 2) + Math.pow(L_OFFSET_Y, 2));
+//    private final double R_OFFSET_DIST = Math.sqrt(Math.pow(R_OFFSET_X, 2) + Math.pow(R_OFFSET_Y, 2));
+//    private final double C_OFFSET_DIST = Math.sqrt(Math.pow(C_OFFSET_X, 2) + Math.pow(C_OFFSET_Y, 2));
 
     private final double TICKS_PER_RADIAN = 1400/(2.0*Math.PI);
     private final double RADIUS = 1.0;
 
-    // ask trinity about time stuff
     private double currLEncoder = 0.0, currREncoder = 0.0, currCEncoder = 0.0;
     private double prevLEncoder = 0.0, prevREncoder = 0.0, prevCEncoder = 0.0;
     // TODO given field orientation starting dir would be pi?
@@ -39,18 +44,14 @@ public class Odometry {
         prevCEncoder = currCEncoder;
         prevIMU = currIMU;
 
-        currLEncoder = -robot.leftOdometry.getCurrentPosition();
-        currREncoder = -robot.rightOdometry.getCurrentPosition();
-        currCEncoder = robot.centerOdometry.getCurrentPosition();
+        currLEncoder = -robot.getOdometryLeftPosition();
+        currREncoder = -robot.getOdometryRightPosition();
+        currCEncoder = robot.getOdometryCenterPosition();
         //currIMU = robot.imu ... + DIR_OFFSET
 
         double angVelL = (1/TICKS_PER_RADIAN) * (currLEncoder - prevLEncoder);
         double angVelR = (1/TICKS_PER_RADIAN) * (currREncoder - prevREncoder);
         double angVelC = (1/TICKS_PER_RADIAN) * (currCEncoder - prevCEncoder);
-
-//        robot.log(TAG, "angVelL: " + angVelL, false);
-//        robot.log(TAG, "angVelR: " + angVelR, false);
-//        robot.log(TAG, "angVelC: " + angVelC, false);
 
         double[][] arrayA = {
             {1, 0, -L_OFFSET_Y},
@@ -66,15 +67,6 @@ public class Odometry {
         Matrix matrixB = new Matrix(arrayB);
         matrixA = matrixA.times(1.0/RADIUS);
         Matrix matrixC = matrixA.inverse().times(matrixB);
-
-        //debug
-//        for (double[] d : matrixC.getArray()) {
-//            String temp = "";
-//            for (double e : d) {
-//                temp += e + " ";
-//            }
-//            robot.log(TAG, temp, false);
-//        }
 
         double dx = matrixC.getArray()[0][0];
         double dy = matrixC.getArray()[1][0];

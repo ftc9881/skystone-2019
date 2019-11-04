@@ -6,10 +6,12 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.sensors.MaxSonarI2CXL;
+import org.firstinspires.ftc.teamcode.utility.Pose;
 
 /**
  * The Robot class has references to all the hardware devices.
@@ -19,6 +21,12 @@ import org.firstinspires.ftc.teamcode.sensors.MaxSonarI2CXL;
  */
 public class Robot {
 
+    // TODO: Servo positions
+    private final double GRABBER_LEFT_GRAB_POSITION = 0;
+    private final double GRABBER_LEFT_RELEASE_POSITION = 0;
+    private final double GRABBER_RIGHT_GRAB_POSITION = 0;
+    private final double GRABBER_RIGHT_RELEASE_POSITION = 0;
+
     private LinearOpMode opMode;
 
     public DcMotor lf;
@@ -26,19 +34,28 @@ public class Robot {
     public DcMotor lb;
     public DcMotor rb;
 
-    public DcMotor rightOdometry;
-    public DcMotor leftOdometry;
-    public DcMotor centerOdometry;
+    private DcMotor odometryRight;
+    private DcMotor odometryLeft;
+    private DcMotor odometryCenter;
+
+    private Servo foundationGrabberLeft;
+    private Servo foundationGrabberRight;
+
+    public Servo armServo;
+
+    public DcMotor elevatorLeft;
+    public DcMotor elevatorRight;
 
     public BNO055IMU imu;
     public MaxSonarI2CXL sonarSensor;
 
-
-    // for locating files
+    // for locating files (needed for Vuforia)
     public Context fileContext;
+
 
     public Robot(LinearOpMode opMode) {
         this.opMode = opMode;
+        this.fileContext = opMode.hardwareMap.appContext;
 
         lf = opMode.hardwareMap.dcMotor.get("front_left");
         rf = opMode.hardwareMap.dcMotor.get("front_right");
@@ -67,9 +84,19 @@ public class Robot {
 
         // The lf/rf/lb/rb wheels do not have encoders plugged in
         // Instead, the encoder is connected to the tracking wheels.
-        leftOdometry = lf;
-        rightOdometry = rf;
-        centerOdometry = lb;
+        odometryLeft = lf;
+        odometryRight = rf;
+        odometryCenter = lb;
+
+
+        // TODO: put in robot controller configuration
+//        foundationGrabberLeft = opMode.hardwareMap.servo.get("left_grabber");
+//        foundationGrabberRight = opMode.hardwareMap.servo.get("right_grabber");
+//
+//        armServo = opMode.hardwareMap.servo.get("arm");
+//
+//        elevatorLeft = opMode.hardwareMap.dcMotor.get("left_elevator");
+//        elevatorRight = opMode.hardwareMap.dcMotor.get("right_elevator");
 
 
         // Custom sonar device
@@ -78,33 +105,48 @@ public class Robot {
 //        sonarSensor.startAutoPing(100);
 
 
-        // Set up the parameters with which we will use our IMU. Note that integration
-        // algorithm here just reports accelerations to the logcat log; it doesn't actually
-        // provide positional information.
+        // IMU Parameters
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
 //        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
 //        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
-//        parameters.accelerationIntegrationAlgorithm;
 
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
         imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-
-
-        fileContext = opMode.hardwareMap.appContext;
     }
+
+
+    public double getOdometryCenterPosition() {
+        return odometryCenter.getCurrentPosition();
+    }
+
+    public double getOdometryLeftPosition() {
+        return odometryLeft.getCurrentPosition();
+    }
+
+    public double getOdometryRightPosition() {
+        return odometryRight.getCurrentPosition();
+    }
+
+    public void foundationGrab() {
+        foundationGrabberLeft.setPosition(GRABBER_LEFT_GRAB_POSITION);
+        foundationGrabberRight.setPosition(GRABBER_RIGHT_GRAB_POSITION);
+    }
+
+    public void foundationRelease() {
+        foundationGrabberLeft.setPosition(GRABBER_LEFT_RELEASE_POSITION);
+        foundationGrabberRight.setPosition(GRABBER_RIGHT_RELEASE_POSITION);
+    }
+
 
     public void drive(double x, double y, double r) {
         drive(x, y, r, 1);
     }
 
     public void drive(double x, double y, double r, double powerFactor) {
-        // Calculate Power
+        // Calculate power for mecanum drive
         double lfp = Range.clip(x - r + y, -1.0, 1.0);
         double rfp = Range.clip(x + r - y, -1.0, 1.0);
         double lbp = Range.clip(x - r - y, -1.0, 1.0);
@@ -116,7 +158,6 @@ public class Robot {
         rb.setPower(rbp * powerFactor);
     }
 
-
     public void drive(Pose pose) {
         drive(pose.x, pose.y, pose.r);
     }
@@ -124,6 +165,12 @@ public class Robot {
     public void drive(Pose pose, double powerFactor) {
         drive(pose.x, pose.y, pose.r, powerFactor);
     }
+
+
+    public void stop() {
+        drive(0, 0, 0);
+    }
+
 
     public void log(String message, boolean showTelemetry) {
         RobotLog.d(message);

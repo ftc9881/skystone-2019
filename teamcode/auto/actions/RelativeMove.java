@@ -1,14 +1,9 @@
-package org.firstinspires.ftc.teamcode.auto.structure.actions;
+package org.firstinspires.ftc.teamcode.auto.actions;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
-import static android.os.SystemClock.sleep;
-
 public class RelativeMove extends Action {
-
-    private static final double CLICKS_PER_INCH = 200.0;
-    private static final double CLICKS_ERROR_RANGE = 20.0;
 
     public enum Direction {
         FRONT,
@@ -17,10 +12,14 @@ public class RelativeMove extends Action {
         BACK
     }
 
-    Direction direction;
-    double inchesToMove;
+    private static final double CLICKS_PER_INCH = 200.0;
+    private static final double CLICKS_ERROR_RANGE = 20.0;
 
     Robot robot;
+    private Direction direction;
+    private double inchesToMove;
+    private double[] targetClicks;
+
 
     public RelativeMove (Robot robot, double inchesToMove, Direction direction) {
         this.robot = robot;
@@ -28,13 +27,12 @@ public class RelativeMove extends Action {
         this.direction = direction;
     }
 
-    public void run() {
-        //reference to robot encoders
-        double[] targetClicks = new double[4];
+
+    @Override
+    protected void onRun() {
+        targetClicks = new double[4];
         for (int i=0; i < targetClicks.length; i++)
             targetClicks[i]= inchesToMove*CLICKS_PER_INCH;
-
-        //TODO: reset encoders to 0?
 
         switch (direction) {
             case FRONT:
@@ -56,15 +54,24 @@ public class RelativeMove extends Action {
                     targetClicks[i] *= -1;
                 break;
         }
-
-        while (!isStopped && (
-                Math.abs(robot.lf.getCurrentPosition() - targetClicks[0]) > CLICKS_ERROR_RANGE &&
-                Math.abs(robot.rf.getCurrentPosition() - targetClicks[1]) > CLICKS_ERROR_RANGE &&
-                Math.abs(robot.lb.getCurrentPosition() - targetClicks[2]) > CLICKS_ERROR_RANGE &&
-                Math.abs(robot.rb.getCurrentPosition() - targetClicks[3]) > CLICKS_ERROR_RANGE
-        )) {
-            sleep(40);
-        }
-        robot.drive(0, 0, 0);
     }
+
+    @Override
+    protected boolean runIsComplete() {
+        return Math.abs(robot.lf.getCurrentPosition() - targetClicks[0]) < CLICKS_ERROR_RANGE &&
+            Math.abs(robot.rf.getCurrentPosition() - targetClicks[1]) < CLICKS_ERROR_RANGE &&
+            Math.abs(robot.lb.getCurrentPosition() - targetClicks[2]) < CLICKS_ERROR_RANGE &&
+            Math.abs(robot.rb.getCurrentPosition() - targetClicks[3]) < CLICKS_ERROR_RANGE;
+    }
+
+    @Override
+    protected void insideRun() {
+        // TODO: pid?
+    }
+
+    @Override
+    protected void onEndRun() {
+        robot.stop();
+    }
+
 }

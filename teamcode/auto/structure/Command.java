@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.auto.structure;
 
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.auto.structure.actions.RelativeMove;
+import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.json.JSONException;
 import org.json.JSONObject;
 

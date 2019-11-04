@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
-public interface EndCondition {
+public interface IEndCondition {
     boolean isTrue();
+    void start();
+    void stop();
 }

@@ -6,14 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Robot;
 
 /**
- * WheelTest enables you to control each wheel using gamepad buttons.
+ * WheelTestTeleOp enables you to control each wheel using gamepad buttons.
  *
  * @author Trinity Chung
  * @version 0.0
  */
-@TeleOp(name = "WheelTest", group = "TeamCode")
+@TeleOp(name = "WheelTestTeleOp", group = "TeamCode")
 //@Disabled
-public class WheelTest extends LinearOpMode {
+public class WheelTestTeleOp extends LinearOpMode {
 
     private Robot robot;
 
