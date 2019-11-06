@@ -6,7 +6,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -25,21 +27,8 @@ public class Configuration {
     public Configuration(String fileName) {
 
         try {
-            // read file
-            File file = new File(PATH, fileName);
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            do {
-                line = br.readLine();
-                sb.append(line);
-            } while (line != null);
-            String fileContents = sb.toString();
-
-            // create jsonobject with file
+            String fileContents = readFile(fileName);
             JSONObject config = new JSONObject(fileContents);
-
-            // create commands
             commands = new ArrayList();
 
             JSONObject allCommandsJson = config.getJSONObject("commands");
@@ -57,6 +46,17 @@ public class Configuration {
         } catch (Exception ex) {
             throw new RuntimeException("Configuration", ex);
         }
+    }
 
+    private String readFile(String name) throws IOException {
+        File file = new File(PATH, name);
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        do {
+            line = br.readLine();
+            sb.append(line);
+        } while (line != null);
+        return sb.toString();
     }
 }

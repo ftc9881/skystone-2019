@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.util.RobotLog;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.sensors.MaxSonarI2CXL;
 import org.firstinspires.ftc.teamcode.utility.Pose;
 
@@ -22,12 +22,12 @@ import org.firstinspires.ftc.teamcode.utility.Pose;
 public class Robot {
 
     // TODO: Servo positions
-    private final double GRABBER_LEFT_GRAB_POSITION = 0;
-    private final double GRABBER_LEFT_RELEASE_POSITION = 0;
-    private final double GRABBER_RIGHT_GRAB_POSITION = 0;
-    private final double GRABBER_RIGHT_RELEASE_POSITION = 0;
-    private final double ARM_GRAB_POSITION = 0;
-    private final double ARM_RELEASE_POSITION = 0;
+    private static final double GRABBER_LEFT_GRAB_POSITION = 0;
+    private static final double GRABBER_LEFT_RELEASE_POSITION = 0;
+    private static final double GRABBER_RIGHT_GRAB_POSITION = 0;
+    private static final double GRABBER_RIGHT_RELEASE_POSITION = 0;
+    private static final double ARM_GRAB_POSITION = 0;
+    private static final double ARM_RELEASE_POSITION = 0;
 
     private LinearOpMode opMode;
 
@@ -174,9 +174,4 @@ public class Robot {
         drive(0, 0, 0);
     }
 
-    public void logTelemetry(String message) {
-        RobotLog.d(message);
-        opMode.telemetry.addData("%%%LOG", message);
-        opMode.telemetry.update();
-    }
 }

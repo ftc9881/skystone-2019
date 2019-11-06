@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
 public class RelativeTurn extends Action {
@@ -12,11 +13,13 @@ public class RelativeTurn extends Action {
     private double angleToTurn;
     private double initialAngle;
     private double currentAngle;
+    private double power;
 
 
     public RelativeTurn(Robot robot, double angleToTurn, double power) {
         this.robot = robot;
         this.angleToTurn = angleToTurn;
+        this.power = power;
     }
 
     @Override
@@ -27,6 +30,8 @@ public class RelativeTurn extends Action {
 
     @Override
     protected boolean runIsComplete() {
+        AutoRunner.log("Current Angle", currentAngle);
+        AutoRunner.log("Angle to turn", angleToTurn);
         return Math.abs(currentAngle - angleToTurn) < DEGREES_ERROR_RANGE;
     }
 
@@ -35,7 +40,7 @@ public class RelativeTurn extends Action {
         currentAngle = robot.imu.getAngularOrientation().firstAngle;
         double error = (angleToTurn + initialAngle) - currentAngle;
         double errorCorrectedPower = (error * kP) + kP * (error > 0 ? 1 : -1);
-        robot.drive(0, 0, errorCorrectedPower);
+        robot.drive(0, 0, errorCorrectedPower * power);
     }
 
     @Override

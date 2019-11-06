@@ -60,7 +60,7 @@ public class OdometryMove extends Action implements IPoseChanger {
         drivePose.r = Range.clip(targetPose.r - currentPose.r, -1, 1);
 
         robot.drive(drivePose, powerFactor);
-        robot.logTelemetry(drivePose.toString());
+        robot.logAndTelemetry(drivePose.toString());
     }
 
     @Override

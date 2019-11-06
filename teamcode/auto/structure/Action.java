@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
-import com.qualcomm.robotcore.util.RobotLog;
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Action implements Runnable {
 
+    private static final String TAG = "Action";
     private static final long SLEEP_INTERVAL = 50;
     private Thread thread;
     private AtomicBoolean running = new AtomicBoolean(false);
@@ -16,9 +18,11 @@ public abstract class Action implements Runnable {
     protected abstract boolean runIsComplete();
 
     public void start() {
-        RobotLog.d("Action: Start");
+        AutoRunner.log(TAG, "Start");
         running.set(true);
         stopped.set(false);
+
+        AutoRunner.log("Action running?", isRunning());
 
         thread = new Thread(this);
         thread.start();
@@ -33,7 +37,7 @@ public abstract class Action implements Runnable {
                 Thread.sleep(SLEEP_INTERVAL);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                RobotLog.d("Action thread was interrupted");
+                AutoRunner.log(TAG, "Action thread was interrupted");
                 return;
             }
             insideRun();
@@ -41,12 +45,12 @@ public abstract class Action implements Runnable {
 
         onEndRun();
         stopped.set(true);
-        RobotLog.d("Action: Completed");
+        AutoRunner.log(TAG, "Completed");
     }
 
 
     public void stop() {
-        RobotLog.d("Action: Stop");
+        AutoRunner.log(TAG, "Stop");
 
         if (!isStopped())
             onEndRun();

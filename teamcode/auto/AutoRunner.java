@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
 import org.firstinspires.ftc.teamcode.auto.endConditions.VuforiaLook;
@@ -31,11 +33,13 @@ import static android.os.SystemClock.sleep;
  */
 public class AutoRunner {
 
+    private static final String TAG_PREFIX = "TeamCode@";
+    private static final String TAG = "AutoRunner";
     private static final long SLEEP_LOOP_TIME = 20;
 
     private String name;
-    private LinearOpMode opMode;
     private Configuration config;
+    private OpMode opMode;
     private Robot robot;
     private ActionFactory actionFactory;
     private EndConditionFactory conditionFactory;
@@ -55,7 +59,7 @@ public class AutoRunner {
 
     public void run() {
         for (Command command : config.commands) {
-            robot.logTelemetry(command.toString());
+            logAndTelemetry(name, command.name);
             execute(command);
         }
     }
@@ -66,7 +70,7 @@ public class AutoRunner {
 
             case "MOVE": {
                 Direction direction = command.getDirection("direction", Direction.FRONT);
-                int clicksToMove = command.getInt("clicksToMove", 0);
+                int clicksToMove = command.getInt("distance", 0);
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
 
                 Action relativeMove = actionFactory.relativeMove(clicksToMove, direction);
@@ -155,6 +159,11 @@ public class AutoRunner {
                 break;
             }
 
+            default: {
+                logAndTelemetry("Command not exist");
+                break;
+            }
+
         }
 
     }
@@ -172,7 +181,28 @@ public class AutoRunner {
         action.stop();
         endCondition.stop();
 
-        robot.logTelemetry("task completed");
+        log(TAG, "Run task completed");
     }
+
+
+
+    public static void log(String tag, Object message) {
+        RobotLog.dd(TAG_PREFIX + tag, message.toString());
+    }
+
+    public static void log(Object message) {
+        log("Somewhere", message);
+    }
+
+
+    public void logAndTelemetry(String tag, Object message) {
+        AutoRunner.log(tag, message);
+        opMode.telemetry.addData("TAG_PREFIX" + tag, message);
+        opMode.telemetry.update();
+    }
+    public void logAndTelemetry(Object message) {
+        logAndTelemetry("Somewhere", message);
+    }
+
 
 }

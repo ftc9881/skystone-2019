@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
 public class RelativeMove extends Action {
@@ -12,7 +13,7 @@ public class RelativeMove extends Action {
         BACK
     }
 
-    private static final double CLICKS_PER_INCH = 200.0;
+    private static final double CLICKS_PER_INCH = 50.0;
     private static final double CLICKS_ERROR_RANGE = 20.0;
 
     Robot robot;
@@ -58,6 +59,10 @@ public class RelativeMove extends Action {
 
     @Override
     protected boolean runIsComplete() {
+        AutoRunner.log("LF Current Position", robot.lf.getCurrentPosition());
+        AutoRunner.log("LF Target Clicks", targetClicks[0]);
+        AutoRunner.log("RF Current Position", robot.rf.getCurrentPosition());
+        AutoRunner.log("RF Target Clicks", targetClicks[1]);
         return Math.abs(robot.lf.getCurrentPosition() - targetClicks[0]) < CLICKS_ERROR_RANGE &&
             Math.abs(robot.rf.getCurrentPosition() - targetClicks[1]) < CLICKS_ERROR_RANGE &&
             Math.abs(robot.lb.getCurrentPosition() - targetClicks[2]) < CLICKS_ERROR_RANGE &&

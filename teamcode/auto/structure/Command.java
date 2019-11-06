@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
-
-import com.qualcomm.robotcore.util.RobotLog;
-
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Command {
 
+    private static final String TAG = "Command";
     public final String name;
     private JSONObject json;
 
@@ -22,7 +21,7 @@ public class Command {
         try {
             value = json.getString(key);
         } catch (JSONException ex) {
-            RobotLog.e("Missing JSON key: " + key);
+            AutoRunner.log(TAG, "Missing JSON key: " + key);
         }
         return value;
     }
@@ -32,7 +31,7 @@ public class Command {
         try {
             value = json.getDouble(key);
         } catch (JSONException ex) {
-            RobotLog.e("Missing JSON key: " + key);
+            AutoRunner.log(TAG, "Missing JSON key: " + key);
         }
         return value;
     }
@@ -42,7 +41,7 @@ public class Command {
         try {
             value = json.getInt(key);
         } catch (JSONException ex) {
-            RobotLog.e("Missing JSON key: " + key);
+            AutoRunner.log(TAG, "Missing JSON key: " + key);
         }
         return value;
     }
@@ -53,7 +52,7 @@ public class Command {
             String rawValue = json.getString(key).toLowerCase();
             value = rawValue.contains("true") || rawValue.contains("y") || rawValue.contains("1");
         } catch (JSONException ex) {
-            RobotLog.e("Missing JSON key: " + key);
+            AutoRunner.log(TAG, "Missing JSON key: " + key);
         }
         return value;
     }
@@ -81,7 +80,7 @@ public class Command {
                     break;
             }
         } catch (JSONException ex) {
-            RobotLog.e("Missing JSON key: " + key);
+            AutoRunner.log(TAG, "Missing JSON key: " + key);
         }
         return value;
     }
