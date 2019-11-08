@@ -1,36 +1,33 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.robot.Robot;
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
-import org.firstinspires.ftc.teamcode.auto.structure.IPoseChanger;
-import org.firstinspires.ftc.teamcode.utility.Odometry;
 import org.firstinspires.ftc.teamcode.utility.Pose;
 
 
-public class OdometryMove extends Action implements IPoseChanger {
+public class OdometryMove extends Action {
 
     private final double POSITION_THRESHOLD = 1;
     private final double ROTATION_THRESHOLD = 0.3;
 
     private Robot robot;
-    private Odometry odometry;
     private Pose targetPose;
     private Pose currentPose;
     private double powerFactor;
 
 
-    public OdometryMove (Robot robot, Odometry odometry, Pose currentPose, Pose targetPose, double power) {
+    public OdometryMove (Robot robot, Pose targetPose, double power) {
         this.robot = robot;
-        this.odometry = odometry;
-        this.currentPose = currentPose;
+        this.currentPose = robot.currentPose;
         this.targetPose = targetPose;
         this.powerFactor = power;
     }
 
     @Override
     protected void onRun() {
-        currentPose = odometry.getPose();
+        currentPose = robot.odometrySystem.getPose();
     }
 
     @Override
@@ -42,8 +39,8 @@ public class OdometryMove extends Action implements IPoseChanger {
 
     @Override
     public void insideRun() {
-        odometry.updatePose();
-        currentPose = odometry.getPose();
+        robot.odometrySystem.updatePose();
+        currentPose = robot.odometrySystem.getPose();
 
         Pose errorPose = targetPose.subtract(currentPose);
         Pose drivePose = new Pose(0, 0, 0);
@@ -60,17 +57,12 @@ public class OdometryMove extends Action implements IPoseChanger {
         drivePose.r = Range.clip(targetPose.r - currentPose.r, -1, 1);
 
         robot.drive(drivePose, powerFactor);
-        robot.logAndTelemetry(drivePose.toString());
+        AutoRunner.log(drivePose.toString());
     }
 
     @Override
     protected void onEndRun() {
         robot.stop();
-    }
-
-    @Override
-    public Pose getPose() {
-        return odometry.getPose();
     }
 
 }

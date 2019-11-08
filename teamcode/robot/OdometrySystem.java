@@ -1,11 +1,17 @@
-package org.firstinspires.ftc.teamcode.utility;
+package org.firstinspires.ftc.teamcode.robot;
 
-import org.firstinspires.ftc.teamcode.Robot;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.teamcode.utility.Pose;
 
 import Jama.Matrix;
 
-//experiments with a possible odometry set up
-public class Odometry {
+public class OdometrySystem implements IRobotSystem {
+
+    private DcMotor rightEncoder;
+    private DcMotor leftEncoder;
+    private DcMotor centerEncoder;
 
     private final double L_OFFSET_X = 3;
     private final double R_OFFSET_X = 3;
@@ -29,14 +35,16 @@ public class Odometry {
     //since using abs. position add code for start depending on red/blue
     private double x = 0.0, y = 0.0, r = 0.0;
 
-
-    private Robot robot;
     private Pose currPose;
 
-    public Odometry(Robot robot) {
-        this.robot = robot;
+
+    public OdometrySystem(HardwareMap hardwareMap) {
+//        rightEncoder = hardwareMap.dcMotor.get("right_odometry");
+//        leftEncoder = hardwareMap.dcMotor.get("left_odometry");
+//        centerEncoder = hardwareMap.dcMotor.get("center_odometry");
+
         this.currPose = new Pose(0, 0, 0);
-    }
+}
 
     public void updatePose() {
         prevLEncoder = currLEncoder;
@@ -44,9 +52,9 @@ public class Odometry {
         prevCEncoder = currCEncoder;
         prevIMU = currIMU;
 
-        currLEncoder = -robot.getOdometryLeftPosition();
-        currREncoder = -robot.getOdometryRightPosition();
-        currCEncoder = robot.getOdometryCenterPosition();
+        currLEncoder = getLeftPosition();
+        currREncoder = getRightPosition();
+        currCEncoder = getCenterPosition();
         //currIMU = robot.imu ... + DIR_OFFSET
 
         double angVelL = (1/TICKS_PER_RADIAN) * (currLEncoder - prevLEncoder);
@@ -54,13 +62,13 @@ public class Odometry {
         double angVelC = (1/TICKS_PER_RADIAN) * (currCEncoder - prevCEncoder);
 
         double[][] arrayA = {
-            {1, 0, -L_OFFSET_Y},
-            {1, 0, R_OFFSET_Y},
-            {0, 1, C_OFFSET_X}
+                {1, 0, -L_OFFSET_Y},
+                {1, 0, R_OFFSET_Y},
+                {0, 1, C_OFFSET_X}
         };
 
         double [][] arrayB = {
-            {angVelL}, {angVelR}, {angVelC}
+                {angVelL}, {angVelR}, {angVelC}
         };
 
         Matrix matrixA = new Matrix(arrayA);
@@ -79,7 +87,18 @@ public class Odometry {
         currPose = new Pose(x , y, r);
     }
 
+    public double getRightPosition() {
+        return rightEncoder.getCurrentPosition();
+    }
+    public double getLeftPosition() {
+        return leftEncoder.getCurrentPosition();
+    }
+    public double getCenterPosition() {
+        return centerEncoder.getCurrentPosition();
+    }
+
     public Pose getPose() {
         return currPose;
     }
+
 }

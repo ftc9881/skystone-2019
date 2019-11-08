@@ -14,7 +14,7 @@ public class Timeout implements IEndCondition {
     @Override
     public boolean isTrue() {
         AutoRunner.log("ElapsedTime", System.currentTimeMillis() - startTime);
-        return (System.currentTimeMillis() - startTime) > waitTime;
+        return (System.currentTimeMillis() - startTime) >= waitTime;
     }
 
     @Override

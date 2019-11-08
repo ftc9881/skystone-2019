@@ -1,25 +1,38 @@
 package org.firstinspires.ftc.teamcode.utility;
 
 public class PIDController {
+    private double currentTime, previousTime, deltaTime;
+    private double integral = 0;
+    private double currentError, previousError, deltaError, derivative;
+    private double kP, kI, kD, targetValue;
 
-    /*
-    double kP;
-    double kI;
-    double kD;
+    public PIDController (double kP, double kI, double kD, double targetValue) {
+        this.kP = kP;
+        this.kI = kI;
+        this.kD = kD;
+        this.targetValue = targetValue;
+        this.currentTime = getTimeSeconds();
+    }
 
-    double desiredValue;
-    private double previousError;
-    private double elapsedTime;
+    public double getCorrectedOutput(double processValue) {
+        previousTime = currentTime;
+        currentTime = getTimeSeconds();
 
-    public double loop(double actualValue) {
-        double error = desiredValue - actualValue;
-        double integral = integral + (error * iterationTime);
-        double derivative = (error - previousError) / iterationTime);
+        deltaTime = currentTime - previousTime;
+        currentError = processValue - targetValue;
+        deltaError = currentError - previousError;
+        derivative =  deltaError/deltaTime;
 
-        previousError = error;
+        integral += currentError * deltaTime;
 
-        double output = (kP * error) + (kI * integral) + (kD * derivative);
+        previousError = currentError;
+
+        double output = -(currentError * kP + integral * kI + derivative * kD);
         return output;
     }
-    */
+
+    private double getTimeSeconds() {
+        return System.currentTimeMillis() / 1000.0;
+    }
+
 }

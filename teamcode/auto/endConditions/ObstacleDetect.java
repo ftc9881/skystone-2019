@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.endConditions;
 
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 
 public class ObstacleDetect implements IEndCondition {

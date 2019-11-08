@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.samples;
+package org.firstinspires.ftc.teamcode.ftcsamples;
 
 import android.content.Context;
 
@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 
 @TeleOp(name="SKYSTONE Sounds", group="Concept")
-//@Disabled
+@Disabled
 public class ConceptSoundsSKYSTONE extends LinearOpMode {
 
     // List of available sound resources

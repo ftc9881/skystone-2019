@@ -20,17 +20,17 @@ public class DebugHardware extends TeleOpBase {
 
 
     private void setWheelPowerOnButton() {
-        robot.lf.setPower(gamepad1.y ? 0.5 : 0);
-        robot.rf.setPower(gamepad1.b ? 0.5 : 0);
-        robot.lb.setPower(gamepad1.x ? 0.5 : 0);
-        robot.rb.setPower(gamepad1.a ? 0.5 : 0);
+        robot.driveTrain.lf.setPower(gamepad1.y ? 0.5 : 0);
+        robot.driveTrain.rf.setPower(gamepad1.b ? 0.5 : 0);
+        robot.driveTrain.lb.setPower(gamepad1.x ? 0.5 : 0);
+        robot.driveTrain.rb.setPower(gamepad1.a ? 0.5 : 0);
     }
 
     private void updateTelemetry() {
-        telemetry.addData("LF Position", robot.lf.getCurrentPosition());
-        telemetry.addData("RF Position", robot.rf.getCurrentPosition());
-        telemetry.addData("LB Position", robot.lb.getCurrentPosition());
-        telemetry.addData("RB Position", robot.rb.getCurrentPosition());
+        telemetry.addData("LF Position", robot.driveTrain.lf.getCurrentPosition());
+        telemetry.addData("RF Position", robot.driveTrain.rf.getCurrentPosition());
+        telemetry.addData("LB Position", robot.driveTrain.lb.getCurrentPosition());
+        telemetry.addData("RB Position", robot.driveTrain.rb.getCurrentPosition());
 
         telemetry.addData("Bearing (right negative)", robot.imu.getAngularOrientation().firstAngle);
         telemetry.addData("Pitch", robot.imu.getAngularOrientation().secondAngle);

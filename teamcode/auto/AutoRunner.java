@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.EndConditionFactory;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.utility.Pose;
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.structure.ActionFactory;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.Configuration;
@@ -43,7 +43,6 @@ public class AutoRunner {
     private Robot robot;
     private ActionFactory actionFactory;
     private EndConditionFactory conditionFactory;
-    private Pose pose;
 
 
     public AutoRunner(String name, LinearOpMode opMode) {
@@ -70,11 +69,11 @@ public class AutoRunner {
 
             case "MOVE": {
                 Direction direction = command.getDirection("direction", Direction.FRONT);
-                int clicksToMove = command.getInt("distance", 0);
+                int distance = command.getInt("distance", 0);
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
 
-                Action relativeMove = actionFactory.relativeMove(clicksToMove, direction);
-                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                Action relativeMove = actionFactory.relativeMove(distance, direction);
+                IEndCondition timeoutCondition = conditionFactory.timeout(timeoutMs);
 
                 runTask(relativeMove, timeoutCondition);
                 break;
@@ -100,7 +99,7 @@ public class AutoRunner {
                 double obstacleDistance = command.getDouble("obstacle distance", 10);
 
                 Pose targetPose = new Pose(targetX, targetY, targetR);
-                OdometryMove odometryMove = actionFactory.odometryMove(pose, targetPose, powerFactor);
+                OdometryMove odometryMove = actionFactory.odometryMove(targetPose, powerFactor);
 
                 Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
                 ObstacleDetect obstacleCondition = conditionFactory.obstacleDetect(obstacleDistance);
@@ -110,7 +109,6 @@ public class AutoRunner {
                     .add(obstacleCondition);
 
                 runTask(odometryMove, conditions);
-                pose = odometryMove.getPose();
                 break;
             }
 
@@ -122,7 +120,8 @@ public class AutoRunner {
                 VuforiaLook vuforiaCondition = conditionFactory.vuforiaLook(Vuforia.TargetType.PERIMETER);
 
                 runTask(relativeMove, vuforiaCondition);
-                pose = vuforiaCondition.getPose();
+                //TODO: pose variable in Robot which can be set by Vuforia
+//                pose = vuforiaCondition.getPose();
                 break;
             }
 
@@ -139,23 +138,23 @@ public class AutoRunner {
 
             case "GRAB STONE": {
                 // move arm and pick up skystone
-                robot.grabStone();
+                robot.arm.grabStone();
                 break;
             }
 
             case "GRAB FOUNDATION": {
-                robot.grabFoundation();
+                robot.foundationGrabber.grab();
                 break;
             }
 
             case "RELEASE FOUNDATION": {
-                robot.releaseFoundation();
+                robot.foundationGrabber.release();
                 break;
             }
 
             case "PLACE STONE": {
                 // put stone on foundation
-                robot.placeStone();
+                robot.arm.placeStone();
                 break;
             }
 

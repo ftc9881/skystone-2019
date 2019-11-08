@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
 import org.firstinspires.ftc.teamcode.auto.endConditions.VuforiaLook;
 import org.firstinspires.ftc.teamcode.auto.endConditions.Timeout;
