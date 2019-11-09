@@ -120,8 +120,7 @@ public class AutoRunner {
                 VuforiaLook vuforiaCondition = conditionFactory.vuforiaLook(Vuforia.TargetType.PERIMETER);
 
                 runTask(relativeMove, vuforiaCondition);
-                //TODO: pose variable in Robot which can be set by Vuforia
-//                pose = vuforiaCondition.getPose();
+                robot.currentPose = vuforiaCondition.getPose();
                 break;
             }
 
@@ -137,8 +136,14 @@ public class AutoRunner {
             }
 
             case "GRAB STONE": {
-                // move arm and pick up skystone
-                robot.arm.grabStone();
+                // TODO: Implement
+//                robot.arm.grabStone();
+                break;
+            }
+
+            case "PLACE STONE": {
+                // TODO: Implement
+//                robot.arm.placeStone();
                 break;
             }
 
@@ -149,12 +154,6 @@ public class AutoRunner {
 
             case "RELEASE FOUNDATION": {
                 robot.foundationGrabber.release();
-                break;
-            }
-
-            case "PLACE STONE": {
-                // put stone on foundation
-                robot.arm.placeStone();
                 break;
             }
 

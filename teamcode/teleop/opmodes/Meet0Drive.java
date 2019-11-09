@@ -2,18 +2,23 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.teleop.utility.Button;
+
 @TeleOp(name = "Meet 0")
 public class Meet0Drive extends SimpleDrive {
+
+    private Button armToggleButton;
+    private boolean armIsOut;
 
     @Override
     protected void initialize() {
         super.initialize();
+
     }
 
     @Override
     protected void update() {
         super.update();
-
         robot.arm.swivelMotor.setPower(gamepad1.left_bumper ? 0.5 : 0);
         robot.arm.swivelMotor.setPower(gamepad1.right_bumper ? -0.5 : 0);
 
@@ -31,12 +36,15 @@ public class Meet0Drive extends SimpleDrive {
         telemetry.update();
     }
 
-    private void moveArmOut() {
+    private void updateArmToggle() {
+        armToggleButton.update(gamepad1.b);
+        if (armToggleButton.is(Button.State.DOWN)) {
+            if (armIsOut) {
+                robot.arm.moveOut();
+            } else {
+                robot.arm.moveIn();
+            }
 
+        }
     }
-
-    private void moveArmIn() {
-
-    }
-
 }

@@ -32,12 +32,13 @@ public class DebugHardware extends TeleOpBase {
         telemetry.addData("LB Position", robot.driveTrain.lb.getCurrentPosition());
         telemetry.addData("RB Position", robot.driveTrain.rb.getCurrentPosition());
 
-        telemetry.addData("Bearing (right negative)", robot.imu.getAngularOrientation().firstAngle);
-        telemetry.addData("Pitch", robot.imu.getAngularOrientation().secondAngle);
-        telemetry.addData("Roll", robot.imu.getAngularOrientation().thirdAngle);
-
-        telemetry.addData("Sonar", robot.sonarSensor.getDistance());
-        telemetry.addData("Sonar Connection", robot.sonarSensor.getConnectionInfo());
+        //TODO: Cleanup
+//        telemetry.addData("Bearing (right negative)", robot.imu.getAngularOrientation().firstAngle);
+//        telemetry.addData("Pitch", robot.imu.getAngularOrientation().secondAngle);
+//        telemetry.addData("Roll", robot.imu.getAngularOrientation().thirdAngle);
+//
+//        telemetry.addData("Sonar", robot.sonarSensor.getDistance());
+//        telemetry.addData("Sonar Connection", robot.sonarSensor.getConnectionInfo());
 
         telemetry.update();
     }

@@ -14,7 +14,9 @@ public class ObstacleDetect implements IEndCondition {
 
     @Override
     public boolean isTrue() {
-        return robot.sonarSensor.getDistance() < distance;
+        // TODO: put is something in front? function in SensorSystem
+//        return robot.sonarSensor.getDistance() < distance;
+        return false;
     }
 
     @Override

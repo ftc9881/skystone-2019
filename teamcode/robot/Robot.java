@@ -41,8 +41,7 @@ public class Robot {
 
     public Pose currentPose;
 
-    public BNO055IMU imu;
-    public MaxSonarI2CXL sonarSensor;
+    private BNO055IMU imu;
 
     // for locating files (needed for Vuforia)
     public Context fileContext;
@@ -55,13 +54,12 @@ public class Robot {
         driveTrain = robotFactory.driveTrain();
         arm = robotFactory.arm();
         intake = robotFactory.intakeSystem();
-//        foundationGrabber = robotFactory.foundationGrabber();
-//        sensorSystem = robotFactory.sensorSystem();
-//        odometrySystem = robotFactory.odometrySystem();
+        foundationGrabber = robotFactory.foundationGrabber();
+        sensorSystem = robotFactory.sensorSystem();
+        odometrySystem = robotFactory.odometrySystem();
 
         initializeImu();
     }
-
 
     private void initializeImu() {
         // IMU Parameters
@@ -100,6 +98,10 @@ public class Robot {
 
     public void stop() {
         drive(0, 0, 0);
+    }
+
+    public double getImuHeading() {
+        return imu.getAngularOrientation().firstAngle;
     }
 
 }

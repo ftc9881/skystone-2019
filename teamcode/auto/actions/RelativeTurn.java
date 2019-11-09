@@ -24,8 +24,8 @@ public class RelativeTurn extends Action {
 
     @Override
     protected void onRun() {
-        initialAngle = robot.imu.getAngularOrientation().firstAngle;
-        currentAngle = robot.imu.getAngularOrientation().firstAngle;
+        initialAngle = robot.getImuHeading();
+        currentAngle = robot.getImuHeading();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class RelativeTurn extends Action {
 
     @Override
     protected void insideRun() {
-        currentAngle = robot.imu.getAngularOrientation().firstAngle;
+        currentAngle = robot.getImuHeading();
         double error = (angleToTurn + initialAngle) - currentAngle;
         double errorCorrectedPower = (error * kP) + kP * (error > 0 ? 1 : -1);
         robot.drive(0, 0, errorCorrectedPower * power);
