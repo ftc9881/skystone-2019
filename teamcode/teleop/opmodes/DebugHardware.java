@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.teleop.TeleOpBase;
 
 @TeleOp(name = "Debug Hardware", group = "Debug")
+@Disabled
 public class DebugHardware extends TeleOpBase {
 
     @Override
@@ -15,6 +17,8 @@ public class DebugHardware extends TeleOpBase {
     @Override
     protected void update() {
         setWheelPowerOnButton();
+        updateArm();
+        updateIntake();
         updateTelemetry();
     }
 
@@ -26,19 +30,33 @@ public class DebugHardware extends TeleOpBase {
         robot.driveTrain.rb.setPower(gamepad1.a ? 0.5 : 0);
     }
 
+    private void updateArm() {
+        robot.arm.swivelMotor.setPower(gamepad1.left_bumper ? 0.5 : 0);
+        robot.arm.swivelMotor.setPower(gamepad1.right_bumper ? -0.5 : 0);
+
+        robot.arm.liftMotor.setPower(gamepad1.right_trigger);
+        robot.arm.liftMotor.setPower(-gamepad1.left_trigger);
+
+    }
+
+    private void updateIntake() {
+        robot.intake.left.setPower(gamepad1.dpad_up ? 1.0 : 0);
+        robot.intake.right.setPower(gamepad1.dpad_up ? 1.0 : 0);
+
+        robot.intake.left.setPower(gamepad1.dpad_down ? -1.0 : 0);
+        robot.intake.right.setPower(gamepad1.dpad_down ? -1.0 : 0);
+    }
+
     private void updateTelemetry() {
         telemetry.addData("LF Position", robot.driveTrain.lf.getCurrentPosition());
         telemetry.addData("RF Position", robot.driveTrain.rf.getCurrentPosition());
         telemetry.addData("LB Position", robot.driveTrain.lb.getCurrentPosition());
         telemetry.addData("RB Position", robot.driveTrain.rb.getCurrentPosition());
 
-        //TODO: Cleanup
-//        telemetry.addData("Bearing (right negative)", robot.imu.getAngularOrientation().firstAngle);
-//        telemetry.addData("Pitch", robot.imu.getAngularOrientation().secondAngle);
-//        telemetry.addData("Roll", robot.imu.getAngularOrientation().thirdAngle);
-//
-//        telemetry.addData("Sonar", robot.sonarSensor.getDistance());
-//        telemetry.addData("Sonar Connection", robot.sonarSensor.getConnectionInfo());
+        telemetry.addData("Swivel", robot.arm.swivelMotor.getCurrentPosition());
+        telemetry.addData("Lift", robot.arm.liftMotor.getCurrentPosition());
+
+        telemetry.addData("IMU Heading", robot.getImuHeading());
 
         telemetry.update();
     }

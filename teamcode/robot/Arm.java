@@ -26,12 +26,4 @@ public class Arm implements IRobotSystem {
         swivelMotor.setPower(0);
     }
 
-    public void moveIn() {
-
-    }
-
-    public void moveOut() {
-
-    }
-
 }

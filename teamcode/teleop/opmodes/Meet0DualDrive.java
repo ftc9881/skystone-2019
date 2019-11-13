@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
-@TeleOp(name = "Meet 0")
-public class Meet0Drive extends SimpleDrive {
+@TeleOp(name = "Meet 0 Dual Drive")
+public class Meet0DualDrive extends SimpleDrive {
 
     private static final int LIFT_UP_POSITION = 0;
     private static final int LIFT_DOWN_POSITION = 1000;
@@ -18,6 +18,9 @@ public class Meet0Drive extends SimpleDrive {
 
     private Button grabButton;
     private Button releaseButton;
+    private Button playerOneToggleButton;
+    private Button playerTwoToggleButton;
+    private boolean grabbed;
 
     @Override
     protected void initialize() {
@@ -25,6 +28,9 @@ public class Meet0Drive extends SimpleDrive {
 
         grabButton = new Button();
         releaseButton = new Button();
+        playerOneToggleButton = new Button();
+        playerTwoToggleButton = new Button();
+        grabbed = false;
     }
 
     @Override
@@ -35,31 +41,52 @@ public class Meet0Drive extends SimpleDrive {
         updateAutoArm();
         updateManualArm();
 
-        grabButton.update(gamepad1.x);
-        releaseButton.update(gamepad1.y);
+        playerOneToggleButton.update(gamepad1.a);
+        playerTwoToggleButton.update(gamepad2.a);
+        if (playerOneToggleButton.is(Button.State.DOWN) || playerTwoToggleButton.is(Button.State.DOWN)) {
+            grabbed = !grabbed;
 
-        if (grabButton.is(Button.State.DOWN)) {
-//            double currentPosition = robot.foundationGrabber.grabServo.getPosition();
-//            robot.foundationGrabber.grabServo.setPosition(currentPosition + 0.1);
-            robot.foundationGrabber.grabServo.setPosition(0);
+            if (grabbed) {
+                robot.foundationGrabber.grabServo.setPosition(0.7);
+            }
+            else {
+                robot.foundationGrabber.grabServo.setPosition(0);
+            }
         }
-        if (releaseButton.is(Button.State.DOWN)) {
-//            double currentPosition = robot.foundationGrabber.grabServo.getPosition();
-//            robot.foundationGrabber.grabServo.setPosition(currentPosition - 0.1);
-            robot.foundationGrabber.grabServo.setPosition(0.7);
-        }
-        telemetry.addData("Grab Servo", robot.foundationGrabber.grabServo.getPosition());
+
+
+//        grabButton.update(gamepad2.x);
+//        releaseButton.update(gamepad2.y);
+
+//        if (grabButton.is(Button.State.DOWN)) {
+////            double currentPosition = robot.foundationGrabber.grabServo.getPosition();
+////            robot.foundationGrabber.grabServo.setPosition(currentPosition + 0.1);
+//            robot.foundationGrabber.grabServo.setPosition(0);
+//        }
+//        if (releaseButton.is(Button.State.DOWN)) {
+////            double currentPosition = robot.foundationGrabber.grabServo.getPosition();
+////            robot.foundationGrabber.grabServo.setPosition(currentPosition - 0.1);
+//            robot.foundationGrabber.grabServo.setPosition(0.7);
+//        }
+
+        telemetry.addData("Toggle Servo State", robot.foundationGrabber.grabServo.getPosition());
         telemetry.update();
     }
 
     private void updateIntake() {
-        double intakePower = gamepad1.left_trigger - gamepad1.right_trigger * 0.4;
+
+        double playerOneIntakePower = gamepad1.left_trigger - gamepad1.right_trigger * 0.4;
+        double playerTwoIntakePower = gamepad2.left_trigger - gamepad2.right_trigger * 0.4;
+
+        double intakePower = playerOneIntakePower + playerTwoIntakePower;
+
         robot.intake.left.setPower(intakePower);
         robot.intake.right.setPower(intakePower);
     }
 
     private void updateManualArm() {
-        if (gamepad1.dpad_down || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_up) {
+        boolean playerTwoIsMoving = Math.abs(gamepad2.right_stick_y) > 0.1;
+        if (gamepad1.dpad_down || gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_up || playerTwoIsMoving) {
             armIsAutoMoving = false;
         }
 
@@ -71,8 +98,8 @@ public class Meet0Drive extends SimpleDrive {
 
     private void manualArmMove() {
 
-        double liftPower = (gamepad1.dpad_up ? 1.0 : 0) + (gamepad1.dpad_down? -1.0 : 0);
-        double swivelPower = (gamepad1.dpad_left ? -1.0 : 0) + (gamepad1.dpad_right ? 1.0 : 0);
+        double liftPower = (gamepad1.dpad_up ? 1.0 : 0) + (gamepad1.dpad_down? -1.0 : 0) + gamepad2.right_stick_y;
+        double swivelPower = (gamepad1.dpad_left ? -1.0 : 0) + (gamepad1.dpad_right ? 1.0 : 0) + gamepad2.right_stick_x;
         double swivelPosition = robot.arm.swivelMotor.getCurrentPosition();
 
         // Commented to disable limits for now
@@ -90,10 +117,10 @@ public class Meet0Drive extends SimpleDrive {
     }
 
     private void updateAutoArm() {
-        if (gamepad1.left_bumper) {
+        if (gamepad2.left_bumper || gamepad1.left_bumper) {
             autoArmMoveIn();
         }
-        if (gamepad1.right_bumper) {
+        if (gamepad2.right_bumper || gamepad1.right_bumper) {
             autoArmMoveOut();
         }
    }
