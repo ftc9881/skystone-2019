@@ -4,6 +4,8 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static android.os.SystemClock.sleep;
+
 public abstract class Action implements Runnable {
 
     private static final String TAG = "Action";
@@ -45,8 +47,16 @@ public abstract class Action implements Runnable {
 
         onEndRun();
         stopped.set(true);
+        // TODO: Try notifying.. Need to lock before notify
+//        notify();
         AutoRunner.log(TAG, "Completed");
     }
+
+//    public void wait() {
+//        while (!runIsComplete()) {
+//            sleep(SLEEP_INTERVAL);
+//        }
+//    }
 
 
     public void stop() {

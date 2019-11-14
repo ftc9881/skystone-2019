@@ -3,7 +3,26 @@ package org.firstinspires.ftc.teamcode.robot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.auto.structure.Action;
+
 public class Arm implements IRobotSystem {
+
+    public enum State {
+        OUT(7000),
+        IN(0);
+
+        private int swivelPosition;
+
+        State(int position) {
+            this.swivelPosition = position;
+        }
+
+        public int getSwivelPosition() {
+            return swivelPosition;
+        }
+    }
+
+    private static final double POWER = 1.0;
 
     public DcMotor liftMotor;
     public DcMotor swivelMotor;
@@ -24,6 +43,54 @@ public class Arm implements IRobotSystem {
 
         liftMotor.setPower(0);
         swivelMotor.setPower(0);
+    }
+
+    public void move(State state) {
+        swivelMotor.setTargetPosition(state.getSwivelPosition());
+        swivelMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        swivelMotor.setPower(POWER);
+
+        liftMotor.setPower(-POWER);
+    }
+
+    public boolean moveIsDone() {
+        return !swivelMotor.isBusy();
+    }
+
+    public void stop() {
+        liftMotor.setPower(0);
+        swivelMotor.setPower(0);
+    }
+
+
+    public class Move extends Action {
+
+        private Arm.State state;
+
+        public Move (Arm.State state) {
+            this.state = state;
+        }
+
+        @Override
+        protected void onRun() {
+            move(state);
+        }
+
+        @Override
+        protected boolean runIsComplete() {
+            return moveIsDone();
+        }
+
+        @Override
+        protected void insideRun() {
+
+        }
+
+        @Override
+        protected void onEndRun() {
+            stop();
+        }
+
     }
 
 }

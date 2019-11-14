@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.auto.vision;
 
+import android.content.Context;
+
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -40,7 +42,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.IPoseChanger;
-import org.firstinspires.ftc.teamcode.utility.Pose;
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
 import java.util.ArrayList;
@@ -117,9 +119,11 @@ public class Vuforia implements IPoseChanger {
     private Pose lastPose = null;
     private LookAction lookAction;
 
+    private Context fileContext;
 
-    public Vuforia(Robot robot) {
-        this.robot = robot;
+
+    public Vuforia(Context fileContext) {
+        this.fileContext = fileContext;
     }
 
 
@@ -158,8 +162,8 @@ public class Vuforia implements IPoseChanger {
 
 
     private void startEngine() {
-        parameters = new VuforiaLocalizer.Parameters(robot.fileContext.getResources().getIdentifier(
-                "cameraMonitorViewId", "id", robot.fileContext.getPackageName()));
+        parameters = new VuforiaLocalizer.Parameters(fileContext.getResources().getIdentifier(
+                "cameraMonitorViewId", "id", fileContext.getPackageName()));
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection = CAMERA_CHOICE;
 
@@ -329,10 +333,12 @@ public class Vuforia implements IPoseChanger {
 
         @Override
         protected void onEndRun() {
-            double x = lastLocation.getTranslation().get(0);
-            double y = lastLocation.getTranslation().get(1);
-            double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, RADIANS).thirdAngle;
-            lastPose = new Pose(x, y, r);
+            if (lastLocation != null) {
+                double x = lastLocation.getTranslation().get(0);
+                double y = lastLocation.getTranslation().get(1);
+                double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, RADIANS).thirdAngle;
+                lastPose = new Pose(x, y, r);
+            }
 
             // Disable Tracking when we are done;
             trackables.deactivate();

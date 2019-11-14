@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.EndConditionFactory;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
-import org.firstinspires.ftc.teamcode.utility.Pose;
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.structure.ActionFactory;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
@@ -55,10 +55,19 @@ public class AutoRunner {
         conditionFactory = new EndConditionFactory(robot);
     }
 
+    public void initialize() {
+//        config.properties.getBoolean("vuforia");
+    }
+
 
     public void run() {
         for (Command command : config.commands) {
             logAndTelemetry(name, command.name);
+
+            if (command.name == "STOP") {
+                break;
+            }
+
             execute(command);
         }
     }
@@ -68,11 +77,12 @@ public class AutoRunner {
         switch (command.name) {
 
             case "MOVE": {
-                Direction direction = command.getDirection("direction", Direction.FRONT);
-                int distance = command.getInt("distance", 0);
+                double distance = command.getDouble("distance", 5.0);
+                double angle = command.getDouble("angle", 0);
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
+                double powerFactor = command.getDouble("power", 0.5);
 
-                Action relativeMove = actionFactory.relativeMove(distance, direction);
+                Action relativeMove = actionFactory.relativeMove(distance, angle, powerFactor);
                 IEndCondition timeoutCondition = conditionFactory.timeout(timeoutMs);
 
                 runTask(relativeMove, timeoutCondition);
@@ -101,8 +111,8 @@ public class AutoRunner {
                 Pose targetPose = new Pose(targetX, targetY, targetR);
                 OdometryMove odometryMove = actionFactory.odometryMove(targetPose, powerFactor);
 
-                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
                 ObstacleDetect obstacleCondition = conditionFactory.obstacleDetect(obstacleDistance);
+                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions();
                 conditions
                     .add(timeoutCondition)
@@ -115,11 +125,19 @@ public class AutoRunner {
             case "VUFORIA ORIENT": {
                 // strafe while looking
                 double maxDistance = command.getDouble("distance", 30);
+                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
+                double angle = command.getDouble("angle", 0);
+                double powerFactor = command.getDouble("power", 0.5);
 
-                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, Direction.LEFT);
+                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, angle, powerFactor);
                 VuforiaLook vuforiaCondition = conditionFactory.vuforiaLook(Vuforia.TargetType.PERIMETER);
+                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                CombinedConditions conditions = new CombinedConditions();
+                conditions
+                    .add(timeoutCondition)
+                    .add(vuforiaCondition);
 
-                runTask(relativeMove, vuforiaCondition);
+                runTask(relativeMove, conditions);
                 robot.currentPose = vuforiaCondition.getPose();
                 break;
             }
@@ -127,17 +145,36 @@ public class AutoRunner {
             case "SEARCH SKYSTONE": {
                 // strafe while looking
                 double maxDistance = command.getDouble("distance", 30);
+                double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
+                double angle = command.getDouble("angle", 0);
+                double powerFactor = command.getDouble("power", 0.5);
 
-                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, Direction.LEFT);
+                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, angle, powerFactor);
                 VuforiaLook skystoneCondition = conditionFactory.vuforiaLook(Vuforia.TargetType.SKYSTONE);
+                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                CombinedConditions conditions = new CombinedConditions();
+                conditions
+                    .add(timeoutCondition)
+                    .add(skystoneCondition);
 
-                runTask(relativeMove, skystoneCondition);
+                runTask(relativeMove, conditions);
                 break;
             }
 
             case "GRAB STONE": {
-                // TODO: Implement
-//                robot.arm.grabStone();
+                robot.intake.in();
+
+                double maxDistance = command.getDouble("distance", 4);
+                double timeoutMs = command.getDouble("timeout", 1 * 1000.0);
+                double powerFactor = command.getDouble("power", 0.5);
+
+                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, 0, powerFactor);
+                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                // TODO: Add StoneInIntake condition once Michael gets his switch thingy
+
+                runTask(relativeMove, timeoutCondition);
+
+                robot.intake.stop();
                 break;
             }
 

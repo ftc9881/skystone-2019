@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
-import org.firstinspires.ftc.teamcode.utility.Pose;
+import org.firstinspires.ftc.teamcode.math.Pose;
 
 
 public class OdometryMove extends Action {

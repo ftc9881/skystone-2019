@@ -4,7 +4,7 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeTurn;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.OdometryMove;
-import org.firstinspires.ftc.teamcode.utility.Pose;
+import org.firstinspires.ftc.teamcode.math.Pose;
 
 public class ActionFactory {
     Robot robot;
@@ -17,8 +17,8 @@ public class ActionFactory {
         return new OdometryMove(robot, targetPose, powerFactor);
     }
 
-    public RelativeMove relativeMove(double inches, RelativeMove.Direction direction) {
-        return new RelativeMove(robot, inches, direction);
+    public RelativeMove relativeMove(double inches, double angle, double powerFactor) {
+        return new RelativeMove(robot, inches, angle, powerFactor);
     }
 
     public RelativeTurn relativeTurn(double angle, double power) {

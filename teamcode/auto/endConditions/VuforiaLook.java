@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.auto.endConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 import org.firstinspires.ftc.teamcode.auto.structure.IPoseChanger;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
-import org.firstinspires.ftc.teamcode.utility.Pose;
+import org.firstinspires.ftc.teamcode.math.Pose;
 
 public class VuforiaLook implements IEndCondition, IPoseChanger {
 

@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import android.content.Context;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.sensors.MaxSonarI2CXL;
-import org.firstinspires.ftc.teamcode.utility.Pose;
+import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
+import org.firstinspires.ftc.teamcode.math.Pose;
 
 /**
  * The Robot class has references to all the hardware devices.
@@ -32,6 +30,8 @@ public class Robot {
     private OpMode opMode;
     private RobotSystemFactory robotFactory;
 
+    public Vuforia vuforia;
+
     public DriveTrain driveTrain;
     public Arm arm;
     public Intake intake;
@@ -43,13 +43,9 @@ public class Robot {
 
     private BNO055IMU imu;
 
-    // for locating files (needed for Vuforia)
-    public Context fileContext;
-
-
     public Robot(OpMode opMode) {
         this.opMode = opMode;
-        fileContext = opMode.hardwareMap.appContext;
+        vuforia = new Vuforia(opMode.hardwareMap.appContext);
         robotFactory = new RobotSystemFactory(opMode.hardwareMap);
         driveTrain = robotFactory.driveTrain();
         arm = robotFactory.arm();

@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
 public class RelativeTurn extends Action {
 
-    private static final double DEGREES_ERROR_RANGE = 5;
+    private static final double ANGLE_ERROR_RANGE = 0.1;
     private static final double kP = 0.2;
 
     Robot robot;
@@ -32,7 +32,7 @@ public class RelativeTurn extends Action {
     protected boolean runIsComplete() {
         AutoRunner.log("Current Angle", currentAngle);
         AutoRunner.log("Angle to turn", angleToTurn);
-        return Math.abs(currentAngle - angleToTurn) < DEGREES_ERROR_RANGE;
+        return Math.abs(currentAngle - angleToTurn) < ANGLE_ERROR_RANGE;
     }
 
     @Override

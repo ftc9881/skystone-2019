@@ -2,55 +2,44 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.teleop.utility.Button;
+import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 
 @TeleOp(name = "Debug Drive", group = "Debug")
-@Disabled
 public class DebugDrive extends SimpleDrive {
-
-    private Button slowButton;
 
     @Override
     protected void initialize() {
         super.initialize();
-        slowButton = new Button();
     }
 
     @Override
     protected void update() {
-        //TODO: Configure odometry wheels
-//        robot.odometrySystem.updatePose();
-//        slowButton.update(gamepad1.a);
-//        drivePowerFactor = slowButton.is(Button.State.HELD) ? 0.5 : 1.0;
         driveUsingInput();
-        updateArm();
         updateIntake();
+        updateArm();
         updateTelemetry();
     }
 
-    private void updateArm() {
-        double swivelOutPower = gamepad1.dpad_left ? 0.5 : 0;
-        double swivelInPower = gamepad1.dpad_right ? 0.5 : 0;
-        robot.arm.swivelMotor.setPower(swivelOutPower - swivelInPower);
-
-        double liftPower = gamepad1.right_trigger;
-        double downPower = gamepad1.left_trigger;
-        robot.arm.liftMotor.setPower(liftPower - downPower);
-
+    private void updateIntake() {
+        double intakePower = gamepad1.left_trigger - gamepad1.right_trigger * 0.4;
+        robot.intake.left.setPower(intakePower);
+        robot.intake.right.setPower(intakePower);
     }
 
-    private void updateIntake() {
-        double intakePower = gamepad1.dpad_up ? 1.0 : 0;
-        double outtakePower = gamepad1.dpad_down ? 1.0 : 0;
+    private void updateArm() {
+        double liftPower = (gamepad1.dpad_up ? 1.0 : 0.2) + (gamepad1.dpad_down ? -1.0 : 0);
+        double swivelPower = (gamepad1.dpad_left ? -0.2 : 0) + (gamepad1.dpad_right ? 0.2 : 0);
 
-        robot.intake.left.setPower(intakePower - outtakePower);
-        robot.intake.right.setPower(intakePower - outtakePower);
+        robot.arm.swivelMotor.setPower(swivelPower);
+        robot.arm.swivelMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        robot.arm.liftMotor.setPower(-liftPower);
+        robot.arm.liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     private void updateTelemetry() {
-        telemetry.addData("Power", driveY);
-        telemetry.addData("Power Factor", drivePowerFactor);
 
         telemetry.addData("LF Position", robot.driveTrain.lf.getCurrentPosition());
         telemetry.addData("RF Position", robot.driveTrain.rf.getCurrentPosition());
@@ -70,4 +59,5 @@ public class DebugDrive extends SimpleDrive {
 
         telemetry.update();
     }
+
 }
