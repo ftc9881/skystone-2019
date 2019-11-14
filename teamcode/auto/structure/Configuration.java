@@ -16,13 +16,12 @@ import java.util.Iterator;
  * Instantiating Configuration will read a file and return a list of commands and properties.
  *
  * @author Trinity Chung
- * @version 0.0
  */
 public class Configuration {
 
     private final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
     public ArrayList<Command> commands;
-    public JSONObject properties;
+    public Command properties;
 
     public Configuration(String fileName) {
 
@@ -41,7 +40,7 @@ public class Configuration {
             }
 
             // create properties
-            properties = config.getJSONObject("properties");
+            properties = new Command("PROPERTIES", config.getJSONObject("properties"));
 
         } catch (Exception ex) {
             throw new RuntimeException("Configuration", ex);

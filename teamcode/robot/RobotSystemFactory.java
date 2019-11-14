@@ -10,12 +10,6 @@ public class RobotSystemFactory {
         this.hardwareMap = hardwareMap;
     }
 
-    // TODO: Make into generic method? create<T>
-//    public <T extends RobotSystem> T create() {
-////        robotSystem.initialize(hardwareMap);
-//        return T.create(hardwareMap);
-//    }
-
     public DriveTrain driveTrain() {
         return new DriveTrain(hardwareMap);
     }

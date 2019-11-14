@@ -40,8 +40,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
-import org.firstinspires.ftc.teamcode.auto.structure.IPoseChanger;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
@@ -56,9 +56,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 
-public class Vuforia implements IPoseChanger {
+public class Vuforia {
 
-    public enum TargetType {SKYSTONE, BRIDGE, PERIMETER}
+    public enum TargetType {SKYSTONE, BRIDGE, PERIMETER, NONE_JUST_RUN_FOREVER}
     public enum Target {
         SKYSTONE(0),
         BLUE_REAR_BRIDGE(1),
@@ -88,17 +88,12 @@ public class Vuforia implements IPoseChanger {
     private static final float mmPerInch        = 25.4f;
     private static final float mmTargetHeight   = (6) * mmPerInch; // the height of the center of the target image above the floor
 
-    // Constant for Stone Target
     private static final float stoneZ = 2.00f * mmPerInch;
-
-    // Constants for the center support targets
     private static final float bridgeZ = 6.42f * mmPerInch;
     private static final float bridgeY = 23 * mmPerInch;
     private static final float bridgeX = 5.18f * mmPerInch;
-    private static final float bridgeRotY = 59;                    // Units are degrees
+    private static final float bridgeRotY = 59;
     private static final float bridgeRotZ = 180;
-
-    // Constants for perimeter targets
     private static final float halfField = 72 * mmPerInch;
     private static final float quadField  = 36 * mmPerInch;
 
@@ -109,7 +104,6 @@ public class Vuforia implements IPoseChanger {
     private final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
     private final float CAMERA_LEFT_DISPLACEMENT = 0;     // eg: Camera is ON the robot's center line
 
-    // Vuforia Class Members
     private VuforiaLocalizer vuforiaLocalizer = null;
     private VuforiaLocalizer.Parameters parameters = null;
     private VuforiaTrackables trackables = null;
@@ -134,13 +128,13 @@ public class Vuforia implements IPoseChanger {
         applyPhoneOrientation();
         trackables.activate();
         initialized = true;
-        RobotLog.v("Vuforia initialization complete", true);
+        AutoRunner.log("Vuforia", "Initialization complete");
     }
 
     public void startLook(TargetType target) {
         lastPose = null;
         if (!initialized) {
-            RobotLog.w("Vuforia not initizlized; initializing now");
+            AutoRunner.log("Vuforia", "Not initialized; initializing now");
             initialize();
         }
         lookAction = new LookAction(target);
@@ -155,11 +149,9 @@ public class Vuforia implements IPoseChanger {
         return lastPose != null;
     }
 
-    @Override
     public Pose getPose() {
         return lastPose;
     }
-
 
     private void startEngine() {
         parameters = new VuforiaLocalizer.Parameters(fileContext.getResources().getIdentifier(
@@ -328,7 +320,7 @@ public class Vuforia implements IPoseChanger {
 
         @Override
         protected boolean runIsComplete() {
-            return targetVisible;
+            return targetVisible && targetType != TargetType.NONE_JUST_RUN_FOREVER;
         }
 
         @Override
@@ -339,8 +331,6 @@ public class Vuforia implements IPoseChanger {
                 double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, RADIANS).thirdAngle;
                 lastPose = new Pose(x, y, r);
             }
-
-            // Disable Tracking when we are done;
             trackables.deactivate();
         }
 
@@ -368,7 +358,7 @@ public class Vuforia implements IPoseChanger {
                     trackingTrackables.add(trackables.get(Target.REAR_PERIMETER_2.index));
                     break;
                 default:
-//                    throw IllegalArgumentException();
+                    trackingTrackables.addAll(trackables);
                     break;
             }
             return trackingTrackables;

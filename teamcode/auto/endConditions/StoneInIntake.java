@@ -4,19 +4,17 @@ import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.SensorSystem;
 
-public class ObstacleDetect implements IEndCondition {
+public class StoneInIntake implements IEndCondition {
 
     private SensorSystem sensorSystem;
-    private double distance;
 
-    public ObstacleDetect(double distance) {
+    public StoneInIntake() {
         this.sensorSystem = Robot.getInstance().sensorSystem;
-        this.distance = distance;
     }
 
     @Override
     public boolean isTrue() {
-        return sensorSystem.obstacleInFront();
+        return sensorSystem.stoneIsIn();
     }
 
     @Override

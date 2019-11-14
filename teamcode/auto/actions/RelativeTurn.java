@@ -1,50 +1,54 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
+import org.firstinspires.ftc.teamcode.math.Angle;
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
 public class RelativeTurn extends Action {
 
-    private static final double ANGLE_ERROR_RANGE = 0.1;
+    private static final double ERROR_RANGE_RADIANS = 0.1;
     private static final double kP = 0.2;
 
     Robot robot;
-    private double angleToTurn;
-    private double initialAngle;
-    private double currentAngle;
-    private double power;
+    private double radiansToTurn;
+    private double initialRadians;
+    private double currentRadians;
+    private double powerFactor;
 
 
-    public RelativeTurn(Robot robot, double angleToTurn, double power) {
-        this.robot = robot;
-        this.angleToTurn = angleToTurn;
-        this.power = power;
+    public RelativeTurn(Angle angleToTurn, double powerFactor) {
+        this.robot = Robot.getInstance();
+        this.radiansToTurn = angleToTurn.getRadians();
+        this.powerFactor = powerFactor;
     }
 
     @Override
     protected void onRun() {
-        initialAngle = robot.getImuHeading();
-        currentAngle = robot.getImuHeading();
+        initialRadians = robot.getImuHeading().getRadians();
+        currentRadians = robot.getImuHeading().getRadians();
     }
 
     @Override
     protected boolean runIsComplete() {
-        AutoRunner.log("Current Angle", currentAngle);
-        AutoRunner.log("Angle to turn", angleToTurn);
-        return Math.abs(currentAngle - angleToTurn) < ANGLE_ERROR_RANGE;
+        AutoRunner.log("Current Angle", currentRadians);
+        AutoRunner.log("Angle to turn", radiansToTurn);
+        double errorRadians = Math.abs(currentRadians - radiansToTurn);
+        return errorRadians < ERROR_RANGE_RADIANS;
     }
 
     @Override
     protected void insideRun() {
-        currentAngle = robot.getImuHeading();
-        double error = (angleToTurn + initialAngle) - currentAngle;
+        currentRadians = robot.getImuHeading().getRadians();
+        double error = (radiansToTurn + initialRadians) - currentRadians;
         double errorCorrectedPower = (error * kP) + kP * (error > 0 ? 1 : -1);
-        robot.drive(0, 0, errorCorrectedPower * power);
+        Pose drivePose = new Pose(0, 0, errorCorrectedPower);
+        robot.driveTrain.drive(drivePose, powerFactor);
     }
 
     @Override
     protected void onEndRun() {
-        robot.stop();
+        robot.driveTrain.stop();
     }
 }

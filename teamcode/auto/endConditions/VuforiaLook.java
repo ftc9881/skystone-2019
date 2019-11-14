@@ -1,17 +1,17 @@
 package org.firstinspires.ftc.teamcode.auto.endConditions;
 
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
-import org.firstinspires.ftc.teamcode.auto.structure.IPoseChanger;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Pose;
+import org.firstinspires.ftc.teamcode.robot.Robot;
 
-public class VuforiaLook implements IEndCondition, IPoseChanger {
+public class VuforiaLook implements IEndCondition {
 
     private Vuforia vuforia;
     private Vuforia.TargetType targetType;
 
-    public VuforiaLook(Vuforia vuforia, Vuforia.TargetType targetType) {
-        this.vuforia = vuforia;
+    public VuforiaLook(Vuforia.TargetType targetType) {
+        this.vuforia = Robot.getInstance().vuforia;
         this.targetType = targetType;
     }
 
@@ -30,7 +30,6 @@ public class VuforiaLook implements IEndCondition, IPoseChanger {
         vuforia.stopLook();
     }
 
-    @Override
     public Pose getPose() {
         return vuforia.getPose();
     }

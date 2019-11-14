@@ -2,8 +2,11 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.Range;
 
-public class DriveTrain implements IRobotSystem {
+import org.firstinspires.ftc.teamcode.math.Pose;
+
+public class DriveTrain {
 
     public DcMotor lf;
     public DcMotor rf;
@@ -11,7 +14,6 @@ public class DriveTrain implements IRobotSystem {
     public DcMotor rb;
 
     public DriveTrain(HardwareMap hardwareMap) {
-
         lf = hardwareMap.dcMotor.get("lf");
         rf = hardwareMap.dcMotor.get("rf");
         lb = hardwareMap.dcMotor.get("lb");
@@ -31,11 +33,6 @@ public class DriveTrain implements IRobotSystem {
         rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        lf.setPower(0);
-        rf.setPower(0);
-        lb.setPower(0);
-        rb.setPower(0);
     }
 
     public void resetEncoders() {
@@ -48,6 +45,26 @@ public class DriveTrain implements IRobotSystem {
         lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void drive(Pose pose) {
+        drive(pose, 1.0);
+    }
+    public void drive(Pose pose, double powerFactor) {
+        // Calculate power for mecanum drive
+        double lfp = Range.clip(pose.x - pose.r + pose.y, -1.0, 1.0);
+        double rfp = Range.clip(pose.x + pose.r - pose.y, -1.0, 1.0);
+        double lbp = Range.clip(pose.x - pose.r - pose.y, -1.0, 1.0);
+        double rbp = Range.clip(pose.x + pose.r + pose.y, -1.0, 1.0);
+
+        lf.setPower(lfp * powerFactor);
+        rf.setPower(rfp * powerFactor);
+        lb.setPower(lbp * powerFactor);
+        rb.setPower(rbp * powerFactor);
+    }
+
+    public void stop() {
+        drive(new Pose(0, 0, 0));
     }
 
 }

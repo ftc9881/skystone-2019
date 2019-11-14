@@ -13,7 +13,7 @@ public abstract class TeleOpBase extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        robot = new Robot(this);
+        robot = Robot.newInstance(this);
         initialize();
 
         waitForStart();

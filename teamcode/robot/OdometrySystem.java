@@ -7,11 +7,13 @@ import org.firstinspires.ftc.teamcode.math.Pose;
 
 import Jama.Matrix;
 
-public class OdometrySystem implements IRobotSystem {
+public class OdometrySystem {
 
     private DcMotor rightEncoder;
     private DcMotor leftEncoder;
     private DcMotor centerEncoder;
+
+    private final double ENCODER_NOT_FOUND_POSITION = 404;
 
     private final double L_OFFSET_X = 3;
     private final double R_OFFSET_X = 3;
@@ -39,6 +41,7 @@ public class OdometrySystem implements IRobotSystem {
 
 
     public OdometrySystem(HardwareMap hardwareMap) {
+        // TODO: Map odometry encoders
 //        rightEncoder = hardwareMap.dcMotor.get("right_odometry");
 //        leftEncoder = hardwareMap.dcMotor.get("left_odometry");
 //        centerEncoder = hardwareMap.dcMotor.get("center_odometry");
@@ -88,13 +91,13 @@ public class OdometrySystem implements IRobotSystem {
     }
 
     public double getRightPosition() {
-        return rightEncoder.getCurrentPosition();
+        return rightEncoder != null ? rightEncoder.getCurrentPosition() : ENCODER_NOT_FOUND_POSITION;
     }
     public double getLeftPosition() {
-        return leftEncoder.getCurrentPosition();
+        return leftEncoder != null ? leftEncoder.getCurrentPosition() : ENCODER_NOT_FOUND_POSITION;
     }
     public double getCenterPosition() {
-        return centerEncoder.getCurrentPosition();
+        return centerEncoder != null ? centerEncoder.getCurrentPosition() : ENCODER_NOT_FOUND_POSITION;
     }
 
     public Pose getPose() {

@@ -13,7 +13,7 @@ public class DebugVuforiaDrive extends SimpleDrive {
         super.initialize();
 
         robot.vuforia.initialize();
-        robot.vuforia.startLook(Vuforia.TargetType.SKYSTONE);
+        robot.vuforia.startLook(Vuforia.TargetType.NONE_JUST_RUN_FOREVER);
     }
 
     @Override
@@ -42,10 +42,10 @@ public class DebugVuforiaDrive extends SimpleDrive {
     }
 
     private void updateTelemetry() {
-        if (robot.vuforia.getPose() != null) {
+        if (robot.vuforia.found()) {
             telemetry.addData("Vuforia", robot.vuforia.getPose().toString());
         } else {
-            telemetry.addData("Vuforia", "Skystone not found yet");
+            telemetry.addData("Vuforia", "No targets visible");
         }
 
         telemetry.update();

@@ -18,8 +18,8 @@ public class OdometryMove extends Action {
     private double powerFactor;
 
 
-    public OdometryMove (Robot robot, Pose targetPose, double power) {
-        this.robot = robot;
+    public OdometryMove (Pose targetPose, double power) {
+        this.robot = Robot.getInstance();
         this.currentPose = robot.currentPose;
         this.targetPose = targetPose;
         this.powerFactor = power;
@@ -56,13 +56,13 @@ public class OdometryMove extends Action {
         drivePose.y = Range.clip(XYMagnitude * Math.sin(relAngleError), -1, 1);
         drivePose.r = Range.clip(targetPose.r - currentPose.r, -1, 1);
 
-        robot.drive(drivePose, powerFactor);
+        robot.driveTrain.drive(drivePose, powerFactor);
         AutoRunner.log(drivePose.toString());
     }
 
     @Override
     protected void onEndRun() {
-        robot.stop();
+        robot.driveTrain.stop();
     }
 
 }

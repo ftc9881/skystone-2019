@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
-public class Arm implements IRobotSystem {
+public class Arm {
 
     public enum State {
         OUT(7000),
@@ -28,7 +28,7 @@ public class Arm implements IRobotSystem {
     public DcMotor swivelMotor;
 
     public Arm(HardwareMap hardwareMap) {
-        
+
         liftMotor = hardwareMap.dcMotor.get("lift");
         swivelMotor = hardwareMap.dcMotor.get("swivel");
 
@@ -60,37 +60,6 @@ public class Arm implements IRobotSystem {
     public void stop() {
         liftMotor.setPower(0);
         swivelMotor.setPower(0);
-    }
-
-
-    public class Move extends Action {
-
-        private Arm.State state;
-
-        public Move (Arm.State state) {
-            this.state = state;
-        }
-
-        @Override
-        protected void onRun() {
-            move(state);
-        }
-
-        @Override
-        protected boolean runIsComplete() {
-            return moveIsDone();
-        }
-
-        @Override
-        protected void insideRun() {
-
-        }
-
-        @Override
-        protected void onEndRun() {
-            stop();
-        }
-
     }
 
 }

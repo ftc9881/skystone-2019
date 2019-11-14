@@ -4,22 +4,22 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.auto.actions.RelativeTurn;
 import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
 import org.firstinspires.ftc.teamcode.auto.endConditions.VuforiaLook;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
-import org.firstinspires.ftc.teamcode.auto.structure.EndConditionFactory;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
+import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
-import org.firstinspires.ftc.teamcode.auto.structure.ActionFactory;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.Configuration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.OdometryMove;
 import org.firstinspires.ftc.teamcode.auto.endConditions.Timeout;
-import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove.Direction;
 
 import static android.os.SystemClock.sleep;
 
@@ -27,9 +27,6 @@ import static android.os.SystemClock.sleep;
  * AutoRunner is the root for all autonomous OpModes.
  * This will read a set of commands from a text configuration file
  * and execute them in order.
- *
- * @author Trinity Chung
- * @version 1.0
  */
 public class AutoRunner {
 
@@ -41,22 +38,27 @@ public class AutoRunner {
     private Configuration config;
     private OpMode opMode;
     private Robot robot;
-    private ActionFactory actionFactory;
-    private EndConditionFactory conditionFactory;
 
+    private AngleUnit angleUnit;
 
     public AutoRunner(String name, LinearOpMode opMode) {
         this.name = name;
         this.opMode = opMode;
 
-        robot = new Robot(opMode);
-        config = new Configuration(name + ".json");
-        actionFactory = new ActionFactory(robot);
-        conditionFactory = new EndConditionFactory(robot);
-    }
+        angleUnit = config.properties.getAngleUnit("angle unit", AngleUnit.DEGREES);
 
-    public void initialize() {
-//        config.properties.getBoolean("vuforia");
+        robot = Robot.newInstance(opMode);
+        robot.initializeImu(angleUnit);
+        config = new Configuration(name + ".json");
+
+//        double kP = config.properties.getDouble("kp", 0.0);
+//        double kI = config.properties.getDouble("ki", 0.0);
+//        double kD = config.properties.getDouble("kd", 0.0);
+
+        boolean initializeVuforia = config.properties.getBoolean("vuforia", false);
+        if (initializeVuforia) {
+            robot.vuforia.initialize();
+        }
     }
 
 
@@ -77,24 +79,24 @@ public class AutoRunner {
         switch (command.name) {
 
             case "MOVE": {
+                Angle angle = command.getAngle("angle", 0, angleUnit);
                 double distance = command.getDouble("distance", 5.0);
-                double angle = command.getDouble("angle", 0);
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
                 double powerFactor = command.getDouble("power", 0.5);
 
-                Action relativeMove = actionFactory.relativeMove(distance, angle, powerFactor);
-                IEndCondition timeoutCondition = conditionFactory.timeout(timeoutMs);
+                Action relativeMove = new RelativeMove(distance, angle, powerFactor);
+                IEndCondition timeoutCondition = new Timeout(timeoutMs);
 
                 runTask(relativeMove, timeoutCondition);
                 break;
             }
 
             case "TURN": {
-                double angle = command.getDouble("angle", 0.0);
+                Angle angle = command.getAngle("angle", 0, angleUnit);
                 double power = command.getDouble("power", 1.0);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
-                Action relativeTurn = actionFactory.relativeTurn(angle, power);
-                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                Action relativeTurn = new RelativeTurn(angle, power);
+                IEndCondition timeoutCondition = new Timeout(timeoutMs);
 
                 runTask(relativeTurn, timeoutCondition);
                 break;
@@ -109,10 +111,10 @@ public class AutoRunner {
                 double obstacleDistance = command.getDouble("obstacle distance", 10);
 
                 Pose targetPose = new Pose(targetX, targetY, targetR);
-                OdometryMove odometryMove = actionFactory.odometryMove(targetPose, powerFactor);
+                OdometryMove odometryMove = new OdometryMove(targetPose, powerFactor);
 
-                ObstacleDetect obstacleCondition = conditionFactory.obstacleDetect(obstacleDistance);
-                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                ObstacleDetect obstacleCondition = new ObstacleDetect(obstacleDistance);
+                Timeout timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions();
                 conditions
                     .add(timeoutCondition)
@@ -123,15 +125,14 @@ public class AutoRunner {
             }
 
             case "VUFORIA ORIENT": {
-                // strafe while looking
+                Angle angle = command.getAngle("angle", 0, angleUnit);
                 double maxDistance = command.getDouble("distance", 30);
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
-                double angle = command.getDouble("angle", 0);
                 double powerFactor = command.getDouble("power", 0.5);
 
-                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, angle, powerFactor);
-                VuforiaLook vuforiaCondition = conditionFactory.vuforiaLook(Vuforia.TargetType.PERIMETER);
-                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                RelativeMove relativeMove = new RelativeMove(maxDistance, angle, powerFactor);
+                VuforiaLook vuforiaCondition = new VuforiaLook(Vuforia.TargetType.PERIMETER);
+                Timeout timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions();
                 conditions
                     .add(timeoutCondition)
@@ -144,14 +145,14 @@ public class AutoRunner {
 
             case "SEARCH SKYSTONE": {
                 // strafe while looking
+                Angle angle = command.getAngle("angle", 0, angleUnit);
                 double maxDistance = command.getDouble("distance", 30);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
-                double angle = command.getDouble("angle", 0);
                 double powerFactor = command.getDouble("power", 0.5);
 
-                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, angle, powerFactor);
-                VuforiaLook skystoneCondition = conditionFactory.vuforiaLook(Vuforia.TargetType.SKYSTONE);
-                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                RelativeMove relativeMove = new RelativeMove(maxDistance, angle, powerFactor);
+                VuforiaLook skystoneCondition = new VuforiaLook(Vuforia.TargetType.SKYSTONE);
+                Timeout timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions();
                 conditions
                     .add(timeoutCondition)
@@ -164,12 +165,13 @@ public class AutoRunner {
             case "GRAB STONE": {
                 robot.intake.in();
 
+                Angle angle = new Angle(0, angleUnit);
                 double maxDistance = command.getDouble("distance", 4);
                 double timeoutMs = command.getDouble("timeout", 1 * 1000.0);
                 double powerFactor = command.getDouble("power", 0.5);
 
-                RelativeMove relativeMove = actionFactory.relativeMove(maxDistance, 0, powerFactor);
-                Timeout timeoutCondition = conditionFactory.timeout(timeoutMs);
+                RelativeMove relativeMove = new RelativeMove(maxDistance, angle, powerFactor);
+                Timeout timeoutCondition = new Timeout(timeoutMs);
                 // TODO: Add StoneInIntake condition once Michael gets his switch thingy
 
                 runTask(relativeMove, timeoutCondition);
@@ -179,8 +181,12 @@ public class AutoRunner {
             }
 
             case "PLACE STONE": {
-                // TODO: Implement
-//                robot.arm.placeStone();
+                // TODO: Implement stone placing
+                robot.intake.out();
+                while (robot.sensorSystem.stoneIsIn()) {
+                    sleep(20);
+                }
+                robot.intake.stop();
                 break;
             }
 
@@ -198,10 +204,9 @@ public class AutoRunner {
                 logAndTelemetry("Command not exist");
                 break;
             }
-
         }
-
     }
+
 
     private void runTask(Action action, IEndCondition endCondition) {
         action.start();
@@ -232,7 +237,7 @@ public class AutoRunner {
 
     public void logAndTelemetry(String tag, Object message) {
         AutoRunner.log(tag, message);
-        opMode.telemetry.addData("TAG_PREFIX" + tag, message);
+        opMode.telemetry.addData(TAG_PREFIX + tag, message);
         opMode.telemetry.update();
     }
     public void logAndTelemetry(Object message) {

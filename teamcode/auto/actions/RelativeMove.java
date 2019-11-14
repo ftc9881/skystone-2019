@@ -2,17 +2,12 @@ package org.firstinspires.ftc.teamcode.auto.actions;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
+import org.firstinspires.ftc.teamcode.math.Angle;
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 
 public class RelativeMove extends Action {
-
-    public enum Direction {
-        FRONT,
-        LEFT,
-        RIGHT,
-        BACK
-    }
 
     private static final double CLICKS_PER_INCH = 50.0;
     private static final double CLICKS_ERROR_RANGE = 100.0;
@@ -22,14 +17,14 @@ public class RelativeMove extends Action {
     Robot robot;
     private double targetClicks;
     private double distance;
-    private double angleInRadians;
+    private Angle angle;
     private double powerFactor;
 
 
-    public RelativeMove (Robot robot, double distance, double angleInRadians, double powerFactor) {
-        this.robot = robot;
+    public RelativeMove (double distance, Angle angle, double powerFactor) {
+        this.robot = Robot.getInstance();
         this.distance = distance;
-        this.angleInRadians = angleInRadians;
+        this.angle = angle;
         this.powerFactor = powerFactor;
     }
 
@@ -42,7 +37,7 @@ public class RelativeMove extends Action {
 
         AutoRunner.log("Target Position", targetClicks);
 
-        this.pidController = new PIDController(0.1, 0, 0, robot.getImuHeading());
+        this.pidController = new PIDController(0.1, 0, 0, robot.getImuHeading().getRadians());
     }
 
 
@@ -55,19 +50,17 @@ public class RelativeMove extends Action {
 
     @Override
     protected void insideRun() {
-        double actualValue = robot.getImuHeading();
+        double actualValue = robot.getImuHeading().getRadians();
         double pidRotationOutput = pidController.getCorrectedOutput(actualValue);
-        double forwardsOutput = Math.cos(angleInRadians);
-        double rightLeftOutput = Math.sin(angleInRadians);
-
-        // Try without pid
-        robot.drive(forwardsOutput, rightLeftOutput, pidRotationOutput, powerFactor);
-
+        double forwardsOutput = Math.cos(angle.getRadians());
+        double rightLeftOutput = Math.sin(angle.getRadians());
+        Pose drivePose = new Pose(forwardsOutput, rightLeftOutput, pidRotationOutput);
+        robot.driveTrain.drive(drivePose, powerFactor);
     }
 
     @Override
     protected void onEndRun() {
-        robot.stop();
+        robot.driveTrain.stop();
     }
 
 }

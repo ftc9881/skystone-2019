@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
-import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 
 @TeleOp(name = "Debug Drive", group = "Debug")
 public class DebugDrive extends SimpleDrive {
@@ -51,11 +48,10 @@ public class DebugDrive extends SimpleDrive {
 
         telemetry.addData("IMU Heading", robot.getImuHeading());
 
-        //TODO: Encoders are not currently connected or configured
-//        telemetry.addData("Right Encoder", robot.odometrySystem.getRightPosition());
-//        telemetry.addData("Left Encoder", robot.odometrySystem.getLeftPosition());
-//        telemetry.addData("Center Encoder", robot.odometrySystem.getCenterPosition());
-//        telemetry.addData("Odometry Pose", robot.odometrySystem.getPose().toString());
+        telemetry.addData("Right Encoder", robot.odometrySystem.getRightPosition());
+        telemetry.addData("Left Encoder", robot.odometrySystem.getLeftPosition());
+        telemetry.addData("Center Encoder", robot.odometrySystem.getCenterPosition());
+        telemetry.addData("Odometry Pose", robot.odometrySystem.getPose().toString());
 
         telemetry.update();
     }

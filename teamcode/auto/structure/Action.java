@@ -31,7 +31,7 @@ public abstract class Action implements Runnable {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         onRun();
 
         while (isRunning() && !runIsComplete()) {
@@ -47,8 +47,8 @@ public abstract class Action implements Runnable {
 
         onEndRun();
         stopped.set(true);
-        // TODO: Try notifying.. Need to lock before notify
-//        notify();
+        notify();
+
         AutoRunner.log(TAG, "Completed");
     }
 

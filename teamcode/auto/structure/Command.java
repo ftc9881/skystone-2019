@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
+import org.firstinspires.ftc.teamcode.math.Angle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,32 +59,25 @@ public class Command {
         return value;
     }
 
-    public RelativeMove.Direction getDirection(String key, RelativeMove.Direction defaultValue) {
-        RelativeMove.Direction value = defaultValue;
+    public AngleUnit getAngleUnit(String key, AngleUnit defaultValue) {
+        AngleUnit value = defaultValue;
         try {
             String rawValue = json.getString(key).toLowerCase();
-            switch (rawValue) {
-                case "front":
-                case"f":
-                    value = RelativeMove.Direction.FRONT;
-                    break;
-                case "left":
-                case"l":
-                    value = RelativeMove.Direction.LEFT;
-                    break;
-                case "right":
-                case"r":
-                    value = RelativeMove.Direction.RIGHT;
-                    break;
-                case "back":
-                case"b":
-                    value = RelativeMove.Direction.BACK;
-                    break;
+            if (rawValue.contains("rad")) {
+                value = AngleUnit.RADIANS;
+            } else if (rawValue.contains("deg")) {
+                value = AngleUnit.DEGREES;
             }
         } catch (JSONException ex) {
             AutoRunner.log(TAG, "Missing JSON key: " + key);
         }
         return value;
     }
+
+    public Angle getAngle(String key, double defaultValue, AngleUnit unit) {
+        double value = getDouble(key, defaultValue);
+        return new Angle(value, unit);
+    }
+
 
 }
