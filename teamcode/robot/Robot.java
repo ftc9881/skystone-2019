@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.math.Pose;
 
 public class Robot {
 
+    // Singleton pattern; constructor is private and enable only one instance at a time
     private static Robot instance;
 
     public static Robot newInstance(OpMode opMode) {
@@ -24,6 +26,8 @@ public class Robot {
 
     private AngleUnit angleUnit = AngleUnit.RADIANS;
     private OpMode opMode;
+
+    public HardwareMap hardwareMap;
 
     public Vuforia vuforia;
 
@@ -40,7 +44,8 @@ public class Robot {
 
     private Robot(OpMode opMode) {
         this.opMode = opMode;
-        vuforia = new Vuforia(opMode.hardwareMap.appContext);
+        hardwareMap = opMode.hardwareMap;
+        vuforia = new Vuforia(hardwareMap.appContext);
 
         RobotSystemFactory robotFactory = new RobotSystemFactory(opMode.hardwareMap);
         driveTrain = robotFactory.driveTrain();
