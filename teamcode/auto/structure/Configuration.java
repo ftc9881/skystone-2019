@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.auto.structure;
 
 import android.os.Environment;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -30,13 +32,10 @@ public class Configuration {
             JSONObject config = new JSONObject(fileContents);
             commands = new ArrayList();
 
-            JSONObject allCommandsJson = config.getJSONObject("commands");
-            Iterator<String> allCommandsKeys = config.getJSONObject("commands").keys();
+            JSONArray allCommandsJson = config.getJSONArray("commands");
 
-            while (allCommandsKeys.hasNext()) {
-                String name = allCommandsKeys.next();
-                JSONObject commandJson = allCommandsJson.getJSONObject(name);
-                commands.add(new Command(name, commandJson));
+            for (int i = 0; i < allCommandsJson.length(); i++) {
+                commands.add(new Command(allCommandsJson.getJSONObject(i)));
             }
 
             // create properties

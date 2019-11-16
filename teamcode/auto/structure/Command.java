@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.auto.structure;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
-import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,11 +9,20 @@ import org.json.JSONObject;
 public class Command {
 
     private static final String TAG = "Command";
-    public final String name;
+    public String name;
     private JSONObject json;
 
     public Command(String name, JSONObject json) {
         this.name = name;
+        this.json = json;
+    }
+
+    public Command(JSONObject json) {
+        try {
+            this.name = json.getString("command");
+        } catch (JSONException ex) {
+            this.name = "???";
+        }
         this.json = json;
     }
 
