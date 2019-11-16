@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.auto.structure.Action;
 public class RelativeTurn extends Action {
 
     private static final double ERROR_RANGE_RADIANS = 0.1;
-    private static final double kP = 0.2;
+    private static final double kP = 0.1;
 
     Robot robot;
     private double radiansToTurn;
@@ -28,12 +28,12 @@ public class RelativeTurn extends Action {
     protected void onRun() {
         initialRadians = robot.getImuHeading().getRadians();
         currentRadians = robot.getImuHeading().getRadians();
+        AutoRunner.log("AngleToTurn", radiansToTurn);
+        AutoRunner.log("CurrentAngle", currentRadians);
     }
 
     @Override
     protected boolean runIsComplete() {
-        AutoRunner.log("Current Angle", currentRadians);
-        AutoRunner.log("Angle to turn", radiansToTurn);
         double errorRadians = Math.abs(currentRadians - radiansToTurn);
         return errorRadians < ERROR_RANGE_RADIANS;
     }
@@ -41,10 +41,12 @@ public class RelativeTurn extends Action {
     @Override
     protected void insideRun() {
         currentRadians = robot.getImuHeading().getRadians();
-        double error = (radiansToTurn + initialRadians) - currentRadians;
+        double error = currentRadians - (radiansToTurn + initialRadians);
         double errorCorrectedPower = (error * kP) + kP * (error > 0 ? 1 : -1);
         Pose drivePose = new Pose(0, 0, errorCorrectedPower);
         robot.driveTrain.drive(drivePose, powerFactor);
+        AutoRunner.log("TurnError", error);
+        AutoRunner.log("TurnPower", errorCorrectedPower);
     }
 
     @Override

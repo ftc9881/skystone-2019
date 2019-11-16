@@ -34,43 +34,43 @@ public class AutoRunner {
     private static final String TAG = "AutoRunner";
     private static final long SLEEP_LOOP_TIME = 20;
 
-    private String name;
     private Configuration config;
     private OpMode opMode;
     private Robot robot;
 
     private AngleUnit angleUnit;
+    private boolean isStopped = false;
 
     public AutoRunner(String name, LinearOpMode opMode) {
-        this.name = name;
         this.opMode = opMode;
 
-        angleUnit = config.properties.getAngleUnit("angle unit", AngleUnit.DEGREES);
+        config = new Configuration(name + ".json");
 
+        angleUnit = config.properties.getAngleUnit("angle unit", AngleUnit.DEGREES);
         robot = Robot.newInstance(opMode);
         robot.initializeImu(angleUnit);
-        config = new Configuration(name + ".json");
+
+        boolean initializeVuforia = config.properties.getBoolean("init vuforia", false);
+        if (initializeVuforia) {
+            robot.vuforia.initialize();
+        }
 
 //        double kP = config.properties.getDouble("kp", 0.0);
 //        double kI = config.properties.getDouble("ki", 0.0);
 //        double kD = config.properties.getDouble("kd", 0.0);
 
-        boolean initializeVuforia = config.properties.getBoolean("vuforia", false);
-        if (initializeVuforia) {
-            robot.vuforia.initialize();
-        }
+        logAndTelemetry(TAG, "Ready to run");
     }
 
 
     public void run() {
         for (Command command : config.commands) {
-            logAndTelemetry(name, command.name);
-
-            if (command.name == "STOP") {
-                break;
-            }
-
+            logAndTelemetry(TAG, "Command: " + command.name);
             execute(command);
+            if (isStopped) {
+                logAndTelemetry(TAG, "Early stop");
+                return;
+            }
         }
     }
 
@@ -197,6 +197,17 @@ public class AutoRunner {
 
             case "RELEASE FOUNDATION": {
                 robot.foundationGrabber.release();
+                break;
+            }
+
+            case "SLEEP": {
+                long timeMs = (long) command.getDouble("time", 1000);
+//                sleep(timeMs);
+                break;
+            }
+
+            case "STOP": {
+                isStopped = true;
                 break;
             }
 

@@ -26,14 +26,10 @@ public class DebugDrive extends SimpleDrive {
     }
 
     private void updateArm() {
-        double liftPower = (gamepad1.dpad_up ? 1.0 : 0.2) + (gamepad1.dpad_down ? -1.0 : 0);
-        double swivelPower = (gamepad1.dpad_left ? -0.2 : 0) + (gamepad1.dpad_right ? 0.2 : 0);
-
-        robot.arm.swivelMotor.setPower(swivelPower);
-        robot.arm.swivelMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        double liftPower = (gamepad1.dpad_up ? 1.0 : 0) + (gamepad1.dpad_down ? -1.0 : 0);
         robot.arm.liftMotor.setPower(-liftPower);
-        robot.arm.liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        double swivelPower = (gamepad1.dpad_left ? -0.5 : 0) + (gamepad1.dpad_right ? 0.5 : 0);
+        robot.arm.swivelMotor.setPower(swivelPower);
     }
 
     private void updateTelemetry() {
@@ -46,7 +42,7 @@ public class DebugDrive extends SimpleDrive {
         telemetry.addData("Swivel", robot.arm.swivelMotor.getCurrentPosition());
         telemetry.addData("Lift", robot.arm.liftMotor.getCurrentPosition());
 
-        telemetry.addData("IMU Heading", robot.getImuHeading());
+        telemetry.addData("IMU Heading", robot.getImuHeading().getDegrees());
 
         telemetry.addData("Right Encoder", robot.odometrySystem.getRightPosition());
         telemetry.addData("Left Encoder", robot.odometrySystem.getLeftPosition());

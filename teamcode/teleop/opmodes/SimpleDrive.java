@@ -16,6 +16,7 @@ public class SimpleDrive extends TeleOpBase {
 
     @Override
     protected void initialize() {
+        drivePose = new Pose(0, 0, 0);
         drivePowerFactor = 1.0;
     }
 
@@ -26,9 +27,10 @@ public class SimpleDrive extends TeleOpBase {
 
     protected void driveUsingInput() {
         // x and y are reversed because y is forwards
-        drivePose.x = Math.pow(gamepad1.left_stick_x, 3);
-        drivePose.y = -Math.pow(gamepad1.left_stick_y, 3);
-        drivePose.r = -Math.pow(gamepad1.right_stick_x, 3);
+        // up on the gamepad stick is negative
+        drivePose.x = -Math.pow(gamepad1.left_stick_y, 3);
+        drivePose.y = Math.pow(gamepad1.left_stick_x, 3);
+        drivePose.r = Math.pow(gamepad1.right_stick_x, 3);
         robot.driveTrain.drive(drivePose, drivePowerFactor);
     }
 

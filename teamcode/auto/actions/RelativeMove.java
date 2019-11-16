@@ -19,6 +19,7 @@ public class RelativeMove extends Action {
     private double distance;
     private Angle angle;
     private double powerFactor;
+    private Pose drivePose;
 
 
     public RelativeMove (double distance, Angle angle, double powerFactor) {
@@ -34,8 +35,13 @@ public class RelativeMove extends Action {
         robot.driveTrain.resetEncoders();
         // TODO: Right now this is an arbitrary distance
         targetClicks = distance * CLICKS_PER_INCH;
+        AutoRunner.log("TargetClicks", targetClicks);
 
-        AutoRunner.log("Target Position", targetClicks);
+        drivePose = new Pose(0, 0, 0);
+        drivePose.x = -Math.cos(angle.getRadians());
+        drivePose.y = Math.sin(angle.getRadians());
+        AutoRunner.log("DrivePowerX", drivePose.x);
+        AutoRunner.log("DrivePowerY", drivePose.y);
 
         this.pidController = new PIDController(0.1, 0, 0, robot.getImuHeading().getRadians());
     }
@@ -44,17 +50,15 @@ public class RelativeMove extends Action {
     @Override
     protected boolean runIsComplete() {
         // Try checking only one wheel
-        return Math.abs(robot.driveTrain.lf.getCurrentPosition() - targetClicks) < CLICKS_ERROR_RANGE;
+        double actualClicks = Math.abs(robot.driveTrain.lf.getCurrentPosition());
+        return Math.abs(actualClicks - targetClicks) < CLICKS_ERROR_RANGE;
 
     }
 
     @Override
     protected void insideRun() {
         double actualValue = robot.getImuHeading().getRadians();
-        double pidRotationOutput = pidController.getCorrectedOutput(actualValue);
-        double forwardsOutput = Math.cos(angle.getRadians());
-        double rightLeftOutput = Math.sin(angle.getRadians());
-        Pose drivePose = new Pose(forwardsOutput, rightLeftOutput, pidRotationOutput);
+        drivePose.r = pidController.getCorrectedOutput(actualValue);
         robot.driveTrain.drive(drivePose, powerFactor);
     }
 

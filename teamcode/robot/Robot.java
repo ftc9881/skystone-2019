@@ -69,6 +69,9 @@ public class Robot {
     }
 
     public Angle getImuHeading() {
+        if (imu == null) {
+            initializeImu(angleUnit);
+        }
         return new Angle(imu.getAngularOrientation().firstAngle, angleUnit);
     }
 
