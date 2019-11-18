@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name = "Debug Drive", group = "Debug")
-public class DebugDrive extends SimpleDrive {
+public class DebugDrive extends BaseDrive {
 
     @Override
     protected void initialize() {
@@ -13,7 +12,8 @@ public class DebugDrive extends SimpleDrive {
 
     @Override
     protected void update() {
-        driveUsingInput();
+        super.update();
+
         updateIntake();
         updateArm();
         updateTelemetry();

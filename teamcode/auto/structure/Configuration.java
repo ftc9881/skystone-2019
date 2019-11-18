@@ -21,7 +21,8 @@ import java.util.Iterator;
  */
 public class Configuration {
 
-    private final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
+    private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
+
     public ArrayList<Command> commands;
     public Command properties;
 
@@ -30,7 +31,7 @@ public class Configuration {
         try {
             String fileContents = readFile(fileName);
             JSONObject config = new JSONObject(fileContents);
-            commands = new ArrayList();
+            commands = new ArrayList<>();
 
             JSONArray allCommandsJson = config.getJSONArray("commands");
 
@@ -46,7 +47,7 @@ public class Configuration {
         }
     }
 
-    private String readFile(String name) throws IOException {
+    public static String readFile(String name) throws IOException {
         File file = new File(PATH, name);
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder sb = new StringBuilder();

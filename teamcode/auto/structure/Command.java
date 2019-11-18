@@ -10,7 +10,7 @@ public class Command {
 
     private static final String TAG = "Command";
     public String name;
-    private JSONObject json;
+    protected JSONObject json;
 
     public Command(String name, JSONObject json) {
         this.name = name;
