@@ -2,17 +2,14 @@ package org.firstinspires.ftc.teamcode.auto.structure;
 
 import android.os.Environment;
 
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Instantiating Configuration will read a file and return a list of commands and properties.
@@ -21,17 +18,29 @@ import java.util.Iterator;
  */
 public class AutoOpConfiguration {
 
-    private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
+    // Singleton pattern; constructor is private and enable only one instance at a time
+    private static AutoOpConfiguration instance;
 
+    public static AutoOpConfiguration newInstance(String fileName) {
+        instance = new AutoOpConfiguration(fileName);
+        return instance;
+    }
+
+    public static AutoOpConfiguration getInstance() {
+        return instance;
+    }
+
+
+    private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
     public ArrayList<Command> commands;
     public Command properties;
 
-    public AutoOpConfiguration(String fileName) {
+    private AutoOpConfiguration(String fileName) {
 
         try {
             String fileContents = readFile(fileName);
             JSONObject config = new JSONObject(fileContents);
-            commands = new ArrayList<>();
+            commands = new ArrayList();
 
             JSONArray allCommandsJson = config.getJSONArray("commands");
 
@@ -47,7 +56,7 @@ public class AutoOpConfiguration {
         }
     }
 
-    public static String readFile(String name) throws IOException {
+    static public String readFile(String name) throws IOException {
         File file = new File(PATH, name);
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder sb = new StringBuilder();

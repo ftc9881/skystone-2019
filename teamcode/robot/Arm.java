@@ -8,15 +8,17 @@ import org.firstinspires.ftc.teamcode.auto.structure.Action;
 public class Arm {
 
     public enum State {
-        OUT(7000, 1000),
-        IN(0, 0);
+        OUT(7000),
+        IN(0);
 
-        public int swivelPosition;
-        public int liftPosition;
+        private int swivelPosition;
 
-        State(int swivelPosition, int liftPosition) {
-            this.swivelPosition = swivelPosition;
-            this.liftPosition = liftPosition;
+        State(int position) {
+            this.swivelPosition = position;
+        }
+
+        public int getSwivelPosition() {
+            return swivelPosition;
         }
     }
 
@@ -26,6 +28,7 @@ public class Arm {
     public DcMotor swivelMotor;
 
     public Arm(HardwareMap hardwareMap) {
+
         liftMotor = hardwareMap.dcMotor.get("lift");
         swivelMotor = hardwareMap.dcMotor.get("swivel");
 
@@ -37,20 +40,21 @@ public class Arm {
 
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         swivelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        liftMotor.setPower(0);
+        swivelMotor.setPower(0);
     }
 
     public void move(State state) {
-        liftMotor.setTargetPosition(state.liftPosition);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setPower(POWER);
-
-        swivelMotor.setTargetPosition(state.swivelPosition);
+        swivelMotor.setTargetPosition(state.getSwivelPosition());
         swivelMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         swivelMotor.setPower(POWER);
+
+        liftMotor.setPower(-POWER);
     }
 
     public boolean moveIsDone() {
-        return !liftMotor.isBusy() && !swivelMotor.isBusy();
+        return !swivelMotor.isBusy();
     }
 
     public void stop() {

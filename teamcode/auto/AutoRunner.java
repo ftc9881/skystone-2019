@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeTurn;
 import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
+import org.firstinspires.ftc.teamcode.auto.endConditions.StoneInIntake;
 import org.firstinspires.ftc.teamcode.auto.endConditions.VuforiaLook;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
@@ -44,7 +45,7 @@ public class AutoRunner {
     public AutoRunner(String name, LinearOpMode opMode) {
         this.opMode = opMode;
 
-        config = new AutoOpConfiguration(name + ".json");
+        config = AutoOpConfiguration.newInstance(name + ".json");
 
         angleUnit = config.properties.getAngleUnit("angle unit", AngleUnit.DEGREES);
         robot = Robot.newInstance(opMode);
@@ -54,10 +55,6 @@ public class AutoRunner {
         if (initializeVuforia) {
             robot.vuforia.initialize();
         }
-
-//        double kP = config.properties.getDouble("kp", 0.0);
-//        double kI = config.properties.getDouble("ki", 0.0);
-//        double kD = config.properties.getDouble("kd", 0.0);
 
         logAndTelemetry(TAG, "Ready to run");
     }
@@ -172,9 +169,13 @@ public class AutoRunner {
 
                 RelativeMove relativeMove = new RelativeMove(maxDistance, angle, powerFactor);
                 Timeout timeoutCondition = new Timeout(timeoutMs);
-                // TODO: Add StoneInIntake condition once Michael gets his switch thingy
+                StoneInIntake intakeCondition = new StoneInIntake();
+                CombinedConditions conditions = new CombinedConditions();
+                conditions
+                        .add(timeoutCondition)
+                        .add(intakeCondition);
 
-                runTask(relativeMove, timeoutCondition);
+                runTask(relativeMove, conditions);
 
                 robot.intake.stop();
                 break;
@@ -202,7 +203,7 @@ public class AutoRunner {
 
             case "SLEEP": {
                 long timeMs = (long) command.getDouble("time", 1000);
-//                sleep(timeMs);
+                sleep(timeMs);
                 break;
             }
 
