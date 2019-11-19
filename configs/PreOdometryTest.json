@@ -1,0 +1,58 @@
+{
+	"properties": {
+		"angle unit": "deg",
+		"init vuforia": "false",
+		"turn kp": "1",
+		"turn ki": "0",
+		"turn kd": "0",
+		"move kp": "0",
+		"move ki": "0",
+		"move kd": "0"
+	},
+	"commands": [
+		{
+			"command": "MOVE",
+			"power": "1.0",
+			"distance": "20",
+			"angle": "45",
+			"timeout": "3000"
+		},
+		{
+			"command": "GRAB STONE",
+			"power": "0.3",
+			"distance": "15",
+			"timeout": "2000"
+		},
+		{
+			"command": "MOVE",
+			"power": "1.0",
+			"distance": "10",
+			"angle": "180"
+		},
+		{
+			"command": "TURN",
+			"power": "1.0",
+			"angle": "45"
+		},
+		{
+			"command": "MOVE",
+			"power": "1.0",
+			"distance": "30",
+			"angle": "180"
+		},
+		{
+			"command": "TURN",
+			"power": "1.0",
+			"angle": "45"
+		},
+		{ "command": "STOP" },
+		{
+			"command": "SEARCH SKYSTONE",
+			"power": "0.5",
+			"distance": "10",
+			"angle": "-135",
+			"timeout": "5000"
+		},
+		{ "command": "STOP" }
+	]
+}
