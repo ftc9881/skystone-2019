@@ -39,7 +39,7 @@ public class BaseDrive extends TeleOpBase {
         // up on the gamepad stick is negative
         drivePose.x = -Math.pow(gamepad.left_stick_y, 3);
         drivePose.y = Math.pow(gamepad.left_stick_x, 3);
-        drivePose.r = Math.pow(gamepad.right_stick_x, 3);
+        drivePose.r = -Math.pow(gamepad.right_stick_x, 3);
         robot.driveTrain.drive(drivePose, drivePowerFactor);
     }
 

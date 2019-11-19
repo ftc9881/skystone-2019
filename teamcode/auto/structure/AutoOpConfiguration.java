@@ -19,14 +19,14 @@ import java.util.Iterator;
  *
  * @author Trinity Chung
  */
-public class Configuration {
+public class AutoOpConfiguration {
 
     private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
 
     public ArrayList<Command> commands;
     public Command properties;
 
-    public Configuration(String fileName) {
+    public AutoOpConfiguration(String fileName) {
 
         try {
             String fileContents = readFile(fileName);

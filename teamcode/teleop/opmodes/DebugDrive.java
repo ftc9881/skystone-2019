@@ -2,8 +2,15 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.teleop.utility.Button;
+
 @TeleOp(name = "Debug Drive", group = "Debug")
 public class DebugDrive extends BaseDrive {
+
+    private Button upButton = new Button();
+    private Button downButton = new Button();
+    private Button leftButton = new Button();
+    private Button rightButton = new Button();
 
     @Override
     protected void initialize() {
@@ -14,9 +21,34 @@ public class DebugDrive extends BaseDrive {
     protected void update() {
         super.update();
 
-        updateIntake();
-        updateArm();
+//        updateIntake();
+//        updateArm();
+
+        updateServos();
         updateTelemetry();
+    }
+
+    private void updateServos() {
+        upButton.update(bothGamepads.dpad_up);
+        downButton.update(bothGamepads.dpad_down);
+        leftButton.update(bothGamepads.dpad_left);
+        rightButton.update(bothGamepads.dpad_right);
+
+        if (upButton.is(Button.State.DOWN)) {
+            robot.foundationGrabber.miniGrabServo.setPosition( robot.foundationGrabber.miniGrabServo.getPosition() - 0.1);
+        }
+
+        if (downButton.is(Button.State.DOWN)) {
+            robot.foundationGrabber.miniGrabServo.setPosition( robot.foundationGrabber.miniGrabServo.getPosition() + 0.1);
+        }
+
+        if (leftButton.is(Button.State.DOWN)) {
+            robot.foundationGrabber.mainGrabServo.setPosition( robot.foundationGrabber.mainGrabServo.getPosition() - 0.1);
+        }
+
+        if (rightButton.is(Button.State.DOWN)) {
+            robot.foundationGrabber.mainGrabServo.setPosition( robot.foundationGrabber.mainGrabServo.getPosition() + 0.1);
+        }
     }
 
     private void updateIntake() {
@@ -34,20 +66,23 @@ public class DebugDrive extends BaseDrive {
 
     private void updateTelemetry() {
 
-        telemetry.addData("LF Position", robot.driveTrain.lf.getCurrentPosition());
-        telemetry.addData("RF Position", robot.driveTrain.rf.getCurrentPosition());
-        telemetry.addData("LB Position", robot.driveTrain.lb.getCurrentPosition());
-        telemetry.addData("RB Position", robot.driveTrain.rb.getCurrentPosition());
+        telemetry.addData("Main Grab", robot.foundationGrabber.mainGrabServo.getPosition());
+        telemetry.addData("Mini Grab", robot.foundationGrabber.miniGrabServo.getPosition());
 
-        telemetry.addData("Swivel", robot.arm.swivelMotor.getCurrentPosition());
-        telemetry.addData("Lift", robot.arm.liftMotor.getCurrentPosition());
-
-        telemetry.addData("IMU Heading", robot.getImuHeading().getDegrees());
-
-        telemetry.addData("Right Encoder", robot.odometrySystem.getRightPosition());
-        telemetry.addData("Left Encoder", robot.odometrySystem.getLeftPosition());
-        telemetry.addData("Center Encoder", robot.odometrySystem.getCenterPosition());
-        telemetry.addData("Odometry Pose", robot.odometrySystem.getPose().toString());
+//        telemetry.addData("LF Position", robot.driveTrain.lf.getCurrentPosition());
+//        telemetry.addData("RF Position", robot.driveTrain.rf.getCurrentPosition());
+//        telemetry.addData("LB Position", robot.driveTrain.lb.getCurrentPosition());
+//        telemetry.addData("RB Position", robot.driveTrain.rb.getCurrentPosition());
+//
+//        telemetry.addData("Swivel", robot.arm.swivelMotor.getCurrentPosition());
+//        telemetry.addData("Lift", robot.arm.liftMotor.getCurrentPosition());
+//
+//        telemetry.addData("IMU Heading", robot.getImuHeading().getDegrees());
+//
+//        telemetry.addData("Right Encoder", robot.odometrySystem.getRightPosition());
+//        telemetry.addData("Left Encoder", robot.odometrySystem.getLeftPosition());
+//        telemetry.addData("Center Encoder", robot.odometrySystem.getCenterPosition());
+//        telemetry.addData("Odometry Pose", robot.odometrySystem.getPose().toString());
 
         telemetry.update();
     }

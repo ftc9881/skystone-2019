@@ -8,18 +8,20 @@ public class FoundationGrabber {
     private static final double GRAB_POSITION = 0;
     private static final double RELEASE_POSITION = 0;
 
-    public Servo grabServo;
+    public Servo miniGrabServo;
+    public Servo mainGrabServo;
 
     public FoundationGrabber (HardwareMap hardwareMap) {
-        grabServo = hardwareMap.servo.get("grabber");
+        miniGrabServo = hardwareMap.servo.get("mini grab");
+        mainGrabServo = hardwareMap.servo.get("main grab");
     }
 
     public void grab() {
-        grabServo.setPosition(GRAB_POSITION);
+        mainGrabServo.setPosition(GRAB_POSITION);
     }
 
     public void release() {
-        grabServo.setPosition(RELEASE_POSITION);
+        mainGrabServo.setPosition(RELEASE_POSITION);
     }
 
 }

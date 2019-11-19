@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
-import org.firstinspires.ftc.teamcode.auto.structure.Configuration;
+import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.OdometryMove;
@@ -34,7 +34,7 @@ public class AutoRunner {
     private static final String TAG = "AutoRunner";
     private static final long SLEEP_LOOP_TIME = 20;
 
-    private Configuration config;
+    private AutoOpConfiguration config;
     private OpMode opMode;
     private Robot robot;
 
@@ -44,7 +44,7 @@ public class AutoRunner {
     public AutoRunner(String name, LinearOpMode opMode) {
         this.opMode = opMode;
 
-        config = new Configuration(name + ".json");
+        config = new AutoOpConfiguration(name + ".json");
 
         angleUnit = config.properties.getAngleUnit("angle unit", AngleUnit.DEGREES);
         robot = Robot.newInstance(opMode);

@@ -4,89 +4,104 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.robot.Arm;
+import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp(name = "Meet 1 Drive", group = "TeleOp")
 public class Meet1Drive extends BaseDrive {
 
     private double deadZone;
-    private double intakePower;
-    private double outtakePower;
+    private double slowModePowerFactor;
 
-    private int swivelOuterLimit = Arm.State.OUT.swivelPosition;
-    private int swivelInnerLimit = Arm.State.IN.swivelPosition;
+    private double outtakePowerFactor;
+
+    private double miniGrabPosition;
+    private double mainGrabPosition;
+    private double miniReleasePosition;
+    private double mainReleasePosition;
+    private boolean miniIsGrabbing;
+    private boolean mainIsGrabbing;
+
+    // TODO: Add button updater helper class
+    private Button miniFoundationGrabButton = new Button();
+    private Button mainFoundationGrabButton= new Button();
 
     @Override
     protected void initialize() {
         super.initialize();
 
         deadZone = config.getDouble("dead zone", 0.1);
-        intakePower = config.getDouble("intake power", 0.4);
-        outtakePower = config.getDouble("outtake power", 0.4);
+        slowModePowerFactor = config.getDouble("slow factor", 0.5);
+
+        outtakePowerFactor = config.getDouble("outtake power", 0.4);
+
+        miniGrabPosition = config.getDouble("mini grab", 0.7);
+        miniReleasePosition = config.getDouble("mini release", 0);
+        mainGrabPosition = config.getDouble("main grab", 0.1);
+        mainReleasePosition = config.getDouble("main release", 0.8);
     }
 
     @Override
     protected void update() {
+        drivePowerFactor = gamepad1.left_bumper || gamepad1.right_bumper ? slowModePowerFactor : 1.0;
         super.update();
 
-        updateArmLimitsFromInput(gamepad2);
-        moveArmFromInput(gamepad2);
+        miniFoundationGrabButton.update(bothGamepads.a);
+        mainFoundationGrabButton.update(bothGamepads.b);
+
+        updateFoundationGrabToggle();
+        updateSwivelMove();
+        updateLiftMove();
         intakeFromInput(bothGamepads);
 
         updateTelemetry();
     }
 
+    private void updateFoundationGrabToggle() {
+        if (miniFoundationGrabButton.is(Button.State.DOWN)) {
+            double newPosition = miniIsGrabbing ? miniReleasePosition : miniGrabPosition;
+            robot.foundationGrabber.miniGrabServo.setPosition(newPosition);
+            miniIsGrabbing = !miniIsGrabbing;
+        }
+        if (mainFoundationGrabButton.is(Button.State.DOWN)) {
+            double newPosition = mainIsGrabbing ? mainReleasePosition : mainGrabPosition;
+            robot.foundationGrabber.mainGrabServo.setPosition(newPosition);
+            mainIsGrabbing = !mainIsGrabbing;
+        }
+    }
+
     private void intakeFromInput(Gamepad gamepad) {
-        double presetPower = (gamepad.left_bumper ? intakePower : 0) - (gamepad.right_bumper ? outtakePower : 0);
-        double customPower = gamepad.left_trigger - gamepad.right_trigger;
-        double intakePower = presetPower + customPower;
+        double intakePower = gamepad.left_trigger - gamepad.right_trigger * outtakePowerFactor;
         robot.intake.left.setPower(intakePower);
         robot.intake.right.setPower(intakePower);
     }
 
-    private void updateArmLimitsFromInput(Gamepad gamepad) {
-        if (gamepad.dpad_right) {
-            swivelOuterLimit = robot.arm.swivelMotor.getCurrentPosition();
-        } else if (gamepad.dpad_left) {
-            swivelInnerLimit = robot.arm.swivelMotor.getCurrentPosition();
-        }
+    private void updateSwivelMove() {
+        double playerOneInput = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0);
+        double playerTwoInput = gamepad2.right_stick_x;
+        // Player One's input overrides Player Two
+        double power = Math.abs(playerOneInput) > deadZone ? playerOneInput : playerOneInput + playerTwoInput;
+        robot.arm.swivelMotor.setPower(power);
     }
 
-    private void moveArmFromInput(Gamepad gamepad) {
-        moveSwivel(gamepad);
+    private void updateLiftMove() {
+        boolean playerOneIsInputting = gamepad1.dpad_up || gamepad1.dpad_down;
+        boolean playerTwoIsInputting = Math.abs(gamepad2.left_stick_y) > deadZone;
 
-        if (isGivingLiftInput(gamepad)) {
-            moveLift(gamepad);
+        if (playerOneIsInputting || playerTwoIsInputting) {
+            moveLift();
         } else {
             holdLiftPosition();
         }
     }
 
-    private void moveSwivel(Gamepad gamepad) {
-        int swivelPosition = robot.arm.swivelMotor.getCurrentPosition();
-        double swivelPower = gamepad.right_stick_x;
-
-        if (swivelPosition > swivelOuterLimit)  {
-            swivelPower = Math.min(swivelPower, 0);
-        }
-        if (swivelPosition < swivelInnerLimit) {
-            swivelPower = Math.max(swivelPower, 0);
-        }
-
-        robot.arm.swivelMotor.setPower(swivelPower);
-    }
-
-    private boolean isGivingLiftInput(Gamepad gamepad) {
-        return Math.abs(gamepad.left_stick_y) > deadZone;
-    }
-
-    private void moveLift(Gamepad gamepad) {
+    private void moveLift() {
         if (robot.arm.liftMotor.getMode() != DcMotor.RunMode.RUN_WITHOUT_ENCODER) {
             robot.arm.liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-         double liftPower = -gamepad.left_stick_y;
-        robot.arm.liftMotor.setPower(liftPower);
+        double playerOneInput = (gamepad1.dpad_down ? 1 : 0) - (gamepad1.dpad_up ? 1 : 0);
+        double playerTwoInput = gamepad2.left_stick_y;
+        robot.arm.liftMotor.setPower(playerOneInput + playerTwoInput);
     }
 
     private void holdLiftPosition() {
@@ -98,10 +113,11 @@ public class Meet1Drive extends BaseDrive {
     }
 
     private void updateTelemetry() {
+        telemetry.addData("Mini Grab", robot.foundationGrabber.miniGrabServo.getPosition());
+        telemetry.addData("Main Grab", robot.foundationGrabber.mainGrabServo.getPosition());
+
         telemetry.addData("Lift Position", robot.arm.liftMotor.getCurrentPosition());
         telemetry.addData("Swivel Position", robot.arm.swivelMotor.getCurrentPosition());
-        telemetry.addData("Swivel Outer Limit", swivelOuterLimit);
-        telemetry.addData("Swivel Inner Limit", swivelInnerLimit);
         telemetry.update();
     }
 
