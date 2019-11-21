@@ -9,12 +9,6 @@ import Jama.Matrix;
 
 public class OdometrySystem {
 
-    private DcMotor rightEncoder;
-    private DcMotor leftEncoder;
-    private DcMotor centerEncoder;
-
-    private final double ENCODER_NOT_FOUND_POSITION = 404;
-
     private final double L_OFFSET_X = 3;
     private final double R_OFFSET_X = 3;
     private final double C_OFFSET_X = 3;
@@ -39,16 +33,26 @@ public class OdometrySystem {
 
     private Pose currPose;
 
+    private DcMotor rightEncoder;
+    private DcMotor leftEncoder;
+    private DcMotor centerEncoder;
+
 
     public OdometrySystem(HardwareMap hardwareMap) {
         // TODO: Map odometry encoders
-//        rightEncoder = hardwareMap.dcMotor.get("right_odometry");
-//        leftEncoder = hardwareMap.dcMotor.get("left_odometry");
-//        centerEncoder = hardwareMap.dcMotor.get("center_odometry");
+//        rightEncoder = hardwareMap.dcMotor.get("right odometry");
+//        leftEncoder = hardwareMap.dcMotor.get("left odometry");
+//        centerEncoder = hardwareMap.dcMotor.get("center odometry");
 
         this.currPose = new Pose(0, 0, 0);
 }
 
+    public Pose getUpdatedPose() {
+        updatePose();
+        return currPose;
+    }
+
+    @Deprecated
     public void updatePose() {
         prevLEncoder = currLEncoder;
         prevREncoder = currREncoder;
@@ -91,15 +95,16 @@ public class OdometrySystem {
     }
 
     public double getRightPosition() {
-        return rightEncoder != null ? rightEncoder.getCurrentPosition() : ENCODER_NOT_FOUND_POSITION;
+        return rightEncoder.getCurrentPosition();
     }
     public double getLeftPosition() {
-        return leftEncoder != null ? leftEncoder.getCurrentPosition() : ENCODER_NOT_FOUND_POSITION;
+        return leftEncoder.getCurrentPosition();
     }
     public double getCenterPosition() {
-        return centerEncoder != null ? centerEncoder.getCurrentPosition() : ENCODER_NOT_FOUND_POSITION;
+        return centerEncoder.getCurrentPosition();
     }
 
+    @Deprecated
     public Pose getPose() {
         return currPose;
     }

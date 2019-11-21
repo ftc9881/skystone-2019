@@ -21,14 +21,14 @@ public class DebugDrive extends BaseDrive {
     protected void update() {
         super.update();
 
-//        updateIntake();
-//        updateArm();
+        updateIntake();
+        updateArm();
 
-        updateServos();
+//        updateConfigureServos();
         updateTelemetry();
     }
 
-    private void updateServos() {
+    private void updateConfigureServos() {
         upButton.update(bothGamepads.dpad_up);
         downButton.update(bothGamepads.dpad_down);
         leftButton.update(bothGamepads.dpad_left);
@@ -49,6 +49,9 @@ public class DebugDrive extends BaseDrive {
         if (rightButton.is(Button.State.DOWN)) {
             robot.foundationGrabber.mainGrabServo.setPosition( robot.foundationGrabber.mainGrabServo.getPosition() + 0.1);
         }
+
+        telemetry.addData("Main Grab", robot.foundationGrabber.mainGrabServo.getPosition());
+        telemetry.addData("Mini Grab", robot.foundationGrabber.miniGrabServo.getPosition());
     }
 
     private void updateIntake() {
@@ -66,19 +69,17 @@ public class DebugDrive extends BaseDrive {
 
     private void updateTelemetry() {
 
-        telemetry.addData("Main Grab", robot.foundationGrabber.mainGrabServo.getPosition());
-        telemetry.addData("Mini Grab", robot.foundationGrabber.miniGrabServo.getPosition());
 
-//        telemetry.addData("LF Position", robot.driveTrain.lf.getCurrentPosition());
-//        telemetry.addData("RF Position", robot.driveTrain.rf.getCurrentPosition());
-//        telemetry.addData("LB Position", robot.driveTrain.lb.getCurrentPosition());
-//        telemetry.addData("RB Position", robot.driveTrain.rb.getCurrentPosition());
-//
-//        telemetry.addData("Swivel", robot.arm.swivelMotor.getCurrentPosition());
-//        telemetry.addData("Lift", robot.arm.liftMotor.getCurrentPosition());
-//
-//        telemetry.addData("IMU Heading", robot.getImuHeading().getDegrees());
-//
+        telemetry.addData("LF Position", robot.driveTrain.lf.getCurrentPosition());
+        telemetry.addData("RF Position", robot.driveTrain.rf.getCurrentPosition());
+        telemetry.addData("LB Position", robot.driveTrain.lb.getCurrentPosition());
+        telemetry.addData("RB Position", robot.driveTrain.rb.getCurrentPosition());
+
+        telemetry.addData("Swivel", robot.arm.swivelMotor.getCurrentPosition());
+        telemetry.addData("Lift", robot.arm.liftMotor.getCurrentPosition());
+
+        telemetry.addData("IMU Heading", robot.getImuHeading().getDegrees());
+
 //        telemetry.addData("Right Encoder", robot.odometrySystem.getRightPosition());
 //        telemetry.addData("Left Encoder", robot.odometrySystem.getLeftPosition());
 //        telemetry.addData("Center Encoder", robot.odometrySystem.getCenterPosition());

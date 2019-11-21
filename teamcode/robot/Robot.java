@@ -37,6 +37,7 @@ public class Robot {
     public FoundationGrabber foundationGrabber;
     public SensorSystem sensorSystem;
     public OdometrySystem odometrySystem;
+    public XYOdometrySystem xyOdometrySystem;
 
     public Pose currentPose;
 
@@ -54,6 +55,7 @@ public class Robot {
         foundationGrabber = robotFactory.foundationGrabber();
         sensorSystem = robotFactory.sensorSystem();
         odometrySystem = robotFactory.odometrySystem();
+        xyOdometrySystem = robotFactory.xyOdometrySystem();
     }
 
     public void initializeImu(AngleUnit angleUnit) {

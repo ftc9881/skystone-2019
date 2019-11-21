@@ -34,4 +34,9 @@ public class RobotSystemFactory {
         return new OdometrySystem(hardwareMap);
     }
 
+    public XYOdometrySystem xyOdometrySystem() {
+        return new XYOdometrySystem(hardwareMap);
+    }
+
+
 }
