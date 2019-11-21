@@ -10,8 +10,8 @@ public class XYOdometrySystem {
 
     public XYOdometrySystem(HardwareMap hardwareMap) {
         // The encoders are plugged into where the intake motors are
-        xEncoder = hardwareMap.dcMotor.get("left intake");
-        yEncoder = hardwareMap.dcMotor.get("right intake");
+        xEncoder = hardwareMap.dcMotor.get("right intake");
+        yEncoder = hardwareMap.dcMotor.get("left intake");
         resetEncoders();
     }
 

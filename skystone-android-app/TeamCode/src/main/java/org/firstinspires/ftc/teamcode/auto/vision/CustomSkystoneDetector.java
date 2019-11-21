@@ -132,9 +132,6 @@ public class CustomSkystoneDetector extends DogeCVDetector {
         Imgproc.circle(displayMat, bestRectCenter, 2, new Scalar(0,255,0));
         Imgproc.rectangle(displayMat, lookWindow.tl(), lookWindow.br(), new Scalar(255,0,0),2);
 
-        AutoRunner.log("bestRect.y", bestRect.y);
-        AutoRunner.log("isInWindow", isInWindow);
-
         if(bestRect != null && isInWindow) {
 
             // Show chosen result

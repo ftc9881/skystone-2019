@@ -1,0 +1,18 @@
+{
+	"dead zone": "0.1",
+	"slow factor": "0.4",
+	"outtake power": "0.3",
+	"mini grab": "0.7",
+	"mini release": "0.0",
+	"main grab": "0.1",
+	"main release": "0.8",
+
+	"look window x": "20",
+	"look window y": "100",
+	"look window w": "280",
+	"look window h": "100",
+	"area": "5000",
+	"area weight": "0.5",
+	"ratio": "0.625",
+	"ratio weight": "3"
+}

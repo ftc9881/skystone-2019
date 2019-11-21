@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.math.Pose;
 
-import Jama.Matrix;
-
 public class OdometrySystem {
 
     private final double L_OFFSET_X = 3;
@@ -78,18 +76,19 @@ public class OdometrySystem {
                 {angVelL}, {angVelR}, {angVelC}
         };
 
-        Matrix matrixA = new Matrix(arrayA);
-        Matrix matrixB = new Matrix(arrayB);
-        matrixA = matrixA.times(1.0/RADIUS);
-        Matrix matrixC = matrixA.inverse().times(matrixB);
+        // TODO: Fix jama dependency
+//        Matrix matrixA = new Matrix(arrayA);
+//        Matrix matrixB = new Matrix(arrayB);
+//        matrixA = matrixA.times(1.0/RADIUS);
+//        Matrix matrixC = matrixA.inverse().times(matrixB);
+//
+//        double dx = matrixC.getArray()[0][0];
+//        double dy = matrixC.getArray()[1][0];
+//        double dr = matrixC.getArray()[2][0];
 
-        double dx = matrixC.getArray()[0][0];
-        double dy = matrixC.getArray()[1][0];
-        double dr = matrixC.getArray()[2][0];
-
-        x += dx;
-        y += dy;
-        r += dr;
+//        x += dx;
+//        y += dy;
+//        r += dr;
 
         currPose = new Pose(x , y, r);
     }

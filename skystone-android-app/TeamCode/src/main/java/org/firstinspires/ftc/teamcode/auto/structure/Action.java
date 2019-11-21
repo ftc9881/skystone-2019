@@ -9,7 +9,7 @@ import static android.os.SystemClock.sleep;
 public abstract class Action implements Runnable {
 
     private static final String TAG = "Action";
-    private static final long SLEEP_INTERVAL = 50;
+    private static final long SLEEP_INTERVAL = 10;
     private Thread thread;
     private AtomicBoolean running = new AtomicBoolean(false);
     private AtomicBoolean stopped = new AtomicBoolean(true);

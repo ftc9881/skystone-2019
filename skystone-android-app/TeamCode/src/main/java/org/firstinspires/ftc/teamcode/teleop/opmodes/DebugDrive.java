@@ -69,6 +69,8 @@ public class DebugDrive extends BaseDrive {
 
     private void updateTelemetry() {
 
+        telemetry.addData("Odometry X", robot.xyOdometrySystem.getX());
+        telemetry.addData("Odometry Y", robot.xyOdometrySystem.getY());
 
         telemetry.addData("LF Position", robot.driveTrain.lf.getCurrentPosition());
         telemetry.addData("RF Position", robot.driveTrain.rf.getCurrentPosition());

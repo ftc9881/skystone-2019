@@ -1,4 +1,3 @@
-// build.gradle in TeamCode
 //
 // Most of the definitions for building your module reside in a common, shared
 // file 'build.common.gradle'. Being factored in this way makes it easier to
@@ -10,6 +9,3 @@
 // Include common definitions from above.
 apply from: '../build.common.gradle'
 
-dependencies {
-    implementation files('/home/ftc/Documents/skystone-android-app/libs/Jama-1.0.3.jar')
-}
