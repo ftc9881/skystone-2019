@@ -108,7 +108,6 @@ public class Vuforia {
     private VuforiaLocalizer.Parameters parameters = null;
     private VuforiaTrackables trackables = null;
 
-    private Robot robot;
     private boolean initialized = false;
     private Pose lastPose = null;
     private LookAction lookAction;
