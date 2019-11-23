@@ -56,9 +56,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 
-public class Vuforia {
+public class Vuforia implements VisionSystem {
 
-    public enum TargetType {SKYSTONE, BRIDGE, PERIMETER, NONE_JUST_RUN_FOREVER}
     public enum Target {
         SKYSTONE(0),
         BLUE_REAR_BRIDGE(1),
@@ -119,7 +118,7 @@ public class Vuforia {
         this.fileContext = fileContext;
     }
 
-
+    @Override
     public void initialize() {
         startEngine();
         loadTrackables();
@@ -130,6 +129,7 @@ public class Vuforia {
         AutoRunner.log("Vuforia", "Initialization complete");
     }
 
+    @Override
     public void startLook(TargetType target) {
         lastPose = null;
         if (!initialized) {
@@ -140,10 +140,12 @@ public class Vuforia {
         lookAction.start();
     }
 
+    @Override
     public void stopLook() {
         lookAction.stop();
     }
 
+    @Override
     public boolean found() {
         return lastPose != null;
     }

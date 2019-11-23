@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp(name = "Debug Drive", group = "Debug")
+@Disabled
 public class DebugDrive extends BaseDrive {
 
     private Button upButton = new Button();
@@ -21,37 +23,29 @@ public class DebugDrive extends BaseDrive {
     protected void update() {
         super.update();
 
-        updateIntake();
-        updateArm();
+//        updateIntake();
+//        updateArm();
 
-//        updateConfigureServos();
+        updateConfigureServos();
         updateTelemetry();
     }
 
     private void updateConfigureServos() {
         upButton.update(bothGamepads.dpad_up);
         downButton.update(bothGamepads.dpad_down);
-        leftButton.update(bothGamepads.dpad_left);
-        rightButton.update(bothGamepads.dpad_right);
 
         if (upButton.is(Button.State.DOWN)) {
-            robot.foundationGrabber.miniGrabServo.setPosition( robot.foundationGrabber.miniGrabServo.getPosition() - 0.1);
+            robot.foundationGrabber.leftServo.setPosition( robot.foundationGrabber.leftServo.getPosition() - 0.1);
+            robot.foundationGrabber.rightServo.setPosition( robot.foundationGrabber.rightServo.getPosition() - 0.1);
         }
 
         if (downButton.is(Button.State.DOWN)) {
-            robot.foundationGrabber.miniGrabServo.setPosition( robot.foundationGrabber.miniGrabServo.getPosition() + 0.1);
+            robot.foundationGrabber.leftServo.setPosition( robot.foundationGrabber.leftServo.getPosition() + 0.1);
+            robot.foundationGrabber.rightServo.setPosition( robot.foundationGrabber.rightServo.getPosition() + 0.1);
         }
 
-        if (leftButton.is(Button.State.DOWN)) {
-            robot.foundationGrabber.mainGrabServo.setPosition( robot.foundationGrabber.mainGrabServo.getPosition() - 0.1);
-        }
-
-        if (rightButton.is(Button.State.DOWN)) {
-            robot.foundationGrabber.mainGrabServo.setPosition( robot.foundationGrabber.mainGrabServo.getPosition() + 0.1);
-        }
-
-        telemetry.addData("Main Grab", robot.foundationGrabber.mainGrabServo.getPosition());
-        telemetry.addData("Mini Grab", robot.foundationGrabber.miniGrabServo.getPosition());
+        telemetry.addData("Left Grab", robot.foundationGrabber.leftServo.getPosition());
+        telemetry.addData("Right Grab", robot.foundationGrabber.rightServo.getPosition());
     }
 
     private void updateIntake() {
@@ -68,9 +62,6 @@ public class DebugDrive extends BaseDrive {
     }
 
     private void updateTelemetry() {
-
-        telemetry.addData("Odometry X", robot.xyOdometrySystem.getX());
-        telemetry.addData("Odometry Y", robot.xyOdometrySystem.getY());
 
         telemetry.addData("LF Position", robot.driveTrain.lf.getCurrentPosition());
         telemetry.addData("RF Position", robot.driveTrain.rf.getCurrentPosition());

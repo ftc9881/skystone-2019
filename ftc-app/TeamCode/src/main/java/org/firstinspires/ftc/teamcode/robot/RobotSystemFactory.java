@@ -2,9 +2,14 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
+import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
+import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
+
 public class RobotSystemFactory {
 
-    HardwareMap hardwareMap;
+    public VisionSystem.Type visionSystemType = VisionSystem.Type.OPENCV;
+    private HardwareMap hardwareMap;
 
     public RobotSystemFactory(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
@@ -34,9 +39,14 @@ public class RobotSystemFactory {
         return new OdometrySystem(hardwareMap);
     }
 
-    public XYOdometrySystem xyOdometrySystem() {
-        return new XYOdometrySystem(hardwareMap);
+    public VisionSystem visionSystem() {
+        switch (visionSystemType) {
+            case OPENCV:
+                return new OpenCV();
+            case VUFORIA:
+                return new Vuforia(hardwareMap.appContext);
+        }
+        return null;
     }
-
 
 }

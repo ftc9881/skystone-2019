@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
+import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
@@ -29,15 +31,13 @@ public class Robot {
 
     public HardwareMap hardwareMap;
 
-    public Vuforia vuforia;
-
     public DriveTrain driveTrain;
     public Arm arm;
     public Intake intake;
     public FoundationGrabber foundationGrabber;
     public SensorSystem sensorSystem;
     public OdometrySystem odometrySystem;
-    public XYOdometrySystem xyOdometrySystem;
+    public VisionSystem visionSystem;
 
     public Pose currentPose;
 
@@ -46,16 +46,15 @@ public class Robot {
     private Robot(OpMode opMode) {
         this.opMode = opMode;
         hardwareMap = opMode.hardwareMap;
-        vuforia = new Vuforia(hardwareMap.appContext);
 
         RobotSystemFactory robotFactory = new RobotSystemFactory(opMode.hardwareMap);
+        visionSystem = robotFactory.visionSystem();
         driveTrain = robotFactory.driveTrain();
         arm = robotFactory.arm();
         intake = robotFactory.intakeSystem();
         foundationGrabber = robotFactory.foundationGrabber();
         sensorSystem = robotFactory.sensorSystem();
         odometrySystem = robotFactory.odometrySystem();
-        xyOdometrySystem = robotFactory.xyOdometrySystem();
     }
 
     public void initializeImu(AngleUnit angleUnit) {

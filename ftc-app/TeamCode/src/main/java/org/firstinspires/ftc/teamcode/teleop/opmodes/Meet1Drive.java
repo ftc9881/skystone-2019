@@ -14,16 +14,9 @@ public class Meet1Drive extends BaseDrive {
 
     private double outtakePowerFactor;
 
-    private double miniGrabPosition;
-    private double mainGrabPosition;
-    private double miniReleasePosition;
-    private double mainReleasePosition;
-    private boolean miniIsGrabbing;
-    private boolean mainIsGrabbing;
 
     // TODO: Add button updater helper class
-    private Button miniFoundationGrabButton = new Button();
-    private Button mainFoundationGrabButton= new Button();
+    private Button foundationGrabButton = new Button();
 
     @Override
     protected void initialize() {
@@ -33,11 +26,6 @@ public class Meet1Drive extends BaseDrive {
         slowModePowerFactor = config.getDouble("slow factor", 0.5);
 
         outtakePowerFactor = config.getDouble("outtake power", 0.4);
-
-        miniGrabPosition = config.getDouble("mini grab", 0.7);
-        miniReleasePosition = config.getDouble("mini release", 0);
-        mainGrabPosition = config.getDouble("main grab", 0.1);
-        mainReleasePosition = config.getDouble("main release", 0.8);
     }
 
     @Override
@@ -45,8 +33,7 @@ public class Meet1Drive extends BaseDrive {
         drivePowerFactor = gamepad1.left_bumper || gamepad1.right_bumper ? slowModePowerFactor : 1.0;
         super.update();
 
-        miniFoundationGrabButton.update(bothGamepads.a);
-        mainFoundationGrabButton.update(bothGamepads.b);
+        foundationGrabButton.update(bothGamepads.b);
 
         updateFoundationGrabToggle();
         updateSwivelMove();
@@ -57,15 +44,8 @@ public class Meet1Drive extends BaseDrive {
     }
 
     private void updateFoundationGrabToggle() {
-        if (miniFoundationGrabButton.is(Button.State.DOWN)) {
-            double newPosition = miniIsGrabbing ? miniReleasePosition : miniGrabPosition;
-            robot.foundationGrabber.miniGrabServo.setPosition(newPosition);
-            miniIsGrabbing = !miniIsGrabbing;
-        }
-        if (mainFoundationGrabButton.is(Button.State.DOWN)) {
-            double newPosition = mainIsGrabbing ? mainReleasePosition : mainGrabPosition;
-            robot.foundationGrabber.mainGrabServo.setPosition(newPosition);
-            mainIsGrabbing = !mainIsGrabbing;
+        if (foundationGrabButton.is(Button.State.DOWN)) {
+            robot.foundationGrabber.toggle();
         }
     }
 
@@ -113,8 +93,8 @@ public class Meet1Drive extends BaseDrive {
     }
 
     private void updateTelemetry() {
-        telemetry.addData("Mini Grab", robot.foundationGrabber.miniGrabServo.getPosition());
-        telemetry.addData("Main Grab", robot.foundationGrabber.mainGrabServo.getPosition());
+        telemetry.addData("Left Grab", robot.foundationGrabber.leftServo.getPosition());
+        telemetry.addData("Right Grab", robot.foundationGrabber.rightServo.getPosition());
 
         telemetry.addData("Lift Position", robot.arm.liftMotor.getCurrentPosition());
         telemetry.addData("Swivel Position", robot.arm.swivelMotor.getCurrentPosition());

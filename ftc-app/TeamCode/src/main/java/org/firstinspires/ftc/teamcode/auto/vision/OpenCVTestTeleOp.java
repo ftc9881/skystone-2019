@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import static org.firstinspires.ftc.teamcode.auto.vision.OpenCV.CAMERA_RECT;
 
-@TeleOp(name="OpenCV")
+@TeleOp(name="OpenCV Test")
 public class OpenCVTestTeleOp extends TeleOpBase {
 
     private CustomSkystoneDetector skystoneDetector;
@@ -36,7 +36,6 @@ public class OpenCVTestTeleOp extends TeleOpBase {
         phoneCam.openCameraDevice();
         phoneCam.setPipeline(skystoneDetector);
         phoneCam.startStreaming(CAMERA_RECT.width, CAMERA_RECT.height, OpenCvCameraRotation.UPRIGHT);
-
     }
 
     @Override

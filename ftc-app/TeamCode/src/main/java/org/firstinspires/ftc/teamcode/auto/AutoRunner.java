@@ -5,20 +5,22 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.actions.RelativeTurn;
+import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
+import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
 import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
 import org.firstinspires.ftc.teamcode.auto.endConditions.StoneInIntake;
-import org.firstinspires.ftc.teamcode.auto.endConditions.VuforiaLook;
+import org.firstinspires.ftc.teamcode.auto.endConditions.LookFor;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
+import org.firstinspires.ftc.teamcode.robot.Arm;
+import org.firstinspires.ftc.teamcode.robot.FoundationGrabber;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
-import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.OdometryMove;
 import org.firstinspires.ftc.teamcode.auto.endConditions.Timeout;
 
@@ -51,9 +53,9 @@ public class AutoRunner {
         robot = Robot.newInstance(opMode);
         robot.initializeImu(angleUnit);
 
-        boolean initializeVuforia = config.properties.getBoolean("init vuforia", false);
-        if (initializeVuforia) {
-            robot.vuforia.initialize();
+        boolean initializeVision = config.properties.getBoolean("init vision", false);
+        if (initializeVision) {
+            robot.visionSystem.initialize();
         }
 
         logAndTelemetry(TAG, "Ready to run");
@@ -92,7 +94,7 @@ public class AutoRunner {
                 Angle angle = command.getAngle("angle", 0, angleUnit);
                 double power = command.getDouble("power", 1.0);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
-                Action relativeTurn = new RelativeTurn(angle, power);
+                Action relativeTurn = new AbsoluteTurn(angle, power);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
 
                 runTask(relativeTurn, timeoutCondition);
@@ -121,25 +123,6 @@ public class AutoRunner {
                 break;
             }
 
-            case "VUFORIA ORIENT": {
-                Angle angle = command.getAngle("angle", 0, angleUnit);
-                double maxDistance = command.getDouble("distance", 30);
-                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
-                double powerFactor = command.getDouble("power", 0.5);
-
-                RelativeMove relativeMove = new RelativeMove(maxDistance, angle, powerFactor);
-                VuforiaLook vuforiaCondition = new VuforiaLook(Vuforia.TargetType.PERIMETER);
-                Timeout timeoutCondition = new Timeout(timeoutMs);
-                CombinedConditions conditions = new CombinedConditions();
-                conditions
-                    .add(timeoutCondition)
-                    .add(vuforiaCondition);
-
-                runTask(relativeMove, conditions);
-                robot.currentPose = vuforiaCondition.getPose();
-                break;
-            }
-
             case "SEARCH SKYSTONE": {
                 // strafe while looking
                 Angle angle = command.getAngle("angle", 0, angleUnit);
@@ -148,7 +131,7 @@ public class AutoRunner {
                 double powerFactor = command.getDouble("power", 0.5);
 
                 RelativeMove relativeMove = new RelativeMove(maxDistance, angle, powerFactor);
-                VuforiaLook skystoneCondition = new VuforiaLook(Vuforia.TargetType.SKYSTONE);
+                LookFor skystoneCondition = new LookFor(Vuforia.TargetType.SKYSTONE);
                 Timeout timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions();
                 conditions
@@ -191,13 +174,42 @@ public class AutoRunner {
                 break;
             }
 
+            case "MOVE ARM": {
+                Arm.State state;
+                String rawStateValue = command.getString("state", "nothing").toUpperCase();
+                switch (rawStateValue) {
+                    case "OUT": {
+                        state = Arm.State.OUT;
+                        break;
+                    }
+                    case "IN": {
+                        state = Arm.State.IN;
+                        break;
+                    }
+                    case "UP AND OUT": {
+                        state = Arm.State.UP_AND_OUT;
+                        break;
+                    }
+                    case "DOWN AND OUT": {
+                        state = Arm.State.OUT_AND_DOWN;
+                        break;
+                    }
+                    default: {
+                        state = Arm.State.NOTHING;
+                        break;
+                    }
+                }
+                robot.arm.move(state);
+                break;
+            }
+
             case "GRAB FOUNDATION": {
-                robot.foundationGrabber.grab();
+                robot.foundationGrabber.set(FoundationGrabber.State.GRABBING);
                 break;
             }
 
             case "RELEASE FOUNDATION": {
-                robot.foundationGrabber.release();
+                robot.foundationGrabber.set(FoundationGrabber.State.RELEASED);
                 break;
             }
 

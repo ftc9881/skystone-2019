@@ -5,23 +5,40 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class FoundationGrabber {
 
-    private static final double GRAB_POSITION = 0;
-    private static final double RELEASE_POSITION = 0;
+    public enum State {
+        GRABBING(0.0),
+        RELEASED(0.4),
+        FULLY_IN(0.7);
 
-    public Servo miniGrabServo;
-    public Servo mainGrabServo;
+        final double position;
+
+        State(double position) {
+            this.position = position;
+        }
+    }
+
+    public Servo leftServo;
+    public Servo rightServo;
+
+    private State currentState;
 
     public FoundationGrabber (HardwareMap hardwareMap) {
-        miniGrabServo = hardwareMap.servo.get("mini grab");
-        mainGrabServo = hardwareMap.servo.get("main grab");
+        leftServo = hardwareMap.servo.get("left grab");
+        rightServo = hardwareMap.servo.get("right grab");
+
+//        leftServo.setPosition(State.FULLY_IN.position);
+//        rightServo.setPosition(State.FULLY_IN.position);
     }
 
-    public void grab() {
-        mainGrabServo.setPosition(GRAB_POSITION);
+    public void set(State state) {
+        leftServo.setPosition(state.position);
+        rightServo.setPosition(state.position);
+        currentState = state;
     }
 
-    public void release() {
-        mainGrabServo.setPosition(RELEASE_POSITION);
+    public void toggle() {
+        State newState = currentState == State.GRABBING ? State.RELEASED : State.GRABBING;
+        set(newState);
     }
 
 }

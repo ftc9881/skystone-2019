@@ -9,9 +9,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class TeleOpConfiguration extends Command {
+public class Configuration extends Command {
 
-    public TeleOpConfiguration(String name) {
+    public Configuration(String name) {
         super(name, new JSONObject());
 
         try {

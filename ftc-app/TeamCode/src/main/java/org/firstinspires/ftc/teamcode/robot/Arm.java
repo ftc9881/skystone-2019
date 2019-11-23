@@ -3,26 +3,24 @@ package org.firstinspires.ftc.teamcode.robot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.auto.structure.Action;
-
 public class Arm {
 
     public enum State {
-        OUT(7000),
-        IN(0);
+        NOTHING(0, 0),
+        OUT(0,0.2),
+        OUT_AND_DOWN(0,0),
+        IN(-1000, -0.2),
+        UP_AND_OUT(-1000, 0.2);
 
-        private int swivelPosition;
+        final int liftPosition;
+        final double swivelPower;
 
-        State(int position) {
-            this.swivelPosition = position;
-        }
-
-        public int getSwivelPosition() {
-            return swivelPosition;
+        State(int liftPosition, double swivelPower) {
+            this.liftPosition = liftPosition;
+            this.swivelPower = swivelPower;
         }
     }
 
-    private static final double POWER = 1.0;
 
     public DcMotor liftMotor;
     public DcMotor swivelMotor;
@@ -32,7 +30,7 @@ public class Arm {
         liftMotor = hardwareMap.dcMotor.get("lift");
         swivelMotor = hardwareMap.dcMotor.get("swivel");
 
-        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         swivelMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -46,15 +44,17 @@ public class Arm {
     }
 
     public void move(State state) {
-        swivelMotor.setTargetPosition(state.getSwivelPosition());
-        swivelMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        swivelMotor.setPower(POWER);
+        if (state == State.NOTHING) return;
 
-        liftMotor.setPower(-POWER);
+        swivelMotor.setPower(state.swivelPower);
+
+        liftMotor.setTargetPosition(state.liftPosition);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor.setPower(0.7);
     }
 
     public boolean moveIsDone() {
-        return !swivelMotor.isBusy();
+        return !liftMotor.isBusy();
     }
 
     public void stop() {

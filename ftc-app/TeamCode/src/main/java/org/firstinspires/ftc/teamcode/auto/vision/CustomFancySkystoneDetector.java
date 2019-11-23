@@ -12,12 +12,9 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
-public class CustomSkystoneDetector extends DogeCVDetector {
+public class CustomFancySkystoneDetector extends DogeCVDetector {
     public DogeCVColorFilter blackFilter = new GrayscaleFilter(0, 25);
     public DogeCVColorFilter yellowFilter = new LeviColorFilter(LeviColorFilter.ColorPreset.YELLOW, 100);
     // White for home testing
@@ -25,7 +22,6 @@ public class CustomSkystoneDetector extends DogeCVDetector {
 
     public Rect lookWindow;
     public int maxBlobDistance;
-    public int minimumArea;
 
     private Rect foundRect = new Rect();
 
@@ -36,8 +32,10 @@ public class CustomSkystoneDetector extends DogeCVDetector {
     private Mat yellowMask = new Mat();
     private Mat hierarchy  = new Mat();
 
+    private Rect previousBestYellowRect = new Rect();
 
-    public CustomSkystoneDetector() {
+
+    public CustomFancySkystoneDetector() {
         detectorName = "Skystone Detector";
     }
     public Rect foundRectangle() {
@@ -57,64 +55,60 @@ public class CustomSkystoneDetector extends DogeCVDetector {
 
         List<MatOfPoint> contoursYellow = findContours(yellowFilter, yellowMask);
         draw(contoursYellow, new Scalar(255, 30, 30));
+        List<Rect> rectsYellow = new ArrayList<>();
 
-        Rect bestYellowRect = new Rect();
-
-        for (MatOfPoint cont : contoursYellow) {
-            Rect rect = Imgproc.boundingRect(cont);
-            draw(rect, new Scalar(255,100,0));
-
-            if (rect.area() > bestYellowRect.area()) {
-                bestYellowRect = rect;
-            }
+        for (MatOfPoint contour : contoursYellow) {
+            rectsYellow.add(Imgproc.boundingRect(contour));
+            draw(Imgproc.boundingRect(contour), new Scalar(255, 100, 0));
         }
 
+        List<List<Rect>> yellowBlobs = groupRects(rectsYellow, maxBlobDistance);
+        Rect bestYellowRect = previousBestYellowRect;
+
+        for (List<Rect> blob : yellowBlobs) {
+            Rect blobBound = boundingRect(blob);
+            draw(blobBound, new Scalar(0, 150, 0));
+
+            if (blobBound.area() > bestYellowRect.area()) {
+                bestYellowRect = blobBound;
+            }
+        }
         draw(bestYellowRect, new Scalar(255, 255, 0));
+
+//        List<MatOfPoint> contoursYellow = findContours(yellowFilter, yellowMask);
+//        draw(contoursYellow, new Scalar(255, 30, 30));
+//
+//        List<List<Rect>> yellowBlobs = groupRects(contoursYellow, maxBlobDistance);
+//        Rect bestYellowRect = new Rect();
+//
+//        for (List<Rect> blob : yellowBlobs) {
+//            Rect blobBound = boundingRect(blob);
+//            draw(blobBound, new Scalar(255, 100, 0));
+//
+//            if (blobBound.area() > bestYellowRect.area()) {
+//                bestYellowRect = blobBound;
+//            }
+//        }
+//
 
 
         // BLACK
-
         List<MatOfPoint> contoursBlack = findContours(blackFilter, blackMask);
-        // Java 8 sort
-//        contoursBlack.sort( (MatOfPoint a, MatOfPoint b) -> Imgproc.boundingRect(a).x - Imgproc.boundingRect(b).x);
-        // Java 7 sort
-        Collections.sort(contoursBlack, new Comparator<MatOfPoint>() {
-            @Override
-            public int compare(MatOfPoint o1, MatOfPoint o2) {
-                return Imgproc.boundingRect(o1).x - Imgproc.boundingRect(o2).x;
-            }
-        });
-
+        List<Rect> rectsBlack = new ArrayList<>();
         draw(contoursBlack, new Scalar(80, 80, 80));
 
-        List<List<Rect>> blobsNearEachOther = new ArrayList<>();
-        List<Rect> currentBlob = new ArrayList<>();
-        Rect previousContourRect = new Rect();
-
         for (MatOfPoint contour : contoursBlack) {
-            Rect boundingRect = Imgproc.boundingRect(contour);
-            Point center = getCenterPoint(boundingRect);
-
-            if (bestYellowRect.contains(center)) {
-                boolean contourIsFar = distance(center, getCenterPoint(previousContourRect)) > maxBlobDistance;
-                if (contourIsFar) {
-                    blobsNearEachOther.add(currentBlob);
-                    currentBlob.clear();
-                }
-                currentBlob.add(boundingRect);
-                previousContourRect = boundingRect;
-
-                draw(center, new Scalar(0, 0, 255));
-            }
-
-            draw(boundingRect, new Scalar(0, 0, 200));
+            rectsBlack.add(Imgproc.boundingRect(contour));
+            draw(Imgproc.boundingRect(contour), new Scalar(0, 0, 255));
         }
-        blobsNearEachOther.add(currentBlob);
 
+        rectsBlack = filterByBound(rectsBlack, bestYellowRect);
 
-        Rect bestBlobRect = new Rect();
+        //filter black contours
+        List<List<Rect>> blackBlobs = groupRects(rectsBlack, maxBlobDistance);
+        Rect bestBlobRect = foundRect;
 
-        for (List<Rect> blob : blobsNearEachOther) {
+        for (List<Rect> blob : blackBlobs) {
             Rect blobBound = boundingRect(blob);
             Point blobCenter = getCenterPoint(blobBound);
             draw(blobBound, new Scalar(0, 150, 0));
@@ -132,11 +126,11 @@ public class CustomSkystoneDetector extends DogeCVDetector {
         draw(lookWindow, new Scalar(255, 255, 255));
         draw(bestRectCenter, new Scalar(0, 255, 0));
 
-        found = bestRect.area() > minimumArea && lookWindow.contains(bestRectCenter);
-
+        found = bestRect.area() > 0 && lookWindow.contains(bestRectCenter);
         if (found) {
             draw(bestRect, new Scalar(0, 255, 0));
             foundRect = bestRect;
+            previousBestYellowRect = bestYellowRect;
         }
 
 
@@ -162,7 +156,6 @@ public class CustomSkystoneDetector extends DogeCVDetector {
     public void useDefaults() {
         lookWindow = OpenCV.CAMERA_RECT;
         maxBlobDistance = 50;
-        minimumArea = 200;
     }
 
     private Rect boundingRect(List<Rect> rects) {
@@ -217,4 +210,41 @@ public class CustomSkystoneDetector extends DogeCVDetector {
 //        Imgproc.drawContours(displayMat, contours, -1, color, 2);
     }
 
+    private List<List<Rect>> groupRects(List<Rect> rects, int maxBlobDistance) {
+        List<List<Rect>> toReturn = new ArrayList<>();
+        List<Rect> unusedRects = new ArrayList<>();
+        unusedRects.addAll(rects);
+
+        int blobIndex = 0;
+        while (!unusedRects.isEmpty()) {
+            LinkedList<Rect> toProcess = new LinkedList<>();
+            toProcess.add(unusedRects.remove(0));
+            toReturn.add(new ArrayList<Rect>());
+            while (!toProcess.isEmpty()) {
+                Rect currentRect = toProcess.poll();
+                for (int i = 0; i < unusedRects.size(); i++) {
+                    if (distance(getCenterPoint(currentRect), getCenterPoint(unusedRects.get(i))) < maxBlobDistance) {
+                        toProcess.add(unusedRects.get(i));
+                        toReturn.get(blobIndex).add(unusedRects.remove(i));
+                        i--;
+                    }
+                }
+            }
+            blobIndex++;
+            //run algorithm on firstNode
+        }
+
+        return toReturn;
+    }
+
+    private List<Rect> filterByBound(List<Rect> rects, Rect boundingRect) {
+        List<Rect> toReturn = new ArrayList<>();
+
+        for (Rect rect : rects) {
+            if (boundingRect.contains(getCenterPoint(rect))) {
+                toReturn.add(rect);
+            }
+        }
+       return toReturn;
+    }
 }

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.PIDController;
@@ -8,23 +9,22 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
-public class RelativeTurn extends Action {
-
-    private static final double ERROR_RANGE_RADIANS = 0.1;
+public class AbsoluteTurn extends Action {
 
     Robot robot;
     private PIDController pidController;
     private double targetAngle;
-    private double initialRadians;
     private double currentRadians;
     private double powerFactor;
+    private Angle errorRange;
 
-    public RelativeTurn(Angle angleToTurn, double powerFactor) {
+    public AbsoluteTurn(Angle angleToTurn, double powerFactor) {
         this.robot = Robot.getInstance();
         this.targetAngle = angleToTurn.getRadians();
         this.powerFactor = powerFactor;
 
         AutoOpConfiguration config = AutoOpConfiguration.getInstance();
+        errorRange = config.properties.getAngle("turn error", 10, AngleUnit.DEGREES);
         double kP = config.properties.getDouble("turn kp", 0);
         double kI = config.properties.getDouble("turn ki", 0);
         double kD = config.properties.getDouble("turn kd", 0);
@@ -33,7 +33,6 @@ public class RelativeTurn extends Action {
 
     @Override
     protected void onRun() {
-        initialRadians = robot.getImuHeading().getRadians();
         currentRadians = robot.getImuHeading().getRadians();
         AutoRunner.log("AngleToTurn", targetAngle);
         AutoRunner.log("CurrentAngle", currentRadians);
@@ -42,7 +41,7 @@ public class RelativeTurn extends Action {
     @Override
     protected boolean runIsComplete() {
         double errorRadians = Math.abs(currentRadians - targetAngle);
-        return errorRadians < ERROR_RANGE_RADIANS;
+        return errorRadians < errorRange.getRadians();
     }
 
     @Override

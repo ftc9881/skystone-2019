@@ -1,32 +1,27 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.math.Angle;
-import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
-import org.firstinspires.ftc.teamcode.robot.XYOdometrySystem;
+import org.firstinspires.ftc.teamcode.math.PIDController;
 
 public class RelativeMove extends Action {
 
-    private static final double CLICKS_PER_INCH = 234.1;
-    private static final double CLICKS_ERROR_RANGE = 300.0;
+    private static final double CLICKS_PER_INCH = 50.0;
+    private static final double CLICKS_ERROR_RANGE = 100.0;
 
     private PIDController pidController;
-//    private PIDController xPidController;
-//    private PIDController yPidController;
 
-    private Robot robot;
-    private double targetClicksX;
-    private double targetClicksY;
+    Robot robot;
+    private double targetClicks;
     private double distance;
     private Angle angle;
     private double powerFactor;
     private Pose drivePose;
+
 
     public RelativeMove(double distance, Angle angle, double powerFactor) {
         this.robot = Robot.getInstance();
@@ -38,33 +33,18 @@ public class RelativeMove extends Action {
 
     @Override
     protected void onRun() {
+        robot.driveTrain.resetEncoders();
+        // TODO: Right now this is an arbitrary distance
+        targetClicks = distance * CLICKS_PER_INCH;
+        AutoRunner.log("TargetClicks", targetClicks);
+
         drivePose = new Pose(0, 0, 0);
-
-        AutoOpConfiguration config = AutoOpConfiguration.getInstance();
-
-//        double kP = config.properties.getDouble("move xkp", 0);
-//        double kI = config.properties.getDouble("move xki", 0);
-//        double kD = config.properties.getDouble("move xkd", 0);
-//        this.yPidController = new PIDController(kP, kI, kD, robot.getImuHeading().getRadians());
-
-//        double kP = config.properties.getDouble("move ykp", 0);
-//        double kI = config.properties.getDouble("move yki", 0);
-//        double kD = config.properties.getDouble("move ykd", 0);
-//        this.xPidController = new PIDController(kP, kI, kD, robot.getImuHeading().getRadians());
-
-
         drivePose.x = Math.cos(angle.getRadians());
         drivePose.y = Math.sin(angle.getRadians());
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
 
-        robot.xyOdometrySystem.resetEncoders();
-        targetClicksX = drivePose.x * distance * CLICKS_PER_INCH;
-        targetClicksY = drivePose.y * distance * CLICKS_PER_INCH;
-        AutoRunner.log("TargetClicksX", targetClicksX);
-        AutoRunner.log("TargetClicksY", targetClicksY);
-
-
+        AutoOpConfiguration config = AutoOpConfiguration.getInstance();
         double kP = config.properties.getDouble("move kp", 0);
         double kI = config.properties.getDouble("move ki", 0);
         double kD = config.properties.getDouble("move kd", 0);
@@ -73,24 +53,28 @@ public class RelativeMove extends Action {
 
     @Override
     protected boolean runIsComplete() {
-        double clicksX = Math.abs(robot.xyOdometrySystem.getX());
-        double clicksY = Math.abs(robot.xyOdometrySystem.getY());
-        boolean reachedX = Math.abs(targetClicksX - clicksX) < CLICKS_ERROR_RANGE;
-        boolean reachedY = Math.abs(targetClicksY - clicksY) < CLICKS_ERROR_RANGE;
-        return reachedX && reachedY;
+        // TODO: currently this is an arbitrary check on all wheels; want to calculate actual
+        double actualClicksLF = Math.abs(robot.driveTrain.lf.getCurrentPosition());
+        double actualClicksLB = Math.abs(robot.driveTrain.lb.getCurrentPosition());
+        double actualClicksRF = Math.abs(robot.driveTrain.rf.getCurrentPosition());
+        double actualClicksRB = Math.abs(robot.driveTrain.rb.getCurrentPosition());
+        boolean lfReached = Math.abs(actualClicksLF - targetClicks) < CLICKS_ERROR_RANGE;
+        boolean lbReached = Math.abs(actualClicksLB - targetClicks) < CLICKS_ERROR_RANGE;
+        boolean rfReached = Math.abs(actualClicksRF - targetClicks) < CLICKS_ERROR_RANGE;
+        boolean rbReached = Math.abs(actualClicksRB - targetClicks) < CLICKS_ERROR_RANGE;
+
+        return lfReached || lbReached || rfReached || rbReached;
     }
 
     @Override
     protected void insideRun() {
         // TODO: pid amplifies error?
-        //double actualValue = robot.getImuHeading().getRadians();
-        //drivePose.r = pidController.getCorrectedOutput(actualValue);
-        robot.driveTrain.drive(drivePose, powerFactor);
+        double actualValue = robot.getImuHeading().getRadians();
+        drivePose.r = pidController.getCorrectedOutput(actualValue);
 
-        double clicksX = Math.abs(robot.xyOdometrySystem.getX());
-        double clicksY = Math.abs(robot.xyOdometrySystem.getY());
-        AutoRunner.log("Clicks x", clicksX);
-        AutoRunner.log("Clicks y", clicksY);
+        AutoRunner.log("r power", drivePose.r);
+
+        robot.driveTrain.drive(drivePose, powerFactor);
     }
 
     @Override
