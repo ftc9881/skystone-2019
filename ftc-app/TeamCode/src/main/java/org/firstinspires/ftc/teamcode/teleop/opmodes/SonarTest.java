@@ -21,7 +21,7 @@ public class SonarTest extends TeleOpBase {
         // ---
         // blockLimitSwitch = robot.hardwareMap.touchSensor.get("limit");
 
-        sonarTest = robot.hardwareMap.get("sonar");
+        sonarTest = new MaxSonarI2CXL(robot.hardwareMap.i2cDeviceSynch.get("sonar"));
         sonarTest.startAutoPing(100);
     }
 
