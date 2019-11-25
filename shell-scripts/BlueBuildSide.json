@@ -60,9 +60,14 @@
 			"command": "RELEASE FOUNDATION"
 		},
 		{
+			"command": "TURN",
+			"power": "1.0",
+			"angle": "90"
+		},
+		{
 			"command": "MOVE",
 			"power": "0.5",
-			"distance": "52",
+			"distance": "55",
 			"angle": "45",
 			"timeout": "3000"
 		},

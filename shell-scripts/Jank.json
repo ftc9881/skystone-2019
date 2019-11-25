@@ -1,0 +1,23 @@
+{
+	"properties": {
+		"angle unit": "deg",
+		"init vuforia": "false",
+		"turn error": "15",
+		"turn kp": "1",
+		"turn ki": "0.3",
+		"turn kd": "0.1",
+
+		"move kp": "1",
+		"move ki": "0.8",
+		"move kd": "0.2"
+	},
+	"commands": [
+		{
+			"command": "MOVE",
+			"power": "1.0",
+			"distance": "18",
+			"angle": "0",
+			"timeout": "3000"
+		}
+	]
+}
