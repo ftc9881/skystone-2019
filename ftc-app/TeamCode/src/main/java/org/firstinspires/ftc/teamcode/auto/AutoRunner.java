@@ -41,7 +41,7 @@ public class AutoRunner {
     private OpMode opMode;
     private Robot robot;
 
-    private AngleUnit angleUnit;
+    private static AngleUnit angleUnit = AngleUnit.DEGREES;
     private boolean isStopped = false;
 
     public AutoRunner(String name, LinearOpMode opMode) {
@@ -75,6 +75,11 @@ public class AutoRunner {
 
 
     private void execute(Command command) {
+
+        if (command.name.contains("SKIP")) {
+            return;
+        }
+
         switch (command.name) {
 
             case "MOVE": {
@@ -165,7 +170,6 @@ public class AutoRunner {
             }
 
             case "PLACE STONE": {
-                // TODO: Implement stone placing
                 robot.intake.out();
                 while (robot.sensorSystem.stoneIsIn()) {
                     sleep(20);
@@ -256,6 +260,10 @@ public class AutoRunner {
 
     public static void log(Object message) {
         log("Somewhere", message);
+    }
+
+    public static AngleUnit getAngleUnits() {
+        return angleUnit;
     }
 
 

@@ -22,6 +22,7 @@ public class OdometryMove extends Action {
         this.robot = Robot.getInstance();
         this.currentPose = robot.currentPose;
         this.targetPose = targetPose;
+        this.targetPose.r = AutoRunner.getAngleUnits().toRadians(targetPose.r);
         this.powerFactor = power;
     }
 

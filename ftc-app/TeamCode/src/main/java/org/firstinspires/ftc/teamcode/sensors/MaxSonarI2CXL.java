@@ -14,7 +14,7 @@ import static java.lang.Thread.sleep;
  */
 
 @I2cSensor(name = "MaxSonar I2CXL", description = "MaxSonar I2CXL Sensor from MaxBotix", xmlTag = "MaxSonarI2CXL")
-public class MaxSonarI2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch> implements SonarIF, Runnable {
+public class MaxSonarI2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch> implements ISonar, Runnable {
     private Thread _thread;
 
     private boolean _autoPing;

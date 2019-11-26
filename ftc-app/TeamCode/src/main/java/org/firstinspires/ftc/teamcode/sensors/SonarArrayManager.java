@@ -8,7 +8,7 @@ import java.util.Map;
  */
 
 public class SonarArrayManager implements Runnable {
-    private Map<String, SonarIF> _sonars = new LinkedHashMap<String, SonarIF>();
+    private Map<String, ISonar> _sonars = new LinkedHashMap<String, ISonar>();
 
     private boolean _autoPing;
 
@@ -16,7 +16,7 @@ public class SonarArrayManager implements Runnable {
 
     private Thread _thread;
 
-    public void addSonar(String sonarID, SonarIF sonar) {
+    public void addSonar(String sonarID, ISonar sonar) {
         _sonars.put(sonarID, sonar);
     }
 
@@ -43,7 +43,7 @@ public class SonarArrayManager implements Runnable {
     @Override
     public void run() {
         while(_autoPing) {
-            for(Map.Entry<String, SonarIF> sonarEntry : _sonars.entrySet()) {
+            for(Map.Entry<String, ISonar> sonarEntry : _sonars.entrySet()) {
                 sonarEntry.getValue().ping();
 
                 try {

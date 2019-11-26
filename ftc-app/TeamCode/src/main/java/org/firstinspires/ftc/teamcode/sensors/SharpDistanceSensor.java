@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
  * Created by ftc on 11/19/2017.
  */
 
-public class SharpDistanceSensor implements DistanceSensorIF {
+public class SharpDistanceSensor implements IDistanceSensor {
     private AnalogInput _analogInput;
 
     private double _a = 0.069663618;
