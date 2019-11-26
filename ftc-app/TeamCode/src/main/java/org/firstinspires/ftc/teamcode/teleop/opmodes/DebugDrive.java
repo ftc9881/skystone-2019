@@ -4,42 +4,33 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
+import org.firstinspires.ftc.teamcode.teleop.utility.InputManager.Player;
 
 @TeleOp(name = "Debug Drive", group = "Debug")
 @Disabled
 public class DebugDrive extends BaseDrive {
 
-    private Button upButton = new Button();
-    private Button downButton = new Button();
-    private Button leftButton = new Button();
-    private Button rightButton = new Button();
-
     @Override
     protected void initialize() {
         super.initialize();
+        inputManager.addButton("servo up", Player.BOTH, Button.Input.DPAD_UP);
+        inputManager.addButton("servo down", Player.BOTH, Button.Input.DPAD_UP);
     }
 
     @Override
     protected void update() {
         super.update();
 
-//        updateIntake();
-//        updateArm();
-
-        updateConfigureServos();
+//        updateConfigureServos();
         updateTelemetry();
     }
 
     private void updateConfigureServos() {
-        upButton.update(bothGamepads.dpad_up);
-        downButton.update(bothGamepads.dpad_down);
-
-        if (upButton.is(Button.State.DOWN)) {
+        if (inputManager.buttonJustPressed("servo up")) {
             robot.foundationGrabber.leftServo.setPosition( robot.foundationGrabber.leftServo.getPosition() - 0.1);
             robot.foundationGrabber.rightServo.setPosition( robot.foundationGrabber.rightServo.getPosition() - 0.1);
         }
-
-        if (downButton.is(Button.State.DOWN)) {
+        if (inputManager.buttonJustPressed("servo down")) {
             robot.foundationGrabber.leftServo.setPosition( robot.foundationGrabber.leftServo.getPosition() + 0.1);
             robot.foundationGrabber.rightServo.setPosition( robot.foundationGrabber.rightServo.getPosition() + 0.1);
         }
@@ -48,18 +39,6 @@ public class DebugDrive extends BaseDrive {
         telemetry.addData("Right Grab", robot.foundationGrabber.rightServo.getPosition());
     }
 
-    private void updateIntake() {
-        double intakePower = gamepad1.left_trigger - gamepad1.right_trigger * 0.4;
-        robot.intake.left.setPower(intakePower);
-        robot.intake.right.setPower(intakePower);
-    }
-
-    private void updateArm() {
-        double liftPower = (gamepad1.dpad_up ? 1.0 : 0) + (gamepad1.dpad_down ? -1.0 : 0);
-        robot.arm.liftMotor.setPower(-liftPower);
-        double swivelPower = (gamepad1.dpad_left ? -0.5 : 0) + (gamepad1.dpad_right ? 0.5 : 0);
-        robot.arm.swivelMotor.setPower(swivelPower);
-    }
 
     private void updateTelemetry() {
 

@@ -2,86 +2,100 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.teleop.utility.Axis;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
+import org.firstinspires.ftc.teamcode.teleop.utility.InputManager.Player;
+import org.firstinspires.ftc.teamcode.teleop.utility.Trigger;
 
 @TeleOp(name = "Meet 1 Drive", group = "TeleOp")
 public class Meet1Drive extends BaseDrive {
 
     private double deadZone;
-    private double slowModePowerFactor;
-
+    private double slowDrivePowerFactor;
+    private double defaultDrivePowerFactor;
+    private double fastDrivePowerFactor;
     private double outtakePowerFactor;
-
-
-    // TODO: Add button updater helper class
-    private Button foundationGrabButton = new Button();
 
     @Override
     protected void initialize() {
         super.initialize();
 
         deadZone = config.getDouble("dead zone", 0.1);
-        slowModePowerFactor = config.getDouble("slow factor", 0.5);
-
+        slowDrivePowerFactor = config.getDouble("slow drive", 0.4);
+        defaultDrivePowerFactor = config.getDouble("default drive", 0.8);
+        fastDrivePowerFactor = config.getDouble("fast drive", 1.0);
         outtakePowerFactor = config.getDouble("outtake power", 0.4);
+
+        inputManager
+            .addButton("slow", Player.ONE, Button.Input.LEFT_BUMPER)
+            .addButton("fast", Player.ONE, Button.Input.RIGHT_BUMPER)
+            .addAxis("p1 lift", Player.ONE, Button.Input.DPAD_DOWN, Button.Input.DPAD_UP)
+            .addAxis("p1 swivel", Player.ONE, Button.Input.DPAD_LEFT, Button.Input.DPAD_RIGHT)
+
+            .addAxis("p2 lift", Player.TWO, Axis.Input.LEFT_STICK_Y)
+            .addAxis("p2 swivel", Player.TWO, Axis.Input.RIGHT_STICK_X)
+
+            .addAxis("intake", Player.BOTH, Trigger.Input.LEFT_TRIGGER, Trigger.Input.RIGHT_TRIGGER)
+            .addButton("grab", Player.BOTH, Button.Input.B);
     }
 
     @Override
     protected void update() {
-        drivePowerFactor = gamepad1.left_bumper || gamepad1.right_bumper ? slowModePowerFactor : 1.0;
-        super.update();
-
-        foundationGrabButton.update(bothGamepads.b);
+        updateDrivePower();
+        updateDrive();
 
         updateFoundationGrabToggle();
         updateSwivelMove();
         updateLiftMove();
-        intakeFromInput(bothGamepads);
+        updateIntake();
 
         updateTelemetry();
     }
 
+    private void updateDrivePower() {
+        if (inputManager.getButton("slow").isPressed()) {
+            drivePowerFactor = slowDrivePowerFactor;
+        }
+        else if (inputManager.getButton("fast").isPressed()) {
+            drivePowerFactor = fastDrivePowerFactor;
+        }
+        else {
+            drivePowerFactor = defaultDrivePowerFactor;
+        }
+    }
+
     private void updateFoundationGrabToggle() {
-        if (foundationGrabButton.is(Button.State.DOWN)) {
+        if (inputManager.buttonJustPressed("grab")) {
             robot.foundationGrabber.toggle();
         }
     }
 
-    private void intakeFromInput(Gamepad gamepad) {
-        double intakePower = gamepad.left_trigger - gamepad.right_trigger * outtakePowerFactor;
+    private void updateIntake() {
+        double intakePower = inputManager.getAxisValue("intake") * outtakePowerFactor;
         robot.intake.left.setPower(intakePower);
         robot.intake.right.setPower(intakePower);
     }
 
     private void updateSwivelMove() {
-        double playerOneInput = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0);
-        double playerTwoInput = gamepad2.right_stick_x;
-        // Player One's input overrides Player Two
-        double power = Math.abs(playerOneInput) > deadZone ? playerOneInput : playerOneInput + playerTwoInput;
+        double power = inputManager.getAxisValue("p1 swivel") + inputManager.getAxisValue("p2 swivel");
         robot.arm.swivelMotor.setPower(power);
     }
 
     private void updateLiftMove() {
-        boolean playerOneIsInputting = gamepad1.dpad_up || gamepad1.dpad_down;
-        boolean playerTwoIsInputting = Math.abs(gamepad2.left_stick_y) > deadZone;
-
-        if (playerOneIsInputting || playerTwoIsInputting) {
-            moveLift();
+        double liftInput = inputManager.getAxisValue("p1 lift") + inputManager.getAxisValue("p2 lift");
+        if (Math.abs(liftInput) > deadZone) {
+            moveLift(liftInput);
         } else {
             holdLiftPosition();
         }
     }
 
-    private void moveLift() {
+    private void moveLift(double liftInput) {
         if (robot.arm.liftMotor.getMode() != DcMotor.RunMode.RUN_WITHOUT_ENCODER) {
             robot.arm.liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
-
-        double playerOneInput = (gamepad1.dpad_down ? 1 : 0) - (gamepad1.dpad_up ? 1 : 0);
-        double playerTwoInput = gamepad2.left_stick_y;
-        robot.arm.liftMotor.setPower(playerOneInput + playerTwoInput);
+        robot.arm.liftMotor.setPower(liftInput);
     }
 
     private void holdLiftPosition() {
@@ -93,9 +107,7 @@ public class Meet1Drive extends BaseDrive {
     }
 
     private void updateTelemetry() {
-        telemetry.addData("Left Grab", robot.foundationGrabber.leftServo.getPosition());
-        telemetry.addData("Right Grab", robot.foundationGrabber.rightServo.getPosition());
-
+        telemetry.addData("Drive Power Factor", drivePowerFactor);
         telemetry.addData("Lift Position", robot.arm.liftMotor.getCurrentPosition());
         telemetry.addData("Swivel Position", robot.arm.swivelMotor.getCurrentPosition());
         telemetry.update();
