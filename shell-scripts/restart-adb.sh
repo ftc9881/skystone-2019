@@ -1,3 +1,3 @@
 #!/bin/sh
-~/Android/Sdk/platform-tools/adb kill-server
-~/Android/Sdk/platform-tools/adb start-server
+$ANDROID_SDK_HOME/platform-tools/adb kill-server
+$ANDROID_SDK_HOME/platform-tools/adb start-server
