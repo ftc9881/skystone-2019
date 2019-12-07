@@ -25,6 +25,7 @@ public class OpenCV implements VisionSystem {
     @Override
     public void startLook(TargetType targetType) {
         switch (targetType) {
+            case NONE_JUST_RUN_FOREVER:
             case SKYSTONE: {
                 detector = new CustomSkystoneDetector();
                 detector.useDefaults();

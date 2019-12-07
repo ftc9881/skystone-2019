@@ -7,6 +7,7 @@ public class Arm {
 
     public enum State {
         NOTHING(0, 0),
+
         OUT(0,0.2),
         OUT_AND_DOWN(0,0),
         IN(-1000, -0.2),
@@ -54,7 +55,7 @@ public class Arm {
     }
 
     public boolean moveIsDone() {
-        return !liftMotor.isBusy();
+        return !liftMotor.isBusy() && !swivelMotor.isBusy();
     }
 
     public void stop() {

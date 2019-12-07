@@ -11,7 +11,7 @@ public class VisionTestTeleOp extends TeleOpBase {
     @Override
     protected void initialize() {
         robot.visionSystem.initialize();
-        robot.visionSystem.startLook(VisionSystem.TargetType.NONE_JUST_RUN_FOREVER);
+        robot.visionSystem.startLook(VisionSystem.TargetType.SKYSTONE);
     }
 
     @Override

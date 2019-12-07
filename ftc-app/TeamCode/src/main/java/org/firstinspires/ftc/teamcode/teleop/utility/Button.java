@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop.utility;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+
 /**
  * The Button provides a way to get the moment of press or release.
  * However, the button's state must be updated every frame.
@@ -34,7 +35,7 @@ public class Button implements IInput {
     public Button(Gamepad gamepad, Input input) {
         this.gamepad = gamepad;
         this.input = input;
-        state = State.NOT_INITIALIZED;
+        this.state = State.NOT_INITIALIZED;
     }
 
     State update() {

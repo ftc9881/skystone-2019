@@ -5,10 +5,10 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import org.firstinspires.ftc.teamcode.sensors.MaxSonarI2CXL;
-import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.sensors.SharpDistanceSensor;
+import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp
 public class SensorTest extends TeleOpBase {

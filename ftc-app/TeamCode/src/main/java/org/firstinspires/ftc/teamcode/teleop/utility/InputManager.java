@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.teleop.utility;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class InputManager {
@@ -12,19 +15,24 @@ public class InputManager {
     private Gamepad gamepad1;
     private Gamepad gamepad2;
 
+    private OpMode opMode;
+
     private GamepadCombiner gamepadCombiner;
     private Gamepad bothGamepads;
 
-    private Map<String, Button> buttonMap;
-    private Map<String, Trigger> triggerMap;
-    private Map<String, Axis> axisMap;
+    private Map<String, Button> buttonMap = new HashMap<>();
+    private Map<String, Trigger> triggerMap = new HashMap<>();
+    private Map<String, Axis> axisMap = new HashMap<>();
 
     public InputManager(OpMode opMode) {
-        gamepad1 = opMode.gamepad1;
-        gamepad2 = opMode.gamepad2;
+        this.gamepad1 = opMode.gamepad1;
+        this.gamepad2 = opMode.gamepad2;
+
+        this.opMode = opMode;
 
         gamepadCombiner = new GamepadCombiner();
         gamepadCombiner.add(gamepad1).add(gamepad2);
+        bothGamepads = gamepadCombiner.getCombinedGamepadOutput();
     }
 
     void update() {
@@ -46,6 +54,7 @@ public class InputManager {
 
     public InputManager addAxis(String name, Player player, Axis.Input input) {
         axisMap.put(name, new Axis(getGamepadFor(player), input));
+        AutoRunner.log(name, input);
         return this;
     }
 

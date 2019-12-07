@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import org.firstinspires.ftc.teamcode.teleop.utility.InputManager.Player;
 import org.firstinspires.ftc.teamcode.teleop.utility.Trigger;
 
-@TeleOp(name = "Meet 1 Drive", group = "TeleOp")
-public class Meet1Drive extends BaseDrive {
+@TeleOp
+public class Meet2Drive extends BaseDrive {
 
     private double deadZone;
     private double slowDrivePowerFactor;
@@ -110,6 +110,10 @@ public class Meet1Drive extends BaseDrive {
         telemetry.addData("Drive Power Factor", drivePowerFactor);
         telemetry.addData("Lift Position", robot.arm.liftMotor.getCurrentPosition());
         telemetry.addData("Swivel Position", robot.arm.swivelMotor.getCurrentPosition());
+
+        telemetry.addData("input p1 lift", inputManager.getAxisValue("p1 lift"));
+        telemetry.addData("input slow", inputManager.getButton("slow").isPressed());
+        telemetry.addData("input intake", inputManager.getAxisValue("intake"));
         telemetry.update();
     }
 
