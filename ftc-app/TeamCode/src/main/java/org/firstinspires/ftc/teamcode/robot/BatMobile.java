@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class BatMobile extends Robot {
 
-    private BatMobile(OpMode opMode) {
+    private BatMobile(LinearOpMode opMode) {
         super(opMode);
 
         RobotSystemFactory robotFactory = new RobotSystemFactory(opMode.hardwareMap);

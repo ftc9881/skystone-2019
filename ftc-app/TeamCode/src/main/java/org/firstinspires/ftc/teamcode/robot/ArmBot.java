@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 public class ArmBot extends Robot {
@@ -7,7 +8,7 @@ public class ArmBot extends Robot {
     // Singleton pattern; constructor is private and enable only one instance at a time
     private static ArmBot instance;
 
-    public static ArmBot newInstance(OpMode opMode) {
+    public static ArmBot newInstance(LinearOpMode opMode) {
         instance = new ArmBot(opMode);
         return instance;
     }
@@ -25,7 +26,7 @@ public class ArmBot extends Robot {
     public SensorSystem sensorSystem;
     public OdometrySystem odometrySystem;
 
-    private ArmBot(OpMode opMode) {
+    private ArmBot(LinearOpMode opMode) {
         super(opMode);
 
         RobotSystemFactory robotFactory = new RobotSystemFactory(opMode.hardwareMap);

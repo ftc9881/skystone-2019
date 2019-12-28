@@ -35,7 +35,7 @@ public class AutoRunner {
     private static final long SLEEP_LOOP_TIME = 20;
 
     private AutoOpConfiguration config;
-    private OpMode opMode;
+    private LinearOpMode opMode;
     private Robot robot;
 
     private static AngleUnit angleUnit = AngleUnit.DEGREES;
@@ -62,11 +62,11 @@ public class AutoRunner {
     public void run() {
         for (Command command : config.commands) {
             logAndTelemetry(TAG, "Command: " + command.name);
-            execute(command);
-            if (isStopped) {
+            if (isStopped || !opMode.opModeIsActive()) {
                 logAndTelemetry(TAG, "Early stop");
                 return;
             }
+            execute(command);
         }
     }
 

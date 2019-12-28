@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -16,7 +17,7 @@ public class Robot {
     // Singleton pattern; constructor is private and enable only one instance at a time
     private static Robot instance;
 
-    public static Robot newInstance(OpMode opMode) {
+    public static Robot newInstance(LinearOpMode opMode) {
         instance = new Robot(opMode);
         return instance;
     }
@@ -27,7 +28,7 @@ public class Robot {
 
 
     private AngleUnit angleUnit = AngleUnit.RADIANS;
-    private OpMode opMode;
+    private LinearOpMode opMode;
 
     public HardwareMap hardwareMap;
 
@@ -41,7 +42,7 @@ public class Robot {
 
     private BNO055IMU imu;
 
-    protected Robot(OpMode opMode) {
+    protected Robot(LinearOpMode opMode) {
         this.opMode = opMode;
         hardwareMap = opMode.hardwareMap;
 
