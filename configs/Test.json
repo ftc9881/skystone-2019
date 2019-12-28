@@ -1,12 +1,17 @@
 {
 	"properties": {
-		"angle unit": "deg",
 		"init vuforia": "false",
-		"turn error": "15",
-		"turn kp": "1",
+		"angle unit": "deg",
+
+		"turn error": "10",
+		"turn kp": "0.9",
 		"turn ki": "0.3",
 		"turn kd": "0.1",
 
+		"move clicks error": "50",
+		"move base power": "0.1",
+		"move accelerate clicks": "500",
+		"move decelerate clicks": "1000",
 		"move kp": "1",
 		"move ki": "0.8",
 		"move kd": "0.2"
@@ -14,97 +19,30 @@
 
 	"commands": [
 		{
-			"command": "MOVE",
-			"power": "1.0",
-			"distance": "18",
-			"angle": "180",
-			"timeout": "3000"
-		},
-		{
-			"command": "MOVE",
-			"power": "0.3",
-			"distance": "10",
-			"angle": "180",
-			"timeout": "3000"
-		},
-		{
-			"command": "MOVE ARM",
-			"state": "up and out"
-		},
-		{
-			"command": "GRAB FOUNDATION"
-		},
-		{
-			"command": "SLEEP",
-			"time": "2000"
-		},
-		{
-			"command": "MOVE",
-			"power": "1.0",
-			"distance": "35",
-			"angle": "35",
-			"timeout": "3000"
-		},
-		{
 			"command": "TURN",
 			"power": "1.0",
-			"angle": "-90"
+			"angle": "90",
+			"timeout": "5000"
 		},
+	{ "command": "SLEEP", "time":"1000" },
+
+	{ "command": "STOP" },
 		{
 			"command": "MOVE",
-			"power": "0.5",
-			"distance": "20",
-			"angle": "180",
-			"timeout": "3000"
-		},
-		{
-			"command": "RELEASE FOUNDATION"
-		},
-		{
-			"command": "MOVE ARM",
-			"state": "down and out"
-		},
-		{
-			"command": "MOVE",
-			"power": "0.5",
-			"distance": "55",
-			"angle": "45",
-			"timeout": "3000"
-		},
-		{
-			"command": "MOVE",
-			"power": "0.5",
-			"distance": "5",
+			"power": "1.0",
+			"distance": "40",
 			"angle": "0",
-			"timeout": "1000"
+			"timeout": "5000"
 		},
-
+	{ "command": "SLEEP", "time":"1000" },
 		{
-			"command": "TURN",
+			"command": "MOVE",
 			"power": "1.0",
-			"angle": "-135"
+			"distance": "40",
+			"angle": "180",
+			"timeout": "5000"
 		},
-		{
-			"command": "MOVE ARM",
-			"state": "out"
-		},
-		{
-			"command": "GRAB STONE",
-			"distance": "10",
-			"timeout": "1000",
-			"power": "0.4"
-		},
-		{
-			"command": "MOVE ARM",
-			"state": "in"
-		},
-		{
-			"command": "PLACE STONE"
-		},
-
-
-
-
+	{ "command": "SLEEP", "time":"1000" },
 	{ "command": "STOP" },
 	{ "command": "SLEEP" },
 		{ "command": "STOP" }

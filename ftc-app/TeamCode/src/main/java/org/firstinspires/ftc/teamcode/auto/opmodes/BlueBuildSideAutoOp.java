@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 
 @Autonomous(name = "Blue Build Side", group = "TeamCode")
+@Disabled
 public class BlueBuildSideAutoOp extends LinearOpMode {
 
     @Override

@@ -8,15 +8,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
 import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
-import org.firstinspires.ftc.teamcode.auto.endConditions.StoneInIntake;
 import org.firstinspires.ftc.teamcode.auto.endConditions.LookFor;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
-import org.firstinspires.ftc.teamcode.robot.Arm;
-import org.firstinspires.ftc.teamcode.robot.FoundationGrabber;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
@@ -144,76 +141,6 @@ public class AutoRunner {
                     .add(skystoneCondition);
 
                 runTask(relativeMove, conditions);
-                break;
-            }
-
-            case "GRAB STONE": {
-                robot.intake.in();
-
-                Angle angle = new Angle(0, angleUnit);
-                double maxDistance = command.getDouble("distance", 4);
-                double timeoutMs = command.getDouble("timeout", 1 * 1000.0);
-                double powerFactor = command.getDouble("power", 0.5);
-
-                RelativeMove relativeMove = new RelativeMove(maxDistance, angle, powerFactor);
-                Timeout timeoutCondition = new Timeout(timeoutMs);
-                StoneInIntake intakeCondition = new StoneInIntake();
-                CombinedConditions conditions = new CombinedConditions();
-                conditions
-                        .add(timeoutCondition)
-                        .add(intakeCondition);
-
-                runTask(relativeMove, conditions);
-
-                robot.intake.stop();
-                break;
-            }
-
-            case "PLACE STONE": {
-                robot.intake.out();
-                while (robot.sensorSystem.stoneIsIn()) {
-                    sleep(20);
-                }
-                robot.intake.stop();
-                break;
-            }
-
-            case "MOVE ARM": {
-                Arm.State state;
-                String rawStateValue = command.getString("state", "nothing").toUpperCase();
-                switch (rawStateValue) {
-                    case "OUT": {
-                        state = Arm.State.OUT;
-                        break;
-                    }
-                    case "IN": {
-                        state = Arm.State.IN;
-                        break;
-                    }
-                    case "UP AND OUT": {
-                        state = Arm.State.UP_AND_OUT;
-                        break;
-                    }
-                    case "DOWN AND OUT": {
-                        state = Arm.State.OUT_AND_DOWN;
-                        break;
-                    }
-                    default: {
-                        state = Arm.State.NOTHING;
-                        break;
-                    }
-                }
-                robot.arm.move(state);
-                break;
-            }
-
-            case "GRAB FOUNDATION": {
-                robot.foundationGrabber.set(FoundationGrabber.State.GRABBING);
-                break;
-            }
-
-            case "RELEASE FOUNDATION": {
-                robot.foundationGrabber.set(FoundationGrabber.State.RELEASED);
                 break;
             }
 

@@ -1,0 +1,98 @@
+{
+	"properties": {
+		"angle unit": "deg",
+		"init vuforia": "false",
+		"turn error": "5",
+
+		"turn kp": "0.75",
+		"turn ki": "0.3",
+		"turn kd": "0.15",
+
+		"stone turn kp": "0.002",
+		"stone turn ki": "0.003",
+		"stone turn kd": "0.00",
+
+		"move kp": "1",
+		"move ki": "0.8",
+		"move kd": "0.2"
+	},
+
+	"init": [ ],
+
+	"commands": [
+		{
+			"command": "MOVE ARM",
+			"state": "init"
+		},
+		{
+			"command": "SLEEP",
+			"time": "2000"
+		},
+		{
+			"command": "IDENTIFY SKYSTONE POSITION",
+			"threshold": "10",
+			"left": "60",
+			"right": "100"
+		},
+		{
+			"command": "MOVE",
+			"angle": "0",
+			"distance": "5",
+			"timeout": "3000",
+			"power": "0.5"
+		},
+
+		{
+			"command": "TURN TO SKYSTONE",
+			"angle if left": "-54",
+			"angle if center": "-43",
+			"angle if right": "-30",
+			"power": "0.5",
+			"timeout": "5000"
+		},
+		{
+			"command": "MOVE ARM",
+			"state": "intake"
+		},
+
+		{ 
+			"command": "INTAKE",
+			"power": "1.0"
+		},
+		{
+			"command": "MOVE",
+			"distance": "35",
+			"timeout": "3000",
+			"power": "0.3"
+		},
+		{
+			"command": "INTAKE",
+			"power": "0.1"
+		},
+		{
+			"command": "MOVE",
+			"angle": "180",
+			"distance": "12",
+			"timeout": "3000",
+			"power": "0.5"
+		},
+		{
+			"command": "TURN",
+			"angle": "90",
+			"timeout": "3000",
+			"power": "0.4"
+		},
+		{
+			"command": "MOVE",
+			"angle": "0",
+			"distance": "30",
+			"timeout": "5000",
+			"power": "0.5"
+		},
+		{ 
+			"command": "INTAKE",
+			"power": "-0.2"
+		},
+		{ "command": "SLEEP", "time":"1000" }
+	]
+}

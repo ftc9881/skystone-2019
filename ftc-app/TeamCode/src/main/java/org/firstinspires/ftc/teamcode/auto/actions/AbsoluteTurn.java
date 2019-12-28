@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
+import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.math.Angle;
@@ -9,6 +11,8 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
+import java.util.Random;
+
 public class AbsoluteTurn extends Action {
 
     Robot robot;
@@ -16,6 +20,7 @@ public class AbsoluteTurn extends Action {
     private double targetAngle;
     private double currentRadians;
     private double powerFactor;
+    private double basePower;
     private Angle errorRange;
 
     public AbsoluteTurn(Angle angleToTurn, double powerFactor) {
@@ -25,6 +30,7 @@ public class AbsoluteTurn extends Action {
 
         AutoOpConfiguration config = AutoOpConfiguration.getInstance();
         errorRange = config.properties.getAngle("turn error", 10, AngleUnit.DEGREES);
+        basePower = config.properties.getDouble("turn base power", 0.1);
         double kP = config.properties.getDouble("turn kp", 0);
         double kI = config.properties.getDouble("turn ki", 0);
         double kD = config.properties.getDouble("turn kd", 0);
@@ -46,11 +52,15 @@ public class AbsoluteTurn extends Action {
 
     @Override
     protected void insideRun() {
+        double power = getCorrectedPower();
+        robot.driveTrain.drive(new Pose(0, 0, power));
+        AutoRunner.log("TurnPower", power);
+    }
+
+    private double getCorrectedPower() {
         currentRadians = robot.getImuHeading().getRadians();
-        double errorCorrectedPower = pidController.getCorrectedOutput(currentRadians);
-        Pose drivePose = new Pose(0, 0, errorCorrectedPower);
-        robot.driveTrain.drive(drivePose);
-        AutoRunner.log("TurnPower", errorCorrectedPower);
+        double pidCorrectedPower = pidController.getCorrectedOutput(currentRadians);
+        return Range.clip(pidCorrectedPower, basePower, 1.0);
     }
 
     @Override

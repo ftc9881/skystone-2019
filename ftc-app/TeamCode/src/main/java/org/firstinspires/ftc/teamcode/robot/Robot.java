@@ -32,29 +32,24 @@ public class Robot {
     public HardwareMap hardwareMap;
 
     public DriveTrain driveTrain;
-    public Arm arm;
-    public Intake intake;
-    public FoundationGrabber foundationGrabber;
+
+    public VisionSystem visionSystem;
     public SensorSystem sensorSystem;
     public OdometrySystem odometrySystem;
-    public VisionSystem visionSystem;
 
     public Pose currentPose;
 
     private BNO055IMU imu;
 
-    private Robot(OpMode opMode) {
+    protected Robot(OpMode opMode) {
         this.opMode = opMode;
         hardwareMap = opMode.hardwareMap;
 
         RobotSystemFactory robotFactory = new RobotSystemFactory(opMode.hardwareMap);
         visionSystem = robotFactory.visionSystem();
-        driveTrain = robotFactory.driveTrain();
-        arm = robotFactory.arm();
-        intake = robotFactory.intakeSystem();
-        foundationGrabber = robotFactory.foundationGrabber();
         sensorSystem = robotFactory.sensorSystem();
         odometrySystem = robotFactory.odometrySystem();
+        driveTrain = robotFactory.driveTrain();
     }
 
     public void initializeImu(AngleUnit angleUnit) {

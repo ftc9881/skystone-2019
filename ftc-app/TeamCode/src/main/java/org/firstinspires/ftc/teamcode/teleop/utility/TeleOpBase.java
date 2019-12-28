@@ -8,7 +8,7 @@ public abstract class TeleOpBase extends LinearOpMode {
 
     protected Robot robot;
     protected Configuration config;
-    protected InputManager inputManager;
+//    protected InputManager inputManager;
 
     protected abstract void initialize();
     protected abstract void update();
@@ -17,12 +17,12 @@ public abstract class TeleOpBase extends LinearOpMode {
     public void runOpMode() {
         robot = Robot.newInstance(this);
         config = new Configuration("TeleOp");
-        inputManager = new InputManager(this);
+//        inputManager = new InputManager(this);
         initialize();
 
         waitForStart();
         while (opModeIsActive()) {
-            inputManager.update();
+//            inputManager.update();
             update();
         }
 

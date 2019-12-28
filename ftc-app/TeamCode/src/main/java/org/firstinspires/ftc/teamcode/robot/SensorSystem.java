@@ -14,7 +14,7 @@ public class SensorSystem{
 //        sonar = hardwareMap.get(MaxSonarI2CXL.class, "sonar");
 //        sonar.setI2cAddress(I2cAddr.create8bit(0xE0));
 //        sonarSensor.startAutoPing(100);
-        stoneSwitch = hardwareMap.touchSensor.get("limit");
+//        stoneSwitch = hardwareMap.touchSensor.get("limit");
     }
 
     public boolean stoneIsIn() {

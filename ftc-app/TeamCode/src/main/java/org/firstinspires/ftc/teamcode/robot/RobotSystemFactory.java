@@ -27,10 +27,6 @@ public class RobotSystemFactory {
         return new Intake(hardwareMap);
     }
 
-    public FoundationGrabber foundationGrabber() {
-        return new FoundationGrabber(hardwareMap);
-    }
-
     public SensorSystem sensorSystem() {
         return new SensorSystem(hardwareMap);
     }
