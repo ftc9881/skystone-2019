@@ -3,13 +3,14 @@
 		"init vuforia": "false",
 		"angle unit": "deg",
 
-		"turn error": "10",
-		"turn kp": "0.9",
-		"turn ki": "0.3",
+		"turn error": "1",
+		"turn base power": "0.2",
+		"turn kp": "1.0",
+		"turn ki": "0",
 		"turn kd": "0.1",
 
 		"move clicks error": "50",
-		"move base power": "0.1",
+		"move base power": "0.2",
 		"move accelerate clicks": "500",
 		"move decelerate clicks": "1000",
 		"move kp": "1",
@@ -21,16 +22,25 @@
 		{
 			"command": "TURN",
 			"power": "1.0",
-			"angle": "90",
+			"angle": "180",
 			"timeout": "5000"
 		},
 	{ "command": "SLEEP", "time":"1000" },
-
+		{
+			"command": "TURN",
+			"power": "1.0",
+			"angle": "0",
+			"timeout": "5000"
+		},
+	{ "command": "SLEEP", "time":"1000" },
 	{ "command": "STOP" },
+
+
+
 		{
 			"command": "MOVE",
 			"power": "1.0",
-			"distance": "40",
+			"distance": "20",
 			"angle": "0",
 			"timeout": "5000"
 		},
@@ -38,7 +48,7 @@
 		{
 			"command": "MOVE",
 			"power": "1.0",
-			"distance": "40",
+			"distance": "20",
 			"angle": "180",
 			"timeout": "5000"
 		},

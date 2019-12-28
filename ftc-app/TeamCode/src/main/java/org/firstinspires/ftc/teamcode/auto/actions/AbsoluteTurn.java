@@ -11,8 +11,6 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
-import java.util.Random;
-
 public class AbsoluteTurn extends Action {
 
     Robot robot;
@@ -52,15 +50,18 @@ public class AbsoluteTurn extends Action {
 
     @Override
     protected void insideRun() {
-        double power = getCorrectedPower();
+        double power = getCorrectedPower() * powerFactor;
         robot.driveTrain.drive(new Pose(0, 0, power));
         AutoRunner.log("TurnPower", power);
+        Angle currentAngle = new Angle(currentRadians, AngleUnit.RADIANS);
+        AutoRunner.log("Angle", currentAngle.getDegrees());
     }
 
     private double getCorrectedPower() {
         currentRadians = robot.getImuHeading().getRadians();
         double pidCorrectedPower = pidController.getCorrectedOutput(currentRadians);
-        return Range.clip(pidCorrectedPower, basePower, 1.0);
+        int sign = pidCorrectedPower > 0 ? 1 : -1;
+        return Range.clip(Math.abs(pidCorrectedPower), basePower, 1.0) * sign;
     }
 
     @Override
