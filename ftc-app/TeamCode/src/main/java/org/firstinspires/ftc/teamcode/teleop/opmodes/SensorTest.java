@@ -6,6 +6,7 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import org.firstinspires.ftc.teamcode.sensors.MaxSonarI2CXL;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 
 import org.firstinspires.ftc.teamcode.sensors.SharpDistanceSensor;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
@@ -17,18 +18,18 @@ public class SensorTest extends TeleOpBase {
 
     @Override
     protected void initialize() {
-        sharpDistanceSensor = robot.hardwareMap.get(SharpDistanceSensor.class, "sharp");
-
-        sonarTest = robot.hardwareMap.get(MaxSonarI2CXL.class, "sonar");
-        sonarTest.startAutoPing(100);
+        AnalogInput sharpAnalogInput = robot.hardwareMap.analogInput.get("sharp");
+        sharpDistanceSensor = new SharpDistanceSensor(sharpAnalogInput);
+//        sonarTest = robot.hardwareMap.get(MaxSonarI2CXL.class, "sonar");
+//        sonarTest.startAutoPing(100);
     }
 
     @Override
     protected void update() {
         telemetry.addData("IR-LED Sensor Distance: ", sharpDistanceSensor.getDistance());
 
-        telemetry.addData("Sonar Connection Info", sonarTest.getConnectionInfo());
-        telemetry.addData("Sonar Distance: ", sonarTest.getDistance());
+//        telemetry.addData("Sonar Connection Info", sonarTest.getConnectionInfo());
+//        telemetry.addData("Sonar Distance: ", sonarTest.getDistance());
 
         telemetry.update();
     }
