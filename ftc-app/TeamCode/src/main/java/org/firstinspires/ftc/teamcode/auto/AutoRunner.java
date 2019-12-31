@@ -11,8 +11,11 @@ import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
 import org.firstinspires.ftc.teamcode.auto.endConditions.LookFor;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
+import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
+import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
+import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
@@ -20,6 +23,10 @@ import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 import org.firstinspires.ftc.teamcode.auto.actions.OdometryMove;
 import org.firstinspires.ftc.teamcode.auto.endConditions.Timeout;
+import org.opencv.core.Rect;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.os.SystemClock.sleep;
 
@@ -41,6 +48,8 @@ public class AutoRunner {
     private static AngleUnit angleUnit = AngleUnit.DEGREES;
     private boolean isStopped = false;
 
+    private VisionSystem.SkystonePosition skystonePosition;
+
     public AutoRunner(String name, LinearOpMode opMode) {
         this.opMode = opMode;
 
@@ -50,9 +59,9 @@ public class AutoRunner {
         robot = Robot.newInstance(opMode);
         robot.initializeImu(angleUnit);
 
-        boolean initializeVision = config.properties.getBoolean("init vision", false);
-        if (initializeVision) {
-            robot.visionSystem.initialize();
+        for (Command command : config.initCommands) {
+            logAndTelemetry(TAG, "Init Command: " + command.name);
+            execute(command);
         }
 
         logAndTelemetry(TAG, "Ready to run");
@@ -78,6 +87,35 @@ public class AutoRunner {
         }
 
         switch (command.name) {
+
+            case "IDENTIFY SKYSTONE": {
+                OpenCV openCV = new OpenCV();
+                openCV.initialize();
+                openCV.startLook(VisionSystem.TargetType.SKYSTONE);
+
+                List<Integer> foundPositions = new ArrayList<>();
+                double stdDev = 999;
+                int centerX = 0;
+                while (centerX == 0 && stdDev > 5) {
+                    Rect foundRect = openCV.detector.foundRectangle();
+                    centerX = foundRect.x + foundRect.width / 2;
+                    foundPositions.add(centerX);
+                    stdDev = GeneralMath.standardDeviation(foundPositions);
+                }
+
+                int averageCenterX = (int) GeneralMath.mean(foundPositions);
+                int skystoneLeftBound = config.properties.getInt("skystone left", 0);
+                int skystoneRightBound = config.properties.getInt("skystone right", 0);
+                if (averageCenterX < skystoneLeftBound) {
+                    skystonePosition = VisionSystem.SkystonePosition.LEFT;
+                } else if (averageCenterX > skystoneRightBound) {
+                    skystonePosition = VisionSystem.SkystonePosition.RIGHT;
+                } else {
+                    skystonePosition = VisionSystem.SkystonePosition.CENTER;
+                }
+
+                break;
+            }
 
             case "MOVE": {
                 Angle angle = command.getAngle("angle", 0, angleUnit);
