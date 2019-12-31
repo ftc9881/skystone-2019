@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.auto.structure;
 import android.os.Environment;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -33,6 +34,7 @@ public class AutoOpConfiguration {
 
     private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
     public ArrayList<Command> commands;
+    public ArrayList<Command> initCommands;
     public Command properties;
 
     private AutoOpConfiguration(String fileName) {
@@ -40,15 +42,9 @@ public class AutoOpConfiguration {
         try {
             String fileContents = readFile(fileName);
             JSONObject config = new JSONObject(fileContents);
-            commands = new ArrayList();
 
-            JSONArray allCommandsJson = config.getJSONArray("commands");
-
-            for (int i = 0; i < allCommandsJson.length(); i++) {
-                commands.add(new Command(allCommandsJson.getJSONObject(i)));
-            }
-
-            // create properties
+            commands = getCommandList(config, "commands");
+            initCommands = getCommandList(config, "init");
             properties = new Command("PROPERTIES", config.getJSONObject("properties"));
 
         } catch (Exception ex) {
@@ -65,6 +61,16 @@ public class AutoOpConfiguration {
             line = br.readLine();
             sb.append(line);
         } while (line != null);
+        br.close();
         return sb.toString();
+    }
+
+    private ArrayList<Command> getCommandList(JSONObject config, String name) throws JSONException {
+        ArrayList<Command> commandList = new ArrayList<>();
+        JSONArray allCommandsJson = config.getJSONArray(name);
+        for (int i = 0; i < allCommandsJson.length(); i++) {
+            commandList.add(new Command(allCommandsJson.getJSONObject(i)));
+        }
+        return commandList;
     }
 }

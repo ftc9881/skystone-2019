@@ -28,7 +28,7 @@ public class Robot {
 
 
     private AngleUnit angleUnit = AngleUnit.RADIANS;
-    private LinearOpMode opMode;
+    public LinearOpMode opMode;
 
     public HardwareMap hardwareMap;
 
@@ -40,10 +40,13 @@ public class Robot {
 
     public Pose currentPose;
 
-    private BNO055IMU imu;
+    public BNO055IMU imu;
 
     protected Robot(LinearOpMode opMode) {
         this.opMode = opMode;
+        opMode.msStuckDetectInit = 3000;
+        opMode.msStuckDetectInitLoop = 3000;
+
         hardwareMap = opMode.hardwareMap;
 
         RobotSystemFactory robotFactory = new RobotSystemFactory(opMode.hardwareMap);

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp(name = "Debug Drive", group = "Debug")
@@ -19,6 +20,8 @@ public class DebugDrive extends BaseDrive {
     @Override
     protected void initialize() {
         super.initialize();
+
+        robot.initializeImu(AngleUnit.DEGREES);
 
         servoName = config.getString("debugServo", "servo");
         servo = hardwareMap.servo.get(servoName);
@@ -48,6 +51,14 @@ public class DebugDrive extends BaseDrive {
 
 
     private void updateTelemetry() {
+        telemetry.addData("LF", robot.driveTrain.lf.getCurrentPosition());
+        telemetry.addData("LB", robot.driveTrain.lb.getCurrentPosition());
+        telemetry.addData("RF", robot.driveTrain.rf.getCurrentPosition());
+        telemetry.addData("RB", robot.driveTrain.rb.getCurrentPosition());
+
+        telemetry.addData("firstAngle", robot.imu.getAngularOrientation().firstAngle);
+        telemetry.addData("secondAngle", robot.imu.getAngularOrientation().secondAngle);
+        telemetry.addData("thirdAngle", robot.imu.getAngularOrientation().thirdAngle);
 
         telemetry.update();
     }
