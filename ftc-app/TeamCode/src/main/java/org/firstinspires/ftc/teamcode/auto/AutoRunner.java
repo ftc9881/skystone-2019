@@ -48,7 +48,7 @@ public class AutoRunner {
     private static AngleUnit angleUnit = AngleUnit.DEGREES;
     private boolean isStopped = false;
 
-    private VisionSystem.SkystonePosition skystonePosition;
+    private VisionSystem.SkystonePosition skystonePosition = VisionSystem.SkystonePosition.NONE;
 
     public AutoRunner(String name, LinearOpMode opMode) {
         this.opMode = opMode;
@@ -64,6 +64,7 @@ public class AutoRunner {
             execute(command);
         }
 
+        opMode.telemetry.addData("Skystone Position", skystonePosition.name());
         logAndTelemetry(TAG, "Ready to run");
     }
 
@@ -96,11 +97,13 @@ public class AutoRunner {
                 List<Integer> foundPositions = new ArrayList<>();
                 double stdDev = 999;
                 int centerX = 0;
-                while (centerX == 0 && stdDev > 5) {
+                while (centerX == 0 || stdDev > 5) {
                     Rect foundRect = openCV.detector.foundRectangle();
                     centerX = foundRect.x + foundRect.width / 2;
                     foundPositions.add(centerX);
                     stdDev = GeneralMath.standardDeviation(foundPositions);
+
+                    logAndTelemetry("SkystonePixel", centerX);
                 }
 
                 int averageCenterX = (int) GeneralMath.mean(foundPositions);

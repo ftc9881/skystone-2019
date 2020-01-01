@@ -3,19 +3,24 @@ package org.firstinspires.ftc.teamcode.auto.vision;
 import android.content.Context;
 
 import com.disnodeteam.dogecv.detectors.DogeCVDetector;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.opencv.core.Rect;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 public class OpenCV implements VisionSystem {
 
     public static final Rect CAMERA_RECT = new Rect(0, 0, 320, 240);
 
     private OpenCvCamera camera;
-    DogeCVDetector detector;
+    public CustomSkystoneDetector detector;
 
     @Override
     public void initialize() {
@@ -48,9 +53,16 @@ public class OpenCV implements VisionSystem {
     }
 
     private void initializeCamera() {
-        Context context = Robot.getInstance().hardwareMap.appContext;
+        HardwareMap hardwareMap = Robot.getInstance().hardwareMap;
+        Context context = hardwareMap.appContext;
         int cameraMonitorViewId = context.getResources().getIdentifier("cameraMonitorViewId", "id", context.getPackageName());
-        camera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+
+        // Phone Camera
+//        camera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+
+        // USB Camera
+        camera = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+
         camera.openCameraDevice();
     }
 

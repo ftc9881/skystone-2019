@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
@@ -43,7 +44,8 @@ public class RelativeMove extends Action {
 
     @Override
     protected void onRun() {
-        robot.driveTrain.resetEncoders();
+        robot.driveTrain.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.driveTrain.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         targetClicks = distance * CLICKS_PER_INCH;
         AutoRunner.log("TargetClicks", targetClicks);
 

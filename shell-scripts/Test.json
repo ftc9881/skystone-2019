@@ -22,7 +22,7 @@
 	},
 
 	"init": [
-		{ "command": "IDENTIFY SKYSTONE" }
+		{ "command": "FIND SKYSTONE" }
 	],
 
 	"commands": [
