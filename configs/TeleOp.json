@@ -3,9 +3,8 @@
 	"slow factor": "0.4",
 	"outtake power": "1.0",
 
-	"lift power": "0.4",
+	"debugServo": "foundation",
 
 	"blockDetectDist": 21,
 	"blockDetectMargin": 2
-	"debugServo": "servo"
 }
