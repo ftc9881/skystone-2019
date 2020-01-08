@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.auto.actions.ExtendElevatorArm;
+import org.firstinspires.ftc.teamcode.auto.actions.LiftElevator;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
 import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
@@ -51,6 +53,7 @@ public class AutoRunner {
     private VisionSystem.SkystonePosition skystonePosition = VisionSystem.SkystonePosition.NONE;
 
     public AutoRunner(String name, LinearOpMode opMode) {
+        opMode.msStuckDetectStop = 10000;
         this.opMode = opMode;
 
         config = AutoOpConfiguration.newInstance(name + ".json");
@@ -119,14 +122,32 @@ public class AutoRunner {
 
                 break;
             }
+            case "SKYSTONE MOVE": {
+                Angle moveAngle = command.getAngle("move angle", 0, angleUnit);
+                Angle targetAngle = command.getAngle("target angle", 0, angleUnit);
+                int distance = (skystonePosition.ordinal()-1) * config.properties.getInt("stone distance", 4);
+                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
+                double powerFactor = command.getDouble("power", 0.5);
+                int accelerateClicks = command.getInt("ramp up", 0);
+                int decelerateClicks = command.getInt("ramp down", 0);
+
+                Action relativeMove = new RelativeMove(distance, moveAngle, targetAngle, powerFactor, accelerateClicks, decelerateClicks);
+                IEndCondition timeoutCondition = new Timeout(timeoutMs);
+
+                runTask(relativeMove, timeoutCondition);
+                break;
+            }
 
             case "MOVE": {
-                Angle angle = command.getAngle("angle", 0, angleUnit);
+                Angle moveAngle = command.getAngle("move angle", 0, angleUnit);
+                Angle targetAngle = command.getAngle("target angle", 0, angleUnit);
                 double distance = command.getDouble("distance", 5.0);
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
                 double powerFactor = command.getDouble("power", 0.5);
+                int accelerateClicks = command.getInt("ramp up", 0);
+                int decelerateClicks = command.getInt("ramp down", 0);
 
-                Action relativeMove = new RelativeMove(distance, angle, powerFactor);
+                Action relativeMove = new RelativeMove(distance, moveAngle, targetAngle, powerFactor, accelerateClicks, decelerateClicks);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
 
                 runTask(relativeMove, timeoutCondition);
@@ -166,25 +187,27 @@ public class AutoRunner {
                 break;
             }
 
-            case "SEARCH SKYSTONE": {
-                // strafe while looking
-                Angle angle = command.getAngle("angle", 0, angleUnit);
-                double maxDistance = command.getDouble("distance", 30);
+
+            case "EXTEND ELEVATOR ARM": {
+                int clicks = command.getInt("clicks", 0);
+                double powerFactor = command.getDouble("power factor", 0.5);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
-                double powerFactor = command.getDouble("power", 0.5);
 
-                RelativeMove relativeMove = new RelativeMove(maxDistance, angle, powerFactor);
-                LookFor skystoneCondition = new LookFor(Vuforia.TargetType.SKYSTONE);
+                ExtendElevatorArm extendElevatorArm = new ExtendElevatorArm(clicks, powerFactor);
                 Timeout timeoutCondition = new Timeout(timeoutMs);
-                CombinedConditions conditions = new CombinedConditions();
-                conditions
-                    .add(timeoutCondition)
-                    .add(skystoneCondition);
-
-                runTask(relativeMove, conditions);
+                runTask(extendElevatorArm, timeoutCondition);
                 break;
             }
+            case "LIFT ELEVATOR": {
+                int clicks = command.getInt("clicks", 0);
+                double powerFactor = command.getDouble("power factor", 0.5);
+                double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
 
+                LiftElevator liftElevator = new LiftElevator(clicks, powerFactor);
+                Timeout timeoutCondition = new Timeout(timeoutMs);
+                runTask(liftElevator, timeoutCondition);
+                break;
+            }
             case "SLEEP": {
                 long timeMs = (long) command.getDouble("time", 1000);
                 sleep(timeMs);
