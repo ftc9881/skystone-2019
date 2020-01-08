@@ -3,65 +3,107 @@
 		"init vuforia": "false",
 		"angle unit": "deg",
 
-		"turn error": "1",
-		"turn base power": "0.2",
-		"turn kp": "1.0",
+		"turn error": "0.4",
+		"turn base power": "0.0",
+		"turn kp": "2.0",
 		"turn ki": "0",
-		"turn kd": "0.1",
+		"turn kd": "0.2",
 
 		"move clicks error": "50",
-		"move base power": "0.2",
-		"move accelerate clicks": "500",
-		"move decelerate clicks": "1000",
-		"move kp": "1",
-		"move ki": "0.8",
+		"elevator clicks error": "50",
+		"move base power": "0.05",
+		"move kp": "2.0",
+		"move ki": "1.0",
 		"move kd": "0.2",
 
+		"lift kp": "0.01",
+		"lift ki": "0.0",
+		"lift kd": "0.0",
+
+		"stone distance": "4",
 		"skystone left": "50",
 		"skystone right": "100"
 	},
 
 	"init": [
-		{ "command": "IDENTIFY SKYSTONE" }
+		{ "command": "SKIP    IDENTIFY SKYSTONE" }
 	],
 
 	"commands": [
-		{
-			"command": "TURN",
-			"power": "1.0",
-			"angle": "180",
-			"timeout": "5000"
-		},
-	{ "command": "SLEEP", "time":"1000" },
-		{
-			"command": "TURN",
-			"power": "1.0",
-			"angle": "0",
-			"timeout": "5000"
-		},
-	{ "command": "SLEEP", "time":"1000" },
-	{ "command": "STOP" },
-
-
 
 		{
 			"command": "MOVE",
 			"power": "1.0",
-			"distance": "20",
-			"angle": "0",
+			"distance": "12",
+			"move angle": "0",
+			"target angle": "0",
+			"timeout": "5000"
+		},
+		{
+			"command": "TURN",
+			"power": "1.0",
+			"angle": "-90",
+			"timeout": "1000"
+		},
+	{ "command": "SLEEP", "time":"1000" },
+		{
+			"command": "MOVE",
+			"power": "0.8",
+			"distance": "4",
+			"move angle": "0",
+			"target angle": "-90",
+			"timeout": "5000"
+		},
+
+	{ "command": "STOP" },
+	{
+			"command": "MOVE",
+			"power": "1.0",
+			"distance": "40",
+			"move angle": "8",
+			"target angle": "-90",
+			"ramp up": "700",
+			"ramp down": "1300",
 			"timeout": "5000"
 		},
 	{ "command": "SLEEP", "time":"1000" },
 		{
 			"command": "MOVE",
+			"target angle": "-90",
+			"ramp up": "700",
+			"ramp down": "1300",
 			"power": "1.0",
-			"distance": "20",
-			"angle": "180",
+			"distance": "42",
+			"move angle": "180",
 			"timeout": "5000"
 		},
 	{ "command": "SLEEP", "time":"1000" },
-	{ "command": "STOP" },
-	{ "command": "SLEEP" },
+		{ "command": "STOP" },
+
+
+
+		{
+			"command": "LIFT ELEVATOR",
+			"clicks": "5000",
+			"power factor": "0.5"
+		},
+		{ 
+			"command": "EXTEND ELEVATOR ARM",
+			"clicks": "100",
+			"power factor": "0.5"
+		},
+		{ 
+			"command": "EXTEND ELEVATOR ARM",
+			"clicks": "-100",
+			"power factor": "0.5"
+		},
+		{
+			"command": "LIFT ELEVATOR",
+			"clicks": "-5000",
+			"power factor": "0.5"
+		},
+		{ "command": "STOP" },
+		{ "command": "SLEEP" },
 		{ "command": "STOP" }
 	]
 }

@@ -10,58 +10,39 @@
 		"turn kd": "0.1",
 
 		"move clicks error": "50",
+		"elevator clicks error": "50",
 		"move base power": "0.2",
 		"move accelerate clicks": "500",
-		"move decelerate clicks": "1000",
-		"move kp": "1",
-		"move ki": "0.8",
-		"move kd": "0.2",
+		"move decelerate clicks": "0",
+		"move kp": "0",
+		"move ki": "0.0",
+		"move kd": "0.0",
+
+		"lift kp": "0.01",
+		"lift ki": "0.0",
+		"lift kd": "0.0",
 
 		"skystone left": "50",
 		"skystone right": "100"
 	},
 
 	"init": [
-		{ "command": "FIND SKYSTONE" }
+		{ "command": "SKIP    IDENTIFY SKYSTONE" }
 	],
 
 	"commands": [
-		{
-			"command": "TURN",
-			"power": "1.0",
-			"angle": "180",
-			"timeout": "5000"
+		{ 
+			"command": "EXTEND ELEVATOR ARM",
+			"clicks": "500",
+			"powerFactor": "0.5"
 		},
-	{ "command": "SLEEP", "time":"1000" },
-		{
-			"command": "TURN",
-			"power": "1.0",
-			"angle": "0",
-			"timeout": "5000"
+		{ 
+			"command": "EXTEND ELEVATOR ARM",
+			"clicks": "-500",
+			"powerFactor": "0.5"
 		},
-	{ "command": "SLEEP", "time":"1000" },
-	{ "command": "STOP" },
-
-
-
-		{
-			"command": "MOVE",
-			"power": "1.0",
-			"distance": "20",
-			"angle": "0",
-			"timeout": "5000"
-		},
-	{ "command": "SLEEP", "time":"1000" },
-		{
-			"command": "MOVE",
-			"power": "1.0",
-			"distance": "20",
-			"angle": "180",
-			"timeout": "5000"
-		},
-	{ "command": "SLEEP", "time":"1000" },
-	{ "command": "STOP" },
-	{ "command": "SLEEP" },
+		{ "command": "STOP" },
+		{ "command": "SLEEP" },
 		{ "command": "STOP" }
 	]
 }
