@@ -4,14 +4,14 @@
 package org.firstinspires.ftc.teamcode.sensors;
 import org.firstinspires.ftc.teamcode.sensors.SharpDistanceSensor;
 
-public class AnalogBlockDetector {
+public class SharpPair {
     private SharpDistanceSensor sensorL;
     private SharpDistanceSensor sensorR;
 
-    private double detectMin = 19;
-    private double detectMax = 23;
+    private double detectMin = 14;
+    private double detectMax = 16;
 
-    public AnalogBlockDetector(SharpDistanceSensor l, SharpDistanceSensor r, double dist, double margin) {
+    public SharpPair(SharpDistanceSensor l, SharpDistanceSensor r, double dist, double margin) {
         this.sensorL = l;
         this.sensorR = r;
         this.detectMin = dist-margin;
@@ -23,6 +23,13 @@ public class AnalogBlockDetector {
     }
 
     // TODO: Add something PID-compatible
+
+    public double getDiff() {
+        return sensorL.getDistance()-sensorR.getDistance();
+    }
+
+    public double getDistanceL() {return sensorL.getDistance();}
+    public double getDistanceR() {return sensorR.getDistance();}
 
     public boolean blockDetected() {
         return this.sensorL.getDistance() < detectMax &&

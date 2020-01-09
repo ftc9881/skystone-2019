@@ -10,12 +10,12 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.teamcode.sensors.SharpDistanceSensor;
-import org.firstinspires.ftc.teamcode.sensors.AnalogBlockDetector;
+import org.firstinspires.ftc.teamcode.sensors.SharpPair;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp
-public class BlockDetectionTest extends TeleOpBase {
-    private AnalogBlockDetector detector;
+public class SensorInputTest extends TeleOpBase {
+    private SharpPair detector;
 
     @Override
     protected void initialize() {
@@ -25,7 +25,7 @@ public class BlockDetectionTest extends TeleOpBase {
         SharpDistanceSensor sensor_left = new SharpDistanceSensor(sensor_left_analog);
         SharpDistanceSensor sensor_right = new SharpDistanceSensor(sensor_right_analog);
 
-        detector = new AnalogBlockDetector(sensor_left, sensor_right,
+        detector = new SharpPair(sensor_left, sensor_right,
                 config.getDouble("blockDetectDist", 21),
                 config.getDouble("blockDetectMargin", 2));
     }

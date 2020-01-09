@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.math;
 
+import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
+
 public class PIDController {
     private double currentTime, previousTime, deltaTime;
     private double integral = 0;
@@ -10,6 +12,14 @@ public class PIDController {
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
+        this.targetValue = targetValue;
+        this.currentTime = getTimeSeconds();
+    }
+
+    public PIDController (Configuration config, String name, double targetValue) {
+        this.kP = config.getDouble(name + " kp", 0);
+        this.kI = config.getDouble(name + " ki", 0);
+        this.kD = config.getDouble(name + " kd", 0);
         this.targetValue = targetValue;
         this.currentTime = getTimeSeconds();
     }
