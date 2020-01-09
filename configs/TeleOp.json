@@ -1,10 +1,13 @@
 {
 	"dead zone": "0.1",
 	"slow factor": "0.4",
-	"outtake power": "1.0",
+	"outtake power": "0.3",
 
 	"debugServo": "foundation",
 
 	"blockDetectDist": 21,
-	"blockDetectMargin": 2
+	"blockDetectMargin": 2,
+
+	"foundationDetectDist": 10,
+	"foundationDetectMargin": 2
 }
