@@ -29,29 +29,32 @@ public class RelativeMove extends Action {
     private double basePower;
     private double targetClicks;
     private double distance;
-    private Angle angle;
+    private Angle moveAngle;
+    private Angle targetAngle;
     private double powerFactor;
     private Pose drivePose;
 
-
-    public RelativeMove(double distance, Angle angle, double powerFactor) {
+    public RelativeMove(double distance, Angle moveAngle, Angle targetAngle, double powerFactor, int accelerateClicks, int decelerateClicks) {
         this.robot = Robot.getInstance();
         this.distance = distance;
-        this.angle = angle;
+        this.moveAngle = moveAngle;
+        this.targetAngle = targetAngle;
         this.powerFactor = powerFactor;
+        this.accelerateClicks = accelerateClicks;
+        this.decelerateClicks = decelerateClicks;
     }
-
 
     @Override
     protected void onRun() {
         robot.driveTrain.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.driveTrain.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         targetClicks = distance * CLICKS_PER_INCH;
         AutoRunner.log("TargetClicks", targetClicks);
 
         drivePose = new Pose(0, 0, 0);
-        drivePose.x = Math.cos(angle.getRadians());
-        drivePose.y = Math.sin(angle.getRadians());
+        drivePose.x = Math.cos(moveAngle.getRadians());
+        drivePose.y = Math.sin(moveAngle.getRadians());
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
 
@@ -59,11 +62,9 @@ public class RelativeMove extends Action {
         double kP = config.properties.getDouble("move kp", 0);
         double kI = config.properties.getDouble("move ki", 0);
         double kD = config.properties.getDouble("move kd", 0);
-        decelerateClicks = config.properties.getInt("move decelerate clicks", 500);
-        accelerateClicks = config.properties.getInt("move accelerate clicks", 500);
         clicksError = config.properties.getInt("move clicks error", 100);
         basePower = config.properties.getDouble("move base power", 0.3);
-        this.pidController = new PIDController(kP, kI, kD, robot.getImuHeading().getRadians());
+        this.pidController = new PIDController(kP, kI, kD, targetAngle.getRadians());
     }
 
     @Override
@@ -83,13 +84,19 @@ public class RelativeMove extends Action {
 
     @Override
     protected void insideRun() {
-        double actualValue = robot.getImuHeading().getRadians();
-        drivePose.r = pidController.getCorrectedOutput(actualValue);
-        AutoRunner.log("r power", drivePose.r);
+        Pose correctedDrivePose = new Pose(drivePose);
+        Angle actualHeading = robot.getImuHeading();
+        correctedDrivePose.r = pidController.getCorrectedOutput(actualHeading.getRadians());
 
         double rampFactor = calculateRampFactor();
+        correctedDrivePose.x *= rampFactor;
+        correctedDrivePose.y *= rampFactor;
+
+        robot.driveTrain.drive(correctedDrivePose, powerFactor);
+
         AutoRunner.log("ramp factor", rampFactor);
-        robot.driveTrain.drive(drivePose, powerFactor * rampFactor);
+        AutoRunner.log("r power", correctedDrivePose.r);
+        AutoRunner.log("heading", actualHeading.getDegrees());
     }
 
     private double calculateRampFactor() {
@@ -100,7 +107,8 @@ public class RelativeMove extends Action {
             rampValue = 1.0 - (actualClicks - (targetClicks-decelerateClicks)) / (double) decelerateClicks;
         }
         else if (actualClicks < accelerateClicks) {
-            rampValue = Math.sqrt(actualClicks/(double)accelerateClicks);
+            rampValue = Math.max(Math.sqrt(actualClicks/(double)accelerateClicks), 0.1);
+//            rampValue = (actualClicks/(double)accelerateClicks);
         }
 
         return Range.clip(rampValue, basePower, 1.0);

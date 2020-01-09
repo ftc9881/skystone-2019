@@ -31,9 +31,11 @@ package org.firstinspires.ftc.teamcode.auto.vision;
 
 import android.content.Context;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -111,16 +113,18 @@ public class Vuforia implements VisionSystem {
     private Pose lastPose = null;
     private LookAction lookAction;
 
+    private HardwareMap hardwareMap;
     private Context fileContext;
 
 
-    public Vuforia(Context fileContext) {
-        this.fileContext = fileContext;
+    public Vuforia(HardwareMap hardwareMap) {
+        this.hardwareMap = hardwareMap;
+        this.fileContext = hardwareMap.appContext;
     }
 
     @Override
     public void initialize() {
-        startEngine();
+        startEngine(true);
         loadTrackables();
         orientTrackables();
         applyPhoneOrientation();
@@ -154,11 +158,17 @@ public class Vuforia implements VisionSystem {
         return lastPose;
     }
 
-    private void startEngine() {
+    private void startEngine(boolean useUsbCamera) {
         parameters = new VuforiaLocalizer.Parameters(fileContext.getResources().getIdentifier(
                 "cameraMonitorViewId", "id", fileContext.getPackageName()));
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = CAMERA_CHOICE;
+
+        if (useUsbCamera) {
+            parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        }
+        else {
+            parameters.cameraDirection = CAMERA_CHOICE;
+        }
 
         //  Instantiate the Vuforia engine
         vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);

@@ -35,14 +35,17 @@ public class RobotSystemFactory {
         return new OdometrySystem(hardwareMap);
     }
 
+    public Elevator elevator() {return new Elevator(hardwareMap); }
+
     public VisionSystem visionSystem() {
         switch (visionSystemType) {
             case OPENCV:
                 return new OpenCV();
             case VUFORIA:
-                return new Vuforia(hardwareMap.appContext);
+                return new Vuforia(hardwareMap);
         }
         return null;
     }
+
 
 }

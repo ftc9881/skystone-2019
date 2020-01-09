@@ -34,6 +34,8 @@ public class Robot {
 
     public DriveTrain driveTrain;
 
+    public Elevator elevator;
+
     public VisionSystem visionSystem;
     public SensorSystem sensorSystem;
     public OdometrySystem odometrySystem;
@@ -54,6 +56,7 @@ public class Robot {
         sensorSystem = robotFactory.sensorSystem();
         odometrySystem = robotFactory.odometrySystem();
         driveTrain = robotFactory.driveTrain();
+        elevator = robotFactory.elevator();
     }
 
     public void initializeImu(AngleUnit angleUnit) {
