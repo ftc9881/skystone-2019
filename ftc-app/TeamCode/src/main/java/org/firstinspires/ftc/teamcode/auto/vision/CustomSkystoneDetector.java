@@ -82,7 +82,7 @@ public class CustomSkystoneDetector extends DogeCVDetector {
     }
 
     public Mat getDisplayMat() {
-        return displayMat;
+        return rawImage;
     }
 
     @Override

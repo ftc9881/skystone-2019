@@ -45,13 +45,13 @@ public class OpenCVTestTeleOp extends TeleOpBase {
         }
     }
 
-    public void saveCurrentImage() {
+    private void saveCurrentImage() {
         Mat displayMat = openCV.detector.getDisplayMat();
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy_HH:mm:ss.SSS");
         Date date = new Date(System.currentTimeMillis());
-        String path = Environment.getExternalStorageDirectory() + "/Robot/OpenCV/" + formatter.format(date) + ".png";
-        Imgcodecs.imwrite(path, displayMat);
-
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + formatter.format(date) + ".png";
+        boolean success = Imgcodecs.imwrite(path, displayMat);
+        AutoRunner.log("OpenCV", success);
         AutoRunner.log("OpenCV", "Wrote image " + path);
     }
 
