@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -9,22 +8,24 @@ import org.firstinspires.ftc.teamcode.auto.actions.ExtendElevatorArm;
 import org.firstinspires.ftc.teamcode.auto.actions.LiftElevator;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
+import org.firstinspires.ftc.teamcode.auto.endConditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
-import org.firstinspires.ftc.teamcode.auto.endConditions.LookFor;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
+import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
-import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.Pose;
-import org.firstinspires.ftc.teamcode.robot.Robot;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 import org.firstinspires.ftc.teamcode.auto.actions.OdometryMove;
 import org.firstinspires.ftc.teamcode.auto.endConditions.Timeout;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.SideArm;
+import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.opencv.core.Rect;
 
 import java.util.ArrayList;
@@ -47,10 +48,13 @@ public class AutoRunner {
     private LinearOpMode opMode;
     private Robot robot;
 
+    // TODO: Put in BatMobile and figure out inheritance stuff
+    private SideArm sideArm;
+
     private static AngleUnit angleUnit = AngleUnit.DEGREES;
     private boolean isStopped = false;
 
-    private VisionSystem.SkystonePosition skystonePosition = VisionSystem.SkystonePosition.NONE;
+    private VisionSystem.SkystonePosition skystonePosition = VisionSystem.SkystonePosition.CENTER;
 
     public AutoRunner(String name, LinearOpMode opMode) {
         opMode.msStuckDetectStop = 10000;
@@ -60,6 +64,7 @@ public class AutoRunner {
 
         angleUnit = config.properties.getAngleUnit("angle unit", AngleUnit.DEGREES);
         robot = Robot.newInstance(opMode);
+        sideArm = new SideArm(robot.hardwareMap);
         robot.initializeImu(angleUnit);
 
         for (Command command : config.initCommands) {
@@ -105,7 +110,6 @@ public class AutoRunner {
                     centerX = foundRect.x + foundRect.width / 2;
                     foundPositions.add(centerX);
                     stdDev = GeneralMath.standardDeviation(foundPositions);
-
                     logAndTelemetry("SkystonePixel", centerX);
                 }
 
@@ -119,12 +123,12 @@ public class AutoRunner {
                 } else {
                     skystonePosition = VisionSystem.SkystonePosition.CENTER;
                 }
-
                 break;
             }
-            case "SKYSTONE MOVE": {
+            case "ALIGN CLAW SKYSTONE": {
                 Angle moveAngle = command.getAngle("move angle", 0, angleUnit);
                 Angle targetAngle = command.getAngle("target angle", 0, angleUnit);
+                //we are lined up with the center stone so left stone is -1, right stone is 1
                 int distance = (skystonePosition.ordinal()-1) * config.properties.getInt("stone distance", 4);
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
                 double powerFactor = command.getDouble("power", 0.5);
@@ -138,16 +142,40 @@ public class AutoRunner {
                 break;
             }
 
-            case "MOVE": {
-                Angle moveAngle = command.getAngle("move angle", 0, angleUnit);
-                Angle targetAngle = command.getAngle("target angle", 0, angleUnit);
-                double distance = command.getDouble("distance", 5.0);
+            case "MOVE AND TOGGLE PIVOT": {
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
-                double powerFactor = command.getDouble("power", 0.5);
-                int accelerateClicks = command.getInt("ramp up", 0);
-                int decelerateClicks = command.getInt("ramp down", 0);
+                int deployClicks = command.getInt("deploy clicks", 0);
 
-                Action relativeMove = new RelativeMove(distance, moveAngle, targetAngle, powerFactor, accelerateClicks, decelerateClicks);
+                Action relativeMove = new RelativeMove(command);
+                Watcher deployServo = new DeployServoByDistance(sideArm.pivot, robot.driveTrain.rf, deployClicks);
+                IEndCondition timeoutCondition = new Timeout(timeoutMs);
+
+                CombinedConditions conditions = new CombinedConditions();
+                conditions.add(deployServo).add(timeoutCondition);
+
+                runTask(relativeMove, conditions);
+                break;
+            }
+
+            case "TOGGLE CLAW": {
+                sideArm.claw.toggle();
+                break;
+            }
+
+            case "TOGGLE PIVOT": {
+                sideArm.pivot.toggle();
+                break;
+            }
+
+            case "DEPLOY FOUNDATION": {
+                sideArm.pivotToFoundation();
+                break;
+            }
+
+            case "MOVE": {
+                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
+
+                Action relativeMove = new RelativeMove(command);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
 
                 runTask(relativeMove, timeoutCondition);

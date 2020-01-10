@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.robot.ArmBot;
+import org.firstinspires.ftc.teamcode.robot.ArmBot.ArmBot;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp
+@Disabled
 public class ArmBotDrive extends BaseDrive {
 
     private ArmBot armBot;

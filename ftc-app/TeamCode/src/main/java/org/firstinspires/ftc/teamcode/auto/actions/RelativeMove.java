@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
+import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
@@ -21,7 +22,7 @@ public class RelativeMove extends Action {
 
     private PIDController pidController;
 
-    Robot robot;
+    private Robot robot;
     private int clicksError;
     private int actualClicks;
     private int decelerateClicks;
@@ -33,6 +34,16 @@ public class RelativeMove extends Action {
     private Angle targetAngle;
     private double powerFactor;
     private Pose drivePose;
+
+    public RelativeMove(Command command) {
+        this.robot = Robot.getInstance();
+        moveAngle = command.getAngle("move angle", 0);
+        targetAngle = command.getAngle("target angle", 0);
+        distance = command.getDouble("distance", 5.0);
+        powerFactor = command.getDouble("power", 0.5);
+        accelerateClicks = command.getInt("ramp up", 0);
+        decelerateClicks = command.getInt("ramp down", 0);
+    }
 
     public RelativeMove(double distance, Angle moveAngle, Angle targetAngle, double powerFactor, int accelerateClicks, int decelerateClicks) {
         this.robot = Robot.getInstance();
@@ -49,12 +60,12 @@ public class RelativeMove extends Action {
         robot.driveTrain.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.driveTrain.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        targetClicks = distance * CLICKS_PER_INCH;
+        targetClicks = Math.abs(distance) * CLICKS_PER_INCH;
         AutoRunner.log("TargetClicks", targetClicks);
 
         drivePose = new Pose(0, 0, 0);
-        drivePose.x = Math.cos(moveAngle.getRadians());
-        drivePose.y = Math.sin(moveAngle.getRadians());
+        drivePose.x = Math.cos(moveAngle.getRadians()) * (distance<0?-1:1);
+        drivePose.y = Math.sin(moveAngle.getRadians()) * (distance<0?-1:1);
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
 
@@ -94,9 +105,12 @@ public class RelativeMove extends Action {
 
         robot.driveTrain.drive(correctedDrivePose, powerFactor);
 
-        AutoRunner.log("ramp factor", rampFactor);
-        AutoRunner.log("r power", correctedDrivePose.r);
-        AutoRunner.log("heading", actualHeading.getDegrees());
+        AutoRunner.log("ActualXPower", correctedDrivePose.x);
+        AutoRunner.log("ActualYPower", correctedDrivePose.y);
+
+        AutoRunner.log("RampFactor", rampFactor);
+        AutoRunner.log("pidRPower", correctedDrivePose.r);
+        AutoRunner.log("Angle", actualHeading.getDegrees());
     }
 
     private double calculateRampFactor() {

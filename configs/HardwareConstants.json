@@ -1,8 +1,17 @@
 {
+	"pivot open": "0.98",
+	"pivot closed": "0.68",
+	"pivot foundation": "0.9",
+
+	"claw open": "0.2",
+	"claw closed": "0.6",
+
 	"foundation open": "0.3",
 	"foundation closed": "0.9",
+
 	"stone open": "0.3",
 	"stone closed": "0.8",
+
 	"capstone open": "0.6",
 	"capstone closed": "1.0"
 }

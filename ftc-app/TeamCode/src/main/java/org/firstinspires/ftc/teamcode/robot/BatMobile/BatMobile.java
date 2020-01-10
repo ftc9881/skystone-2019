@@ -1,6 +1,10 @@
-package org.firstinspires.ftc.teamcode.robot;
+package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.robot.Intake;
+import org.firstinspires.ftc.teamcode.robot.Robot;
+import org.firstinspires.ftc.teamcode.robot.RobotSystemFactory;
 
 public class BatMobile extends Robot {
 
@@ -18,11 +22,14 @@ public class BatMobile extends Robot {
     }
 
     public Intake intake;
+    public SideArm sideArm;
 
     private BatMobile(LinearOpMode opMode) {
         super(opMode);
 
-        RobotSystemFactory robotFactory = new RobotSystemFactory(opMode.hardwareMap);
+        sideArm = new SideArm(hardwareMap);
+
+        RobotSystemFactory robotFactory = new RobotSystemFactory(hardwareMap);
         driveTrain = robotFactory.driveTrain();
         intake = robotFactory.intakeSystem();
     }

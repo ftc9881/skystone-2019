@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.robot;
+package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.math.VelocityMotor;
+import org.firstinspires.ftc.teamcode.robot.devices.VelocityMotor;
 
 public class Elevator {
 

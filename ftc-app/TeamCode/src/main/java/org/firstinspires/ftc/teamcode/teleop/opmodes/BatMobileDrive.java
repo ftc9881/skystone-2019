@@ -2,8 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.robot.ArmBot;
-import org.firstinspires.ftc.teamcode.robot.BatMobile;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp
@@ -11,16 +10,17 @@ public class BatMobileDrive extends BaseDrive {
 
     private BatMobile batMobile;
 
-    private double deadZone;
     private double slowDrivePowerFactor;
     private double outtakePowerFactor;
+
+    private Button pivotButton = new Button();
+    private Button clawButton = new Button();
 
     @Override
     protected void initialize() {
         super.initialize();
         batMobile = BatMobile.newInstance(this);
 
-        deadZone = config.getDouble("dead zone", 0.1);
         slowDrivePowerFactor = config.getDouble("slow drive", 0.4);
         outtakePowerFactor = config.getDouble("outtake power", 0.4);
     }
@@ -31,6 +31,7 @@ public class BatMobileDrive extends BaseDrive {
         updateDrive();
 
         updateIntake();
+        updateServos();
 
         updateTelemetry();
     }
@@ -44,6 +45,20 @@ public class BatMobileDrive extends BaseDrive {
         batMobile.intake.left.setPower(intakePower);
         batMobile.intake.right.setPower(intakePower);
     }
+
+    private void updateServos() {
+        pivotButton.update(gamepad1.y);
+        clawButton.update(gamepad1.x);
+
+        if (pivotButton.is(Button.State.DOWN)) {
+            batMobile.sideArm.pivot.toggle();
+        }
+
+        if (clawButton.is(Button.State.DOWN)) {
+            batMobile.sideArm.claw.toggle();
+        }
+    }
+
 
     private void updateTelemetry() {
         telemetry.addData("Drive Power Factor", drivePowerFactor);

@@ -6,13 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 
-@Autonomous(name = "Stone Side", group = "TeamCode")
-@Disabled
-public class StoneSideAutoOp extends LinearOpMode {
+@Autonomous
+//@Disabled
+public class BlueStoneSideAutoOp extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        AutoRunner auto = new AutoRunner("StoneSide", this);
+        AutoRunner auto = new AutoRunner("RedStoneSide", this);
         waitForStart();
         auto.run();
     }
