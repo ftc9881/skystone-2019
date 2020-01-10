@@ -81,6 +81,10 @@ public class CustomSkystoneDetector extends DogeCVDetector {
         }
     }
 
+    public Mat getDisplayMat() {
+        return displayMat;
+    }
+
     @Override
     public void useDefaults() {
         blackFilter = new GrayscaleFilter(0, 50);

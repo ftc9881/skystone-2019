@@ -1,15 +1,27 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
+import android.os.Environment;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
+import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @TeleOp
+//@Disabled
 public class OpenCVTestTeleOp extends TeleOpBase {
 
     OpenCV openCV;
+    Button shutterButton = new Button();
 
     @Override
     protected void initialize() {
@@ -20,8 +32,27 @@ public class OpenCVTestTeleOp extends TeleOpBase {
 
     @Override
     protected void update() {
-        telemetry.addData("rect", openCV.detector.foundRectangle().toString());
+        updateShutter();
+
+        telemetry.addData("Rect", openCV.detector.foundRectangle().toString());
         telemetry.update();
+    }
+
+    private void updateShutter() {
+        shutterButton.update(gamepad1.right_bumper || gamepad1.left_bumper);
+        if (shutterButton.is(Button.State.DOWN)) {
+            saveCurrentImage();
+        }
+    }
+
+    public void saveCurrentImage() {
+        Mat displayMat = openCV.detector.getDisplayMat();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy_HH:mm:ss.SSS");
+        Date date = new Date(System.currentTimeMillis());
+        String path = Environment.getExternalStorageDirectory() + "/Robot/OpenCV/" + formatter.format(date) + ".png";
+        Imgcodecs.imwrite(path, displayMat);
+
+        AutoRunner.log("OpenCV", "Wrote image " + path);
     }
 
 }
