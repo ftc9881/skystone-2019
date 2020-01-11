@@ -1,16 +1,16 @@
-package org.firstinspires.ftc.teamcode.robot;
+package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.math.VelocityMotor;
+import org.firstinspires.ftc.teamcode.robot.devices.VelocityMotor;
 
-public class Elevator {
+public class DifferentialElevator {
 
     public VelocityMotor leftLift;
     public VelocityMotor rightLift;
 
-    public Elevator(HardwareMap hardwareMap) {
+    public DifferentialElevator(HardwareMap hardwareMap) {
         leftLift = new VelocityMotor(hardwareMap.dcMotor.get("left lift"));
         rightLift = new VelocityMotor(hardwareMap.dcMotor.get("right lift"));
 

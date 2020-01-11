@@ -8,8 +8,8 @@ public class StoneInIntake implements IEndCondition {
 
     private SensorSystem sensorSystem;
 
-    public StoneInIntake() {
-        this.sensorSystem = Robot.getInstance().sensorSystem;
+    public StoneInIntake(SensorSystem sensorSystem) {
+        this.sensorSystem = sensorSystem;
     }
 
     @Override

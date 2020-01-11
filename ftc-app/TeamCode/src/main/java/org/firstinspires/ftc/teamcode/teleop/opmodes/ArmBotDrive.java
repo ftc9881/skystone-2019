@@ -1,16 +1,17 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.robot.ArmBot;
+import org.firstinspires.ftc.teamcode.robot.ArmBot.ArmBot;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp
+@Disabled
 public class ArmBotDrive extends BaseDrive {
 
     private ArmBot armBot;
 
-    private double deadZone;
     private double slowDrivePowerFactor;
     private double defaultDrivePowerFactor;
     private double fastDrivePowerFactor;
@@ -23,9 +24,8 @@ public class ArmBotDrive extends BaseDrive {
     @Override
     protected void initialize() {
         super.initialize();
-        armBot = ArmBot.newInstance(this);
+        armBot = ArmBot.getInstance();
 
-        deadZone = config.getDouble("dead zone", 0.1);
         slowDrivePowerFactor = config.getDouble("slow drive", 0.4);
         defaultDrivePowerFactor = config.getDouble("default drive", 0.8);
         fastDrivePowerFactor = config.getDouble("fast drive", 1.0);

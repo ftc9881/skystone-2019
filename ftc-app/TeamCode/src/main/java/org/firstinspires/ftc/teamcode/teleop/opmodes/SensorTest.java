@@ -5,14 +5,16 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import org.firstinspires.ftc.teamcode.sensors.MaxSonarI2CXL;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.teamcode.sensors.SharpDistanceSensor;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp
+@Disabled
 public class SensorTest extends TeleOpBase {
     private SharpDistanceSensor sharpDistanceSensor;
     private MaxSonarI2CXL sonarSensor;
@@ -28,7 +30,6 @@ public class SensorTest extends TeleOpBase {
 
 //        sonarSensor = robot.hardwareMap.get(MaxSonarI2CXL.class, "sonar");
 //        sonarSensor.startAutoPing(100);
-
     }
 
     @Override

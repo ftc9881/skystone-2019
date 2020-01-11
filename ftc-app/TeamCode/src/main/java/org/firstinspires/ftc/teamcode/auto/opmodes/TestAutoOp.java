@@ -15,12 +15,7 @@ public class TestAutoOp extends LinearOpMode {
     public void runOpMode() {
         AutoRunner auto = new AutoRunner("Test", this);
         waitForStart();
-        try {
-            auto.run();
-        } catch (Exception ex) {
-            Robot robot = Robot.getInstance();
-            robot.driveTrain.stop();
-        }
+        auto.run();
     }
 
 }

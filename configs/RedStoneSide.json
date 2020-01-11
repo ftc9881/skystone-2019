@@ -1,98 +1,114 @@
 {
 	"properties": {
-		"angle unit": "deg",
 		"init vuforia": "false",
-		"turn error": "5",
+		"angle unit": "deg",
 
-		"turn kp": "0.75",
-		"turn ki": "0.3",
-		"turn kd": "0.15",
+		"turn error": "0.4",
+		"turn base power": "0.0",
+		"turn kp": "2.0",
+		"turn ki": "0",
+		"turn kd": "0.2",
 
-		"stone turn kp": "0.002",
-		"stone turn ki": "0.003",
-		"stone turn kd": "0.00",
+		"move clicks error": "50",
+		"elevator clicks error": "50",
+		"move base power": "0.05",
+		"move kp": "2.0",
+		"move ki": "1.0",
+		"move kd": "0.2",
 
-		"move kp": "1",
-		"move ki": "0.8",
-		"move kd": "0.2"
+		"lift kp": "0.01",
+		"lift ki": "0.0",
+		"lift kd": "0.0",
+
+		"stone distance": "4",
+		"skystone left": "50",
+		"skystone right": "100"
 	},
 
-	"init": [ ],
+	"init": [
+		{ "command": "SKIP   IDENTIFY SKYSTONE" }
+	],
 
 	"commands": [
 		{
-			"command": "MOVE ARM",
-			"state": "init"
-		},
-		{
-			"command": "SLEEP",
-			"time": "2000"
-		},
-		{
-			"command": "IDENTIFY SKYSTONE POSITION",
-			"threshold": "10",
-			"left": "60",
-			"right": "100"
-		},
-		{
+"comment": "Moves forwards",
 			"command": "MOVE",
-			"angle": "0",
-			"distance": "5",
-			"timeout": "3000",
-			"power": "0.5"
-		},
-
-		{
-			"command": "TURN TO SKYSTONE",
-			"angle if left": "54",
-			"angle if center": "43",
-			"angle if right": "30",
-			"power": "0.5",
+			"power": "1.0",
+			"distance": "13",
+			"move angle": "0",
+			"target angle": "0",
 			"timeout": "5000"
 		},
 		{
-			"command": "MOVE ARM",
-			"state": "intake"
-		},
-
-		{ 
-			"command": "INTAKE",
-			"power": "1.0"
-		},
-		{
-			"command": "MOVE",
-			"distance": "35",
-			"timeout": "3000",
-			"power": "0.3"
-		},
-		{
-			"command": "INTAKE",
-			"power": "0.1"
-		},
-		{
-			"command": "MOVE",
-			"angle": "180",
-			"distance": "12",
-			"timeout": "3000",
-			"power": "0.5"
-		},
-		{
+"comment": "turn so side arm faces stones",
 			"command": "TURN",
-			"angle": "-90",
-			"timeout": "3000",
-			"power": "0.4"
+			"power": "1.0",
+			"angle": "90",
+			"timeout": "1000"
 		},
 		{
-			"command": "MOVE",
-			"angle": "0",
-			"distance": "30",
-			"timeout": "5000",
-			"power": "0.5"
+"comment": "line up with desired sky stone",
+			"command": "ALIGN CLAW SKYSTONE",
+			"target angle": "90",
+			"timeout": "1500",
+			"power": "0.8"
 		},
 		{ 
-			"command": "INTAKE",
-			"power": "-0.2"
+			"command": "TOGGLE CLAW"
 		},
-		{ "command": "SLEEP", "time":"1000" }
+		{ 
+			"command": "TOGGLE PIVOT"
+		},
+		{ 
+"comment": "hardcoded servo wait",
+			"command": "SLEEP", "time":"500" 
+		},
+		{ 
+"comment": "Pick up the block",
+			"command": "TOGGLE CLAW"
+		},
+		{ 
+			"command": "SLEEP", "time":"1000" 
+		},
+		{ 
+			"command": "TOGGLE PIVOT"
+		},
+		{ 
+			"command": "SLEEP", "time":"1000" 
+		},
+		{
+"comment": "move to next to foundation",
+			"command": "MOVE AND TOGGLE PIVOT",
+			"deploy clicks": "1000",
+			"power": "1.0",
+			"distance": "-60",
+			"move angle": "-8",
+			"target angle": "90",
+			"timeout": "5000"
+		},
+{ "command": "STOP" },
+		{
+			"command": "MOVE",
+			"power": "1.0",
+			"distance": "40",
+			"move angle": "8",
+			"target angle": "-90",
+			"ramp up": "700",
+			"ramp down": "1300",
+			"timeout": "5000"
+		},
+		{ "command": "SLEEP", "time":"1000" },
+		{
+			"command": "MOVE",
+			"target angle": "-90",
+			"ramp up": "700",
+			"ramp down": "1300",
+			"power": "1.0",
+			"distance": "42",
+			"move angle": "180",
+			"timeout": "5000"
+		},
+	{ "command": "SLEEP", "time":"1000" },
+		{ "command": "STOP" }
 	]
 }

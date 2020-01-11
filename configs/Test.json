@@ -26,10 +26,19 @@
 	},
 
 	"init": [
-		{ "command": "SKIP    IDENTIFY SKYSTONE" }
+		{ "command": "SKIP   IDENTIFY SKYSTONE" }
 	],
 
 	"commands": [
+		{
+			"command": "MOVE",
+			"power": "0.5",
+			"distance": "-12",
+			"move angle": "0",
+			"target angle": "0",
+			"timeout": "5000"
+		},
+	{ "command": "STOP"  },
 
 		{
 			"command": "MOVE",
@@ -45,6 +54,7 @@
 			"angle": "-90",
 			"timeout": "1000"
 		},
+		{ "command": "TOGGLE CLAW"},
 	{ "command": "SLEEP", "time":"1000" },
 		{
 			"command": "MOVE",
@@ -78,32 +88,7 @@
 			"timeout": "5000"
 		},
 	{ "command": "SLEEP", "time":"1000" },
-		{ "command": "STOP" },
 
-
-
-		{
-			"command": "LIFT ELEVATOR",
-			"clicks": "5000",
-			"power factor": "0.5"
-		},
-		{ 
-			"command": "EXTEND ELEVATOR ARM",
-			"clicks": "100",
-			"power factor": "0.5"
-		},
-		{ 
-			"command": "EXTEND ELEVATOR ARM",
-			"clicks": "-100",
-			"power factor": "0.5"
-		},
-		{
-			"command": "LIFT ELEVATOR",
-			"clicks": "-5000",
-			"power factor": "0.5"
-		},
-		{ "command": "STOP" },
-		{ "command": "SLEEP" },
 		{ "command": "STOP" }
 	]
 }

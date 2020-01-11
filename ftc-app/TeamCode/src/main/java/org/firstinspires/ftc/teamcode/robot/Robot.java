@@ -2,15 +2,13 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
-import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.DifferentialElevator;
 
 public class Robot {
 
@@ -29,20 +27,15 @@ public class Robot {
 
     private AngleUnit angleUnit = AngleUnit.RADIANS;
     public LinearOpMode opMode;
-
     public HardwareMap hardwareMap;
-
     public DriveTrain driveTrain;
-
-    public Elevator elevator;
-
-    public VisionSystem visionSystem;
-    public SensorSystem sensorSystem;
-    public OdometrySystem odometrySystem;
 
     public Pose currentPose;
 
     public BNO055IMU imu;
+
+    protected Robot() {
+    }
 
     protected Robot(LinearOpMode opMode) {
         this.opMode = opMode;
@@ -51,12 +44,7 @@ public class Robot {
 
         hardwareMap = opMode.hardwareMap;
 
-        RobotSystemFactory robotFactory = new RobotSystemFactory(opMode.hardwareMap);
-        visionSystem = robotFactory.visionSystem();
-        sensorSystem = robotFactory.sensorSystem();
-        odometrySystem = robotFactory.odometrySystem();
-        driveTrain = robotFactory.driveTrain();
-        elevator = robotFactory.elevator();
+        driveTrain = new DriveTrain(hardwareMap);
     }
 
     public void initializeImu(AngleUnit angleUnit) {

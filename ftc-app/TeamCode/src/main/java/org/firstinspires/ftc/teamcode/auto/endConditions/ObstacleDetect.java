@@ -9,8 +9,8 @@ public class ObstacleDetect implements IEndCondition {
     private SensorSystem sensorSystem;
     private double distance;
 
-    public ObstacleDetect(double distance) {
-        this.sensorSystem = Robot.getInstance().sensorSystem;
+    public ObstacleDetect(SensorSystem sensorSystem, double distance) {
+        this.sensorSystem = sensorSystem;
         this.distance = distance;
     }
 

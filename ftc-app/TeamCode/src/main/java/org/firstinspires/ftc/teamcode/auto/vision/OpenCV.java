@@ -4,12 +4,7 @@ import android.content.Context;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.internal.camera.CameraManagerInternal;
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.opencv.core.Rect;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -17,14 +12,14 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-import java.util.concurrent.TimeUnit;
-
 public class OpenCV implements VisionSystem {
 
     public static final Rect CAMERA_RECT = new Rect(0, 0, 320, 240);
+    public enum CameraType { PHONE, WEBCAM }
+
+    private CameraType cameraType = CameraType.WEBCAM;
 
     private OpenCvCamera openCvCamera;
-    private Camera camera;
     public CustomSkystoneDetector detector;
 
     @Override
@@ -58,23 +53,26 @@ public class OpenCV implements VisionSystem {
     }
 
     private void initializeCamera() {
+        initializeCamera(cameraType);
+    }
+
+    private void initializeCamera(CameraType cameraType) {
+        this.cameraType = cameraType;
         HardwareMap hardwareMap = Robot.getInstance().hardwareMap;
-        Context context = hardwareMap.appContext;
-        int cameraMonitorViewId = context.getResources().getIdentifier("cameraMonitorViewId", "id", context.getPackageName());
 
-        // Phone Camera
-//        openCvCamera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-//        openCvCamera.openCameraDevice();
-
-        // USB Camera
-        openCvCamera = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        switch (cameraType) {
+            case PHONE:
+                Context context = hardwareMap.appContext;
+                int cameraMonitorViewId = context.getResources().getIdentifier("cameraMonitorViewId", "id", context.getPackageName());
+                openCvCamera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+                break;
+            case WEBCAM:
+                openCvCamera = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+                break;
+            default:
+                throw new IllegalArgumentException("TeamCode OpenCV: Need camera type");
+        }
         openCvCamera.openCameraDevice();
-
-        // asdklfjkl
-//        CameraName cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
-//        CameraManagerInternal cameraManager = (CameraManagerInternal) ClassFactory.getInstance().getCameraManager();
-//        camera = cameraManager.requestPermissionAndOpenCamera(new Deadline(60, TimeUnit.SECONDS), cameraName, null);
-//        camera = cameraManager.asyncOpenCameraAssumingPermission(cameraName);
     }
 
     private void startCamera() {
