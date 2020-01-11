@@ -15,7 +15,8 @@ import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 @Disabled
 public class SensorAlignTest extends TeleOpBase {
 
-    SharpPair analogBlockDetector;
+    SharpPair blockDetector;
+    SharpPair foundationDetector;
 
     Button autoModeButton = new Button();
 
@@ -40,12 +41,12 @@ public class SensorAlignTest extends TeleOpBase {
         SharpDistanceSensor foundationSensorL = new SharpDistanceSensor(foundationDetectorInputL);
         SharpDistanceSensor foundationSensorR = new SharpDistanceSensor(foundationDetectorInputR);
 
-         SharpPair blockDetector = new SharpPair(baseSensorL, baseSensorR,
+         blockDetector = new SharpPair(baseSensorL, baseSensorR,
              config.getDouble("blockDetectDist", 21),
              config.getDouble("blockDetectMargin", 2)
          );
 
-         SharpPair foundationDetector = new SharpPair(foundationSensorL, foundationSensorR,
+         foundationDetector = new SharpPair(foundationSensorL, foundationSensorR,
              config.getDouble("foundationDetectDist", 10),
              config.getDouble("foundationDetectMargin", 2)
          );
@@ -66,13 +67,12 @@ public class SensorAlignTest extends TeleOpBase {
         }
 
         if (isAutoMode) {
-            // TODO: auto align stuff
-
             Pose drivePose = new Pose(0, 0, 0);
-            drivePose.x = xPid.getCorrectedOutput(analogBlockDetector.getDiff());
-            drivePose.y = yPid.getCorrectedOutput(analogBlockDetector.getDiff());
-            drivePose.r = rPid.getCorrectedOutput(analogBlockDetector.getDiff());
-
+            drivePose.r = rPid.getCorrectedOutput(foundationDetector.getDiff());
+            if (Math.abs(drivePose.r) < 0.3) {
+                drivePose.x = xPid.getCorrectedOutput(blockDetector.getDistanceAvg());
+                drivePose.y = yPid.getCorrectedOutput(foundationDetector.getDiff());
+            }
             robot.driveTrain.drive(drivePose);
         }
 

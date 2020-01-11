@@ -30,6 +30,7 @@ public class SharpPair {
 
     public double getDistanceL() {return sensorL.getDistance();}
     public double getDistanceR() {return sensorR.getDistance();}
+    public double getDistanceAvg() {return (sensorL.getDistance()+sensorR.getDistance())/2;}
 
     public boolean blockDetected() {
         return this.sensorL.getDistance() < detectMax &&
