@@ -6,13 +6,14 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.math.PIDController;
-import org.firstinspires.ftc.teamcode.robot.BatMobile.Elevator;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.DifferentialElevator;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
 
 public class LiftElevator extends Action {
 
-    Robot robot;
+    BatMobile batMobile;
     private PIDController lPID;
     private PIDController rPID;
     private double lTargetClicks;
@@ -22,12 +23,12 @@ public class LiftElevator extends Action {
     private double powerFactor;
     private int startingClicks;
     private int errorRange;
-    private Elevator elevator;
+    private DifferentialElevator elevator;
 
     public LiftElevator(int clicks, double powerFactor) {
-        this.robot = Robot.getInstance();
+        this.batMobile = BatMobile.getInstance();
         this.powerFactor = powerFactor;
-        elevator = robot.elevator;
+        elevator = batMobile.differentialElevator;
         this.startingClicks = elevator.leftLift.motor.getCurrentPosition();
         this.lTargetClicks = elevator.leftLift.motor.getCurrentPosition() + clicks;
         this.rTargetClicks = elevator.rightLift.motor.getCurrentPosition() + clicks;
@@ -64,6 +65,6 @@ public class LiftElevator extends Action {
 
     @Override
     protected void onEndRun() {
-        robot.driveTrain.stop();
+        batMobile.driveTrain.stop();
     }
 }

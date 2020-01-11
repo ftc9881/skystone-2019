@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp
@@ -46,16 +45,16 @@ public class DebugDrive extends BaseDrive {
         yButton.update(gamepad1.y);
 
         if (upButton.is(Button.State.DOWN)) {
-            servo.setPosition( servo.getPosition() - 0.1);
-        }
-        if (downButton.is(Button.State.DOWN)) {
             servo.setPosition( servo.getPosition() + 0.1);
         }
+        if (downButton.is(Button.State.DOWN)) {
+            servo.setPosition( servo.getPosition() - 0.1);
+        }
         if (yButton.is(Button.State.DOWN)) {
-            servo.setPosition( servo.getPosition() - 0.01);
+            servo.setPosition( servo.getPosition() + 0.01);
         }
         if (aButton.is(Button.State.DOWN)) {
-            servo.setPosition( servo.getPosition() + 0.01);
+            servo.setPosition( servo.getPosition() - 0.01);
         }
 
         telemetry.addData(servoName, servo.getPosition());

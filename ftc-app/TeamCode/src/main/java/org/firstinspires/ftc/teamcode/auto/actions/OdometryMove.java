@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.robot.OdometrySystem;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
@@ -13,13 +14,14 @@ public class OdometryMove extends Action {
     private final double ROTATION_THRESHOLD = 0.3;
 
     private Robot robot;
+    private OdometrySystem odometrySystem;
     private Pose targetPose;
     private Pose currentPose;
     private double powerFactor;
 
-
-    public OdometryMove (Pose targetPose, double power) {
+    public OdometryMove (OdometrySystem odometrySystem, Pose targetPose, double power) {
         this.robot = Robot.getInstance();
+        this.odometrySystem = odometrySystem;
         this.currentPose = robot.currentPose;
         this.targetPose = targetPose;
         this.targetPose.r = AutoRunner.getAngleUnits().toRadians(targetPose.r);
@@ -28,7 +30,7 @@ public class OdometryMove extends Action {
 
     @Override
     protected void onRun() {
-        currentPose = robot.odometrySystem.getPose();
+        currentPose = odometrySystem.getPose();
     }
 
     @Override
@@ -40,8 +42,8 @@ public class OdometryMove extends Action {
 
     @Override
     public void insideRun() {
-        robot.odometrySystem.updatePose();
-        currentPose = robot.odometrySystem.getPose();
+        odometrySystem.updatePose();
+        currentPose = odometrySystem.getPose();
 
         Pose errorPose = targetPose.subtract(currentPose);
         Pose drivePose = new Pose(0, 0, 0);

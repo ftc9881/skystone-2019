@@ -5,6 +5,8 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import org.firstinspires.ftc.teamcode.sensors.MaxSonarI2CXL;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -14,6 +16,7 @@ import org.firstinspires.ftc.teamcode.sensors.SharpPair;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp
+@Disabled
 public class SensorInputTest extends TeleOpBase {
     private SharpPair detector;
 

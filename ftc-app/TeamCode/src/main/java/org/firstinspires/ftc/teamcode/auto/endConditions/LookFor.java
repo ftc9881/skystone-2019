@@ -11,8 +11,8 @@ public class LookFor implements IEndCondition {
     private VisionSystem visionSystem;
     private VisionSystem.TargetType targetType;
 
-    public LookFor(VisionSystem.TargetType targetType) {
-        this.visionSystem = Robot.getInstance().visionSystem;
+    public LookFor(VisionSystem visionSystem, VisionSystem.TargetType targetType) {
+        this.visionSystem = visionSystem;
         this.targetType = targetType;
     }
 

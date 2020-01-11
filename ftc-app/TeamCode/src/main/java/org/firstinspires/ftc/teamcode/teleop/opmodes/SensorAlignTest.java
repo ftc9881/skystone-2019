@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp
+@Disabled
 public class SensorAlignTest extends TeleOpBase {
 
     SharpPair analogBlockDetector;

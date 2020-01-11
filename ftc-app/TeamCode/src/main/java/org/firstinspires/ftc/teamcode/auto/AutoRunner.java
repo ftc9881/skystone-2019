@@ -193,29 +193,6 @@ public class AutoRunner {
                 break;
             }
 
-            case "ODOMETRY MOVE": {
-                double targetX = command.getDouble("x", 0.0);
-                double targetY = command.getDouble("y", 0.0);
-                double targetR = command.getDouble("r", 0.0);
-                double powerFactor = command.getDouble("power", 0.6);
-                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
-                double obstacleDistance = command.getDouble("obstacle distance", 10);
-
-                Pose targetPose = new Pose(targetX, targetY, targetR);
-                OdometryMove odometryMove = new OdometryMove(targetPose, powerFactor);
-
-                ObstacleDetect obstacleCondition = new ObstacleDetect(obstacleDistance);
-                Timeout timeoutCondition = new Timeout(timeoutMs);
-                CombinedConditions conditions = new CombinedConditions();
-                conditions
-                    .add(timeoutCondition)
-                    .add(obstacleCondition);
-
-                runTask(odometryMove, conditions);
-                break;
-            }
-
-
             case "EXTEND ELEVATOR ARM": {
                 int clicks = command.getInt("clicks", 0);
                 double powerFactor = command.getDouble("power factor", 0.5);

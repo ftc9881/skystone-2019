@@ -70,7 +70,22 @@ public class CustomSkystoneDetector extends DogeCVDetector {
         }
 
         // RENDER
-        switch (stageToRenderToViewport) {
+        return getRenderMat(stageToRenderToViewport);
+    }
+
+    public Mat getRenderMat(int stage) {
+        switch (stage) {
+            case 2:
+                return blackMask;
+            case 1:
+                return displayMat;
+            case 0:
+            default:
+                return rawImage;
+        }
+    }
+    private Mat getRenderMat(Stage stage) {
+        switch (stage) {
             case THRESHOLD:
                 Imgproc.cvtColor(blackMask, blackMask, Imgproc.COLOR_GRAY2BGR);
                 return blackMask;
@@ -79,10 +94,6 @@ public class CustomSkystoneDetector extends DogeCVDetector {
             default:
                 return displayMat;
         }
-    }
-
-    public Mat getDisplayMat() {
-        return rawImage;
     }
 
     @Override

@@ -3,10 +3,7 @@ package org.firstinspires.ftc.teamcode.robot.ArmBot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.robot.Intake;
-import org.firstinspires.ftc.teamcode.robot.OdometrySystem;
 import org.firstinspires.ftc.teamcode.robot.Robot;
-import org.firstinspires.ftc.teamcode.robot.RobotSystemFactory;
-import org.firstinspires.ftc.teamcode.robot.SensorSystem;
 import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
 
 public class ArmBot extends Robot {
@@ -14,12 +11,11 @@ public class ArmBot extends Robot {
     // Singleton pattern; constructor is private and enable only one instance at a time
     private static ArmBot instance;
 
-    public static ArmBot newInstance(LinearOpMode opMode) {
-        instance = new ArmBot(opMode);
-        return instance;
-    }
-
     public static ArmBot getInstance() {
+        Robot robot = Robot.getInstance();
+        if (instance == null && robot != null) {
+            instance = new ArmBot(robot);
+        }
         return instance;
     }
 
@@ -29,19 +25,15 @@ public class ArmBot extends Robot {
 
     public Arm arm;
     public Intake intake;
-    public SensorSystem sensorSystem;
-    public OdometrySystem odometrySystem;
 
-    private ArmBot(LinearOpMode opMode) {
-        super(opMode);
+    private ArmBot(Robot robot) {
+        this.opMode = robot.opMode;
+        this.hardwareMap = robot.hardwareMap;
+        this.imu = robot.imu;
+        this.driveTrain = robot.driveTrain;
 
-        RobotSystemFactory robotFactory = new RobotSystemFactory(opMode.hardwareMap);
-        visionSystem = robotFactory.visionSystem();
-        driveTrain = robotFactory.driveTrain();
-        arm = robotFactory.arm();
-        intake = robotFactory.intakeSystem();
-        sensorSystem = robotFactory.sensorSystem();
-        odometrySystem = robotFactory.odometrySystem();
+        arm = new Arm(hardwareMap);
+        intake = new Intake(hardwareMap);
 
         stoneServo = new ToggleServo(hardwareMap, "stone");
         capstoneServo = new ToggleServo(hardwareMap, "capstone");

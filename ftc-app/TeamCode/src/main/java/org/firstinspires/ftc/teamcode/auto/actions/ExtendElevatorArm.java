@@ -4,14 +4,15 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.math.PIDController;
-import org.firstinspires.ftc.teamcode.robot.BatMobile.Elevator;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.DifferentialElevator;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 
 public class ExtendElevatorArm extends Action {
 
-    Robot robot;
+    BatMobile batMobile;
     private PIDController lPID;
     private PIDController rPID;
     private double targetClicks;
@@ -20,12 +21,12 @@ public class ExtendElevatorArm extends Action {
     private double powerFactor;
     private double basePower;
     private int errorRange;
-    private Elevator elevator;
+    private DifferentialElevator elevator;
 
     public ExtendElevatorArm(int clicks, double powerFactor) {
-        this.robot = Robot.getInstance();
+        this.batMobile = BatMobile.getInstance();
         this.powerFactor = powerFactor;
-        elevator = robot.elevator;
+        elevator = batMobile.differentialElevator;
 
         AutoOpConfiguration config = AutoOpConfiguration.getInstance();
         errorRange = config.properties.getInt("elevator clicks error", 20);
@@ -68,6 +69,6 @@ public class ExtendElevatorArm extends Action {
 
     @Override
     protected void onEndRun() {
-        robot.driveTrain.stop();
+        batMobile.driveTrain.stop();
     }
 }
