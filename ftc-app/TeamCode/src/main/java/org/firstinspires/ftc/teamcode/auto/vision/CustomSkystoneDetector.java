@@ -5,11 +5,13 @@ import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
 import com.disnodeteam.dogecv.filters.GrayscaleFilter;
 import com.disnodeteam.dogecv.filters.LeviColorFilter;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class CustomSkystoneDetector extends DogeCVDetector {
     public DogeCVColorFilter yellowFilter;
     public int blobDistanceThreshold;
     public int minimumArea;
+    public boolean flipImage = true;
 
     private Rect foundRect = new Rect();
 
@@ -30,7 +33,6 @@ public class CustomSkystoneDetector extends DogeCVDetector {
     private Mat blackMask = new Mat();
     private Mat yellowMask = new Mat();
     private Mat hierarchy  = new Mat();
-
 
     public CustomSkystoneDetector() {
         detectorName = "Skystone Detector";
@@ -42,6 +44,10 @@ public class CustomSkystoneDetector extends DogeCVDetector {
 
     @Override
     public Mat process(Mat input) {
+        if (flipImage) {
+            Core.rotate(input, input, Core.ROTATE_180);
+        }
+
         input.copyTo(rawImage);
         input.copyTo(workingMat);
         input.copyTo(displayMat);

@@ -65,9 +65,11 @@ public class OpenCV implements VisionSystem {
                 Context context = hardwareMap.appContext;
                 int cameraMonitorViewId = context.getResources().getIdentifier("cameraMonitorViewId", "id", context.getPackageName());
                 openCvCamera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+                detector.flipImage = false;
                 break;
             case WEBCAM:
                 openCvCamera = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+                detector.flipImage = true;
                 break;
             default:
                 throw new IllegalArgumentException("TeamCode OpenCV: Need camera type");
