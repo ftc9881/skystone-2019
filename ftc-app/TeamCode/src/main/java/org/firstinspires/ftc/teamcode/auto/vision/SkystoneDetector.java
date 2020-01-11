@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.auto.vision;
 
-import com.disnodeteam.dogecv.detectors.DogeCVDetector;
 import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
 import com.disnodeteam.dogecv.filters.GrayscaleFilter;
 import com.disnodeteam.dogecv.filters.LeviColorFilter;
@@ -11,19 +10,19 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 
-public class CustomSkystoneDetector extends DogeCVDetector {
+public class SkystoneDetector extends OpenCVDetector {
     public DogeCVColorFilter blackFilter;
     public DogeCVColorFilter yellowFilter;
     public int blobDistanceThreshold;
     public int minimumArea;
     public boolean flipImage = true;
+    public Rect cropRect = new Rect();
 
     private Rect foundRect = new Rect();
 
@@ -34,8 +33,8 @@ public class CustomSkystoneDetector extends DogeCVDetector {
     private Mat yellowMask = new Mat();
     private Mat hierarchy  = new Mat();
 
-    public CustomSkystoneDetector() {
-        detectorName = "Skystone Detector";
+    public SkystoneDetector() {
+        useDefaults();
     }
 
     public Rect foundRectangle() {
@@ -55,6 +54,10 @@ public class CustomSkystoneDetector extends DogeCVDetector {
 
         List<MatOfPoint> contoursYellow = findContours(yellowFilter, yellowMask);
         List<Rect> rectsYellow = contoursToRects(contoursYellow);
+        if (cropRect.width > 0 && cropRect.height > 0) {
+            draw(cropRect, new Scalar(255, 255, 255));
+            rectsYellow = filterByBound(rectsYellow, cropRect);
+        }
         List<List<Rect>> listOfYellowBlobs = groupIntoBlobs(rectsYellow, blobDistanceThreshold);
         Rect yellowBoundingRect = chooseBestYellow(listOfYellowBlobs);
 
@@ -107,7 +110,7 @@ public class CustomSkystoneDetector extends DogeCVDetector {
         blackFilter = new GrayscaleFilter(0, 50);
         yellowFilter = new LeviColorFilter(LeviColorFilter.ColorPreset.YELLOW, 90);
         blobDistanceThreshold = 50;
-        minimumArea = 200;
+        minimumArea = 100;
     }
 
 

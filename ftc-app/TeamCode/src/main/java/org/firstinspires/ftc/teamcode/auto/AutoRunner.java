@@ -101,28 +101,7 @@ public class AutoRunner {
                 OpenCV openCV = new OpenCV();
                 openCV.initialize();
                 openCV.startLook(VisionSystem.TargetType.SKYSTONE);
-
-                List<Integer> foundPositions = new ArrayList<>();
-                double stdDev = 999;
-                int centerX = 0;
-                while (centerX == 0 || stdDev > 5) {
-                    Rect foundRect = openCV.detector.foundRectangle();
-                    centerX = foundRect.x + foundRect.width / 2;
-                    foundPositions.add(centerX);
-                    stdDev = GeneralMath.standardDeviation(foundPositions);
-                    logAndTelemetry("SkystonePixel", centerX);
-                }
-
-                int averageCenterX = (int) GeneralMath.mean(foundPositions);
-                int skystoneLeftBound = config.properties.getInt("skystone left", 0);
-                int skystoneRightBound = config.properties.getInt("skystone right", 0);
-                if (averageCenterX < skystoneLeftBound) {
-                    skystonePosition = VisionSystem.SkystonePosition.LEFT;
-                } else if (averageCenterX > skystoneRightBound) {
-                    skystonePosition = VisionSystem.SkystonePosition.RIGHT;
-                } else {
-                    skystonePosition = VisionSystem.SkystonePosition.CENTER;
-                }
+                skystonePosition = openCV.identifyPosition(opMode, config.properties);
                 break;
             }
             case "ALIGN CLAW SKYSTONE": {
@@ -216,6 +195,13 @@ public class AutoRunner {
             case "SLEEP": {
                 long timeMs = (long) command.getDouble("time", 1000);
                 sleep(timeMs);
+                break;
+            }
+
+            case "BREAKPOINT": {
+                while (!opMode.gamepad1.a && opMode.opModeIsActive()) {
+                    sleep(20);
+                }
                 break;
             }
 

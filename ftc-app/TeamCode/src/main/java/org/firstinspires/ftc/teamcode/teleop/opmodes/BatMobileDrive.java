@@ -5,15 +5,21 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
-
-import java.util.ArrayList;
-import java.util.List;
+import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
+import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.HELD;
 
 @TeleOp
 public class BatMobileDrive extends BaseDrive {
 
     private BatMobile batMobile;
 
+    private boolean isElevatorAutoMode = false;
+    private boolean isLifted = false;
+    private boolean isExtended = false;
+    private int liftLevel = 0;
+    private int extendLevel = 0;
+
+    private double deadZone;
     private double liftPowerFactor;
     private double extendPowerFactor;
     private double slowDrivePowerFactor;
@@ -22,17 +28,26 @@ public class BatMobileDrive extends BaseDrive {
     private Button pivotButton = new Button();
     private Button clawButton = new Button();
     private Button foundationButton = new Button();
+    private Button capstoneButton = new Button();
+    private Button depositLeftButton = new Button();
+    private Button depositRightButton = new Button();
+    private Button increaseLiftLevelButton = new Button();
+    private Button decreaseLiftLevelButton = new Button();
+    private Button increaseExtendLevelButton = new Button();
+    private Button decreaseExtendLevelButton = new Button();
+    private Button toggleLiftButton = new Button();
+    private Button toggleExtendButton = new Button();
 
     @Override
     protected void initialize() {
         super.initialize();
-//        batMobile = BatMobile.newInstance(this);
         batMobile = BatMobile.getInstance();
 
+        deadZone = config.getDouble("dead zone", 0.1);
         liftPowerFactor = config.getDouble("lift power", 1.0);
         extendPowerFactor = config.getDouble("extend power", 1.0);
         slowDrivePowerFactor = config.getDouble("slow drive", 0.4);
-        outtakePowerFactor = config.getDouble("outtake power", 0.4);
+        outtakePowerFactor = config.getDouble("outtake power", 1.0);
     }
 
     @Override
@@ -40,6 +55,7 @@ public class BatMobileDrive extends BaseDrive {
         updateDrivePower();
         updateDrive();
 
+        updateButtons();
         updateElevator();
         updateIntake();
         updateServos();
@@ -51,45 +67,118 @@ public class BatMobileDrive extends BaseDrive {
         drivePowerFactor = gamepad1.left_bumper || gamepad1.right_bumper ? slowDrivePowerFactor : 1.0;
     }
 
+    private void updateButtons() {
+        pivotButton.update(gamepad1.y);
+        clawButton.update(gamepad1.x);
+        foundationButton.update(gamepad2.x);
+        capstoneButton.update(gamepad2.y);
+        depositLeftButton.update(gamepad2.left_bumper);
+        depositRightButton.update(gamepad2.right_bumper);
+        increaseLiftLevelButton.update(gamepad2.dpad_up);
+        decreaseLiftLevelButton.update(gamepad2.dpad_down);
+        increaseExtendLevelButton.update(gamepad2.dpad_right);
+        decreaseExtendLevelButton.update(gamepad1.dpad_left);
+        toggleExtendButton.update(gamepad2.b);
+        toggleLiftButton.update(gamepad2.a);
+    }
+
     private void updateElevator() {
-        double liftPower = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0);
-        double extendPower = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0);
-        batMobile.elevator.lift.setPower(liftPower * liftPowerFactor);
-        batMobile.elevator.extend.setPower(extendPower * extendPowerFactor);
-    }
-
-    private void updateIntake() {
-        double intakePower = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
-        batMobile.intake.left.setPower(intakePower);
-        batMobile.intake.right.setPower(intakePower);
-    }
-
-    private void updateServos() {
-        updateToggle(pivotButton, gamepad1.y, batMobile.sideArm.pivot);
-        updateToggle(clawButton, gamepad1.x, batMobile.sideArm.claw);
-        List<ToggleServo> foundationServos = new ArrayList<>();
-        foundationServos.add(batMobile.leftFoundationServo);
-        foundationServos.add(batMobile.rightFoundationServo);
-        updateToggle(foundationButton, gamepad1.b, foundationServos);
-    }
-
-    private void updateToggle(Button button, boolean input, ToggleServo servo) {
-        button.update(input);
-        if (button.is(Button.State.DOWN)) {
-            servo.toggle();
+        updateElevatorLevels();
+        if (isManuallyInputtingForElevator()) {
+            isElevatorAutoMode = false;
+        }
+        if (isElevatorAutoMode) {
+            updateElevatorShortcuts();
+        } else {
+            updateElevatorManual();
         }
     }
 
-    private void updateToggle(Button button, boolean input, List<ToggleServo> servos) {
-        button.update(input);
-        if (button.is(Button.State.DOWN)) {
+    private void updateElevatorLevels() {
+        if (increaseLiftLevelButton.is(DOWN)) {
+            liftLevel += 1;
+        }
+        if (decreaseLiftLevelButton.is(DOWN)) {
+            liftLevel -= 1;
+        }
+        if (increaseExtendLevelButton.is(DOWN)) {
+            extendLevel += 1;
+        }
+        if (decreaseExtendLevelButton.is(DOWN)) {
+            extendLevel -= 1;
+        }
+    }
+
+    private boolean isManuallyInputtingForElevator() {
+        return gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left ||
+                Math.abs(gamepad2.left_stick_y) > deadZone || Math.abs(gamepad2.right_stick_x) > deadZone;
+    }
+
+    private void updateElevatorManual() {
+        double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0) * liftPowerFactor;
+        double extendPowerP1 = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0) * extendPowerFactor;
+        double liftPowerP2 =  gamepad2.left_stick_y;
+        double extendPowerP2 = gamepad2.right_stick_x;
+        batMobile.elevator.lift.setPower(liftPowerP1 + liftPowerP2);
+        batMobile.elevator.extend.setPower(extendPowerP1 + extendPowerP2);
+    }
+
+    private void updateElevatorShortcuts() {
+        if (toggleLiftButton.is(DOWN)) {
+            isLifted = !isLifted;
+            int level = isLifted ? liftLevel : -liftLevel;
+            batMobile.elevator.relativeLiftToLevel(level);
+        }
+        if (toggleExtendButton.is(DOWN)) {
+            isExtended = !isExtended;
+            int level = isExtended ? extendLevel : -extendLevel;
+            batMobile.elevator.relativeExtendToLevel(level);
+        }
+    }
+
+    private void updateIntake() {
+        double intakePowerP1 = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
+        double intakePowerP2 = (gamepad2.right_trigger - gamepad2.left_trigger) * outtakePowerFactor;
+        double intakePower = intakePowerP1 + intakePowerP2;
+        batMobile.intake.setPower(intakePower);
+    }
+
+    private void updateServos() {
+        updateToggle(capstoneButton, batMobile.capstoneServo);
+        updateToggle(foundationButton, batMobile.leftFoundationServo, batMobile.rightFoundationServo);
+        updateToggle(pivotButton, batMobile.sideArm.pivot);
+        updateToggle(clawButton, batMobile.sideArm.claw);
+        updateDepositServos();
+    }
+
+    private void updateToggle(Button button, ToggleServo ... servos) {
+        if (button.is(DOWN)) {
             for (ToggleServo servo : servos) {
                 servo.toggle();
             }
         }
     }
 
+    private void updateDepositServos() {
+        boolean bothPressed = (depositLeftButton.is(DOWN) && depositRightButton.is(HELD)) ||
+                              (depositLeftButton.is(HELD) && depositRightButton.is(DOWN)) ||
+                              (depositLeftButton.is(DOWN) && depositRightButton.is(DOWN));
+        if (bothPressed) {
+            batMobile.frontDepositServo.set(ToggleServo.State.CLOSED);
+            batMobile.backDepositServo.set(ToggleServo.State.CLOSED);
+        }
+        else if (depositLeftButton.is(DOWN)) {
+            batMobile.frontDepositServo.set(ToggleServo.State.OPEN);
+            batMobile.backDepositServo.set(ToggleServo.State.CLOSED);
+        } else if (depositRightButton.is(DOWN)) {
+            batMobile.frontDepositServo.set(ToggleServo.State.CLOSED);
+            batMobile.backDepositServo.set(ToggleServo.State.OPEN);
+        }
+    }
+
     private void updateTelemetry() {
+        telemetry.addData("Lift Level", liftLevel);
+        telemetry.addData("Extend Level", extendLevel);
         telemetry.addData("Drive Power Factor", drivePowerFactor);
         telemetry.addData("Intake Power Factor", outtakePowerFactor);
         telemetry.update();

@@ -3,7 +3,9 @@
 	"slow factor": "0.4",
 	"outtake power": "1.0",
 
-	"lift power": "0.4",
+	"lift power": "1.0",
 
-	"debugServo": "capstone"
+	"skystone blob distance": "90",
+	"skystone min area": "10",
+	"debugServo": "back deposit"
 }

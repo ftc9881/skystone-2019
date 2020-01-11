@@ -79,33 +79,55 @@
 		{
 "comment": "move to next to foundation",
 			"command": "MOVE AND TOGGLE PIVOT",
-			"deploy clicks": "1000",
+			"deploy clicks": "4000",
 			"power": "1.0",
 			"distance": "-60",
-			"move angle": "-8",
+			"move angle": "8",
 			"target angle": "90",
 			"timeout": "5000"
 		},
-{ "command": "STOP" },
+{ "command": "BREAKPOINT" },
 		{
+			"command": "TOGGLE CLAW"
+		},
+		{
+			"command": "TOGGLE PIVOT"
+		},
+		{
+			"command": "TOGGLE CLAW"
+		},
+		{
+"comment:": "shift a bit so we find clear spot for foundation deployment",
 			"command": "MOVE",
 			"power": "1.0",
-			"distance": "40",
-			"move angle": "8",
+			"distance": "5",
+			"move angle": "0",
 			"target angle": "-90",
-			"ramp up": "700",
-			"ramp down": "1300",
+			"ramp up": "0",
+			"ramp down": "0",
 			"timeout": "5000"
 		},
-		{ "command": "SLEEP", "time":"1000" },
 		{
-			"command": "MOVE",
-			"target angle": "-90",
-			"ramp up": "700",
-			"ramp down": "1300",
+			"command": "DEPLOY TO FOUNDATION"
+		},
+{ "command": "BREAKPOINT" },
+		{
+"comment:": "turn to move foundation into corner",
+			"command": "TURN",
 			"power": "1.0",
-			"distance": "42",
-			"move angle": "180",
+			"target angle": "0",
+			"timeout": "5000"
+		},
+{ "command": "BREAKPOINT" },
+		{
+"comment": "drag foundation into build zone",
+			"command": "MOVE",
+			"target angle": "0",
+			"move angle": "0",
+			"ramp up": "500",
+			"ramp down": "500",
+			"power": "1.0",
+			"distance": "-20",
 			"timeout": "5000"
 		},
 	{ "command": "SLEEP", "time":"1000" },

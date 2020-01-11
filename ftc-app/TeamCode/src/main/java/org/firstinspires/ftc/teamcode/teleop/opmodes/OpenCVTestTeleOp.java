@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import android.os.Environment;
 
-import com.disnodeteam.dogecv.detectors.DogeCVDetector;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
@@ -11,6 +10,7 @@ import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
@@ -29,6 +29,15 @@ public class OpenCVTestTeleOp extends TeleOpBase {
         openCV = new OpenCV();
         openCV.initialize();
         openCV.startLook(VisionSystem.TargetType.SKYSTONE);
+
+        Rect cropRect = new Rect();
+        cropRect.x = config.getInt("crop x", 0);
+        cropRect.y = config.getInt("crop y", 0);
+        cropRect.width = config.getInt("crop w", 0);
+        cropRect.height= config.getInt("crop h", 0);
+        openCV.detector.cropRect = cropRect;
+        openCV.detector.blobDistanceThreshold = config.getInt("skystone blob distance", 50);
+        openCV.detector.minimumArea = config.getInt("skystone min area", 0);
     }
 
     @Override

@@ -20,19 +20,13 @@ public class Intake {
         left.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void in() {
-        left.setPower(1);
-        right.setPower(1);
-    }
-
-    public void out() {
-        left.setPower(-1);
-        right.setPower(-1);
+    public void setPower(double power) {
+        left.setPower(power);
+        right.setPower(power);
     }
 
     public void stop() {
-        left.setPower(0);
-        right.setPower(0);
+        setPower(0);
     }
 
 }

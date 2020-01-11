@@ -17,10 +17,6 @@
 		"move ki": "0.0",
 		"move kd": "0.0",
 
-		"lift kp": "0.01",
-		"lift ki": "0.0",
-		"lift kd": "0.0",
-
 		"skystone left": "50",
 		"skystone right": "100"
 	},

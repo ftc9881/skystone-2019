@@ -20,16 +20,22 @@
 		"lift ki": "0.0",
 		"lift kd": "0.0",
 
+		"crop x": "30",
+		"crop y": "45",
+		"crop w": "250",
+		"crop h": "75",
 		"stone distance": "4",
-		"skystone left": "50",
-		"skystone right": "100"
+		"skystone left": "120",
+		"skystone right": "220"
 	},
 
 	"init": [
-		{ "command": "SKIP   IDENTIFY SKYSTONE" }
+		{ "command": "IDENTIFY SKYSTONE" }
 	],
 
 	"commands": [
+	{ "command": "BREAKPOINT"  },
+
 		{
 			"command": "MOVE",
 			"power": "0.5",

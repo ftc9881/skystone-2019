@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.robot.devices;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 public class ToggleServo {
@@ -10,11 +11,14 @@ public class ToggleServo {
     public enum State { OPEN, CLOSED }
 
     public Servo servo;
+
+    private String name;
     private State currentState;
     private double openPosition;
     private double closedPosition;
 
     public ToggleServo(HardwareMap hardwareMap, String name) {
+        this.name = name;
         servo = hardwareMap.servo.get(name);
         Configuration config = new Configuration("HardwareConstants");
         openPosition = config.getDouble(name + " open", 0.0);
@@ -30,6 +34,8 @@ public class ToggleServo {
     public void toggle() {
         State newState = currentState == State.OPEN ? State.CLOSED : State.OPEN;
         set(newState);
+
+        AutoRunner.log(name + "ToggleServo", newState == State.OPEN ? openPosition : closedPosition);
     }
 
 }
