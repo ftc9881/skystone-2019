@@ -27,28 +27,31 @@ public class SensorAlignTest extends TeleOpBase {
     protected void initialize() {
 
         // block detection
-        AnalogInput bdinput_L = robot.hardwareMap.analogInput.get("bdL");
-        AnalogInput bdinput_R = robot.hardwareMap.analogInput.get("bdR");
-        SharpDistanceSensor bsensor_left = new SharpDistanceSensor(bdinput_L);
-        SharpDistanceSensor bsensor_right = new SharpDistanceSensor(bdinput_R);
+        AnalogInput baseDetectorInputL = robot.hardwareMap.analogInput.get("base detector L");
+        AnalogInput baseDetectorInputR = robot.hardwareMap.analogInput.get("base detector R");
+        SharpDistanceSensor baseSensorL = new SharpDistanceSensor(baseDetectorInputL);
+        SharpDistanceSensor baseSensorR = new SharpDistanceSensor(baseDetectorInputR);
 
         // foundation detection
-        AnalogInput fdinput_L = robot.hardwareMap.analogInput.get("fdL");
-        AnalogInput fdinput_R = robot.hardwareMap.analogInput.get("fdR");
-        SharpDistanceSensor fsensor_left = new SharpDistanceSensor(fdinput_L);
-        SharpDistanceSensor fsensor_right = new SharpDistanceSensor(fdinput_R);
+        AnalogInput foundationDetectorInputL = robot.hardwareMap.analogInput.get("foundationDetectorL");
+        AnalogInput foundationDetectorInputR = robot.hardwareMap.analogInput.get("foundationDetectorR");
+        SharpDistanceSensor foundationSensorL = new SharpDistanceSensor(foundationDetectorInputL);
+        SharpDistanceSensor foundationSensorR = new SharpDistanceSensor(foundationDetectorInputR);
 
-         SharpPair blockDetector = new SharpPair(bsensor_left, bsensor_right,
+         SharpPair blockDetector = new SharpPair(baseSensorL, baseSensorR,
              config.getDouble("blockDetectDist", 21),
-             config.getDouble("blockDetectMargin", 2));
+             config.getDouble("blockDetectMargin", 2)
+         );
 
-         SharpPair foundationDetector = new SharpPair(fsensor_left, fsensor_right,
+         SharpPair foundationDetector = new SharpPair(foundationSensorL, foundationSensorR,
              config.getDouble("foundationDetectDist", 10),
-             config.getDouble("foundationDetectMargin", 2));
+             config.getDouble("foundationDetectMargin", 2)
+         );
 
-        double idealYPosition = config.getDouble("sensor y target", 0);
-        xPid = new PIDController(config, "sensor x", 0);
-        yPid = new PIDController(config, "sensor y", idealYPosition);
+        double idealXPosition = config.getDouble("sensor X target", 0);
+        //x is f/b, y is strafe direction
+        xPid = new PIDController(config, "sensor x", idealXPosition);
+        yPid = new PIDController(config, "sensor y", 0);
         rPid = new PIDController(config, "sensor r", 0);
     }
 
@@ -65,7 +68,8 @@ public class SensorAlignTest extends TeleOpBase {
 
             Pose drivePose = new Pose(0, 0, 0);
             drivePose.x = xPid.getCorrectedOutput(analogBlockDetector.getDiff());
-            drivePose.x = xPid.getCorrectedOutput(analogBlockDetector.getDiff());
+            drivePose.y = yPid.getCorrectedOutput(analogBlockDetector.getDiff());
+            drivePose.r = rPid.getCorrectedOutput(analogBlockDetector.getDiff());
 
             robot.driveTrain.drive(drivePose);
         }
