@@ -5,10 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
+import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp
-//@Disabled
-public class DebugDrive extends BaseDrive {
+@Disabled
+public class ServoTest extends TeleOpBase {
 
     private Button upButton = new Button();
     private Button downButton = new Button();
@@ -20,9 +21,7 @@ public class DebugDrive extends BaseDrive {
 
     @Override
     protected void initialize() {
-        super.initialize();
-
-        servoName = config.getString("debugServo", "NONE");
+        servoName = config.getString("debug servo", "NONE");
         if (!servoName.equals("NONE")) {
             servo = hardwareMap.servo.get(servoName);
         }
@@ -30,8 +29,6 @@ public class DebugDrive extends BaseDrive {
 
     @Override
     protected void update() {
-        super.update();
-
         if (servo != null) {
             updateConfigureServos();
         }

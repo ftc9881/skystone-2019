@@ -4,13 +4,21 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.robot.devices.VelocityMotor;
+import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 public class DifferentialElevator {
+
+    private int clicksPerLiftLevel;
+    private int clicksPerExtendLevel;
 
     public VelocityMotor leftLift;
     public VelocityMotor rightLift;
 
     public DifferentialElevator(HardwareMap hardwareMap) {
+        Configuration config = new Configuration("HardwareConstants");
+        clicksPerLiftLevel = config.getInt("clicks per lift level", 0);
+        clicksPerExtendLevel = config.getInt("clicks per extend level", 0);
+
         leftLift = new VelocityMotor(hardwareMap.dcMotor.get("left lift"));
         rightLift = new VelocityMotor(hardwareMap.dcMotor.get("right lift"));
 
@@ -31,9 +39,39 @@ public class DifferentialElevator {
         rightLift.update();
     }
 
-    public void setPower(double left, double right) {
+    public void setPowerLR(double left, double right) {
         leftLift.motor.setPower(left);
         rightLift.motor.setPower(right);
+    }
+
+    public void setPowerLE(double lift, double extend) {
+        double leftPower = lift + extend;
+        double rightPower = lift - extend;
+        leftLift.motor.setPower(leftPower);
+        rightLift.motor.setPower(rightPower);
+    }
+
+    //TODO: Implement after Meet 3
+    @Deprecated
+    public void relativeLiftToLevel(int skystoneLevel) {
+        int leftTargetClicks = leftLift.motor.getCurrentPosition() + skystoneLevel * clicksPerLiftLevel;
+        int rightTargetClicks = rightLift.motor.getCurrentPosition() + skystoneLevel * clicksPerLiftLevel;
+        leftLift.motor.setTargetPosition(leftTargetClicks);
+        rightLift.motor.setTargetPosition(rightTargetClicks);
+        leftLift.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightLift.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        setPowerLR(1.0, 1.0);
+    }
+
+    @Deprecated
+    public void relativeExtendToLevel(int skystoneLevel) {
+        int leftTargetClicks = leftLift.motor.getCurrentPosition() + skystoneLevel * clicksPerExtendLevel;
+        int rightTargetClicks = rightLift.motor.getCurrentPosition() + skystoneLevel * clicksPerExtendLevel;
+        leftLift.motor.setTargetPosition(leftTargetClicks);
+        rightLift.motor.setTargetPosition(rightTargetClicks);
+        leftLift.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightLift.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        setPowerLR(1.0, 1.0);
     }
 
 }

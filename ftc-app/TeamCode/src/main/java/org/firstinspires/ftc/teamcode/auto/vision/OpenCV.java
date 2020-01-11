@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.vision;
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -11,13 +12,18 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.Robot;
+import org.opencv.core.Mat;
 import org.opencv.core.Rect;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OpenCV implements VisionSystem {
@@ -91,6 +97,11 @@ public class OpenCV implements VisionSystem {
     }
 
     public SkystonePosition identifyPosition(LinearOpMode opMode, Command config) {
+        detector.cropRect.x = config.getInt("crop x", 0);
+        detector.cropRect.y = config.getInt("crop y", 0);
+        detector.cropRect.width = config.getInt("crop w", 0);
+        detector.cropRect.height= config.getInt("crop h", 0);
+
         List<Integer> foundPositions = new ArrayList<>();
         double stdDev = 999;
         int centerX = 0;
@@ -98,18 +109,25 @@ public class OpenCV implements VisionSystem {
         int stdDevThreshold = config.getInt("std dev threshold", 10);
         int maxDetectList = config.getInt("max detection list size", 10);
 
-        while (opMode.opModeIsActive() && (centerX == 0 || stdDev > stdDevThreshold)) {
+        AutoRunner.log("StopRequested", opMode.isStopRequested());
+
+        while (!opMode.isStopRequested() && (centerX == 0 || stdDev > stdDevThreshold)) {
             Rect foundRect = detector.foundRectangle();
             centerX = foundRect.x + foundRect.width / 2;
-            foundPositions.add(centerX, 0);
             if (foundPositions.size() >= maxDetectList) {
                 foundPositions.remove(foundPositions.size()-1);
             }
+            foundPositions.add(centerX, 0);
             stdDev = GeneralMath.standardDeviation(foundPositions);
             AutoRunner.log("SkystonePixel", centerX);
+            AutoRunner.log("StdDev", stdDev);
         }
 
+        // Debug
+        writeCurrentImage();
+
         int averageCenterX = (int) GeneralMath.mean(foundPositions);
+        AutoRunner.log("Mean", averageCenterX);
         int skystoneLeftBound = config.getInt("skystone left", 0);
         int skystoneRightBound = config.getInt("skystone right", 0);
         if (averageCenterX < skystoneLeftBound) {
@@ -118,6 +136,18 @@ public class OpenCV implements VisionSystem {
             return VisionSystem.SkystonePosition.RIGHT;
         }
         return VisionSystem.SkystonePosition.CENTER;
+    }
+
+    public void writeCurrentImage() {
+        Mat mat = detector.getRenderMat(1);
+        Mat newMat = new Mat();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy_HH:mm:ss.SSS");
+        Date date = new Date(System.currentTimeMillis());
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + formatter.format(date) + ".png";
+        Imgproc.cvtColor(mat, newMat, Imgproc.COLOR_BGR2RGB);
+        boolean success = Imgcodecs.imwrite(path, newMat);
+        AutoRunner.log("OpenCV", success);
+        AutoRunner.log("OpenCV", "Wrote image " + path);
     }
 
 }

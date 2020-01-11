@@ -6,7 +6,6 @@ import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
 
 public class BatMobile extends Robot {
 
-    // Singleton pattern; constructor is private and enable only one instance at a time
     private static BatMobile instance;
     public static BatMobile getInstance() {
         Robot robot = Robot.getInstance();
@@ -18,8 +17,7 @@ public class BatMobile extends Robot {
 
     public Intake intake;
     public SideArm sideArm;
-    public SimpleElevator elevator;
-    public DifferentialElevator differentialElevator;
+    public DifferentialElevator elevator;
 
     public ToggleServo leftFoundationServo;
     public ToggleServo rightFoundationServo;
@@ -34,7 +32,7 @@ public class BatMobile extends Robot {
         this.driveTrain = robot.driveTrain;
 
         sideArm = new SideArm(hardwareMap);
-        elevator = new SimpleElevator(hardwareMap);
+        elevator = new DifferentialElevator(hardwareMap);
         intake = new Intake(hardwareMap);
 
         leftFoundationServo = new ToggleServo(hardwareMap, "left foundation");

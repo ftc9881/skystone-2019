@@ -119,8 +119,7 @@ public class BatMobileDrive extends BaseDrive {
         double extendPowerP1 = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0) * extendPowerFactor;
         double liftPowerP2 =  gamepad2.left_stick_y;
         double extendPowerP2 = gamepad2.right_stick_x;
-        batMobile.elevator.lift.setPower(liftPowerP1 + liftPowerP2);
-        batMobile.elevator.extend.setPower(extendPowerP1 + extendPowerP2);
+        batMobile.elevator.setPowerLE(liftPowerP1 + liftPowerP2, extendPowerP1 + extendPowerP2);
     }
 
     private void updateElevatorShortcuts() {

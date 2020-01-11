@@ -1,6 +1,5 @@
 {
 	"properties": {
-		"init vuforia": "false",
 		"angle unit": "deg",
 
 		"turn error": "0.4",
@@ -25,6 +24,8 @@
 		"crop w": "250",
 		"crop h": "75",
 		"stone distance": "4",
+		"stone blob distance": "90",
+		"stone min area": "10",
 		"skystone left": "120",
 		"skystone right": "220"
 	},

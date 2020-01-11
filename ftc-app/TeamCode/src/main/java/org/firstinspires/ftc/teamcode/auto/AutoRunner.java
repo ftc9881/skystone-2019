@@ -4,26 +4,20 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.actions.ExtendElevatorArm;
-import org.firstinspires.ftc.teamcode.auto.actions.LiftElevator;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
 import org.firstinspires.ftc.teamcode.auto.endConditions.DeployServoByDistance;
-import org.firstinspires.ftc.teamcode.auto.endConditions.ObstacleDetect;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.math.Angle;
-import org.firstinspires.ftc.teamcode.math.GeneralMath;
-import org.firstinspires.ftc.teamcode.math.Pose;
-import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
-import org.firstinspires.ftc.teamcode.auto.actions.OdometryMove;
 import org.firstinspires.ftc.teamcode.auto.endConditions.Timeout;
+import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.SideArm;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.opencv.core.Rect;
@@ -101,19 +95,57 @@ public class AutoRunner {
                 OpenCV openCV = new OpenCV();
                 openCV.initialize();
                 openCV.startLook(VisionSystem.TargetType.SKYSTONE);
-                skystonePosition = openCV.identifyPosition(opMode, config.properties);
+//                skystonePosition = openCV.identifyPosition(opMode, config.properties);
+
+                openCV.detector.cropRect.x = config.properties.getInt("crop x", 0);
+                openCV.detector.cropRect.y = config.properties.getInt("crop y", 0);
+                openCV.detector.cropRect.width = config.properties.getInt("crop w", 0);
+                openCV.detector.cropRect.height= config.properties.getInt("crop h", 0);
+                openCV.detector.blobDistanceThreshold = config.properties.getInt("stone blob distance", 50);
+                openCV.detector.minimumArea = config.properties.getInt("stone min area", 10);
+                int centerX = 0;
+
+                while (!opMode.isStopRequested() && centerX == 0) {
+                    Rect rect = openCV.detector.foundRectangle();
+                    centerX = rect.x + rect.width / 2;
+                    log("Rect", rect.toString());
+                    log("CenterX", centerX);
+                }
+                openCV.writeCurrentImage();
+
+                AutoRunner.log("Mean", centerX);
+                int skystoneLeftBound = config.properties.getInt("skystone left", 0);
+                int skystoneRightBound = config.properties.getInt("skystone right", 0);
+                if (centerX < skystoneLeftBound) {
+                    skystonePosition = VisionSystem.SkystonePosition.LEFT;
+                } else if (centerX > skystoneRightBound) {
+                    skystonePosition = VisionSystem.SkystonePosition.RIGHT;
+                } else {
+                    skystonePosition = VisionSystem.SkystonePosition.CENTER;
+                }
                 break;
             }
-            case "ALIGN CLAW SKYSTONE": {
+            case "ALIGN SKYSTONE": {
                 Angle moveAngle = command.getAngle("move angle", 0, angleUnit);
                 Angle targetAngle = command.getAngle("target angle", 0, angleUnit);
-                //we are lined up with the center stone so left stone is -1, right stone is 1
-                int distance = (skystonePosition.ordinal()-1) * config.properties.getInt("stone distance", 4);
+                // we are lined up with the center stone so left stone is -1, right stone is 1
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
                 double powerFactor = command.getDouble("power", 0.5);
                 int accelerateClicks = command.getInt("ramp up", 0);
                 int decelerateClicks = command.getInt("ramp down", 0);
+                int distance = 0;
 
+                switch (skystonePosition) {
+                    case LEFT:
+                        distance = config.properties.getInt("align left", 0);
+                        break;
+                    case CENTER:
+                        distance = config.properties.getInt("align center", 0);
+                        break;
+                    case RIGHT:
+                        distance = config.properties.getInt("align right", 0);
+                        break;
+                }
                 Action relativeMove = new RelativeMove(distance, moveAngle, targetAngle, powerFactor, accelerateClicks, decelerateClicks);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
 
@@ -172,26 +204,6 @@ public class AutoRunner {
                 break;
             }
 
-            case "EXTEND ELEVATOR ARM": {
-                int clicks = command.getInt("clicks", 0);
-                double powerFactor = command.getDouble("power factor", 0.5);
-                double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
-
-                ExtendElevatorArm extendElevatorArm = new ExtendElevatorArm(clicks, powerFactor);
-                Timeout timeoutCondition = new Timeout(timeoutMs);
-                runTask(extendElevatorArm, timeoutCondition);
-                break;
-            }
-            case "LIFT ELEVATOR": {
-                int clicks = command.getInt("clicks", 0);
-                double powerFactor = command.getDouble("power factor", 0.5);
-                double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
-
-                LiftElevator liftElevator = new LiftElevator(clicks, powerFactor);
-                Timeout timeoutCondition = new Timeout(timeoutMs);
-                runTask(liftElevator, timeoutCondition);
-                break;
-            }
             case "SLEEP": {
                 long timeMs = (long) command.getDouble("time", 1000);
                 sleep(timeMs);

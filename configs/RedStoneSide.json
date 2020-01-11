@@ -20,13 +20,21 @@
 		"lift ki": "0.0",
 		"lift kd": "0.0",
 
-		"stone distance": "4",
-		"skystone left": "50",
-		"skystone right": "100"
+		"crop x": "0",
+		"crop y": "45",
+		"crop w": "250",
+		"crop h": "75",
+		"align left": "4",
+		"align center": "0",
+		"align right": "-4",
+		"stone blob distance": "90",
+		"stone min area": "30",
+		"skystone left": "80",
+		"skystone right": "140"
 	},
 
 	"init": [
-		{ "command": "SKIP   IDENTIFY SKYSTONE" }
+		{ "command": "IDENTIFY SKYSTONE" }
 	],
 
 	"commands": [
@@ -46,13 +54,15 @@
 			"angle": "90",
 			"timeout": "1000"
 		},
+{ "command": "BREAKPOINT" },
 		{
 "comment": "line up with desired sky stone",
-			"command": "ALIGN CLAW SKYSTONE",
+			"command": "ALIGN SKYSTONE",
 			"target angle": "90",
 			"timeout": "1500",
 			"power": "0.8"
 		},
+{ "command": "BREAKPOINT" },
 		{ 
 			"command": "TOGGLE CLAW"
 		},
@@ -80,9 +90,10 @@
 "comment": "move to next to foundation",
 			"command": "MOVE AND TOGGLE PIVOT",
 			"deploy clicks": "4000",
+			"ramp down": "1200",
 			"power": "1.0",
 			"distance": "-60",
-			"move angle": "8",
+			"move angle": "14",
 			"target angle": "90",
 			"timeout": "5000"
 		},
@@ -97,19 +108,24 @@
 			"command": "TOGGLE CLAW"
 		},
 		{
-"comment:": "shift a bit so we find clear spot for foundation deployment",
-			"command": "MOVE",
-			"power": "1.0",
-			"distance": "5",
-			"move angle": "0",
-			"target angle": "-90",
-			"ramp up": "0",
-			"ramp down": "0",
-			"timeout": "5000"
-		},
-		{
 			"command": "DEPLOY TO FOUNDATION"
 		},
+
+"comment": "move to second skystone",
+			"command": "MOVE AND TOGGLE PIVOT",
+			"deploy clicks": "4000",
+			"ramp down": "1200",
+			"power": "1.0",
+			"distance": "60",
+			"move angle": "14",
+			"target angle": "90",
+			"timeout": "5000"
+		},
+{ "command": "BREAKPOINT" },
+
+
+
+
 { "command": "BREAKPOINT" },
 		{
 "comment:": "turn to move foundation into corner",
