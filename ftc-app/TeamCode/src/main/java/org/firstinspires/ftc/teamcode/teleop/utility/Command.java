@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.auto.structure;
+package org.firstinspires.ftc.teamcode.teleop.utility;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.auto.structure;
 
 import android.os.Environment;
 
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

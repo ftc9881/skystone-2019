@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auto.endConditions;
+package org.firstinspires.ftc.teamcode.auto.endconditions;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 

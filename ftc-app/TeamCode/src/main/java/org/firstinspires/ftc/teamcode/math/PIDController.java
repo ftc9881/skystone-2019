@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.math;
 
-import org.firstinspires.ftc.teamcode.auto.structure.Command;
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
 public class PIDController {
     private double currentTime, previousTime, deltaTime;

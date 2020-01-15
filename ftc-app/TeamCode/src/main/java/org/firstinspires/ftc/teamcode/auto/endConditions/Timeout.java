@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auto.endConditions;
+package org.firstinspires.ftc.teamcode.auto.endconditions;
 
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 

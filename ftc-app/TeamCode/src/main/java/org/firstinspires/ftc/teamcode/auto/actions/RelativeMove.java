@@ -6,7 +6,8 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
-import org.firstinspires.ftc.teamcode.auto.structure.Command;
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
+import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
@@ -36,7 +37,11 @@ public class RelativeMove extends Action {
     private Pose drivePose;
 
     public RelativeMove(Command command) {
-        this.robot = Robot.getInstance();
+        robot = Robot.getInstance();
+        AutoOpConfiguration config = AutoOpConfiguration.getInstance();
+        pidController = new PIDController(config.properties, "move", targetAngle.getRadians());
+        clicksError = config.properties.getInt("move clicks error", 100);
+        basePower = config.properties.getDouble("move base power", 0.3);
         moveAngle = command.getAngle("move angle", 0);
         targetAngle = command.getAngle("target angle", 0);
         distance = command.getDouble("distance", 5.0);
@@ -45,14 +50,9 @@ public class RelativeMove extends Action {
         decelerateClicks = command.getInt("ramp down", 0);
     }
 
-    public RelativeMove(double distance, Angle moveAngle, Angle targetAngle, double powerFactor, int accelerateClicks, int decelerateClicks) {
-        this.robot = Robot.getInstance();
-        this.distance = distance;
-        this.moveAngle = moveAngle;
-        this.targetAngle = targetAngle;
-        this.powerFactor = powerFactor;
-        this.accelerateClicks = accelerateClicks;
-        this.decelerateClicks = decelerateClicks;
+    public RelativeMove(Command command, VisionSystem.SkystonePosition skystonePosition) {
+        this(command);
+        distance = command.getDouble("distance " + skystonePosition.key, distance);
     }
 
     @Override
@@ -69,13 +69,6 @@ public class RelativeMove extends Action {
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
 
-        AutoOpConfiguration config = AutoOpConfiguration.getInstance();
-        double kP = config.properties.getDouble("move kp", 0);
-        double kI = config.properties.getDouble("move ki", 0);
-        double kD = config.properties.getDouble("move kd", 0);
-        clicksError = config.properties.getInt("move clicks error", 100);
-        basePower = config.properties.getDouble("move base power", 0.3);
-        this.pidController = new PIDController(kP, kI, kD, targetAngle.getRadians());
     }
 
     @Override

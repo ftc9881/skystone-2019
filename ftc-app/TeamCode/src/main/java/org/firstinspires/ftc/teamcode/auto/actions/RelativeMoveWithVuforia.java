@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
-import org.firstinspires.ftc.teamcode.auto.structure.Command;
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
@@ -63,19 +63,27 @@ public class RelativeMoveWithVuforia extends Action {
         vuforiaXPidController = new PIDController(config.properties, "vuforia", vuforiaTargetX);
     }
 
+    public RelativeMoveWithVuforia(Command command, VisionSystem.SkystonePosition skystonePosition) {
+        this(command);
+        distance = command.getDouble("distance " + skystonePosition.key, distance);
+        vuforiaTargetY = command.getDouble("vuforia y " + skystonePosition.key, vuforiaTargetY);
+    }
+
+
     @Override
     protected void onRun() {
         robot.driveTrain.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.driveTrain.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         targetClicks = Math.abs(distance) * CLICKS_PER_INCH;
-        AutoRunner.log("TargetClicks", targetClicks);
-        AutoRunner.log("VuforiaTargetY", vuforiaTargetY);
 
         drivePose = new Pose(0, 0, 0);
         int direction = distance > 0 ? 1 : -1;
         drivePose.x = Math.cos(moveAngle.getRadians()) * direction;
         drivePose.y = Math.sin(moveAngle.getRadians()) * direction;
+
+        AutoRunner.log("TargetClicks", targetClicks);
+        AutoRunner.log("VuforiaTargetY", vuforiaTargetY);
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
     }

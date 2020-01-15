@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.teleop.utility;
 
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,21 +1,10 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
-import java.util.ArrayList;
-
 public class CombinedConditions implements IEndCondition {
-    private ArrayList<IEndCondition> conditions;
+    private IEndCondition[] conditions;
 
-    public CombinedConditions() {
-        this.conditions = new ArrayList<IEndCondition>();
-    }
-
-    public CombinedConditions(ArrayList<IEndCondition> conditions) {
+    public CombinedConditions(IEndCondition ... conditions) {
         this.conditions = conditions;
-    }
-
-    public CombinedConditions add(IEndCondition condition) {
-        conditions.add(condition);
-        return this;
     }
 
     @Override

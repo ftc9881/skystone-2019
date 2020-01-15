@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
-import org.firstinspires.ftc.teamcode.auto.structure.Command;
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.opencv.core.Mat;

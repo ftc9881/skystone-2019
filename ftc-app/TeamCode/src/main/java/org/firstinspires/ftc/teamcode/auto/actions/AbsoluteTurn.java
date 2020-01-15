@@ -29,10 +29,7 @@ public class AbsoluteTurn extends Action {
         AutoOpConfiguration config = AutoOpConfiguration.getInstance();
         errorRange = config.properties.getAngle("turn error", 10, AngleUnit.DEGREES);
         basePower = config.properties.getDouble("turn base power", 0.1);
-        double kP = config.properties.getDouble("turn kp", 0);
-        double kI = config.properties.getDouble("turn ki", 0);
-        double kD = config.properties.getDouble("turn kd", 0);
-        pidController = new PIDController(kP ,kI ,kD, targetAngle);
+        pidController = new PIDController(config.properties, "turn", targetAngle);
     }
 
     @Override

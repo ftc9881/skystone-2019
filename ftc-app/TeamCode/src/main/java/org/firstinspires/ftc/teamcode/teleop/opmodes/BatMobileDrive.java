@@ -89,9 +89,6 @@ public class BatMobileDrive extends BaseDrive {
 
     private void updateElevator() {
         updateElevatorLevels();
-        if (!isElevatorAutoMode && !isManuallyInputtingForElevator()) {
-//            holdPosition();
-        }
         if (isManuallyInputtingForElevator()) {
             isElevatorAutoMode = false;
         }
@@ -100,10 +97,6 @@ public class BatMobileDrive extends BaseDrive {
         } else {
             updateElevatorManual();
         }
-    }
-
-    private void holdPosition() {
-        batMobile.elevator.relativeLiftToLevel(0);
     }
 
     private void updateElevatorLevels() {

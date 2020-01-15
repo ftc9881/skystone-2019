@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMoveWithVuforia;
-import org.firstinspires.ftc.teamcode.auto.endConditions.DeployServoByDistance;
+import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
@@ -15,11 +15,11 @@ import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
-import org.firstinspires.ftc.teamcode.auto.structure.Command;
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
-import org.firstinspires.ftc.teamcode.auto.endConditions.Timeout;
-import org.firstinspires.ftc.teamcode.robot.BatMobile.SideArm;
+import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
@@ -41,10 +41,8 @@ public class AutoRunner {
     private LinearOpMode opMode;
     private Robot robot;
 
-    // TODO: Put in BatMobile and figure out inheritance stuff
-    private SideArm sideArm;
-
     private static AngleUnit angleUnit = AngleUnit.DEGREES;
+    private boolean debugMode;
     private boolean isStopped = false;
 
     private VisionSystem.SkystonePosition skystonePosition = VisionSystem.SkystonePosition.CENTER;
@@ -56,8 +54,9 @@ public class AutoRunner {
         config = AutoOpConfiguration.newInstance(name + ".json");
 
         angleUnit = config.properties.getAngleUnit("angle unit", AngleUnit.DEGREES);
+        debugMode = config.properties.getBoolean("debug mode", false);
+
         robot = Robot.newInstance(opMode);
-        sideArm = new SideArm(robot.hardwareMap);
         robot.initializeImu(angleUnit);
 
         for (Command command : config.initCommands) {
@@ -73,14 +72,25 @@ public class AutoRunner {
     public void run() {
         for (Command command : config.commands) {
             logAndTelemetry(TAG, "Command: " + command.name);
-            if (isStopped || !opMode.opModeIsActive()) {
-                logAndTelemetry(TAG, "Early stop");
+            if (shouldStop()) {
+                logAndTelemetry(TAG, "EARLY STOP");
                 return;
             }
             execute(command);
+            waitIfDebugMode();
         }
     }
 
+    private boolean shouldStop() {
+        return isStopped || !opMode.opModeIsActive();
+    }
+
+    private void waitIfDebugMode() {
+        if (debugMode) {
+            logAndTelemetry(TAG, "DEBUG BREAKPOINT");
+            waitUntilButtonPressed();
+        }
+    }
 
     private void execute(Command command) {
 
@@ -105,84 +115,56 @@ public class AutoRunner {
                 break;
             }
             case "ALIGN SKYSTONE": {
-                Angle moveAngle = command.getAngle("move angle", 0, angleUnit);
-                Angle targetAngle = command.getAngle("target angle", 0, angleUnit);
-                // we are lined up with the center stone so left stone is -1, right stone is 1
-                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
-                double powerFactor = command.getDouble("power", 0.5);
-                int accelerateClicks = command.getInt("ramp up", 0);
-                int decelerateClicks = command.getInt("ramp down", 0);
-                int distance = 0;
-
-                switch (skystonePosition) {
-                    case LEFT:
-                        distance = config.properties.getInt("align left", 0);
-                        break;
-                    case CENTER:
-                        distance = config.properties.getInt("align center", 0);
-                        break;
-                    case RIGHT:
-                        distance = config.properties.getInt("align right", 0);
-                        break;
-                }
-                Action relativeMove = new RelativeMove(distance, moveAngle, targetAngle, powerFactor, accelerateClicks, decelerateClicks);
-                IEndCondition timeoutCondition = new Timeout(timeoutMs);
-
-                runTask(relativeMove, timeoutCondition);
+                Action relativeMoveBasedOnSkystone = new RelativeMove(command, skystonePosition);
+                runActionWithTimeout(relativeMoveBasedOnSkystone, command);
                 break;
             }
 
             case "MOVE AND TOGGLE PIVOT": {
-                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
+                BatMobile batMobile = BatMobile.getInstance();
+                double timeoutMs = command.getDouble("timeout", 5 * 1000);
                 int deployClicks = command.getInt("deploy clicks", 0);
 
                 Action relativeMove = new RelativeMove(command);
-                Watcher deployServo = new DeployServoByDistance(sideArm.pivot, robot.driveTrain.rf, deployClicks);
+                Watcher deployServo = new DeployServoByDistance(batMobile.sideArm.pivot, robot.driveTrain.rf, deployClicks);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
+                CombinedConditions conditions = new CombinedConditions(timeoutCondition, deployServo);
 
-                CombinedConditions conditions = new CombinedConditions();
-                conditions.add(deployServo).add(timeoutCondition);
-
-                runTask(relativeMove, conditions);
+                runActionWithCondition(relativeMove, conditions);
                 break;
             }
 
             case "CLAW": {
+                BatMobile batMobile = BatMobile.getInstance();
                 String state = command.getString("state", "REST");
-                sideArm.claw.set(ToggleServo.stringToState(state));
+                batMobile.sideArm.claw.set(ToggleServo.stringToState(state));
                 break;
             }
 
             case "PIVOT": {
+                BatMobile batMobile = BatMobile.getInstance();
                 String state = command.getString("state", "REST");
-                sideArm.pivot.set(ToggleServo.stringToState(state));
+                batMobile.sideArm.pivot.set(ToggleServo.stringToState(state));
                 break;
             }
 
             case "MOVE": {
-                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
                 Action relativeMove = new RelativeMove(command);
-                IEndCondition timeoutCondition = new Timeout(timeoutMs);
-                runTask(relativeMove, timeoutCondition);
+                runActionWithTimeout(relativeMove, command);
                 break;
             }
 
             case "MOVE VUFORIA": {
-                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
                 Action relativeMoveVuforia = new RelativeMoveWithVuforia(command);
-                IEndCondition timeoutCondition = new Timeout(timeoutMs);
-                runTask(relativeMoveVuforia, timeoutCondition);
+                runActionWithTimeout(relativeMoveVuforia, command);
                 break;
             }
 
             case "TURN": {
                 Angle angle = command.getAngle("angle", 0, angleUnit);
                 double power = command.getDouble("power", 1.0);
-                double timeoutMs = command.getDouble("timeout", 5 * 1000.0);
                 Action relativeTurn = new AbsoluteTurn(angle, power);
-                IEndCondition timeoutCondition = new Timeout(timeoutMs);
-
-                runTask(relativeTurn, timeoutCondition);
+                runActionWithTimeout(relativeTurn, command);
                 break;
             }
 
@@ -193,11 +175,7 @@ public class AutoRunner {
             }
 
             case "BREAKPOINT": {
-                Button button = new Button();
-                while (!button.is(Button.State.HELD) && opMode.opModeIsActive()) {
-                    button.update(opMode.gamepad1.a);
-                    sleep(20);
-                }
+                waitUntilButtonPressed();
                 break;
             }
 
@@ -213,8 +191,13 @@ public class AutoRunner {
         }
     }
 
+    private void runActionWithTimeout(Action action, Command command) {
+        double timeoutMs = command.getDouble("timeout", 5 * 1000);
+        IEndCondition timeoutCondition = new Timeout(timeoutMs);
+        runActionWithCondition(action, timeoutCondition);
+    }
 
-    private void runTask(Action action, IEndCondition endCondition) {
+    private void runActionWithCondition(Action action, IEndCondition endCondition) {
         action.start();
         endCondition.start();
 
@@ -230,7 +213,15 @@ public class AutoRunner {
         log(TAG, "Run task completed");
     }
 
-
+    private void waitUntilButtonPressed() {
+        Button button = new Button();
+        while (!button.is(Button.State.DOWN) && opMode.opModeIsActive()) {
+            boolean anyButton = opMode.gamepad1.a || opMode.gamepad1.b || opMode.gamepad1.x || opMode.gamepad1.y ||
+                    opMode.gamepad2.a || opMode.gamepad2.b || opMode.gamepad2.x || opMode.gamepad2.y;
+            button.update(anyButton);
+            sleep(20);
+        }
+    }
 
     public static void log(String tag, Object message) {
         RobotLog.dd(TAG_PREFIX + tag, message.toString());
