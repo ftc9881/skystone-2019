@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Intake;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
@@ -15,15 +16,17 @@ public class BatMobile extends Robot {
         return instance;
     }
 
+    public static final Pose cameraDisplacement = new Pose();
+
     public Intake intake;
     public SideArm sideArm;
     public DifferentialElevator elevator;
 
-    public ToggleServo leftFoundationServo;
-    public ToggleServo rightFoundationServo;
     public ToggleServo backDepositServo;
     public ToggleServo frontDepositServo;
     public ToggleServo capstoneServo;
+    public ToggleServo leftFoundationServo;
+    public ToggleServo rightFoundationServo;
 
     private BatMobile(Robot robot) {
         this.opMode = robot.opMode;
@@ -35,11 +38,11 @@ public class BatMobile extends Robot {
         elevator = new DifferentialElevator(hardwareMap);
         intake = new Intake(hardwareMap);
 
-        leftFoundationServo = new ToggleServo(hardwareMap, "left foundation");
-        rightFoundationServo = new ToggleServo(hardwareMap, "right foundation");
         backDepositServo = new ToggleServo(hardwareMap, "back deposit");
         frontDepositServo = new ToggleServo(hardwareMap, "front deposit");
         capstoneServo = new ToggleServo(hardwareMap, "capstone");
+        leftFoundationServo = new ToggleServo(hardwareMap, "left foundation");
+        rightFoundationServo = new ToggleServo(hardwareMap, "right foundation");
     }
 
 }

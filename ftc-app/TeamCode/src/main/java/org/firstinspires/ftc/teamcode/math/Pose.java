@@ -12,6 +12,10 @@ public class Pose {
         this.r = r;
     }
 
+    public Pose() {
+        this(0, 0, 0);
+    }
+
     public Pose(Pose p) {
         this(p.x, p.y, p.r);
     }

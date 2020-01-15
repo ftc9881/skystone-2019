@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.math;
 
-import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
+import org.firstinspires.ftc.teamcode.auto.structure.Command;
 
 public class PIDController {
     private double currentTime, previousTime, deltaTime;
@@ -16,7 +16,7 @@ public class PIDController {
         this.currentTime = getTimeSeconds();
     }
 
-    public PIDController (Configuration config, String name, double targetValue) {
+    public PIDController (Command config, String name, double targetValue) {
         this.kP = config.getDouble(name + " kp", 0);
         this.kI = config.getDouble(name + " ki", 0);
         this.kD = config.getDouble(name + " kd", 0);

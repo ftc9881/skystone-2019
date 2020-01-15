@@ -11,13 +11,17 @@
 		"move clicks error": "50",
 		"elevator clicks error": "50",
 		"move base power": "0.05",
-		"move kp": "2.0",
+		"move kp": "1.8",
 		"move ki": "1.0",
 		"move kd": "0.2",
 
 		"lift kp": "0.01",
 		"lift ki": "0.0",
 		"lift kd": "0.0",
+
+		"vuforia kp": "0.1",
+		"vuforia ki": "0",
+		"vuforia kd": "0",
 
 		"crop x": "30",
 		"crop y": "45",
@@ -31,71 +35,40 @@
 	},
 
 	"init": [
-		{ "command": "IDENTIFY SKYSTONE" }
+		{ "command": "INIT VUFORIA" },
+		{ "command": "skip IDENTIFY SKYSTONE" }
 	],
 
 	"commands": [
+		{
+			"command": "MOVE VUFORIA",
+			"vuforia x": "-5",
+			"vuforia y": "20",
+			"ramp down": "1800",
+			"deploy clicks": "0",
+			"power": "1.0",
+			"distance": "30",
+			"ramp down": "1500",
+			"move angle": "0",
+			"target angle": "0",
+			"timeout": "5000"
+		},
+
 	{ "command": "BREAKPOINT"  },
 
 		{
-			"command": "MOVE",
-			"power": "0.5",
-			"distance": "-12",
+			"command": "MOVE VUFORIA",
+			"vuforia x": "3",
+			"vuforia y": "20",
+			"deploy clicks": "0",
+			"power": "0.7",
+			"distance": "60",
 			"move angle": "0",
 			"target angle": "0",
 			"timeout": "5000"
 		},
-	{ "command": "STOP"  },
 
-		{
-			"command": "MOVE",
-			"power": "1.0",
-			"distance": "12",
-			"move angle": "0",
-			"target angle": "0",
-			"timeout": "5000"
-		},
-		{
-			"command": "TURN",
-			"power": "1.0",
-			"angle": "-90",
-			"timeout": "1000"
-		},
-		{ "command": "TOGGLE CLAW"},
-	{ "command": "SLEEP", "time":"1000" },
-		{
-			"command": "MOVE",
-			"power": "0.8",
-			"distance": "4",
-			"move angle": "0",
-			"target angle": "-90",
-			"timeout": "5000"
-		},
-
-	{ "command": "STOP" },
-	{
-			"command": "MOVE",
-			"power": "1.0",
-			"distance": "40",
-			"move angle": "8",
-			"target angle": "-90",
-			"ramp up": "700",
-			"ramp down": "1300",
-			"timeout": "5000"
-		},
-	{ "command": "SLEEP", "time":"1000" },
-		{
-			"command": "MOVE",
-			"target angle": "-90",
-			"ramp up": "700",
-			"ramp down": "1300",
-			"power": "1.0",
-			"distance": "42",
-			"move angle": "180",
-			"timeout": "5000"
-		},
-	{ "command": "SLEEP", "time":"1000" },
-
+	{ "command": "BREAKPOINT"  },
 		{ "command": "STOP" }
 	]
 }

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 public class ToggleServo {
 
-    public enum State { OPEN, CLOSED }
+    public enum State { OPEN, CLOSED, REST }
 
     public Servo servo;
 
@@ -16,6 +16,7 @@ public class ToggleServo {
     private State currentState;
     private double openPosition;
     private double closedPosition;
+    private double restPosition;
 
     public ToggleServo(HardwareMap hardwareMap, String name) {
         this.name = name;
@@ -23,19 +24,40 @@ public class ToggleServo {
         Configuration config = new Configuration("HardwareConstants");
         openPosition = config.getDouble(name + " open", 0.0);
         closedPosition = config.getDouble(name + " closed", 1.0);
+        restPosition = config.getDouble(name + " rest", closedPosition);
     }
 
     public void set(State state) {
-        double position = state == State.OPEN ? openPosition : closedPosition;
-        servo.setPosition(position);
         currentState = state;
+        double position = restPosition;
+        switch (state) {
+            case OPEN:
+                position = openPosition;
+                break;
+            case CLOSED:
+                position = closedPosition;
+                break;
+        }
+        servo.setPosition(position);
     }
 
     public void toggle() {
         State newState = currentState == State.OPEN ? State.CLOSED : State.OPEN;
         set(newState);
+    }
 
-        AutoRunner.log(name + "ToggleServo", newState == State.OPEN ? openPosition : closedPosition);
+    public static State stringToState(String string) {
+        string = string.toUpperCase();
+        State state = State.REST;
+        switch (string) {
+            case "OPEN":
+                state = State.OPEN;
+                break;
+            case "CLOSED":
+                state = State.CLOSED;
+                break;
+        }
+        return state;
     }
 
 }

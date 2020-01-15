@@ -12,9 +12,13 @@
 		"move clicks error": "50",
 		"elevator clicks error": "50",
 		"move base power": "0.05",
-		"move kp": "2.0",
+		"move kp": "1.8",
 		"move ki": "1.0",
 		"move kd": "0.2",
+
+		"vuforia kp": "0.1",
+		"vuforia ki": "0",
+		"vuforia kd": "0",
 
 		"lift kp": "0.01",
 		"lift ki": "0.0",
@@ -22,27 +26,32 @@
 
 		"crop x": "0",
 		"crop y": "45",
-		"crop w": "250",
+		"crop w": "275",
 		"crop h": "75",
 		"align left": "4",
-		"align center": "0",
-		"align right": "-4",
-		"stone blob distance": "90",
-		"stone min area": "30",
-		"skystone left": "80",
-		"skystone right": "140"
+		"align center": "-1.6",
+		"align right": "-6",
+		"stone blob distance": "1000",
+		"stone min area": "100",
+		"skystone left": "70",
+		"skystone right": "130"
 	},
 
 	"init": [
+		{ "command": "INIT VUFORIA" },
 		{ "command": "IDENTIFY SKYSTONE" }
 	],
 
 	"commands": [
+		{ 
+			"command": "PIVOT",
+			"state": "CLOSED"
+		},
 		{
 "comment": "Moves forwards",
 			"command": "MOVE",
 			"power": "1.0",
-			"distance": "13",
+			"distance": "13.5",
 			"move angle": "0",
 			"target angle": "0",
 			"timeout": "5000"
@@ -54,99 +63,166 @@
 			"angle": "90",
 			"timeout": "1000"
 		},
-{ "command": "BREAKPOINT" },
+		{ 
+			"command": "CLAW",
+			"state": "open"
+		},
+		{ 
+			"command": "PIVOT",
+			"state": "open"
+		},
+		{ 
+			"command": "SLEEP", "time":"300" 
+		},
 		{
 "comment": "line up with desired sky stone",
 			"command": "ALIGN SKYSTONE",
 			"target angle": "90",
 			"timeout": "1500",
-			"power": "0.8"
+			"power": "0.5"
+		},
+		{ 
+			"command": "CLAW",
+			"state": "closed"
+		},
+		{ 
+			"command": "SLEEP", "time":"700" 
+		},
+		{ 
+			"command": "PIVOT",
+			"state": "closed"
 		},
 { "command": "BREAKPOINT" },
-		{ 
-			"command": "TOGGLE CLAW"
-		},
-		{ 
-			"command": "TOGGLE PIVOT"
-		},
-		{ 
-"comment": "hardcoded servo wait",
-			"command": "SLEEP", "time":"500" 
-		},
-		{ 
-"comment": "Pick up the block",
-			"command": "TOGGLE CLAW"
-		},
-		{ 
-			"command": "SLEEP", "time":"1000" 
-		},
-		{ 
-			"command": "TOGGLE PIVOT"
-		},
-		{ 
-			"command": "SLEEP", "time":"1000" 
-		},
 		{
 "comment": "move to next to foundation",
-			"command": "MOVE AND TOGGLE PIVOT",
-			"deploy clicks": "4000",
-			"ramp down": "1200",
-			"power": "1.0",
-			"distance": "-60",
-			"move angle": "14",
-			"target angle": "90",
-			"timeout": "5000"
-		},
-{ "command": "BREAKPOINT" },
-		{
-			"command": "TOGGLE CLAW"
-		},
-		{
-			"command": "TOGGLE PIVOT"
-		},
-		{
-			"command": "TOGGLE CLAW"
-		},
-		{
-			"command": "DEPLOY TO FOUNDATION"
-		},
-
-"comment": "move to second skystone",
-			"command": "MOVE AND TOGGLE PIVOT",
-			"deploy clicks": "4000",
-			"ramp down": "1200",
-			"power": "1.0",
-			"distance": "60",
-			"move angle": "14",
-			"target angle": "90",
-			"timeout": "5000"
-		},
-{ "command": "BREAKPOINT" },
-
-
-
-
-{ "command": "BREAKPOINT" },
-		{
-"comment:": "turn to move foundation into corner",
-			"command": "TURN",
-			"power": "1.0",
-			"target angle": "0",
-			"timeout": "5000"
-		},
-{ "command": "BREAKPOINT" },
-		{
-"comment": "drag foundation into build zone",
 			"command": "MOVE",
-			"target angle": "0",
-			"move angle": "0",
-			"ramp up": "500",
-			"ramp down": "500",
+			"ramp down": "1600",
 			"power": "1.0",
-			"distance": "-20",
+			"distance": "-74",
+			"move angle": "12",
+			"target angle": "90",
 			"timeout": "5000"
 		},
-	{ "command": "SLEEP", "time":"1000" },
+		{
+			"command": "PIVOT",
+			"state": "open"
+		},
+		{ 
+			"command": "SLEEP", "time":"300" 
+		},
+		{
+			"command": "CLAW",
+			"state": "open"
+		},
+		{ 
+			"command": "SLEEP", "time":"800" 
+		},
+		{
+			"command": "CLAW",
+			"state": "closed"
+		},
+		{
+			"command": "PIVOT",
+			"state": "closed"
+		},
+		
+{ "command": "BREAKPOINT" },
+		{
+"comment": "move to second skystone",
+			"command": "MOVE VUFORIA",
+			"vuforia x": "-5",
+			"vuforia y": "20",
+			"ramp down": "1600",
+			"power": "1.0",
+			"distance": "98",
+			"move angle": "8",
+			"target angle": "90",
+			"timeout": "5000"
+		},
+
+{ "command": "BREAKPOINT" },
+		{
+			"command": "CLAW",
+			"state": "open"
+		},
+		{
+			"command": "PIVOT",
+			"state": "open"
+		},
+		{ 
+			"command": "SLEEP", "time":"500" 
+		},
+		{
+			"command": "CLAW",
+			"state": "closed"
+		},
+		{ 
+			"command": "SLEEP", "time":"500" 
+		},
+		{
+			"command": "PIVOT",
+			"state": "closed"
+		},
+
+{ "command": "BREAKPOINT" },
+
+		{
+"comment": "move to next to foundation second time",
+			"command": "MOVE",
+			"ramp down": "1600",
+			"power": "1.0",
+			"distance": "-90",
+			"move angle": "12",
+			"target angle": "90",
+			"timeout": "5000"
+		},
+		{
+			"command": "CLAW",
+			"state": "open"
+		},
+		{ 
+			"command": "SLEEP", "time":"800" 
+		},
+		{
+			"command": "CLAW",
+			"state": "closed"
+		},
+{ "command": "BREAKPOINT" },
+		{
+"comment": "drive torwards foundation",
+			"command": "MOVE",
+			"target angle": "90",
+			"move angle": "-90",
+			"power": "0.5",
+			"distance": "-8",
+			"timeout": "3000"
+		},
+		{
+			"command": "PIVOT",
+			"state": "rest"
+		},
+		{ 
+			"command": "SLEEP", "time":"500" 
+		},
+{ "command": "BREAKPOINT" },
+		{
+"comment": "drag foundation into build zone (high power)",
+			"command": "MOVE",
+			"target angle": "90",
+			"move angle": "90",
+			"power": "1.0",
+			"distance": "-30",
+			"timeout": "5000"
+		},
+		{
+"comment": "drag foundation into build zone (low power so not destroy wall)",
+			"command": "MOVE",
+			"target angle": "90",
+			"move angle": "90",
+			"power": "0.5",
+			"distance": "-10",
+			"timeout": "5000"
+		},
 		{ "command": "STOP" }
 	]
 }

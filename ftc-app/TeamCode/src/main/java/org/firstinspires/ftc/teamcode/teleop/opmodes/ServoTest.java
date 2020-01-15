@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp
-@Disabled
+//@Disabled
 public class ServoTest extends TeleOpBase {
 
     private Button upButton = new Button();

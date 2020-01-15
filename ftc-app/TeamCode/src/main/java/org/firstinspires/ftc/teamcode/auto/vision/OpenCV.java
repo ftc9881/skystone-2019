@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -45,7 +44,7 @@ public class OpenCV implements VisionSystem {
     public void startLook(TargetType targetType) {
 
         switch (targetType) {
-            case NONE_JUST_RUN_FOREVER:
+            case RUN_FOREVER:
             case SKYSTONE: {
                 detector = new SkystoneDetector();
                 detector.useDefaults();
@@ -97,30 +96,26 @@ public class OpenCV implements VisionSystem {
     }
 
     public SkystonePosition identifyPosition(LinearOpMode opMode, Command config) {
+        detector.blobDistanceThreshold = config.getInt("stone blob distance", 60);
         detector.cropRect.x = config.getInt("crop x", 0);
         detector.cropRect.y = config.getInt("crop y", 0);
         detector.cropRect.width = config.getInt("crop w", 0);
         detector.cropRect.height= config.getInt("crop h", 0);
 
-        List<Integer> foundPositions = new ArrayList<>();
-        double stdDev = 999;
-        int centerX = 0;
-
         int stdDevThreshold = config.getInt("std dev threshold", 10);
         int maxDetectList = config.getInt("max detection list size", 10);
-
-        AutoRunner.log("StopRequested", opMode.isStopRequested());
+        double stdDev = 999;
+        int centerX = 0;
+        List<Integer> foundPositions = new ArrayList<>();
 
         while (!opMode.isStopRequested() && (centerX == 0 || stdDev > stdDevThreshold)) {
             Rect foundRect = detector.foundRectangle();
             centerX = foundRect.x + foundRect.width / 2;
             if (foundPositions.size() >= maxDetectList) {
-                foundPositions.remove(foundPositions.size()-1);
+                foundPositions.remove(0);
             }
-            foundPositions.add(centerX, 0);
+            foundPositions.add(centerX);
             stdDev = GeneralMath.standardDeviation(foundPositions);
-            AutoRunner.log("SkystonePixel", centerX);
-            AutoRunner.log("StdDev", stdDev);
         }
 
         // Debug

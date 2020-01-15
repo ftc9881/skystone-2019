@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode.auto.vision;
 import android.content.Context;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -45,13 +44,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.math.Pose;
-import org.firstinspires.ftc.teamcode.robot.Robot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
-import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.RADIANS;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
@@ -59,6 +56,11 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 
 public class Vuforia implements VisionSystem {
+
+    private static Vuforia instance;
+    public static Vuforia getInstance() {
+        return instance;
+    }
 
     public enum Target {
         SKYSTONE(0),
@@ -101,16 +103,15 @@ public class Vuforia implements VisionSystem {
     // TODO: Phone orientation and displacement values
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = true;
-    private final float CAMERA_FORWARD_DISPLACEMENT = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
-    private final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
-    private final float CAMERA_LEFT_DISPLACEMENT = 0;     // eg: Camera is ON the robot's center line
+    private static Pose cameraDisplacementXYZ = new Pose();
 
     private VuforiaLocalizer vuforiaLocalizer = null;
     private VuforiaLocalizer.Parameters parameters = null;
     private VuforiaTrackables trackables = null;
 
     private boolean initialized = false;
-    private Pose lastPose = null;
+    private boolean found = false;
+    private Pose lastPose = new Pose();
     private LookAction lookAction;
 
     private HardwareMap hardwareMap;
@@ -120,13 +121,15 @@ public class Vuforia implements VisionSystem {
     public Vuforia(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
         this.fileContext = hardwareMap.appContext;
+        instance = this;
     }
 
     @Override
     public void initialize() {
         startEngine(true);
         loadTrackables();
-        orientTrackables();
+        orientTrackablesAtZero();
+//        orientTrackables();
         applyPhoneOrientation();
         trackables.activate();
         initialized = true;
@@ -135,7 +138,8 @@ public class Vuforia implements VisionSystem {
 
     @Override
     public void startLook(TargetType target) {
-        lastPose = null;
+        found = false;
+        lastPose = new Pose();
         if (!initialized) {
             AutoRunner.log("Vuforia", "Not initialized; initializing now");
             initialize();
@@ -151,11 +155,15 @@ public class Vuforia implements VisionSystem {
 
     @Override
     public boolean found() {
-        return lastPose != null;
+        return found;
     }
 
     public Pose getPose() {
         return lastPose;
+    }
+
+    public void setCameraDisplacement(Pose xyz) {
+        cameraDisplacementXYZ = new Pose(xyz);
     }
 
     private void startEngine(boolean useUsbCamera) {
@@ -165,8 +173,7 @@ public class Vuforia implements VisionSystem {
 
         if (useUsbCamera) {
             parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
-        }
-        else {
+        } else {
             parameters.cameraDirection = CAMERA_CHOICE;
         }
 
@@ -178,6 +185,14 @@ public class Vuforia implements VisionSystem {
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
         trackables = vuforiaLocalizer.loadTrackablesFromAsset("Skystone");
+    }
+
+    private void orientTrackablesAtZero() {
+        for (VuforiaTrackable trackable : trackables) {
+            trackable.setLocation(OpenGLMatrix
+                    .translation(0, 0, 0)
+                    .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0 ,-90)));
+        }
     }
 
     private void orientTrackables() {
@@ -289,8 +304,10 @@ public class Vuforia implements VisionSystem {
         float phoneXRotate = PHONE_IS_PORTRAIT ? 90 : 0;
         float phoneZRotate = 0;
 
+        // Sample uses y = front/back, z = left/right, x = up/down
+        // We want:    x = left/right, y = front/back, z = up/down
         OpenGLMatrix robotFromCamera = OpenGLMatrix
-                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
+                .translation((float)cameraDisplacementXYZ.y, (float)cameraDisplacementXYZ.x, (float)cameraDisplacementXYZ.r)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
 
         // Let all the trackable listeners know where the phone is.
@@ -324,6 +341,7 @@ public class Vuforia implements VisionSystem {
                 if (targetVisible) {
                     OpenGLMatrix robotTransform = getRobotTransform(trackable);
                     lastLocation = robotTransform != null ? robotTransform : lastLocation;
+                    setLastPose();
                     break;
                 }
             }
@@ -331,20 +349,23 @@ public class Vuforia implements VisionSystem {
 
         @Override
         protected boolean runIsComplete() {
-            return targetVisible && targetType != TargetType.NONE_JUST_RUN_FOREVER;
+            return targetVisible && targetType != TargetType.RUN_FOREVER;
         }
 
         @Override
         protected void onEndRun() {
-            if (lastLocation != null) {
-                double x = lastLocation.getTranslation().get(0);
-                double y = lastLocation.getTranslation().get(1);
-                double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, RADIANS).thirdAngle;
-                lastPose = new Pose(x, y, r);
-            }
+            setLastPose();
             trackables.deactivate();
         }
 
+        private void setLastPose() {
+            if (lastLocation != null) {
+                double x = -lastLocation.getTranslation().get(1) / mmPerInch;
+                double y = -lastLocation.getTranslation().get(0) / mmPerInch;
+                double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES).thirdAngle + 90;
+                lastPose = new Pose(x, y, r);
+            }
+        }
 
         private ArrayList<VuforiaTrackable> getTargetTrackables() {
             ArrayList<VuforiaTrackable> trackingTrackables = new ArrayList<VuforiaTrackable>();

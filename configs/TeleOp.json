@@ -1,4 +1,6 @@
 {
+	"double tap": "300",
+
 	"dead zone": "0.1",
 	"slow factor": "0.4",
 	"outtake power": "1.0",
@@ -6,11 +8,11 @@
 	"lift power": "1.0",
 
 	"crop x": "0",
-	"crop y": "45",
+	"crop y": "75",
 	"crop w": "250",
 	"crop h": "75",
-	"skystone blob distance": "90",
+	"skystone blob distance": "200",
 	"skystone min area": "30",
 
-	"debug servo": "back deposit"
+	"debug servo": "pivot"
 }

@@ -6,24 +6,23 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
+import org.firstinspires.ftc.teamcode.auto.actions.RelativeMoveWithVuforia;
 import org.firstinspires.ftc.teamcode.auto.endConditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
+import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.auto.structure.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 import org.firstinspires.ftc.teamcode.auto.endConditions.Timeout;
-import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.SideArm;
 import org.firstinspires.ftc.teamcode.robot.Robot;
-import org.opencv.core.Rect;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
+import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 import static android.os.SystemClock.sleep;
 
@@ -91,38 +90,18 @@ public class AutoRunner {
 
         switch (command.name) {
 
+            case "INIT VUFORIA": {
+                Vuforia vuforia = new Vuforia(opMode.hardwareMap);
+                vuforia.initialize();
+                vuforia.startLook(VisionSystem.TargetType.RUN_FOREVER);
+                break;
+            }
+
             case "IDENTIFY SKYSTONE": {
                 OpenCV openCV = new OpenCV();
                 openCV.initialize();
                 openCV.startLook(VisionSystem.TargetType.SKYSTONE);
-//                skystonePosition = openCV.identifyPosition(opMode, config.properties);
-
-                openCV.detector.cropRect.x = config.properties.getInt("crop x", 0);
-                openCV.detector.cropRect.y = config.properties.getInt("crop y", 0);
-                openCV.detector.cropRect.width = config.properties.getInt("crop w", 0);
-                openCV.detector.cropRect.height= config.properties.getInt("crop h", 0);
-                openCV.detector.blobDistanceThreshold = config.properties.getInt("stone blob distance", 50);
-                openCV.detector.minimumArea = config.properties.getInt("stone min area", 10);
-                int centerX = 0;
-
-                while (!opMode.isStopRequested() && centerX == 0) {
-                    Rect rect = openCV.detector.foundRectangle();
-                    centerX = rect.x + rect.width / 2;
-                    log("Rect", rect.toString());
-                    log("CenterX", centerX);
-                }
-                openCV.writeCurrentImage();
-
-                AutoRunner.log("Mean", centerX);
-                int skystoneLeftBound = config.properties.getInt("skystone left", 0);
-                int skystoneRightBound = config.properties.getInt("skystone right", 0);
-                if (centerX < skystoneLeftBound) {
-                    skystonePosition = VisionSystem.SkystonePosition.LEFT;
-                } else if (centerX > skystoneRightBound) {
-                    skystonePosition = VisionSystem.SkystonePosition.RIGHT;
-                } else {
-                    skystonePosition = VisionSystem.SkystonePosition.CENTER;
-                }
+                skystonePosition = openCV.identifyPosition(opMode, config.properties);
                 break;
             }
             case "ALIGN SKYSTONE": {
@@ -168,28 +147,31 @@ public class AutoRunner {
                 break;
             }
 
-            case "TOGGLE CLAW": {
-                sideArm.claw.toggle();
+            case "CLAW": {
+                String state = command.getString("state", "REST");
+                sideArm.claw.set(ToggleServo.stringToState(state));
                 break;
             }
 
-            case "TOGGLE PIVOT": {
-                sideArm.pivot.toggle();
-                break;
-            }
-
-            case "DEPLOY FOUNDATION": {
-                sideArm.pivotToFoundation();
+            case "PIVOT": {
+                String state = command.getString("state", "REST");
+                sideArm.pivot.set(ToggleServo.stringToState(state));
                 break;
             }
 
             case "MOVE": {
                 double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
-
                 Action relativeMove = new RelativeMove(command);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
-
                 runTask(relativeMove, timeoutCondition);
+                break;
+            }
+
+            case "MOVE VUFORIA": {
+                double timeoutMs = command.getDouble("timeout", 10 * 1000.0);
+                Action relativeMoveVuforia = new RelativeMoveWithVuforia(command);
+                IEndCondition timeoutCondition = new Timeout(timeoutMs);
+                runTask(relativeMoveVuforia, timeoutCondition);
                 break;
             }
 
@@ -211,7 +193,9 @@ public class AutoRunner {
             }
 
             case "BREAKPOINT": {
-                while (!opMode.gamepad1.a && opMode.opModeIsActive()) {
+                Button button = new Button();
+                while (!button.is(Button.State.HELD) && opMode.opModeIsActive()) {
+                    button.update(opMode.gamepad1.a);
                     sleep(20);
                 }
                 break;

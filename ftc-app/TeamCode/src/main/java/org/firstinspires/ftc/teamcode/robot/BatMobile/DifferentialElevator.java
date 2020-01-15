@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.robot.devices.VelocityMotor;
@@ -23,7 +24,7 @@ public class DifferentialElevator {
         rightLift = new VelocityMotor(hardwareMap.dcMotor.get("right lift"));
 
         leftLift.motor.setDirection(DcMotor.Direction.FORWARD);
-        rightLift.motor.setDirection(DcMotor.Direction.REVERSE);
+        rightLift.motor.setDirection(DcMotor.Direction.FORWARD);
 
         leftLift.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightLift.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -46,13 +47,11 @@ public class DifferentialElevator {
 
     public void setPowerLE(double lift, double extend) {
         double leftPower = lift + extend;
-        double rightPower = lift - extend;
+        double rightPower = extend - lift;
         leftLift.motor.setPower(leftPower);
         rightLift.motor.setPower(rightPower);
     }
 
-    //TODO: Implement after Meet 3
-    @Deprecated
     public void relativeLiftToLevel(int skystoneLevel) {
         int leftTargetClicks = leftLift.motor.getCurrentPosition() + skystoneLevel * clicksPerLiftLevel;
         int rightTargetClicks = rightLift.motor.getCurrentPosition() + skystoneLevel * clicksPerLiftLevel;
@@ -63,7 +62,6 @@ public class DifferentialElevator {
         setPowerLR(1.0, 1.0);
     }
 
-    @Deprecated
     public void relativeExtendToLevel(int skystoneLevel) {
         int leftTargetClicks = leftLift.motor.getCurrentPosition() + skystoneLevel * clicksPerExtendLevel;
         int rightTargetClicks = rightLift.motor.getCurrentPosition() + skystoneLevel * clicksPerExtendLevel;
