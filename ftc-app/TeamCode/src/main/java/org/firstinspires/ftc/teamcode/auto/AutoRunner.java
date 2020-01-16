@@ -11,11 +11,11 @@ import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
+import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
-import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
@@ -43,7 +43,7 @@ public class AutoRunner {
 
     private static AngleUnit angleUnit = AngleUnit.DEGREES;
     private boolean debugMode;
-    private boolean isStopped = false;
+    private boolean stopped = false;
 
     private VisionSystem.SkystonePosition skystonePosition = VisionSystem.SkystonePosition.CENTER;
 
@@ -68,6 +68,9 @@ public class AutoRunner {
         logAndTelemetry(TAG, "Ready to run");
     }
 
+    public static AngleUnit getAngleUnit() {
+        return angleUnit;
+    }
 
     public void run() {
         for (Command command : config.commands) {
@@ -76,13 +79,17 @@ public class AutoRunner {
                 logAndTelemetry(TAG, "STOPPING...");
                 return;
             }
-            execute(command);
+            try {
+                execute(command);
+            } catch (SomethingBadHappened exception) {
+                stopped = true;
+            }
             waitIfDebugMode();
         }
     }
 
     private boolean shouldStop() {
-        return isStopped || !opMode.opModeIsActive();
+        return stopped || !opMode.opModeIsActive();
     }
 
     private void waitIfDebugMode() {
@@ -101,29 +108,29 @@ public class AutoRunner {
         switch (command.name) {
 
             case "INIT VUFORIA": {
-                Vuforia vuforia = new Vuforia(opMode.hardwareMap);
-                vuforia.initialize();
+                Vuforia.createInstance(opMode.hardwareMap);
                 break;
             }
 
             case "IDENTIFY SKYSTONE": {
                 OpenCV openCV = new OpenCV();
-                openCV.initialize();
                 openCV.startLook(VisionSystem.TargetType.SKYSTONE);
                 skystonePosition = openCV.identifyPosition(opMode, config.properties);
                 break;
             }
 
-            case "MOVE AND SET PIVOT": {
+            case "MOVE AND DEPLOY ARM": {
                 BatMobile batMobile = BatMobile.getInstance();
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
                 int deployClicks = command.getInt("deploy clicks", 0);
-                String state = command.getString("servo state", "REST");
+                String pivotState = command.getString("pivot state", batMobile.sideArm.pivot.getState().name());
+                String clawState = command.getString("claw state", batMobile.sideArm.claw.getState().name());
 
                 Action relativeMove = new RelativeMove(command);
-                Watcher deployServo = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(state), robot.driveTrain.rf, deployClicks);
+                Watcher deployPivot = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(pivotState), robot.driveTrain.rf, deployClicks);
+                Watcher deployClaw = new DeployServoByDistance(batMobile.sideArm.claw, ToggleServo.stringToState(clawState), robot.driveTrain.rf, deployClicks);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
-                CombinedConditions conditions = new CombinedConditions(timeoutCondition, deployServo);
+                CombinedConditions conditions = new CombinedConditions(timeoutCondition, deployPivot, deployClaw);
 
                 runActionWithCondition(relativeMove, conditions);
                 break;
@@ -156,9 +163,7 @@ public class AutoRunner {
             }
 
             case "TURN": {
-                Angle angle = command.getAngle("angle", 0, angleUnit);
-                double power = command.getDouble("power", 1.0);
-                Action relativeTurn = new AbsoluteTurn(angle, power);
+                Action relativeTurn = new AbsoluteTurn(command);
                 runActionWithTimeout(relativeTurn, command);
                 break;
             }
@@ -175,7 +180,7 @@ public class AutoRunner {
             }
 
             case "STOP": {
-                isStopped = true;
+                stopped = true;
                 break;
             }
 

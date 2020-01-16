@@ -18,7 +18,6 @@ public class OpenCVTest extends TeleOpBase {
     @Override
     protected void initialize() {
         openCV = new OpenCV();
-        openCV.initialize();
         openCV.startLook(VisionSystem.TargetType.SKYSTONE);
 
         Rect cropRect = new Rect();

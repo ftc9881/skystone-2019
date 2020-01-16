@@ -84,9 +84,7 @@ public class Command {
     }
 
     public Angle getAngle(String key, double defaultValue) {
-        AngleUnit unit = AutoOpConfiguration.getInstance().properties.getAngleUnit("angle unit", AngleUnit.DEGREES);
-        double value = getDouble(key, defaultValue);
-        return new Angle(value, unit);
+        return getAngle(key, defaultValue, AutoRunner.getAngleUnit());
     }
 
     public Angle getAngle(String key, double defaultValue, AngleUnit unit) {

@@ -15,8 +15,7 @@ public class VuforiaTest extends TeleOpBase {
 
     @Override
     protected void initialize() {
-        vuforia = new Vuforia(hardwareMap);
-        vuforia.initialize();
+        vuforia = Vuforia.createInstance(hardwareMap);
         vuforia.startLook(VisionSystem.TargetType.ALL);
 
         telemetry.addData("Initialized Vuforia", "Ready to run");

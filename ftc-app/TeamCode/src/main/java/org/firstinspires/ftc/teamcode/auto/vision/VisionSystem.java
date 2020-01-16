@@ -15,7 +15,6 @@ public interface VisionSystem {
     enum Type {VUFORIA, OPENCV}
     enum TargetType {SKYSTONE, BRIDGE, PERIMETER, ALL}
 
-    void initialize();
     void startLook(TargetType targetType);
     void stopLook();
     boolean found();

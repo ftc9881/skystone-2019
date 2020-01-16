@@ -117,15 +117,19 @@ public class Vuforia implements VisionSystem {
     private HardwareMap hardwareMap;
     private Context fileContext;
 
+    public static Vuforia createInstance(HardwareMap hardwareMap) {
+        instance = new Vuforia(hardwareMap);
+        return instance;
+    }
 
-    public Vuforia(HardwareMap hardwareMap) {
+    private Vuforia(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
         this.fileContext = hardwareMap.appContext;
         instance = this;
+        initialize();
     }
 
-    @Override
-    public void initialize() {
+    private void initialize() {
         startEngine(true);
         loadTrackables();
         orientTrackablesAtZero();
