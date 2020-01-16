@@ -16,9 +16,6 @@
 		"move ki": "1.0",
 		"move kd": "0.2",
 
-		"vuforia y kp": "0.0135",
-		"vuforia y kd": "0.00004",
-
 		"lift kp": "0.01",
 		"lift ki": "0.0",
 		"lift kd": "0.0",
@@ -78,12 +75,14 @@
 			"distance stone c": "-1.6",
 			"distance stone r": "-6.4",
 			"vuforia x": "2",
+			"vuforia y kp": "0.02",
+			"vuforia y kd": "0.00004",
 			"vuforia y stone l": "28",
 			"vuforia y stone c": "35",
 			"vuforia y stone r": "42",
 			"vuforia stop when": "close",
 			"vuforia close threshold": "0.1",
-			"base power": "0.3",
+			"base power": "0.12",
 			"timeout": "1500",
 			"power": "1.0"
 		},
@@ -92,23 +91,22 @@
 			"state": "closed"
 		},
 		{ 
-			"command": "SLEEP", "time":"700" 
+			"command": "SLEEP", "time":"500" 
 		},
 		{ 
 			"command": "PIVOT",
 			"state": "closed"
 		},
-{ "command": "BREAKPOINT" },
 		{
 "comment": "move to next to foundation",
 			"command": "MOVE",
 			"ramp down": "1600",
 			"power": "1.0",
 			"distance": "-74",
-			"distance stone l": "-72",
-			"distance stone c": "-67",
-			"distance stone r": "-62",
-			"move angle": "0",
+			"distance stone l": "-80",
+			"distance stone c": "-75",
+			"distance stone r": "-70",
+			"move angle": "8",
 			"target angle": "90",
 			"timeout": "5000"
 		},
@@ -135,27 +133,28 @@
 			"state": "closed"
 		},
 		
-{ "command": "BREAKPOINT" },
 		{
 "comment": "move to second skystone",
 			"command": "MOVE VUFORIA",
 			"vuforia x kp": "0.1",
 			"vuforia x": "2",
+			"vuforia y kp": "0.0135",
+			"vuforia y kd": "0.00004",
 			"vuforia y stone l": "5.5",
 			"vuforia y stone c": "13",
 			"vuforia y stone r": "21",
 			"vuforia stop when": "close",
 			"vuforia close threshold": "0.1",
-			"ramp down": "2000",
 			"power": "1.0",
 			"base power": "0.1",
-			"distance": "84",
-			"move angle": "6",
+			"distance": "90",
+			"ramp up": "1000",
+			"ramp down": "2000",
+			"move angle": "0",
 			"target angle": "90",
 			"timeout": "5000"
 		},
 
-{ "command": "BREAKPOINT" },
 		{
 			"command": "CLAW",
 			"state": "open"
@@ -178,18 +177,16 @@
 			"command": "PIVOT",
 			"state": "closed"
 		},
-
-{ "command": "BREAKPOINT" },
 
 		{
 "comment": "move to next to foundation second time",
 			"command": "MOVE",
 			"ramp down": "1600",
 			"power": "1.0",
-			"distance stone l": "-75",
-			"distance stone c": "-70",
-			"distance stone r": "-65",
-			"move angle": "12",
+			"distance stone l": "-85",
+			"distance stone c": "-80",
+			"distance stone r": "-75",
+			"move angle": "8",
 			"target angle": "90",
 			"timeout": "5000"
 		},
@@ -215,26 +212,21 @@
 			"command": "PIVOT",
 			"state": "closed"
 		},
-
-
-{ "command": "BREAKPOINT" },
 		{
-"comment": "drive torwards foundation",
-			"command": "MOVE",
+"comment": "strafe torwards foundation",
+			"command": "MOVE AND SET PIVOT",
+			"deploy clicks": "100",
 			"target angle": "90",
 			"move angle": "-90",
-			"power": "0.5",
-			"distance": "-8",
+			"power": "0.4",
+			"distance": "-10",
 			"timeout": "3000"
 		},
 		{
 			"command": "PIVOT",
 			"state": "rest"
 		},
-		{ 
-			"command": "SLEEP", "time":"500" 
-		},
-{ "command": "BREAKPOINT" },
+
 		{
 "comment": "drag foundation into build zone (high power)",
 			"command": "MOVE",
@@ -253,6 +245,22 @@
 			"distance": "-10",
 			"timeout": "5000"
 		},
+
+		{
+			"command": "PIVOT",
+			"state": "closed"
+		},
+		{
+"comment": "move forwards towards bridge",
+			"command": "MOVE",
+			"target angle": "90",
+			"move angle": "0",
+			"power": "1.0",
+			"distance": "50",
+			"ramp down": "1600",
+			"timeout": "5000"
+		},
+
 		{ "command": "STOP" }
 	]
 }

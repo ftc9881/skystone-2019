@@ -131,7 +131,6 @@ public class Vuforia implements VisionSystem {
         orientTrackablesAtZero();
 //        orientTrackables();
         applyPhoneOrientation();
-        trackables.activate();
         initialized = true;
         AutoRunner.log("Vuforia", "Initialization complete");
     }
@@ -332,6 +331,7 @@ public class Vuforia implements VisionSystem {
             targetVisible = false;
             lastLocation = null;
             targetTrackables = getTargetTrackables();
+            trackables.activate();
         }
 
         @Override
@@ -349,13 +349,13 @@ public class Vuforia implements VisionSystem {
 
         @Override
         protected boolean runIsComplete() {
-            return targetVisible && targetType != TargetType.KEEP_RUNNING;
+//            return targetVisible && targetType != TargetType.ALL;
+            return false;
         }
 
         @Override
         protected void onEndRun() {
-            // TODO: What does this affect?
-//            trackables.deactivate();
+            trackables.deactivate();
         }
 
         private void setLastPose() {

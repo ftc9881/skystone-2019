@@ -12,16 +12,18 @@ public class DeployServoByDistance extends Watcher {
     private DcMotor trackingMotor;
     private int clicksToDeployAt;
     private boolean deployed = false;
+    private ToggleServo.State state = ToggleServo.State.REST;
 
-    public DeployServoByDistance(ToggleServo toggleServo, DcMotor trackingMotor, int clicksToDeployAt) {
+    public DeployServoByDistance(ToggleServo toggleServo, ToggleServo.State state, DcMotor trackingMotor, int clicksToDeployAt) {
         this.toggleServo = toggleServo;
+        this.state = state;
         this.trackingMotor = trackingMotor;
         this.clicksToDeployAt = Math.abs(clicksToDeployAt);
     }
 
     public void update() {
         if (!deployed && clicksToDeployAt - Math.abs(trackingMotor.getCurrentPosition()) < 0) {
-            toggleServo.toggle();
+            toggleServo.set(state);
             AutoRunner.log("DEPLOYED SERVO");
             deployed = true;
         }

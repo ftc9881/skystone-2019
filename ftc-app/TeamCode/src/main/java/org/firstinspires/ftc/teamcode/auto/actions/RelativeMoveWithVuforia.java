@@ -56,7 +56,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     public RelativeMoveWithVuforia(Command command) {
         super(command);
         vuforia = Vuforia.getInstance();
-        vuforia.startLook(VisionSystem.TargetType.KEEP_RUNNING);
+        vuforia.startLook(VisionSystem.TargetType.PERIMETER);
 
         VuforiaStopCondition.closeThreshold = command.getDouble("vuforia close threshold", 4);
         String vuforiaYStopConditionString = command.getString("vuforia stop when", "close");
@@ -66,14 +66,14 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         double vuforiaTargetX = command.getDouble("vuforia x", 0);
         vuforiaXPidController = new PIDController(command, "vuforia x", vuforiaTargetX);
         vuforiaTargetY = command.getDouble("vuforia y", 0);
-        vuforiaYPidController = new PIDController(config.properties, "vuforia y", vuforiaTargetY);
+        vuforiaYPidController = new PIDController(command, "vuforia y", vuforiaTargetY);
     }
 
     public RelativeMoveWithVuforia(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
         distance = command.getDouble("distance " + skystonePosition.key, distance);
         vuforiaTargetY = command.getDouble("vuforia y " + skystonePosition.key, vuforiaTargetY);
-        vuforiaYPidController = new PIDController(config.properties, "vuforia y", vuforiaTargetY);
+        vuforiaYPidController = new PIDController(command, "vuforia y", vuforiaTargetY);
     }
 
 

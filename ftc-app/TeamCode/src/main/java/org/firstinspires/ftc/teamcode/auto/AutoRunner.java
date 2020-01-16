@@ -73,7 +73,7 @@ public class AutoRunner {
         for (Command command : config.commands) {
             logAndTelemetry(TAG, "Command: " + command.name);
             if (shouldStop()) {
-                logAndTelemetry(TAG, "EARLY STOP");
+                logAndTelemetry(TAG, "STOPPING...");
                 return;
             }
             execute(command);
@@ -114,13 +114,14 @@ public class AutoRunner {
                 break;
             }
 
-            case "MOVE AND TOGGLE PIVOT": {
+            case "MOVE AND SET PIVOT": {
                 BatMobile batMobile = BatMobile.getInstance();
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
                 int deployClicks = command.getInt("deploy clicks", 0);
+                String state = command.getString("servo state", "REST");
 
                 Action relativeMove = new RelativeMove(command);
-                Watcher deployServo = new DeployServoByDistance(batMobile.sideArm.pivot, robot.driveTrain.rf, deployClicks);
+                Watcher deployServo = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(state), robot.driveTrain.rf, deployClicks);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition, deployServo);
 

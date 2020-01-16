@@ -4,7 +4,7 @@
 
 	"left foundation open": "0.9",
 	"left foundation closed": "0.38",
-	"left foundation rest": "0.8",
+	"left foundation rest": "0.85",
 
 	"right foundation open": "0.0",
 	"right foundation closed": "0.56",
@@ -18,7 +18,7 @@
 
 	"pivot open": "0.98",
 	"pivot closed": "0.68",
-	"pivot rest": "0.89",
+	"pivot rest": "0.91",
 
 	"claw open": "0.2",
 	"claw closed": "0.6",
