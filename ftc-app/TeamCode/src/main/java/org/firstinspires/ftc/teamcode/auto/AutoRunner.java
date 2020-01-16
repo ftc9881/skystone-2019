@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMoveWithVuforia;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
+import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
@@ -18,7 +19,6 @@ import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
-import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
@@ -103,7 +103,6 @@ public class AutoRunner {
             case "INIT VUFORIA": {
                 Vuforia vuforia = new Vuforia(opMode.hardwareMap);
                 vuforia.initialize();
-                vuforia.startLook(VisionSystem.TargetType.RUN_FOREVER);
                 break;
             }
 
@@ -112,11 +111,6 @@ public class AutoRunner {
                 openCV.initialize();
                 openCV.startLook(VisionSystem.TargetType.SKYSTONE);
                 skystonePosition = openCV.identifyPosition(opMode, config.properties);
-                break;
-            }
-            case "ALIGN SKYSTONE": {
-                Action relativeMoveBasedOnSkystone = new RelativeMove(command, skystonePosition);
-                runActionWithTimeout(relativeMoveBasedOnSkystone, command);
                 break;
             }
 
@@ -149,13 +143,13 @@ public class AutoRunner {
             }
 
             case "MOVE": {
-                Action relativeMove = new RelativeMove(command);
+                Action relativeMove = new RelativeMove(command, skystonePosition);
                 runActionWithTimeout(relativeMove, command);
                 break;
             }
 
             case "MOVE VUFORIA": {
-                Action relativeMoveVuforia = new RelativeMoveWithVuforia(command);
+                Action relativeMoveVuforia = new RelativeMoveWithVuforia(command, skystonePosition);
                 runActionWithTimeout(relativeMoveVuforia, command);
                 break;
             }

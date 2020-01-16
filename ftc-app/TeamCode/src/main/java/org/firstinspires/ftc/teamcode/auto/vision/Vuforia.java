@@ -349,13 +349,13 @@ public class Vuforia implements VisionSystem {
 
         @Override
         protected boolean runIsComplete() {
-            return targetVisible && targetType != TargetType.RUN_FOREVER;
+            return targetVisible && targetType != TargetType.KEEP_RUNNING;
         }
 
         @Override
         protected void onEndRun() {
-            setLastPose();
-            trackables.deactivate();
+            // TODO: What does this affect?
+//            trackables.deactivate();
         }
 
         private void setLastPose() {

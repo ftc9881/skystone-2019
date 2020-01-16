@@ -4,69 +4,76 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
-import org.firstinspires.ftc.teamcode.auto.structure.Action;
-import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
-import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
-import org.firstinspires.ftc.teamcode.robot.Robot;
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RelativeMoveWithVuforia extends Action {
+public class RelativeMoveWithVuforia extends RelativeMove {
 
-    private static final double CLICKS_PER_INCH = 50.0;
+    public enum VuforiaStopCondition {
+        GREATER, LESS, CLOSE;
 
-    private PIDController anglePidController;
+        static public double closeThreshold = 1;
+
+        static public VuforiaStopCondition convertString(String string) {
+            switch (string.toUpperCase()) {
+                case "GREATER":
+                    return GREATER;
+                case "LESS":
+                    return LESS;
+                default:
+                    return CLOSE;
+            }
+        }
+
+        public boolean evaluate(double actual, double target) {
+            switch (this) {
+                case GREATER:
+                    return actual >= target;
+                case LESS:
+                    return actual <= target;
+                case CLOSE:
+                    return Math.abs(actual - target) < closeThreshold;
+            }
+            return false;
+        }
+    }
+
     private PIDController vuforiaXPidController;
-
-    private Robot robot;
+    private PIDController vuforiaYPidController;
     private Vuforia vuforia;
-
-    private int clicksError;
-    private int actualClicks;
-    private int decelerateClicks;
-    private int accelerateClicks;
-    private double basePower;
-    private double targetClicks;
-    private double distance;
-    private Angle moveAngle;
-    private Angle targetAngle;
-    private double powerFactor;
-    private Pose drivePose;
-
     private double vuforiaTargetY;
+    private VuforiaStopCondition vuforiaYStopCondition;
+    private double vuforiaBasePower;
 
     public RelativeMoveWithVuforia(Command command) {
-        this.robot = Robot.getInstance();
+        super(command);
         vuforia = Vuforia.getInstance();
+        vuforia.startLook(VisionSystem.TargetType.KEEP_RUNNING);
 
-        AutoOpConfiguration config = AutoOpConfiguration.getInstance();
-        clicksError = config.properties.getInt("move clicks error", 100);
-        basePower = config.properties.getDouble("move base power", 0.3);
+        VuforiaStopCondition.closeThreshold = command.getDouble("vuforia close threshold", 4);
+        String vuforiaYStopConditionString = command.getString("vuforia stop when", "close");
+        vuforiaYStopCondition = VuforiaStopCondition.convertString(vuforiaYStopConditionString);
 
-        moveAngle = command.getAngle("move angle", 0);
-        targetAngle = command.getAngle("target angle", 0);
-        distance = command.getDouble("distance", 5.0);
-        powerFactor = command.getDouble("power", 0.5);
-        accelerateClicks = command.getInt("ramp up", 0);
-        decelerateClicks = command.getInt("ramp down", 0);
-
+        vuforiaBasePower = command.getDouble("base power", 0);
         double vuforiaTargetX = command.getDouble("vuforia x", 0);
+        vuforiaXPidController = new PIDController(command, "vuforia x", vuforiaTargetX);
         vuforiaTargetY = command.getDouble("vuforia y", 0);
-        anglePidController = new PIDController(config.properties, "move", targetAngle.getRadians());
-        vuforiaXPidController = new PIDController(config.properties, "vuforia", vuforiaTargetX);
+        vuforiaYPidController = new PIDController(config.properties, "vuforia y", vuforiaTargetY);
     }
 
     public RelativeMoveWithVuforia(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
         distance = command.getDouble("distance " + skystonePosition.key, distance);
         vuforiaTargetY = command.getDouble("vuforia y " + skystonePosition.key, vuforiaTargetY);
+        vuforiaYPidController = new PIDController(config.properties, "vuforia y", vuforiaTargetY);
     }
 
 
@@ -96,7 +103,7 @@ public class RelativeMoveWithVuforia extends Action {
     @Override
     protected boolean runIsComplete() {
         if (vuforiaFoundSomething()) {
-            return vuforia.getPose().y < vuforiaTargetY;
+            return vuforiaYStopCondition.evaluate(vuforia.getPose().y, vuforiaTargetY);
         }
         else {
             List<Integer> clicksArray = new ArrayList<>();
@@ -116,42 +123,45 @@ public class RelativeMoveWithVuforia extends Action {
     protected void insideRun() {
         Pose correctedDrivePose = new Pose(drivePose);
         Angle actualHeading = robot.getImuHeading();
+        Pose vuforiaPose = vuforia.getPose();
 
         correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
         if (vuforiaFoundSomething()) {
-            double vuforiaActualX = vuforia.getPose().x;
-            double vuforiaCorrectX = vuforiaXPidController.getCorrectedOutput(vuforiaActualX);
+            double vuforiaCorrectX = vuforiaXPidController.getCorrectedOutput(vuforiaPose.x);
             correctedDrivePose.y += vuforiaCorrectX;
             AutoRunner.log("VuforiaCorrectX", vuforiaCorrectX);
-        }
 
-        double rampFactor = calculateRampFactor();
-        correctedDrivePose.x *= rampFactor;
-        correctedDrivePose.y *= rampFactor;
+            double vuforiaCorrectY = -vuforiaYPidController.getCorrectedOutput(vuforiaPose.y);
+            correctedDrivePose.x = clipPower(vuforiaCorrectY, vuforiaBasePower);
+            AutoRunner.log("VuforiaCorrectY", vuforiaCorrectY);
+        }
+        else {
+            double rampFactor = calculateRampFactor();
+            correctedDrivePose.x *= rampFactor;
+            correctedDrivePose.y *= rampFactor;
+            AutoRunner.log("RampFactor", rampFactor);
+        }
 
         robot.driveTrain.drive(correctedDrivePose, powerFactor);
 
         AutoRunner.log("ActualXPower", correctedDrivePose.x);
         AutoRunner.log("ActualYPower", correctedDrivePose.y);
-        AutoRunner.log("RampFactor", rampFactor);
         AutoRunner.log("pidRPower", correctedDrivePose.r);
         AutoRunner.log("ActualHeadingAngle", actualHeading.getDegrees());
-        AutoRunner.log("VuforiaPose", vuforia.getPose());
+        AutoRunner.log("VuforiaPose", vuforiaPose);
     }
 
-    private double calculateRampFactor() {
-        double rampValue = 1.0;
-        if (actualClicks > (targetClicks - decelerateClicks)) {
-            rampValue = 1.0 - (actualClicks - (targetClicks-decelerateClicks)) / (double) decelerateClicks;
-        } else if (actualClicks < accelerateClicks) {
-            rampValue = Math.max(Math.sqrt(actualClicks/(double)accelerateClicks), 0.1);
-        }
-        return Range.clip(rampValue, basePower, 1.0);
+    protected double clipPower(double power, double basePower) {
+
+        int sign = power < 0 ? -1 : 1;
+        double absPower = Math.abs(power);
+        return sign * Range.clip(absPower, basePower, 1.0);
     }
 
     @Override
     protected void onEndRun() {
         robot.driveTrain.stop();
+        vuforia.stopLook();
     }
 
 }

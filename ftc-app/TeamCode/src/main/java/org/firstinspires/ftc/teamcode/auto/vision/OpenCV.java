@@ -44,7 +44,7 @@ public class OpenCV implements VisionSystem {
     public void startLook(TargetType targetType) {
 
         switch (targetType) {
-            case RUN_FOREVER:
+            case KEEP_RUNNING:
             case SKYSTONE: {
                 detector = new SkystoneDetector();
                 detector.useDefaults();

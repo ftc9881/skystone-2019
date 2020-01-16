@@ -19,35 +19,37 @@ import java.util.List;
 
 public class RelativeMove extends Action {
 
-    private static final double CLICKS_PER_INCH = 50.0;
+    protected static final double CLICKS_PER_INCH = 50.0;
 
-    private PIDController pidController;
+    protected PIDController anglePidController;
 
-    private Robot robot;
-    private int clicksError;
-    private int actualClicks;
-    private int decelerateClicks;
-    private int accelerateClicks;
-    private double basePower;
-    private double targetClicks;
-    private double distance;
-    private Angle moveAngle;
-    private Angle targetAngle;
-    private double powerFactor;
-    private Pose drivePose;
+    protected Robot robot;
+    protected AutoOpConfiguration config;
+    protected int clicksError;
+    protected int actualClicks;
+    protected int decelerateClicks;
+    protected int accelerateClicks;
+    protected double basePower;
+    protected double targetClicks;
+    protected double distance;
+    protected Angle moveAngle;
+    protected Angle targetAngle;
+    protected double powerFactor;
+    protected Pose drivePose;
 
     public RelativeMove(Command command) {
         robot = Robot.getInstance();
-        AutoOpConfiguration config = AutoOpConfiguration.getInstance();
-        pidController = new PIDController(config.properties, "move", targetAngle.getRadians());
-        clicksError = config.properties.getInt("move clicks error", 100);
-        basePower = config.properties.getDouble("move base power", 0.3);
         moveAngle = command.getAngle("move angle", 0);
         targetAngle = command.getAngle("target angle", 0);
         distance = command.getDouble("distance", 5.0);
         powerFactor = command.getDouble("power", 0.5);
         accelerateClicks = command.getInt("ramp up", 0);
         decelerateClicks = command.getInt("ramp down", 0);
+
+        config = AutoOpConfiguration.getInstance();
+        anglePidController = new PIDController(config.properties, "move", targetAngle.getRadians());
+        clicksError = config.properties.getInt("move clicks error", 100);
+        basePower = config.properties.getDouble("move base power", 0.3);
     }
 
     public RelativeMove(Command command, VisionSystem.SkystonePosition skystonePosition) {
@@ -90,7 +92,7 @@ public class RelativeMove extends Action {
     protected void insideRun() {
         Pose correctedDrivePose = new Pose(drivePose);
         Angle actualHeading = robot.getImuHeading();
-        correctedDrivePose.r = pidController.getCorrectedOutput(actualHeading.getRadians());
+        correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
 
         double rampFactor = calculateRampFactor();
         correctedDrivePose.x *= rampFactor;
@@ -106,7 +108,7 @@ public class RelativeMove extends Action {
         AutoRunner.log("ActualHeadingAngle", actualHeading.getDegrees());
     }
 
-    private double calculateRampFactor() {
+    protected double calculateRampFactor() {
         double rampValue = 1.0;
         if (actualClicks > (targetClicks - decelerateClicks)) {
             rampValue = 1.0 - (actualClicks - (targetClicks-decelerateClicks)) / (double) decelerateClicks;

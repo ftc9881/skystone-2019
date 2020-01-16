@@ -25,7 +25,11 @@ public abstract class TeleOpBase extends LinearOpMode {
 //            inputManager.update();
             update();
         }
+        onStop();
+    }
 
+    protected void onStop() {
+        robot.driveTrain.stop();
     }
 
 }

@@ -1,12 +1,17 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+import org.firstinspires.ftc.teamcode.robot.Robot;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static android.os.SystemClock.sleep;
 
 public abstract class Action implements Runnable {
+
+    private LinearOpMode opMode;
 
     private static final String TAG = "Action";
     private static final long SLEEP_INTERVAL = 10;
@@ -34,7 +39,7 @@ public abstract class Action implements Runnable {
     public synchronized void run() {
         onRun();
 
-        while (isRunning() && !runIsComplete()) {
+        while (isRunning() && !runIsComplete() && opModeIsActive()) {
             try {
                 Thread.sleep(SLEEP_INTERVAL);
             } catch (InterruptedException e) {
@@ -51,13 +56,6 @@ public abstract class Action implements Runnable {
 
         AutoRunner.log(TAG, "Completed");
     }
-
-//    public void wait() {
-//        while (!runIsComplete()) {
-//            sleep(SLEEP_INTERVAL);
-//        }
-//    }
-
 
     public void stop() {
         AutoRunner.log(TAG, "Stop");
@@ -76,6 +74,16 @@ public abstract class Action implements Runnable {
 
     public boolean isStopped() {
         return stopped.get();
+    }
+
+    private boolean opModeIsActive() {
+        if (opMode == null) {
+            Robot robot = Robot.getInstance();
+            if (robot != null) {
+                opMode = robot.opMode;
+            }
+        }
+        return opMode != null && opMode.opModeIsActive();
     }
 
 }

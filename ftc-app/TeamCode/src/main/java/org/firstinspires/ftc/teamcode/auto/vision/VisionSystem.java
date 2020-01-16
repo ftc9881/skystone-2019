@@ -13,7 +13,7 @@ public interface VisionSystem {
         }
     }
     enum Type {VUFORIA, OPENCV}
-    enum TargetType {SKYSTONE, BRIDGE, PERIMETER, RUN_FOREVER}
+    enum TargetType {SKYSTONE, BRIDGE, PERIMETER, KEEP_RUNNING}
 
     void initialize();
     void startLook(TargetType targetType);

@@ -17,7 +17,10 @@ public class VuforiaTest extends TeleOpBase {
     protected void initialize() {
         vuforia = new Vuforia(hardwareMap);
         vuforia.initialize();
-        vuforia.startLook(VisionSystem.TargetType.RUN_FOREVER);
+        vuforia.startLook(VisionSystem.TargetType.KEEP_RUNNING);
+
+        telemetry.addData("Initialized Vuforia", "Ready to run");
+        telemetry.update();
     }
 
     @Override
@@ -26,7 +29,12 @@ public class VuforiaTest extends TeleOpBase {
         telemetry.addData("X (in)", pose.x);
         telemetry.addData("Y (in)", pose.y);
         telemetry.addData("R (deg)", pose.r);
-       telemetry.update();
+        telemetry.update();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        vuforia.stopLook();
+    }
 }
