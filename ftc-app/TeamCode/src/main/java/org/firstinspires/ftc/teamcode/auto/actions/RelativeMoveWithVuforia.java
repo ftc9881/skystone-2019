@@ -7,8 +7,10 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
+import org.firstinspires.ftc.teamcode.math.GeneralMath.Conditional;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
 import java.util.ArrayList;
@@ -17,50 +19,37 @@ import java.util.List;
 
 public class RelativeMoveWithVuforia extends RelativeMove {
 
-    public enum VuforiaStopCondition {
-        GREATER, LESS, CLOSE;
+    private BatMobile batMobile;
 
-        static public double closeThreshold = 1;
-
-        static public VuforiaStopCondition convertString(String string) {
-            switch (string.toUpperCase()) {
-                case "GREATER":
-                    return GREATER;
-                case "LESS":
-                    return LESS;
-                default:
-                    return CLOSE;
-            }
-        }
-
-        public boolean evaluate(double actual, double target) {
-            switch (this) {
-                case GREATER:
-                    return actual >= target;
-                case LESS:
-                    return actual <= target;
-                case CLOSE:
-                    return Math.abs(actual - target) < closeThreshold;
-            }
-            return false;
-        }
-    }
+    private PIDController foundationSensorPidController;
+    private double sensorTarget;
+    private double sensorCloseThreshold;
+    private Conditional sensorStopConditional;
 
     private PIDController vuforiaXPidController;
     private PIDController vuforiaYPidController;
     private Vuforia vuforia;
     private double vuforiaTargetY;
-    private VuforiaStopCondition vuforiaYStopCondition;
+    private Conditional vuforiaYStopConditional;
     private double vuforiaBasePower;
+    private double vuforiaCloseThreshold;
 
     public RelativeMoveWithVuforia(Command command) {
         super(command);
-        vuforia = Vuforia.getInstance();
+        batMobile = BatMobile.getInstance();
+
+        sensorTarget = command.getDouble("sensor target", 0);
+        foundationSensorPidController = new PIDController(command, "sensor", sensorTarget);
+        String sensorConditonalString = command.getString("sensor stop when", "close");
+        sensorStopConditional = Conditional.convertString(sensorConditonalString);
+        sensorCloseThreshold = command.getDouble("sensor close threshold", 4);
+
+        vuforia = Vuforia.getInstance(Vuforia.CameraType.WEBCAM_1);
         vuforia.startLook(VisionSystem.TargetType.PERIMETER);
 
-        VuforiaStopCondition.closeThreshold = command.getDouble("vuforia close threshold", 4);
+        vuforiaCloseThreshold = command.getDouble("vuforia close threshold", 4);
         String vuforiaYStopConditionString = command.getString("vuforia stop when", "close");
-        vuforiaYStopCondition = VuforiaStopCondition.convertString(vuforiaYStopConditionString);
+        vuforiaYStopConditional = Conditional.convertString(vuforiaYStopConditionString);
 
         vuforiaBasePower = command.getDouble("base power", 0);
         double vuforiaTargetX = command.getDouble("vuforia x", 0);
@@ -95,15 +84,17 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         AutoRunner.log("DrivePowerY", drivePose.y);
     }
 
-    private boolean vuforiaFoundSomething() {
-        Pose pose = vuforia.getPose();
-        return pose.x + pose.y + pose.r != 0;
-    }
 
     @Override
     protected boolean runIsComplete() {
         if (vuforiaFoundSomething()) {
-            return vuforiaYStopCondition.evaluate(vuforia.getPose().y, vuforiaTargetY);
+            return vuforiaYStopConditional.evaluate(vuforia.getPose().y, vuforiaTargetY, vuforiaCloseThreshold);
+        }
+        else if (sensorSeesFoundation()) {
+            // TODO: implement foundation sensor
+            double sensorActualDistance = 0.00000000000000000000000;
+//            double sensorActualDistance = batMobile.foundationSensor.getDistance();
+            return sensorStopConditional.evaluate(sensorActualDistance, sensorTarget, sensorCloseThreshold);
         }
         else {
             List<Integer> clicksArray = new ArrayList<>();
@@ -135,6 +126,14 @@ public class RelativeMoveWithVuforia extends RelativeMove {
             correctedDrivePose.x = clipPower(vuforiaCorrectY, vuforiaBasePower);
             AutoRunner.log("VuforiaCorrectY", vuforiaCorrectY);
         }
+        else if (sensorSeesFoundation()) {
+            // TODO: implement foundation sensor
+            double sensorActualDistance = 0.00000000000000000000000;
+//            double sensorActualDistance = batMobile.foundationSensor.getDistance();
+            double sensorCorrectX = foundationSensorPidController.getCorrectedOutput(sensorActualDistance);
+            correctedDrivePose.y += sensorCorrectX;
+            AutoRunner.log("FoundationSensorCorrectX", sensorCorrectX);
+        }
         else {
             double rampFactor = calculateRampFactor();
             correctedDrivePose.x *= rampFactor;
@@ -151,7 +150,20 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         AutoRunner.log("VuforiaPose", vuforiaPose);
     }
 
-    protected double clipPower(double power, double basePower) {
+    private boolean vuforiaFoundSomething() {
+        Pose pose = vuforia.getPose();
+        return pose.x + pose.y + pose.r != 0;
+    }
+
+    private boolean sensorSeesFoundation() {
+        // TODO: implement foundation sensor
+        double sensorActualDistance = 0.00000000000000000000000;
+//            double sensorActualDistance = batMobile.foundationSensor.getDistance();
+        double sensorMaxDistance = 0.00000000000000000000000;
+        return 0 < sensorActualDistance && sensorActualDistance < sensorMaxDistance;
+    }
+
+    private double clipPower(double power, double basePower) {
 
         int sign = power < 0 ? -1 : 1;
         double absPower = Math.abs(power);

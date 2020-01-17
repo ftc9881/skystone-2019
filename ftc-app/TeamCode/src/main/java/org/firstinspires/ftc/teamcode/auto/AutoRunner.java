@@ -108,7 +108,7 @@ public class AutoRunner {
         switch (command.name) {
 
             case "INIT VUFORIA": {
-                Vuforia.createInstance(opMode.hardwareMap);
+                Vuforia.createInstance(opMode.hardwareMap, Vuforia.CameraType.WEBCAM_1);
                 break;
             }
 

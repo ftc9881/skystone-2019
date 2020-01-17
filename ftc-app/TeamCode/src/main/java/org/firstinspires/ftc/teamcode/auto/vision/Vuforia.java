@@ -57,9 +57,18 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 public class Vuforia implements VisionSystem {
 
-    private static Vuforia instance;
-    public static Vuforia getInstance() {
-        return instance;
+    public enum CameraType {
+        PHONE("Phone"), WEBCAM_1("Webcam 1"), WEBCAM_2("Webcam 2");
+        Vuforia instance;
+        final String NAME;
+
+        CameraType(String NAME) {
+            this.NAME = NAME;
+        }
+    }
+
+    public static Vuforia getInstance(CameraType cameraType) {
+        return cameraType.instance;
     }
 
     public enum Target {
@@ -100,7 +109,6 @@ public class Vuforia implements VisionSystem {
     private static final float halfField = 72 * mmPerInch;
     private static final float quadField  = 36 * mmPerInch;
 
-    // TODO: Phone orientation and displacement values
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = true;
     private static Pose cameraDisplacementXYZ = new Pose();
@@ -109,6 +117,7 @@ public class Vuforia implements VisionSystem {
     private VuforiaLocalizer.Parameters parameters = null;
     private VuforiaTrackables trackables = null;
 
+    private CameraType cameraType;
     private boolean initialized = false;
     private boolean found = false;
     private Pose lastPose = new Pose();
@@ -117,20 +126,20 @@ public class Vuforia implements VisionSystem {
     private HardwareMap hardwareMap;
     private Context fileContext;
 
-    public static Vuforia createInstance(HardwareMap hardwareMap) {
-        instance = new Vuforia(hardwareMap);
-        return instance;
+    public static Vuforia createInstance(HardwareMap hardwareMap, CameraType cameraType) {
+        cameraType.instance = new Vuforia(hardwareMap, cameraType);
+        return cameraType.instance;
     }
 
-    private Vuforia(HardwareMap hardwareMap) {
+    private Vuforia(HardwareMap hardwareMap, CameraType cameraType) {
+        this.cameraType = cameraType;
         this.hardwareMap = hardwareMap;
         this.fileContext = hardwareMap.appContext;
-        instance = this;
         initialize();
     }
 
     private void initialize() {
-        startEngine(true);
+        startEngine();
         loadTrackables();
         orientTrackablesAtZero();
 //        orientTrackables();
@@ -169,19 +178,22 @@ public class Vuforia implements VisionSystem {
         cameraDisplacementXYZ = new Pose(xyz);
     }
 
-    private void startEngine(boolean useUsbCamera) {
-        parameters = new VuforiaLocalizer.Parameters(fileContext.getResources().getIdentifier(
-                "cameraMonitorViewId", "id", fileContext.getPackageName()));
+    private void startEngine() {
+        parameters = new VuforiaLocalizer.Parameters();
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
 
-        if (useUsbCamera) {
-            parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        if (isWebcam()) {
+            parameters.cameraName = hardwareMap.get(WebcamName.class, cameraType.NAME);
         } else {
             parameters.cameraDirection = CAMERA_CHOICE;
+            parameters.cameraMonitorViewIdParent = fileContext.getResources().getIdentifier(
+                    "cameraMonitorViewId", "id", fileContext.getPackageName());
         }
-
-        //  Instantiate the Vuforia engine
         vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
+    }
+
+    private boolean isWebcam() {
+        return cameraType != CameraType.PHONE;
     }
 
     private void loadTrackables() {
