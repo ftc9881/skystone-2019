@@ -64,7 +64,6 @@ public class AutoRunner {
             execute(command);
         }
 
-        opMode.telemetry.addData("Skystone Position", skystonePosition.name());
         logAndTelemetry(TAG, "Ready to run");
     }
 
@@ -111,6 +110,7 @@ public class AutoRunner {
                 openCV.initialize();
                 openCV.startLook(VisionSystem.TargetType.SKYSTONE);
                 skystonePosition = openCV.identifyPosition(opMode, config.properties);
+                logAndTelemetry("Skystone Position", skystonePosition.name());
                 break;
             }
 
@@ -127,6 +127,12 @@ public class AutoRunner {
 
                 runActionWithCondition(relativeMove, conditions);
                 break;
+            }
+
+            case "CAPSTONE": {
+                BatMobile batMobile = BatMobile.getInstance();
+                String state = command.getString("state", "REST");
+                batMobile.capstoneServo.set(ToggleServo.stringToState(state));
             }
 
             case "CLAW": {
@@ -161,6 +167,12 @@ public class AutoRunner {
                 Action relativeTurn = new AbsoluteTurn(angle, power);
                 runActionWithTimeout(relativeTurn, command);
                 break;
+            }
+
+            case "INTAKE": {
+                BatMobile batMobile = BatMobile.getInstance();
+                double power = command.getDouble("power", 0.5);
+                batMobile.intake.setPower(power);
             }
 
             case "SLEEP": {

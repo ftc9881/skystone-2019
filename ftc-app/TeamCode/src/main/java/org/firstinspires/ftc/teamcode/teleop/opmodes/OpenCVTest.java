@@ -27,7 +27,7 @@ public class OpenCVTest extends TeleOpBase {
         cropRect.width = config.getInt("crop w", 0);
         cropRect.height= config.getInt("crop h", 0);
         openCV.detector.cropRect = cropRect;
-        openCV.detector.blobDistanceThreshold = config.getInt("skystone blob distance", 50);
+        openCV.detector.yellowBlobbingThreshold = config.getInt("skystone blob distance", 50);
         openCV.detector.minimumArea = config.getInt("skystone min area", 0);
     }
 

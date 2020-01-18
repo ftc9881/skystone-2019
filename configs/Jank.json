@@ -11,6 +11,9 @@
 		"move ki": "0.8",
 		"move kd": "0.2"
 	},
+
+	"init": [ ],
+
 	"commands": [
 		{
 			"command": "MOVE",

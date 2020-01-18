@@ -1,6 +1,6 @@
 {
-	"capstone open": "1.0",
-	"capstone closed": "0.6",
+	"capstone open": "0.8",
+	"capstone closed": "0.63",
 
 	"left foundation open": "0.9",
 	"left foundation closed": "0.38",
@@ -16,9 +16,9 @@
 	"back deposit open": "0.08",
 	"back deposit closed": "0.35",
 
-	"pivot open": "0.98",
-	"pivot closed": "0.68",
-	"pivot rest": "0.91",
+	"pivot open": "0.82",
+	"pivot closed": "0.49",
+	"pivot rest": "0.73",
 
 	"claw open": "0.2",
 	"claw closed": "0.6",

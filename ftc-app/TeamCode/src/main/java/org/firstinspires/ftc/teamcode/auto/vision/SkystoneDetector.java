@@ -19,7 +19,8 @@ import java.util.LinkedList;
 public class SkystoneDetector extends OpenCVDetector {
     public DogeCVColorFilter blackFilter;
     public DogeCVColorFilter yellowFilter;
-    public int blobDistanceThreshold;
+    public int yellowBlobbingThreshold;
+    public int blackBlobbingThreshold;
     public int minimumArea;
     public boolean flipImage = true;
     public Rect cropRect = new Rect();
@@ -58,13 +59,13 @@ public class SkystoneDetector extends OpenCVDetector {
             draw(cropRect, new Scalar(255, 255, 255));
             rectsYellow = filterByBound(rectsYellow, cropRect);
         }
-        List<List<Rect>> listOfYellowBlobs = groupIntoBlobs(rectsYellow, blobDistanceThreshold);
+        List<List<Rect>> listOfYellowBlobs = groupIntoBlobs(rectsYellow, yellowBlobbingThreshold);
         Rect yellowBoundingRect = chooseBestYellow(listOfYellowBlobs);
 
         List<MatOfPoint> contoursBlack = findContours(blackFilter, blackMask);
         List<Rect> rectsBlack = contoursToRects(contoursBlack);
         List<Rect> rectsBlackInYellow = filterByBound(rectsBlack, yellowBoundingRect);
-        List<List<Rect>> listOfBlackBlobs = groupIntoBlobs(rectsBlackInYellow, blobDistanceThreshold);
+        List<List<Rect>> listOfBlackBlobs = groupIntoBlobs(rectsBlackInYellow, blackBlobbingThreshold);
         Rect bestSkystoneRect = chooseBestBlack(listOfBlackBlobs);
 
         draw(contoursYellow, new Scalar(255, 150, 0));
@@ -109,7 +110,8 @@ public class SkystoneDetector extends OpenCVDetector {
     public void useDefaults() {
         blackFilter = new GrayscaleFilter(0, 50);
         yellowFilter = new LeviColorFilter(LeviColorFilter.ColorPreset.YELLOW, 90);
-        blobDistanceThreshold = 50;
+        yellowBlobbingThreshold = 100;
+        blackBlobbingThreshold = 50;
         minimumArea = 100;
     }
 
@@ -178,7 +180,8 @@ public class SkystoneDetector extends OpenCVDetector {
            Rect blobBound = boundingRect(blob);
            draw(blobBound, new Scalar(0, 150, 0));
 
-           if (blobBound.area() > bestBlackRect.area()) {
+           if (blobBound.y > bestBlackRect.y) {
+//           if (blobBound.area() > bestBlackRect.area()) {
                bestBlackRect = blobBound;
            }
        }

@@ -16,6 +16,8 @@ public class BatMobileDrive extends BaseDrive {
 
     private BatMobile batMobile;
 
+    private boolean reverseIntakeMotor = false;
+
     private boolean isElevatorAutoMode = false;
     private boolean isLifted = false;
     private boolean isExtended = false;
@@ -42,6 +44,8 @@ public class BatMobileDrive extends BaseDrive {
     private Button toggleLiftButton = new Button();
     private Button toggleExtendButton = new Button();
 
+    private Button reverseIntakeMotorButton = new Button();
+
     @Override
     protected void initialize() {
         super.initialize();
@@ -52,6 +56,9 @@ public class BatMobileDrive extends BaseDrive {
         extendPowerFactor = config.getDouble("extend power", 1.0);
         slowDrivePowerFactor = config.getDouble("slow drive", 0.4);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
+
+        batMobile.capstoneServo.set(ToggleServo.State.CLOSED);
+        batMobile.sideArm.pivot.set(ToggleServo.State.CLOSED);
     }
 
     @Override
@@ -85,6 +92,7 @@ public class BatMobileDrive extends BaseDrive {
         decreaseExtendLevelButton.update(gamepad1.dpad_left);
         toggleExtendButton.update(gamepad2.b);
         toggleLiftButton.update(gamepad2.a);
+        reverseIntakeMotorButton.update(gamepad2.dpad_up);
     }
 
     private void updateElevator() {
@@ -144,24 +152,34 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateIntake() {
+        if (reverseIntakeMotorButton.is(DOWN)) {
+            reverseIntakeMotor = !reverseIntakeMotor;
+        }
+
         double intakePowerP1 = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
         double intakePowerP2 = (gamepad2.right_trigger - gamepad2.left_trigger) * outtakePowerFactor;
         double intakePower = intakePowerP1 + intakePowerP2;
-        batMobile.intake.setPower(intakePower);
+//        batMobile.intake.setPower(intakePower);
+        batMobile.intake.left.setPower(intakePower);
+        batMobile.intake.right.setPower(intakePower * (reverseIntakeMotor ? 1 : -1));
     }
 
     private void updateServos() {
         updateToggle(capstoneButton, batMobile.capstoneServo);
-        updateToggle(pivotButton, batMobile.sideArm.pivot);
+        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.REST, pivotButton, batMobile.sideArm.pivot);
         updateToggle(clawButton, batMobile.sideArm.claw);
         updateFoundationServos();
         updateDepositServos();
     }
 
     private void updateToggle(Button button, ToggleServo ... servos) {
+        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.OPEN, button, servos);
+    }
+
+    private void updateToggle(ToggleServo.State stateA, ToggleServo.State stateB, Button button, ToggleServo ... servos) {
         if (button.is(DOWN)) {
             for (ToggleServo servo : servos) {
-                servo.toggle();
+                servo.toggle(stateA, stateB);
             }
         }
     }

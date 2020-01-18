@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 
 @Autonomous(name = "Just Move Forward", group = "TeamCode")
-@Disabled
+//@Disabled
 public class JustMoveForwardAutoOp extends LinearOpMode {
 
     @Override

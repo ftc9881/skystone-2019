@@ -37,6 +37,8 @@ public class RelativeMove extends Action {
     protected double powerFactor;
     protected Pose drivePose;
 
+    protected boolean useTargetAngle;
+
     public RelativeMove(Command command) {
         robot = Robot.getInstance();
         moveAngle = command.getAngle("move angle", 0);
@@ -45,6 +47,7 @@ public class RelativeMove extends Action {
         powerFactor = command.getDouble("power", 0.5);
         accelerateClicks = command.getInt("ramp up", 0);
         decelerateClicks = command.getInt("ramp down", 0);
+        useTargetAngle = command.getBoolean("use target angle", true);
 
         config = AutoOpConfiguration.getInstance();
         anglePidController = new PIDController(config.properties, "move", targetAngle.getRadians());
@@ -70,7 +73,6 @@ public class RelativeMove extends Action {
         drivePose.y = Math.sin(moveAngle.getRadians()) * (distance<0?-1:1);
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
-
     }
 
     @Override
@@ -91,8 +93,11 @@ public class RelativeMove extends Action {
     @Override
     protected void insideRun() {
         Pose correctedDrivePose = new Pose(drivePose);
+
         Angle actualHeading = robot.getImuHeading();
-        correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
+        if (useTargetAngle) {
+            correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
+        }
 
         double rampFactor = calculateRampFactor();
         correctedDrivePose.x *= rampFactor;

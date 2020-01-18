@@ -96,7 +96,8 @@ public class OpenCV implements VisionSystem {
     }
 
     public SkystonePosition identifyPosition(LinearOpMode opMode, Command config) {
-        detector.blobDistanceThreshold = config.getInt("stone blob distance", 60);
+        detector.yellowBlobbingThreshold = config.getInt("yellow blobbing", 100);
+        detector.blackBlobbingThreshold = config.getInt("black blobbing", 50);
         detector.cropRect.x = config.getInt("crop x", 0);
         detector.cropRect.y = config.getInt("crop y", 0);
         detector.cropRect.width = config.getInt("crop w", 0);

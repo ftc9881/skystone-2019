@@ -36,28 +36,33 @@
 	},
 
 	"init": [
-		{ "command": "skip INIT VUFORIA" },
-		{ "command": "skip IDENTIFY SKYSTONE" }
+		{ "command": "IDENTIFY SKYSTONE" },
+		{ "command": "INIT VUFORIA" }
 	],
 
 	"commands": [
+		{
+			"command": "MOVE VUFORIA",
+			"vuforia x kp": "0.1",
+			"vuforia x": "2",
+			"vuforia y kp": "0.0135",
+			"vuforia y kd": "0.00004",
+			"vuforia y stone l": "6",
+			"vuforia y stone c": "15",
+			"vuforia y stone r": "22",
+			"vuforia stop when": "close",
+			"vuforia close threshold": "0.1",
+			"power": "1.0",
+			"base power": "0.1",
+			"distance stone l": "100",
+			"distance stone c": "105",
+			"distance stone r": "110",
+			"ramp down": "2000",
+			"move angle": "5",
+			"target angle": "0",
+			"timeout": "5000"
+		},
 
-		{
-			"command": "MOVE",
-			"power": "0.5",
-			"distance": "-30",
-			"move angle": "30",
-			"target angle": "0",
-			"timeout": "5000"
-		},
-		{
-			"command": "MOVE",
-			"power": "0.5",
-			"distance": "30",
-			"move angle": "30",
-			"target angle": "0",
-			"timeout": "5000"
-		},
 
 		{ "command": "STOP" }
 	]

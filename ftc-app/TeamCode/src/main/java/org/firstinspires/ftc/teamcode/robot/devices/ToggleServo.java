@@ -42,7 +42,11 @@ public class ToggleServo {
     }
 
     public void toggle() {
-        State newState = currentState == State.CLOSED ? State.OPEN : State.CLOSED;
+        toggle(State.CLOSED, State.OPEN);
+    }
+
+    public void toggle(State a, State b) {
+        State newState = currentState == a ? b : a;
         set(newState);
     }
 

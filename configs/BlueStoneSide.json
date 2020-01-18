@@ -1,98 +1,295 @@
 {
 	"properties": {
-		"angle unit": "deg",
 		"init vuforia": "false",
-		"turn error": "5",
+		"angle unit": "deg",
 
-		"turn kp": "0.75",
-		"turn ki": "0.3",
-		"turn kd": "0.15",
+		"turn error": "0.4",
+		"turn base power": "0.0",
+		"turn kp": "2.0",
+		"turn ki": "0.001",
+		"turn kd": "0.2",
 
-		"stone turn kp": "0.002",
-		"stone turn ki": "0.003",
-		"stone turn kd": "0.00",
+		"move clicks error": "50",
+		"elevator clicks error": "50",
+		"move base power": "0.05",
 
-		"move kp": "1",
-		"move ki": "0.8",
-		"move kd": "0.2"
+		"move kp": "3.0",
+		"move ki": "0.0",
+		"move kd": "0.1",
+
+		"lift kp": "0.01",
+		"lift ki": "0.0",
+		"lift kd": "0.0",
+
+		"crop x": "45",
+		"crop y": "75",
+		"crop w": "275",
+		"crop h": "75",
+		"yellow blobbing": "500",
+		"black blobbing": "30",
+		"stone min area": "100",
+		"skystone left": "160",
+		"skystone right": "220"
 	},
 
-	"init": [ ],
+	"init": [
+		{ "command": "INIT VUFORIA" }
+	],
 
 	"commands": [
-		{
-			"command": "MOVE ARM",
-			"state": "init"
+		{ 
+			"command": "CAPSTONE",
+			"state": "CLOSED"
 		},
-		{
-			"command": "SLEEP",
-			"time": "2000"
+		{ 
+			"command": "PIVOT",
+			"state": "CLOSED"
 		},
+		{ "command": "IDENTIFY SKYSTONE" },
 		{
-			"command": "IDENTIFY SKYSTONE POSITION",
-			"threshold": "10",
-			"left": "60",
-			"right": "100"
-		},
-		{
+"comment": "Moves forwards",
 			"command": "MOVE",
-			"angle": "0",
-			"distance": "5",
-			"timeout": "3000",
-			"power": "0.5"
-		},
-
-		{
-			"command": "TURN TO SKYSTONE",
-			"angle if left": "-54",
-			"angle if center": "-43",
-			"angle if right": "-30",
-			"power": "0.5",
+			"power": "1.0",
+			"LC distance": "15",
+			"distance": "13",
+			"move angle": "0",
+			"target angle": "0",
 			"timeout": "5000"
 		},
 		{
-			"command": "MOVE ARM",
-			"state": "intake"
+"comment": "turn so side arm faces stones",
+			"command": "TURN",
+			"power": "1.0",
+			"angle": "88",
+			"timeout": "1000"
+		},
+		{
+"comment": "line up with desired sky stone",
+			"command": "MOVE VUFORIA",
+			"target angle": "88",
+			"distance stone l": "1",
+			"distance stone c": "-5.5",
+			"distance stone r": "-10",
+			"vuforia x": "2",
+			"vuforia y kp": "0.02",
+			"vuforia y kd": "0.00004",
+			"vuforia y stone l": "28",
+			"vuforia y stone c": "35",
+			"vuforia y stone r": "42",
+			"vuforia stop when": "close",
+			"vuforia close threshold": "0.1",
+			"base power": "0.12",
+			"timeout": "1500",
+			"power": "1.0"
+		},
+		{ 
+			"command": "CLAW",
+			"state": "open"
+		},
+		{ 
+			"command": "PIVOT",
+			"state": "open"
+		},
+		{ 
+			"command": "SLEEP", "time":"1000" 
 		},
 
 		{ 
-			"command": "INTAKE",
-			"power": "1.0"
+			"command": "CLAW",
+			"state": "closed"
 		},
+		{ 
+			"command": "SLEEP", "time":"1000" 
+		},
+		{ 
+			"command": "PIVOT",
+			"state": "closed"
+		},
+		{ 
+			"command": "SLEEP", "time":"1000" 
+		},
+
 		{
+"comment": "move to next to foundation",
 			"command": "MOVE",
-			"distance": "35",
-			"timeout": "3000",
-			"power": "0.3"
+			"ramp down": "1600",
+			"power": "1.0",
+			"distance": "74",
+			"distance stone l": "66",
+			"distance stone c": "72",
+			"distance stone r": "81",
+			"move angle": "10",
+			"target angle": "88",
+			"timeout": "5000"
 		},
 		{
-			"command": "INTAKE",
-			"power": "0.1"
+			"command": "PIVOT",
+			"state": "open"
+		},
+		{ 
+			"command": "SLEEP", "time":"300" 
 		},
 		{
+			"command": "CLAW",
+			"state": "open"
+		},
+		{ 
+			"command": "SLEEP", "time":"800" 
+		},
+		{
+			"command": "CLAW",
+			"state": "closed"
+		},
+		{
+			"command": "PIVOT",
+			"state": "closed"
+		},
+		
+		{
+"comment": "move to second skystone",
+			"command": "MOVE VUFORIA",
+			"vuforia x kp": "0.1",
+			"vuforia x": "2",
+			"vuforia y kp": "0.0135",
+			"vuforia y kd": "0.00004",
+			"vuforia y stone l": "5.5",
+			"vuforia y stone c": "13",
+			"vuforia y stone r": "21",
+			"vuforia stop when": "close",
+			"vuforia close threshold": "0.1",
+			"power": "1.0",
+			"base power": "0.1",
+			"distance stone l": "-85",
+			"distance stone c": "-92",
+			"distance stone r": "-85",
+			"ramp down": "2000",
+			"move angle": "10",
+			"target angle": "88",
+			"timeout": "5000"
+		},
+
+		{
+			"command": "CLAW",
+			"state": "open"
+		},
+		{
+			"command": "PIVOT",
+			"state": "open"
+		},
+		{ 
+			"command": "SLEEP", "time":"500" 
+		},
+		{
+			"command": "CLAW",
+			"state": "closed"
+		},
+		{ 
+			"command": "SLEEP", "time":"500" 
+		},
+		{
+			"command": "PIVOT",
+			"state": "closed"
+		},
+		{ 
+			"command": "SLEEP", "time":"700" 
+		},
+		{
+"comment": "move to next to foundation second time",
 			"command": "MOVE",
-			"angle": "180",
-			"distance": "12",
-			"timeout": "3000",
-			"power": "0.5"
+			"ramp down": "1600",
+			"power": "1.0",
+			"distance stone l": "78",
+			"distance stone c": "79",
+			"distance stone r": "75",
+			"move angle": "10",
+			"target angle": "88",
+			"timeout": "5000"
 		},
 		{
+"comment": "strafe torwards foundation",
+			"command": "MOVE AND SET PIVOT",
+			"servo state": "rest",
+			"deploy clicks": "400",
+			"target angle": "88",
+			"move angle": "90",
+			"power": "0.4",
+			"distance": "10",
+			"timeout": "3000"
+		},
+		{
+			"command": "PIVOT",
+			"state": "rest"
+		},
+
+		{ 
+			"command": "SLEEP", "time":"300" 
+		},
+		{
+"comment": "deposit skystone",
+			"command": "CLAW",
+			"state": "open"
+		},
+		
+		{
+"comment": "drag foundation into build zone (high power)",
+			"command": "MOVE",
+			"target angle": "90",
+			"move angle": "90",
+			"power": "1.0",
+			"ramp down": "500",
+			"distance": "-40",
+			"timeout": "5000"
+		},
+		{
+"comment": "turn so foundation in build site",
 			"command": "TURN",
-			"angle": "90",
-			"timeout": "3000",
+			"power": "1.0",
+			"angle": "179",
+			"timeout": "3000"
+		},
+		{
+			"command": "CLAW",
+			"state": "closed"
+		},
+		{
+			"command": "PIVOT",
+			"state": "closed"
+		},
+		{
+"comment": "turn so facing bridge",
+			"command": "TURN",
+			"power": "1.0",
+			"angle": "-80",
+			"timeout": "3000"
+		},
+
+		{
+"comment": "strafe towards bridge",
+			"command": "MOVE",
+			"target angle": "-80",
+			"move angle": "0",
+			"power": "0.7",
+			"distance": "35",
+			"ramp down": "1600",
+			"timeout": "5000"
+		},
+
+
+		{
+"comment": "intake so we can see if we need to switch direction",
+			"command": "INTAKE",
 			"power": "0.4"
 		},
 		{
-			"command": "MOVE",
-			"angle": "0",
-			"distance": "30",
-			"timeout": "5000",
-			"power": "0.5"
+			"command": "SLEEP",
+			"time": "1000"
 		},
-		{ 
+		{
 			"command": "INTAKE",
-			"power": "-0.2"
+			"power": "0"
 		},
-		{ "command": "SLEEP", "time":"1000" }
+
+
+		{ "command": "STOP" }
 	]
 }
