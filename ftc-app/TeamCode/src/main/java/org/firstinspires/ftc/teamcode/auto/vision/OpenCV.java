@@ -35,9 +35,12 @@ public class OpenCV implements VisionSystem {
     private OpenCvCamera openCvCamera;
     public SkystoneDetector detector;
 
-    @Override
-    public void initialize() {
-        initializeCamera();
+    public OpenCV(CameraType cameraType) {
+        initializeCamera(cameraType);
+    }
+
+    public OpenCV() {
+        initializeCamera(cameraType);
     }
 
     @Override
@@ -65,10 +68,6 @@ public class OpenCV implements VisionSystem {
     @Override
     public boolean found() {
         return detector.isDetected();
-    }
-
-    private void initializeCamera() {
-        initializeCamera(cameraType);
     }
 
     private void initializeCamera(CameraType cameraType) {

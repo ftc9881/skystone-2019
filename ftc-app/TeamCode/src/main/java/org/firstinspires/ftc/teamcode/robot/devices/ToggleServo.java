@@ -27,6 +27,10 @@ public class ToggleServo {
         restPosition = config.getDouble(name + " rest", closedPosition);
     }
 
+    public State getState() {
+        return currentState;
+    }
+
     public void set(State state) {
         currentState = state;
         double position = restPosition;
