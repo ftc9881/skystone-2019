@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.auto.vision;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.SwitchableCamera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -10,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.camera.delegating.SwitchableCameraName;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.math.Pose;
@@ -26,67 +29,24 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 public class Vuforia implements VisionSystem {
 
-    public enum CameraType {
-        PHONE("Phone"), WEBCAM_1("Webcam 1"), WEBCAM_2("Webcam 2");
-        Vuforia instance;
-        final String NAME;
-
-        CameraType(String NAME) {
-            this.NAME = NAME;
-        }
-    }
-
-    public static Vuforia getInstance(CameraType cameraType) {
-        return cameraType.instance;
-    }
-
     public enum Target {
-        SKYSTONE(0),
-        BLUE_REAR_BRIDGE(1),
-        RED_REAR_BRIDGE(2),
-        RED_FRONT_BRIDGE(3),
-        BLUE_FRONT_BRIDGE(4),
-        RED_PERIMETER_1(5),
-        RED_PERIMETER_2(6),
-        FRONT_PERIMETER_1(7),
-        FRONT_PERIMETER_2(8),
-        BLUE_PERIMETER_1(9),
-        BLUE_PERIMETER_2(10),
-        REAR_PERIMETER_1(11),
-        REAR_PERIMETER_2(12);
-
-        public final int index;
-        Target(int index) {
-            this.index = index;
-        }
+        SKYSTONE,
+        BLUE_REAR_BRIDGE, RED_REAR_BRIDGE, RED_FRONT_BRIDGE, BLUE_FRONT_BRIDGE,
+        RED_PERIMETER_1, RED_PERIMETER_2, FRONT_PERIMETER_1, FRONT_PERIMETER_2,
+        BLUE_PERIMETER_1, BLUE_PERIMETER_2, REAR_PERIMETER_1, REAR_PERIMETER_2;
     }
 
     // Our Vuforia API key from https://developer.vuforia.com/license-manager
     private static final String VUFORIA_KEY = "Ae3SQJr/////AAABma3GOKdfqERdhlPySYr2gGUY3kvAp0ejLY/ecvFSOpdWOYZoJOPtvYn+rL6FuVLK8lfHLQUV+cLOkA91juLovXsGF9SR4EiANCZu3nrp+6iQH/fCcCouQ8m8y+ahDOkW5gkEiu68ioVozoUJ7QBe075/9bnywlrzswoLdQHYEStUeU4OGyTPl2ABapRzdckUpkORgBi/jmBMKvk1IeATeXGqXWY3Xa2ZbB/abA2+1xgS2HcAsC0Xs6wW4O4RWr501Q5GF9GDlAblt0YPQbOXKhLGu3MIB7oEDNYqebu7pYQPy5LiFjc8PgjLcW06OJ0G9jDCaRJToLWGCsqD4dhTn7Nt4eKExBBNMnUSlWTHq0Jm";
 
-    // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
-    // We will define some constants and conversions here
-    private static final float mmPerInch        = 25.4f;
-    private static final float mmTargetHeight   = (6) * mmPerInch; // the height of the center of the target image above the floor
-
-    private static final float stoneZ = 2.00f * mmPerInch;
-    private static final float bridgeZ = 6.42f * mmPerInch;
-    private static final float bridgeY = 23 * mmPerInch;
-    private static final float bridgeX = 5.18f * mmPerInch;
-    private static final float bridgeRotY = 59;
-    private static final float bridgeRotZ = 180;
-    private static final float halfField = 72 * mmPerInch;
-    private static final float quadField  = 36 * mmPerInch;
-
-    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-    private static final boolean PHONE_IS_PORTRAIT = true;
-    private static Pose cameraDisplacementXYZ = new Pose();
+    private static final float mmPerInch = 25.4f;
 
     private VuforiaLocalizer vuforiaLocalizer = null;
     private VuforiaLocalizer.Parameters parameters = null;
     private VuforiaTrackables trackables = null;
 
     private CameraType cameraType;
+    private SwitchableCamera switchableCamera;
     private boolean initialized = false;
     private boolean found = false;
     private Pose lastPose = new Pose();
@@ -94,15 +54,20 @@ public class Vuforia implements VisionSystem {
 
     private HardwareMap hardwareMap;
 
+    private static Vuforia instance;
+
     public static Vuforia createInstance(HardwareMap hardwareMap, CameraType cameraType) {
-        cameraType.instance = new Vuforia(hardwareMap, cameraType);
-        return cameraType.instance;
+        instance = new Vuforia(hardwareMap, cameraType);
+        return instance;
+    }
+
+    public static Vuforia getInstance() {
+        return instance;
     }
 
     private Vuforia(HardwareMap hardwareMap, CameraType cameraType) {
         this.cameraType = cameraType;
         this.hardwareMap = hardwareMap;
-        this.fileContext = hardwareMap.appContext;
         initialize();
     }
 
@@ -110,8 +75,7 @@ public class Vuforia implements VisionSystem {
         startEngine();
         loadTrackables();
         orientTrackablesAtZero();
-//        orientTrackables();
-        applyPhoneOrientation();
+        applyCameraOrientation();
         initialized = true;
         AutoRunner.log("Vuforia", "Initialization complete");
     }
@@ -142,8 +106,18 @@ public class Vuforia implements VisionSystem {
         return lastPose;
     }
 
-    public void setCameraDisplacement(Pose xyz) {
-        cameraDisplacementXYZ = new Pose(xyz);
+    public void setActiveCamera(CameraType cameraType) {
+        found = false;
+        lastPose = new Pose();
+        if (switchableCamera != null) {
+            this.cameraType = cameraType;
+            switchableCamera.setActiveCamera(hardwareMap.get(WebcamName.class, cameraType.name));
+            applyCameraOrientation();
+        }
+    }
+
+    public CameraType getCameraType() {
+        return cameraType;
     }
 
     private void startEngine() {
@@ -151,13 +125,20 @@ public class Vuforia implements VisionSystem {
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
 
         if (isWebcam()) {
-            parameters.cameraName = hardwareMap.get(WebcamName.class, cameraType.NAME);
+            CameraName activeWebcam = hardwareMap.get(WebcamName.class, cameraType.name);
+            CameraName inactiveWebcam = hardwareMap.get(WebcamName.class, cameraType == CameraType.FRONT_WEBCAM ? CameraType.BACK_WEBCAM.name : CameraType.FRONT_WEBCAM.name);
+            SwitchableCameraName switchableCameraName = ClassFactory.getInstance().getCameraManager().nameForSwitchableCamera(activeWebcam, inactiveWebcam);
+//            parameters.cameraName = hardwareMap.get(WebcamName.class, cameraType.name);
+            parameters.cameraName = switchableCameraName;
+            vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
+            switchableCamera = (SwitchableCamera) vuforiaLocalizer.getCamera();
+            switchableCamera.setActiveCamera(activeWebcam);
         } else {
-            parameters.cameraDirection = CAMERA_CHOICE;
-            parameters.cameraMonitorViewIdParent = fileContext.getResources().getIdentifier(
-                    "cameraMonitorViewId", "id", fileContext.getPackageName());
+            parameters.cameraDirection = BACK;
+            parameters.cameraMonitorViewIdParent = hardwareMap.appContext.getResources().getIdentifier(
+                    "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
         }
-        vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
     }
 
     private boolean isWebcam() {
@@ -178,125 +159,23 @@ public class Vuforia implements VisionSystem {
         }
     }
 
-    private void orientTrackables() {
-         /**
-         * If you are standing in the Red Alliance Station looking towards the center of the field,
-         *     - The X axis runs from your left to the right. (positive from the center to the right)
-         *     - The Y axis runs from the Red Alliance Station towards the other side of the field
-         *       where the Blue Alliance Station is. (Positive is from the center, towards the BlueAlliance station)
-         *     - The Z axis runs from the floor, upwards towards the ceiling.  (Positive is above the floor)
-         *
-         * Before being transformed, each target image is conceptually located at the origin of the field's
-         *  coordinate system (the center of the field), facing up.
-         */
-
-        // Set the position of the Stone Target.  Since it's not fixed in position, assume it's at the field origin.
-        // Rotated it to to face forward, and raised it to sit on the ground correctly.
-        // This can be used for generic target-centric approach algorithms
-        VuforiaTrackable stoneTarget = trackables.get(Target.SKYSTONE.index);
-        stoneTarget.setName("Stone Target");
-        stoneTarget.setLocation(OpenGLMatrix
-                .translation(0, 0, stoneZ)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
-
-
-        //Set the position of the bridge support targets with relation to origin (center of field)
-        VuforiaTrackable blueRearBridge = trackables.get(Target.BLUE_REAR_BRIDGE.index);
-        blueRearBridge.setName("Blue Rear Bridge");
-        blueRearBridge.setLocation(OpenGLMatrix
-                .translation(-bridgeX, bridgeY, bridgeZ)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, -bridgeRotY, bridgeRotZ)));
-
-        VuforiaTrackable redRearBridge = trackables.get(Target.RED_REAR_BRIDGE.index);
-        redRearBridge.setName("Red Rear Bridge");
-        redRearBridge.setLocation(OpenGLMatrix
-                .translation(bridgeX, -bridgeY, bridgeZ)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, bridgeRotY, 0)));
-
-        VuforiaTrackable redFrontBridge = trackables.get(Target.RED_FRONT_BRIDGE.index);
-        redFrontBridge.setName("Red Front Bridge");
-        redFrontBridge.setLocation(OpenGLMatrix
-                .translation(-bridgeX, -bridgeY, bridgeZ)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, -bridgeRotY, 0)));
-
-        VuforiaTrackable blueFrontBridge = trackables.get(Target.BLUE_FRONT_BRIDGE.index);
-        blueFrontBridge.setName("Blue Front Bridge");
-        blueFrontBridge.setLocation(OpenGLMatrix
-                .translation(-bridgeX, bridgeY, bridgeZ)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, bridgeRotY, bridgeRotZ)));
-
-
-        //Set the position of the perimeter targets with relation to origin (center of field)
-        VuforiaTrackable red1 = trackables.get(Target.RED_PERIMETER_1.index);
-        red1.setName("Red Perimeter 1");
-        red1.setLocation(OpenGLMatrix
-                .translation(quadField, -halfField, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180)));
-
-        VuforiaTrackable red2 = trackables.get(Target.RED_PERIMETER_2.index);
-        red2.setName("Red Perimeter 2");
-        red2.setLocation(OpenGLMatrix
-                .translation(-quadField, -halfField, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180)));
-
-        VuforiaTrackable front1 = trackables.get(Target.FRONT_PERIMETER_1.index);
-        front1.setName("Front Perimeter 1");
-        front1.setLocation(OpenGLMatrix
-                .translation(-halfField, -quadField, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 90)));
-
-        VuforiaTrackable front2 = trackables.get(Target.FRONT_PERIMETER_2.index);
-        front2.setName("Front Perimeter 2");
-        front2.setLocation(OpenGLMatrix
-                .translation(-halfField, quadField, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 90)));
-
-        VuforiaTrackable blue1 = trackables.get(Target.BLUE_PERIMETER_1.index);
-        blue1.setName("Blue Perimeter 1");
-        blue1.setLocation(OpenGLMatrix
-                .translation(-quadField, halfField, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0)));
-
-        VuforiaTrackable blue2 = trackables.get(Target.BLUE_PERIMETER_2.index);
-        blue2.setName("Blue Perimeter 2");
-        blue2.setLocation(OpenGLMatrix
-                .translation(quadField, halfField, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0)));
-
-        VuforiaTrackable rear1 = trackables.get(Target.REAR_PERIMETER_1.index);
-        rear1.setName("Rear Perimeter 1");
-        rear1.setLocation(OpenGLMatrix
-                .translation(halfField, quadField, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
-
-        VuforiaTrackable rear2 = trackables.get(Target.REAR_PERIMETER_2.index);
-        rear2.setName("Rear Perimeter 2");
-        rear2.setLocation(OpenGLMatrix
-                .translation(halfField, -quadField, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
-    }
-
-    private void applyPhoneOrientation() {
-        // For convenience, gather together all the trackable objects in one easily-iterable collection */
-        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(trackables);
-
-        // Create a transformation matrix describing where the phone is on the robot.
-        // Make sure phone orientation is locked.
-        float phoneYRotate = CAMERA_CHOICE == BACK ? -90 : 90;
-        float phoneXRotate = PHONE_IS_PORTRAIT ? 90 : 0;
-        float phoneZRotate = 0;
-
-        // Sample uses y = front/back, z = left/right, x = up/down
-        // We want:    x = left/right, y = front/back, z = up/down
-        OpenGLMatrix robotFromCamera = OpenGLMatrix
-                .translation((float)cameraDisplacementXYZ.y, (float)cameraDisplacementXYZ.x, (float)cameraDisplacementXYZ.r)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
-
-        // Let all the trackable listeners know where the phone is.
+    private void applyCameraOrientation() {
+        List<VuforiaTrackable> allTrackables = new ArrayList<>(trackables);
         for (VuforiaTrackable trackable : allTrackables) {
-            ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
+            ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(getPositionMatrix(CameraType.PHONE), parameters.cameraDirection);
+            if (isWebcam()) {
+                CameraName frontWebcam = hardwareMap.get(WebcamName.class, CameraType.FRONT_WEBCAM.name);
+                CameraName backWebcam = hardwareMap.get(WebcamName.class, CameraType.BACK_WEBCAM.name);
+                ((VuforiaTrackableDefaultListener) trackable.getListener()).setCameraLocationOnRobot(frontWebcam, getPositionMatrix(CameraType.FRONT_WEBCAM));
+                ((VuforiaTrackableDefaultListener) trackable.getListener()).setCameraLocationOnRobot(backWebcam, getPositionMatrix(CameraType.BACK_WEBCAM));
+            }
         }
+    }
+    
+    private OpenGLMatrix getPositionMatrix(CameraType cameraType) {
+        return OpenGLMatrix
+            .translation((float)cameraType.displacement.y, (float)cameraType.displacement.x, (float)cameraType.displacement.r)
+            .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, (float)cameraType.rotation.y, (float)cameraType.rotation.r, (float)cameraType.rotation.x));
     }
 
 
@@ -320,7 +199,6 @@ public class Vuforia implements VisionSystem {
 
         @Override
         protected void insideRun() {
-            AutoRunner.log("Vuforia", "Inside Run");
             for (VuforiaTrackable trackable : targetTrackables) {
                 targetVisible = ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible();
                 if (targetVisible) {
@@ -334,7 +212,6 @@ public class Vuforia implements VisionSystem {
 
         @Override
         protected boolean runIsComplete() {
-//            return targetVisible && targetType != TargetType.ALL;
             return false;
         }
 
@@ -345,9 +222,9 @@ public class Vuforia implements VisionSystem {
 
         private void setLastPose() {
             if (lastLocation != null) {
-                double x = -lastLocation.getTranslation().get(1) / mmPerInch;
-                double y = -lastLocation.getTranslation().get(0) / mmPerInch;
-                double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES).thirdAngle + 90;
+                double x = lastLocation.getTranslation().get(1) / mmPerInch;
+                double y = lastLocation.getTranslation().get(0) / mmPerInch;
+                double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES).thirdAngle;
                 lastPose = new Pose(x, y, r);
             }
         }
@@ -356,23 +233,23 @@ public class Vuforia implements VisionSystem {
             ArrayList<VuforiaTrackable> trackingTrackables = new ArrayList<VuforiaTrackable>();
             switch (targetType) {
                 case SKYSTONE:
-                    trackingTrackables.add(trackables.get(Target.SKYSTONE.index));
+                    trackingTrackables.add(trackables.get(Target.SKYSTONE.ordinal()));
                     break;
                 case BRIDGE:
-                    trackingTrackables.add(trackables.get(Target.BLUE_REAR_BRIDGE.index));
-                    trackingTrackables.add(trackables.get(Target.RED_REAR_BRIDGE.index));
-                    trackingTrackables.add(trackables.get(Target.RED_FRONT_BRIDGE.index));
-                    trackingTrackables.add(trackables.get(Target.BLUE_FRONT_BRIDGE.index));
+                    trackingTrackables.add(trackables.get(Target.BLUE_REAR_BRIDGE.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.RED_REAR_BRIDGE.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.RED_FRONT_BRIDGE.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.BLUE_FRONT_BRIDGE.ordinal()));
                     break;
                 case PERIMETER:
-                    trackingTrackables.add(trackables.get(Target.RED_PERIMETER_1.index));
-                    trackingTrackables.add(trackables.get(Target.RED_PERIMETER_2.index));
-                    trackingTrackables.add(trackables.get(Target.FRONT_PERIMETER_1.index));
-                    trackingTrackables.add(trackables.get(Target.FRONT_PERIMETER_2.index));
-                    trackingTrackables.add(trackables.get(Target.BLUE_PERIMETER_1.index));
-                    trackingTrackables.add(trackables.get(Target.BLUE_PERIMETER_2.index));
-                    trackingTrackables.add(trackables.get(Target.REAR_PERIMETER_1.index));
-                    trackingTrackables.add(trackables.get(Target.REAR_PERIMETER_2.index));
+                    trackingTrackables.add(trackables.get(Target.RED_PERIMETER_1.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.RED_PERIMETER_2.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.FRONT_PERIMETER_1.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.FRONT_PERIMETER_2.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.BLUE_PERIMETER_1.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.BLUE_PERIMETER_2.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.REAR_PERIMETER_1.ordinal()));
+                    trackingTrackables.add(trackables.get(Target.REAR_PERIMETER_2.ordinal()));
                     break;
                 default:
                     trackingTrackables.addAll(trackables);

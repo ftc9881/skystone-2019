@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
-import android.os.Environment;
-
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
+import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -33,7 +28,6 @@ public class AutoOpConfiguration {
     }
 
 
-    private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
     public ArrayList<Command> commands;
     public ArrayList<Command> initCommands;
     public Command properties;
@@ -41,7 +35,7 @@ public class AutoOpConfiguration {
     private AutoOpConfiguration(String fileName) {
 
         try {
-            String fileContents = readFile(fileName);
+            String fileContents = Configuration.readFile(fileName);
             JSONObject config = new JSONObject(fileContents);
 
             commands = getCommandList(config, "commands");
@@ -51,19 +45,6 @@ public class AutoOpConfiguration {
         } catch (Exception ex) {
             throw new RuntimeException("Configuration", ex);
         }
-    }
-
-    static public String readFile(String name) throws IOException {
-        File file = new File(PATH, name);
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        do {
-            line = br.readLine();
-            sb.append(line);
-        } while (line != null);
-        br.close();
-        return sb.toString();
     }
 
     private ArrayList<Command> getCommandList(JSONObject config, String name) throws JSONException {

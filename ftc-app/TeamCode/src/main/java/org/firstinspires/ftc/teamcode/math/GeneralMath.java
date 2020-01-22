@@ -48,4 +48,9 @@ public class GeneralMath {
         return Math.sqrt(stdDev);
     }
 
+    public static double round(double number, int places) {
+        double placeholders = Math.pow(10, places);
+        return Math.floor(number * placeholders) / placeholders;
+    }
+
 }

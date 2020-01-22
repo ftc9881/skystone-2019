@@ -28,9 +28,8 @@ import java.util.List;
 public class OpenCV implements VisionSystem {
 
     public static final Rect CAMERA_RECT = new Rect(0, 0, 320, 240);
-    public enum CameraType { PHONE, WEBCAM }
 
-    private CameraType cameraType = CameraType.WEBCAM;
+    private CameraType cameraType = CameraType.FRONT_WEBCAM;
 
     private OpenCvCamera openCvCamera;
     public SkystoneDetector detector;
@@ -51,7 +50,7 @@ public class OpenCV implements VisionSystem {
             case SKYSTONE: {
                 detector = new SkystoneDetector();
                 detector.useDefaults();
-                detector.flipImage = cameraType == CameraType.WEBCAM;
+                detector.flipImage = cameraType == CameraType.FRONT_WEBCAM;
             }
             default: {
 
@@ -62,6 +61,7 @@ public class OpenCV implements VisionSystem {
 
     @Override
     public void stopLook() {
+        openCvCamera.stopStreaming();
         openCvCamera.closeCameraDevice();
     }
 
@@ -80,11 +80,12 @@ public class OpenCV implements VisionSystem {
                 int cameraMonitorViewId = context.getResources().getIdentifier("cameraMonitorViewId", "id", context.getPackageName());
                 openCvCamera = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
                 break;
-            case WEBCAM:
-                openCvCamera = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+            case FRONT_WEBCAM:
+            case BACK_WEBCAM:
+                openCvCamera = new OpenCvWebcam(hardwareMap.get(WebcamName.class, cameraType.name));
                 break;
             default:
-                throw new IllegalArgumentException("TeamCode OpenCV: Need camera type");
+                throw new IllegalArgumentException("TeamCode@OpenCV: Need camera type");
         }
         openCvCamera.openCameraDevice();
     }
@@ -93,6 +94,7 @@ public class OpenCV implements VisionSystem {
         openCvCamera.setPipeline(detector);
         openCvCamera.startStreaming(CAMERA_RECT.width, CAMERA_RECT.height, OpenCvCameraRotation.UPRIGHT);
     }
+
 
     public SkystonePosition identifyPosition(LinearOpMode opMode, Command config) {
         detector.yellowBlobbingThreshold = config.getInt("yellow blobbing", 100);
