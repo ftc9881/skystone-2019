@@ -4,6 +4,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.math.Angle;
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,6 +91,14 @@ public class Command {
     public Angle getAngle(String key, double defaultValue, AngleUnit unit) {
         double value = getDouble(key, defaultValue);
         return new Angle(value, unit);
+    }
+
+    public Pose getPose(String key, double defaultValue) {
+        Pose pose = new Pose();
+        pose.x = getDouble(key + " x", defaultValue);
+        pose.y = getDouble(key + " y", defaultValue);
+        pose.r = getDouble(key + " r", defaultValue);
+        return pose;
     }
 
 

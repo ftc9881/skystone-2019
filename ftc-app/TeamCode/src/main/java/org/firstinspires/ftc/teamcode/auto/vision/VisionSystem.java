@@ -19,24 +19,9 @@ public interface VisionSystem {
     enum CameraType {
         PHONE("Phone"), FRONT_WEBCAM("Webcam 1"), BACK_WEBCAM("Webcam 2");
         final String name;
-        final Pose displacement;
-        final Pose rotation;
-
-        private Configuration config = new Configuration("HardwareConstants");
 
         CameraType(String name) {
             this.name = name;
-            String key = name.toLowerCase();
-            Pose displacement = new Pose();
-            displacement.x = config.getDouble(key + " dx", 0);
-            displacement.y = config.getDouble(key + " dy", 0);
-            displacement.r = config.getDouble(key + " dz", 0);
-            Pose rotation = new Pose();
-            rotation.x = config.getDouble(key + " rx", 0);
-            rotation.y = config.getDouble(key + " ry", 0);
-            rotation.r = config.getDouble(key + " rz", 0);
-            this.displacement = displacement;
-            this.rotation = rotation;
         }
 
         public static CameraType stringToType(String string) {

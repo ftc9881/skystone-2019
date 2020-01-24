@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.internal.camera.delegating.SwitchableCame
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.math.Pose;
+import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +50,11 @@ public class Vuforia implements VisionSystem {
     private SwitchableCamera switchableCamera;
     private boolean initialized = false;
     private boolean found = false;
+    private Pose cameraOffset = new Pose();
     private Pose lastPose = new Pose();
     private LookAction lookAction;
 
+    private Configuration config;
     private HardwareMap hardwareMap;
 
     private static Vuforia instance;
@@ -68,6 +71,8 @@ public class Vuforia implements VisionSystem {
     private Vuforia(HardwareMap hardwareMap, CameraType cameraType) {
         this.cameraType = cameraType;
         this.hardwareMap = hardwareMap;
+        config = new Configuration("HardwareConstants");
+
         initialize();
     }
 
@@ -107,12 +112,15 @@ public class Vuforia implements VisionSystem {
     }
 
     public void setActiveCamera(CameraType cameraType) {
+        if (lookAction != null && lookAction.isRunning()) {
+            lookAction.resetLastLocation();
+        }
         found = false;
         lastPose = new Pose();
         if (switchableCamera != null) {
+            cameraOffset = config.getPose(cameraType.name.toLowerCase(), 0);
             this.cameraType = cameraType;
             switchableCamera.setActiveCamera(hardwareMap.get(WebcamName.class, cameraType.name));
-            applyCameraOrientation();
         }
     }
 
@@ -125,14 +133,12 @@ public class Vuforia implements VisionSystem {
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
 
         if (isWebcam()) {
-            CameraName activeWebcam = hardwareMap.get(WebcamName.class, cameraType.name);
-            CameraName inactiveWebcam = hardwareMap.get(WebcamName.class, cameraType == CameraType.FRONT_WEBCAM ? CameraType.BACK_WEBCAM.name : CameraType.FRONT_WEBCAM.name);
-            SwitchableCameraName switchableCameraName = ClassFactory.getInstance().getCameraManager().nameForSwitchableCamera(activeWebcam, inactiveWebcam);
-//            parameters.cameraName = hardwareMap.get(WebcamName.class, cameraType.name);
-            parameters.cameraName = switchableCameraName;
+            WebcamName activeWebcam = hardwareMap.get(WebcamName.class, cameraType.name);
+            WebcamName inactiveWebcam = hardwareMap.get(WebcamName.class, cameraType == CameraType.FRONT_WEBCAM ? CameraType.BACK_WEBCAM.name : CameraType.FRONT_WEBCAM.name);
+            parameters.cameraName = ClassFactory.getInstance().getCameraManager().nameForSwitchableCamera(activeWebcam, inactiveWebcam);
             vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
             switchableCamera = (SwitchableCamera) vuforiaLocalizer.getCamera();
-            switchableCamera.setActiveCamera(activeWebcam);
+            setActiveCamera(cameraType);
         } else {
             parameters.cameraDirection = BACK;
             parameters.cameraMonitorViewIdParent = hardwareMap.appContext.getResources().getIdentifier(
@@ -173,9 +179,11 @@ public class Vuforia implements VisionSystem {
     }
     
     private OpenGLMatrix getPositionMatrix(CameraType cameraType) {
+        Pose displacement = config.getPose(cameraType.name.toLowerCase() + " d", 0);
+        Pose rotation = config.getPose(cameraType.name.toLowerCase() + " r", 0);
         return OpenGLMatrix
-            .translation((float)cameraType.displacement.y, (float)cameraType.displacement.x, (float)cameraType.displacement.r)
-            .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, (float)cameraType.rotation.y, (float)cameraType.rotation.r, (float)cameraType.rotation.x));
+            .translation((float)displacement.y, (float)displacement.x, (float)displacement.r)
+            .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, (float)rotation.y, (float)rotation.r, (float)rotation.x));
     }
 
 
@@ -187,6 +195,10 @@ public class Vuforia implements VisionSystem {
 
         LookAction(TargetType targetType) {
             this.targetType = targetType;
+        }
+
+        public void resetLastLocation() {
+            lastLocation = null;
         }
 
         @Override
@@ -222,9 +234,9 @@ public class Vuforia implements VisionSystem {
 
         private void setLastPose() {
             if (lastLocation != null) {
-                double x = lastLocation.getTranslation().get(1) / mmPerInch;
-                double y = lastLocation.getTranslation().get(0) / mmPerInch;
-                double r = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES).thirdAngle;
+                double x = cameraOffset.x + lastLocation.getTranslation().get(1) / mmPerInch;
+                double y = cameraOffset.y + lastLocation.getTranslation().get(0) / mmPerInch;
+                double r = cameraOffset.r + Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES).thirdAngle;
                 lastPose = new Pose(x, y, r);
             }
         }

@@ -14,11 +14,12 @@ import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 public class VuforiaTest extends TeleOpBase {
 
     private Vuforia vuforia;
-    private Button toggleCameraButton = new Button();
-    
+    private Button webcam1Button = new Button();
+    private Button webcam2Button = new Button();
+
     @Override
     protected void initialize() {
-        vuforia = Vuforia.createInstance(hardwareMap, VisionSystem.CameraType.FRONT_WEBCAM);
+        vuforia = Vuforia.createInstance(hardwareMap, VisionSystem.CameraType.BACK_WEBCAM);
         vuforia.startLook(VisionSystem.TargetType.ALL);
 
         telemetry.addData("Initialized Vuforia", "Ready to run");
@@ -27,12 +28,16 @@ public class VuforiaTest extends TeleOpBase {
 
     @Override
     protected void update() {
-        toggleCameraButton.update(gamepad1.a || gamepad1.b);
+        webcam1Button.update(gamepad1.a);
+        webcam2Button.update(gamepad1.b);
 
-        if (toggleCameraButton.is(Button.State.DOWN)) {
-            toggleCamera();
+        if (webcam1Button.is(Button.State.DOWN)) {
+            vuforia.setActiveCamera(VisionSystem.CameraType.FRONT_WEBCAM);
         }
-        
+        if (webcam2Button.is(Button.State.DOWN)) {
+            vuforia.setActiveCamera(VisionSystem.CameraType.BACK_WEBCAM);
+        }
+
         Pose pose = vuforia.getPose();
         telemetry.addData("Camera", vuforia.getCameraType().name());
         telemetry.addData("X (in)", GeneralMath.round(pose.x, 3));

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
@@ -28,6 +27,7 @@ public class BatMobileDrive extends BaseDrive {
     private double liftPowerFactor;
     private double extendPowerFactor;
     private double slowDrivePowerFactor;
+    private double slowLiftPowerFactor;
     private double outtakePowerFactor;
 
     private Button pivotButton = new Button();
@@ -54,7 +54,8 @@ public class BatMobileDrive extends BaseDrive {
         deadZone = config.getDouble("dead zone", 0.1);
         liftPowerFactor = config.getDouble("lift power", 1.0);
         extendPowerFactor = config.getDouble("extend power", 1.0);
-        slowDrivePowerFactor = config.getDouble("slow drive", 0.4);
+        slowDrivePowerFactor = config.getDouble("slow drive", 0.3);
+        slowLiftPowerFactor = config.getDouble("slow lift", 0.3);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
 
         batMobile.capstoneServo.set(ToggleServo.State.CLOSED);
@@ -132,7 +133,12 @@ public class BatMobileDrive extends BaseDrive {
         double extendPowerP1 = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0) * extendPowerFactor;
         double liftPowerP2 = -gamepad2.left_stick_y;
         double extendPowerP2 = gamepad2.right_stick_x;
-        batMobile.elevator.setPowerLE(liftPowerP1 + liftPowerP2, extendPowerP1 + extendPowerP2);
+        double powerFactor = isInputting(gamepad2.right_trigger) || isInputting(gamepad2.left_trigger) ? slowLiftPowerFactor : 1.0;
+        batMobile.elevator.setPowerLE(liftPowerP1 + liftPowerP2, extendPowerP1 + extendPowerP2, powerFactor);
+    }
+
+    private boolean isInputting(double input) {
+        return Math.abs(input) > deadZone;
     }
 
     private void updateElevatorShortcuts() {
@@ -156,9 +162,7 @@ public class BatMobileDrive extends BaseDrive {
             reverseIntakeMotor = !reverseIntakeMotor;
         }
 
-        double intakePowerP1 = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
-        double intakePowerP2 = (gamepad2.right_trigger - gamepad2.left_trigger) * outtakePowerFactor;
-        double intakePower = intakePowerP1 + intakePowerP2;
+        double intakePower = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
 //        batMobile.intake.setPower(intakePower);
         batMobile.intake.left.setPower(intakePower);
         batMobile.intake.right.setPower(intakePower * (reverseIntakeMotor ? 1 : -1));

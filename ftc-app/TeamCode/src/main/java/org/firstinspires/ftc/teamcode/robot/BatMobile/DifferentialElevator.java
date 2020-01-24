@@ -45,10 +45,14 @@ public class DifferentialElevator {
     }
 
     public void setPowerLE(double lift, double extend) {
+        setPowerLE(lift, extend, 1.0);
+    }
+
+    public void setPowerLE(double lift, double extend, double powerFactor) {
         double leftPower = lift + extend;
         double rightPower = extend - lift;
-        leftLift.motor.setPower(leftPower);
-        rightLift.motor.setPower(rightPower);
+        leftLift.motor.setPower(leftPower * powerFactor);
+        rightLift.motor.setPower(rightPower * powerFactor);
     }
 
     public void relativeLiftToLevel(int skystoneLevel) {

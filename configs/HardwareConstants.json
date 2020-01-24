@@ -1,9 +1,7 @@
 {
-	"phone rx": "-90",
-	"phone ry": "90",
-	"webcam 1 rx": "40",
-	"webcam 1 ry": "0",
-	"webcam 2 ry": "-90",
+	"phone r": "0",
+	"webcam 1 r": "90",
+	"webcam 2 r": "-90",
 
 	"capstone open": "0.8",
 	"capstone closed": "0.63",
