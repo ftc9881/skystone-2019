@@ -1,7 +1,7 @@
 {
-	"phone r": "0",
+	"phone r y": "-90",
+	"phone r x": "90",
 	"webcam 1 r": "90",
-	"webcam 2 r": "-90",
 
 	"capstone open": "0.8",
 	"capstone closed": "0.63",

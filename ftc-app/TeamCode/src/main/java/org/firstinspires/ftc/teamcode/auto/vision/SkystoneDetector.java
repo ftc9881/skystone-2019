@@ -180,7 +180,7 @@ public class SkystoneDetector extends OpenCVDetector {
            Rect blobBound = boundingRect(blob);
            draw(blobBound, new Scalar(0, 150, 0));
 
-           if (blobBound.y > bestBlackRect.y) {
+           if (blobBound.y > bestBlackRect.y && blobBound.area() > minimumArea) {
 //           if (blobBound.area() > bestBlackRect.area()) {
                bestBlackRect = blobBound;
            }

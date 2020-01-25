@@ -114,25 +114,34 @@ public class AutoRunner {
             case "IDENTIFY SKYSTONE": {
                 OpenCV openCV = new OpenCV();
                 openCV.startLook(VisionSystem.TargetType.SKYSTONE);
-                skystonePosition = openCV.identifyPosition(opMode, config.properties);
+                skystonePosition = openCV.identifyPosition(opMode);
                 logAndTelemetry("Skystone Position", skystonePosition.name());
                 break;
             }
 
-            case "MOVE AND DEPLOY ARM": {
+            case "MOVE": {
                 BatMobile batMobile = BatMobile.getInstance();
+                boolean deployArm = command.getBoolean("deploy arm", false);
+                boolean useVuforia = command.getBoolean("use vuforia", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
                 int deployClicks = command.getInt("deploy clicks", 0);
                 String pivotState = command.getString("pivot state", batMobile.sideArm.pivot.getState().name());
                 String clawState = command.getString("claw state", batMobile.sideArm.claw.getState().name());
-
-                Action relativeMove = new RelativeMove(command);
-                Watcher deployPivot = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(pivotState), robot.driveTrain.rf, deployClicks);
-                Watcher deployClaw = new DeployServoByDistance(batMobile.sideArm.claw, ToggleServo.stringToState(clawState), robot.driveTrain.rf, deployClicks);
+                Action move = useVuforia? new RelativeMoveWithVuforia(command, skystonePosition) : new RelativeMove(command, skystonePosition);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
-                CombinedConditions conditions = new CombinedConditions(timeoutCondition, deployPivot, deployClaw);
+                CombinedConditions conditions = new CombinedConditions(timeoutCondition);
+                if (deployArm) {
+                    Watcher deployPivot = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(pivotState), robot.driveTrain.rf, deployClicks);
+                    Watcher deployClaw = new DeployServoByDistance(batMobile.sideArm.claw, ToggleServo.stringToState(clawState), robot.driveTrain.rf, deployClicks);
+                    conditions.add(deployClaw, deployPivot);
+                }
+                runActionWithCondition(move, conditions);
+                break;
+            }
 
-                runActionWithCondition(relativeMove, conditions);
+            case "MOVE VUFORIA": {
+                Action relativeMoveVuforia = new RelativeMoveWithVuforia(command, skystonePosition);
+                runActionWithTimeout(relativeMoveVuforia, command);
                 break;
             }
 
@@ -153,18 +162,6 @@ public class AutoRunner {
                 BatMobile batMobile = BatMobile.getInstance();
                 String state = command.getString("state", "REST");
                 batMobile.sideArm.pivot.set(ToggleServo.stringToState(state));
-                break;
-            }
-
-            case "MOVE": {
-                Action relativeMove = new RelativeMove(command, skystonePosition);
-                runActionWithTimeout(relativeMove, command);
-                break;
-            }
-
-            case "MOVE VUFORIA": {
-                Action relativeMoveVuforia = new RelativeMoveWithVuforia(command, skystonePosition);
-                runActionWithTimeout(relativeMoveVuforia, command);
                 break;
             }
 

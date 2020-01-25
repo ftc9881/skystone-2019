@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
@@ -21,6 +22,7 @@ public class ServoTest extends TeleOpBase {
 
     @Override
     protected void initialize() {
+        robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         servoName = config.getString("debug servo", "NONE");
         if (!servoName.equals("NONE")) {
             servo = hardwareMap.servo.get(servoName);

@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
 public class AbsoluteTurn extends Action {
 
-    Robot robot;
+    private Robot robot;
     private PIDController pidController;
     private Angle targetAngle;
     private double currentRadians;
@@ -27,10 +27,9 @@ public class AbsoluteTurn extends Action {
         targetAngle = command.getAngle("angle", 0);
         powerFactor = command.getDouble("power", 1.0);
 
-        AutoOpConfiguration config = AutoOpConfiguration.getInstance();
-        errorRange = config.properties.getAngle("turn error", 10, AngleUnit.DEGREES);
-        basePower = config.properties.getDouble("turn base power", 0.1);
-        pidController = new PIDController(config.properties, "turn", targetAngle.getRadians());
+        errorRange = command.getAngle("error", 10, AngleUnit.DEGREES);
+        basePower = command.getDouble("base power", 0.1);
+        pidController = new PIDController(command, targetAngle.getRadians());
     }
 
 

@@ -29,12 +29,8 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     public RelativeMoveWithVuforia(Command command) {
         super(command);
 
-        VisionSystem.CameraType camera = VisionSystem.CameraType.stringToType(command.getString("camera", "FRONT WEBCAM"));
         VisionSystem.TargetType target = VisionSystem.TargetType.stringToType(command.getString("vuforia target", "PERIMETER"));
         vuforia = Vuforia.getInstance();
-        AutoRunner.log("VuforiaCamera", camera.name());
-        vuforia.setActiveCamera(camera);
-        AutoRunner.log("VuforiaCamera", "set active camera");
         vuforia.startLook(target);
 
         vuforiaCloseThreshold = command.getDouble("vuforia close threshold", 4);

@@ -12,17 +12,15 @@ public class Intake {
     public Intake(HardwareMap hardwareMap) {
         left = hardwareMap.dcMotor.get("left intake");
         right = hardwareMap.dcMotor.get("right intake");
-
+        left.setDirection(DcMotor.Direction.FORWARD);
+        right.setDirection(DcMotor.Direction.REVERSE);
         left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        left.setDirection(DcMotorSimple.Direction.REVERSE);
-        right.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void setPower(double power) {
         left.setPower(power);
-        right.setPower(-power);
+        right.setPower(power);
     }
 
     public void stop() {

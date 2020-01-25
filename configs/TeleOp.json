@@ -2,7 +2,8 @@
 	"double tap": "300",
 
 	"dead zone": "0.1",
-	"slow drive": "0.25",
+	"turtle drive": "0.5",
+	"turtle drive": "0.25",
 	"slow lift": "0.3",
 	"outtake power": "1.0",
 

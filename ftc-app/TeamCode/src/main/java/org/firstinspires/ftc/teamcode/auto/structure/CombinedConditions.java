@@ -1,10 +1,19 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class CombinedConditions implements IEndCondition {
-    private IEndCondition[] conditions;
+    private List<IEndCondition> conditions;
 
     public CombinedConditions(IEndCondition ... conditions) {
-        this.conditions = conditions;
+        this.conditions = convertToList(conditions);
+    }
+
+    public void add(IEndCondition ... conditions) {
+        this.conditions.addAll(convertToList(conditions));
     }
 
     @Override
@@ -31,5 +40,11 @@ public class CombinedConditions implements IEndCondition {
         for (IEndCondition condition: conditions) {
             condition.stop();
         }
+    }
+
+    private List<IEndCondition> convertToList(IEndCondition ... conditions) {
+        List<IEndCondition> list = new ArrayList<>();
+        Collections.addAll(list, conditions);
+        return list;
     }
 }

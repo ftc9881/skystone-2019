@@ -12,15 +12,14 @@ public class ToggleServo {
 
     public Servo servo;
 
-    private String name;
     private State currentState;
     private double openPosition;
     private double closedPosition;
     private double restPosition;
 
     public ToggleServo(HardwareMap hardwareMap, String name) {
-        this.name = name;
         servo = hardwareMap.servo.get(name);
+        AutoRunner.log(name + "ServoConnectionInfo", servo.getConnectionInfo());
         Configuration config = new Configuration("HardwareConstants");
         openPosition = config.getDouble(name + " open", 0.0);
         closedPosition = config.getDouble(name + " closed", 1.0);

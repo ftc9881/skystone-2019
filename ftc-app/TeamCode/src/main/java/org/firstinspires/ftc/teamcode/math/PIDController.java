@@ -16,6 +16,14 @@ public class PIDController {
         this.currentTime = getTimeSeconds();
     }
 
+    public PIDController (Command config, double targetValue) {
+        this.kP = config.getDouble("kp", 0);
+        this.kI = config.getDouble("ki", 0);
+        this.kD = config.getDouble("kd", 0);
+        this.targetValue = targetValue;
+        this.currentTime = getTimeSeconds();
+    }
+
     public PIDController (Command config, String name, double targetValue) {
         this.kP = config.getDouble(name + " kp", 0);
         this.kI = config.getDouble(name + " ki", 0);

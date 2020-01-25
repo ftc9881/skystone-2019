@@ -26,7 +26,8 @@ public class BatMobileDrive extends BaseDrive {
     private double deadZone;
     private double liftPowerFactor;
     private double extendPowerFactor;
-    private double slowDrivePowerFactor;
+    private double turtleDrivePowerFactor;
+    private double snailDrivePowerFactor;
     private double slowLiftPowerFactor;
     private double outtakePowerFactor;
 
@@ -54,8 +55,9 @@ public class BatMobileDrive extends BaseDrive {
         deadZone = config.getDouble("dead zone", 0.1);
         liftPowerFactor = config.getDouble("lift power", 1.0);
         extendPowerFactor = config.getDouble("extend power", 1.0);
-        slowDrivePowerFactor = config.getDouble("slow drive", 0.3);
-        slowLiftPowerFactor = config.getDouble("slow lift", 0.3);
+        turtleDrivePowerFactor = config.getDouble("turtle drive power", 0.5);
+        snailDrivePowerFactor = config.getDouble("snail drive power", 0.25);
+        slowLiftPowerFactor = config.getDouble("slow lift power", 0.3);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
 
         batMobile.capstoneServo.set(ToggleServo.State.CLOSED);
@@ -76,7 +78,13 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateDrivePower() {
-        drivePowerFactor = gamepad1.left_bumper || gamepad1.right_bumper ? slowDrivePowerFactor : 1.0;
+        if (gamepad1.right_bumper) {
+            drivePowerFactor = snailDrivePowerFactor;
+        } else if (gamepad1.left_bumper) {
+            drivePowerFactor = turtleDrivePowerFactor;
+        } else {
+            drivePowerFactor = 1;
+        }
     }
 
     private void updateButtons() {
@@ -163,9 +171,8 @@ public class BatMobileDrive extends BaseDrive {
         }
 
         double intakePower = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
-//        batMobile.intake.setPower(intakePower);
-        batMobile.intake.left.setPower(intakePower);
-        batMobile.intake.right.setPower(intakePower * (reverseIntakeMotor ? 1 : -1));
+        batMobile.intake.left.setPower(intakePower * (reverseIntakeMotor ? 1 : -1));
+        batMobile.intake.right.setPower(-intakePower);
     }
 
     private void updateServos() {
@@ -215,13 +222,14 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateTelemetry() {
-        telemetry.addData("Left Lift Position", batMobile.elevator.leftLift.motor.getCurrentPosition());
-        telemetry.addData("Right Lift Position", batMobile.elevator.rightLift.motor.getCurrentPosition());
-        telemetry.addData("Left Lift Power", batMobile.elevator.leftLift.motor.getPower());
-        telemetry.addData("Right Lift Power", batMobile.elevator.rightLift.motor.getPower());
-        telemetry.addData("Lift Level", liftLevel);
-        telemetry.addData("Extend Level", extendLevel);
+//        telemetry.addData("Left Lift Position", batMobile.elevator.leftLift.motor.getCurrentPosition());
+//        telemetry.addData("Right Lift Position", batMobile.elevator.rightLift.motor.getCurrentPosition());
+//        telemetry.addData("Left Lift Power", batMobile.elevator.leftLift.motor.getPower());
+//        telemetry.addData("Right Lift Power", batMobile.elevator.rightLift.motor.getPower());
+//        telemetry.addData("Lift Level", liftLevel);
+//        telemetry.addData("Extend Level", extendLevel);
         telemetry.addData("Drive Power Factor", drivePowerFactor);
+        telemetry.addData("Lift Power Factor", liftPowerFactor);
         telemetry.addData("Intake Power Factor", outtakePowerFactor);
         telemetry.update();
     }

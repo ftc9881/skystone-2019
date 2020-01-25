@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
@@ -17,17 +18,10 @@ public class OpenCVTest extends TeleOpBase {
 
     @Override
     protected void initialize() {
+        robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
         openCV = new OpenCV();
         openCV.startLook(VisionSystem.TargetType.SKYSTONE);
-
-        Rect cropRect = new Rect();
-        cropRect.x = config.getInt("crop x", 0);
-        cropRect.y = config.getInt("crop y", 0);
-        cropRect.width = config.getInt("crop w", 0);
-        cropRect.height= config.getInt("crop h", 0);
-        openCV.detector.cropRect = cropRect;
-        openCV.detector.yellowBlobbingThreshold = config.getInt("skystone blob distance", 50);
-        openCV.detector.minimumArea = config.getInt("skystone min area", 0);
     }
 
     @Override

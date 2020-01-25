@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.Robot;
+import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -28,18 +29,20 @@ import java.util.List;
 public class OpenCV implements VisionSystem {
 
     public static final Rect CAMERA_RECT = new Rect(0, 0, 320, 240);
+    public SkystoneDetector detector;
 
     private CameraType cameraType = CameraType.FRONT_WEBCAM;
-
     private OpenCvCamera openCvCamera;
-    public SkystoneDetector detector;
+    private Configuration config;
 
     public OpenCV(CameraType cameraType) {
         initializeCamera(cameraType);
+        config = new Configuration("Vision");
     }
 
     public OpenCV() {
         initializeCamera(cameraType);
+        config = new Configuration("Vision");
     }
 
     @Override
@@ -56,6 +59,9 @@ public class OpenCV implements VisionSystem {
 
             }
         }
+        if (detector != null) {
+            setDetectorConfig(config);
+        }
         startCamera();
     }
 
@@ -63,6 +69,16 @@ public class OpenCV implements VisionSystem {
     public void stopLook() {
         openCvCamera.stopStreaming();
         openCvCamera.closeCameraDevice();
+    }
+
+    public void setDetectorConfig(Command config) {
+        detector.yellowBlobbingThreshold = config.getInt("yellow blobbing", detector.yellowBlobbingThreshold);
+        detector.blackBlobbingThreshold = config.getInt("black blobbing", detector.blackBlobbingThreshold);
+        detector.minimumArea = config.getInt("min area", detector.minimumArea);
+        detector.cropRect.x = config.getInt("crop x", detector.cropRect.x);
+        detector.cropRect.y = config.getInt("crop y", detector.cropRect.y);
+        detector.cropRect.width = config.getInt("crop w", detector.cropRect.width);
+        detector.cropRect.height= config.getInt("crop h", detector.cropRect.height);
     }
 
     @Override
@@ -96,13 +112,8 @@ public class OpenCV implements VisionSystem {
     }
 
 
-    public SkystonePosition identifyPosition(LinearOpMode opMode, Command config) {
-        detector.yellowBlobbingThreshold = config.getInt("yellow blobbing", 100);
-        detector.blackBlobbingThreshold = config.getInt("black blobbing", 50);
-        detector.cropRect.x = config.getInt("crop x", 0);
-        detector.cropRect.y = config.getInt("crop y", 0);
-        detector.cropRect.width = config.getInt("crop w", 0);
-        detector.cropRect.height= config.getInt("crop h", 0);
+    public SkystonePosition identifyPosition(LinearOpMode opMode) {
+        Configuration config = new Configuration("Vision");
 
         int stdDevThreshold = config.getInt("std dev threshold", 10);
         int maxDetectList = config.getInt("max detection list size", 10);
