@@ -27,4 +27,4 @@ build/
 *ASUS_PC_01*
 
 # ignore debug pictures
-shell-scripts/Pictures/
+shell/Pictures/
