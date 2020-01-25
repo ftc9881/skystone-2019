@@ -8,8 +8,8 @@ public class SharpPair {
     private SharpDistanceSensor sensorL;
     private SharpDistanceSensor sensorR;
 
-    private double detectMin = 14;
-    private double detectMax = 16;
+    private double detectMin = 0;
+    private double detectMax = 0x3f3f3f3f;
 
     public SharpPair(SharpDistanceSensor l, SharpDistanceSensor r, double dist, double margin) {
         this.sensorL = l;
