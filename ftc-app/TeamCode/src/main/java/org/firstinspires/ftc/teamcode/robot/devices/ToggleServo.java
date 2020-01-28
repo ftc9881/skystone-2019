@@ -8,18 +8,17 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 public class ToggleServo {
 
-    public enum State { OPEN, CLOSED, REST }
+    public enum State { OPEN, CLOSED, REST, NONE }
 
-    public Servo servo;
+    public CachingServo servo;
 
-    private State currentState;
+    private State currentState = State.NONE;
     private double openPosition;
     private double closedPosition;
     private double restPosition;
 
     public ToggleServo(HardwareMap hardwareMap, String name) {
-        servo = hardwareMap.servo.get(name);
-        AutoRunner.log(name + "ServoConnectionInfo", servo.getConnectionInfo());
+        servo = new CachingServo(hardwareMap, name);
         Configuration config = new Configuration("HardwareConstants");
         openPosition = config.getDouble(name + " open", 0.0);
         closedPosition = config.getDouble(name + " closed", 1.0);
@@ -32,16 +31,17 @@ public class ToggleServo {
 
     public void set(State state) {
         currentState = state;
-        double position = restPosition;
         switch (state) {
             case OPEN:
-                position = openPosition;
+                servo.setPosition(openPosition);
                 break;
             case CLOSED:
-                position = closedPosition;
+                servo.setPosition(closedPosition);
+                break;
+            case REST:
+                servo.setPosition(restPosition);
                 break;
         }
-        servo.setPosition(position);
     }
 
     public void toggle() {

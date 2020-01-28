@@ -1,14 +1,21 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.lynx.LynxEmbeddedIMU;
+import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.hardware.lynx.commands.core.LynxFirmwareVersionManager;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.DifferentialElevator;
+import org.firstinspires.ftc.teamcode.robot.devices.OptimizedI2cDevice;
 
 public class Robot {
 
@@ -55,15 +62,19 @@ public class Robot {
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
 
-        imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
+//        imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
+        LynxModule module = hardwareMap.getAll(LynxModule.class).iterator().next();
+        AutoRunner.log("LynxModule::name", module.getDeviceName());
+        imu = new LynxEmbeddedIMU(OptimizedI2cDevice.createLynxI2cDeviceSynch(module, 0));
         imu.initialize(parameters);
     }
+
 
     public Angle getImuHeading() {
         if (imu == null) {
             initializeImu(angleUnit);
         }
-        return new Angle(imu.getAngularOrientation().firstAngle, angleUnit);
+        return new Angle(-imu.getAngularOrientation().firstAngle, angleUnit);
     }
 
 }

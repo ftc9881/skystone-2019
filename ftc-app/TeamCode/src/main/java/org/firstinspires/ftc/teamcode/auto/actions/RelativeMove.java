@@ -64,30 +64,32 @@ public class RelativeMove extends Action {
     protected void onRun() {
         robot.driveTrain.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.driveTrain.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         targetClicks = Math.abs(distance) * CLICKS_PER_INCH;
-        AutoRunner.log("TargetClicks", targetClicks);
 
         drivePose = new Pose(0, 0, 0);
-        drivePose.x = Math.cos(moveAngle.getRadians()) * (distance<0?-1:1);
-        drivePose.y = Math.sin(moveAngle.getRadians()) * (distance<0?-1:1);
+        drivePose.x = Math.sin(moveAngle.getRadians());
+        drivePose.y = Math.cos(moveAngle.getRadians());
+
+
+        AutoRunner.log("TargetClicks", targetClicks);
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
     }
 
     @Override
     protected boolean runIsComplete() {
+        AutoRunner.log("ActualClicks", actualClicks);
+        return reachedTargetClicks();
+    }
+
+    protected boolean reachedTargetClicks() {
         List<Integer> clicksArray = new ArrayList<>();
         clicksArray.add(Math.abs(robot.driveTrain.lf.getCurrentPosition()));
         clicksArray.add(Math.abs(robot.driveTrain.lb.getCurrentPosition()));
         clicksArray.add(Math.abs(robot.driveTrain.rf.getCurrentPosition()));
         clicksArray.add(Math.abs(robot.driveTrain.rb.getCurrentPosition()));
         actualClicks = Collections.max(clicksArray);
-        boolean reachedTarget = Math.abs(actualClicks - targetClicks) < clicksError;
-
-        AutoRunner.log("ActualClicks", actualClicks);
-
-        return reachedTarget;
+        return Math.abs(actualClicks - targetClicks) < clicksError;
     }
 
     @Override
@@ -107,7 +109,6 @@ public class RelativeMove extends Action {
 
         AutoRunner.log("ActualXPower", correctedDrivePose.x);
         AutoRunner.log("ActualYPower", correctedDrivePose.y);
-
         AutoRunner.log("RampFactor", rampFactor);
         AutoRunner.log("pidRPower", correctedDrivePose.r);
         AutoRunner.log("ActualHeadingAngle", actualHeading.getDegrees());
@@ -125,6 +126,7 @@ public class RelativeMove extends Action {
 
     @Override
     protected void onEndRun() {
+        AutoRunner.log("Move", "onEndRun");
         robot.driveTrain.stop();
     }
 

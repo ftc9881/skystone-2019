@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
-import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Intake;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
@@ -15,8 +14,6 @@ public class BatMobile extends Robot {
         }
         return instance;
     }
-
-    public static final Pose cameraDisplacement = new Pose();
 
     public Intake intake;
     public SideArm sideArm;

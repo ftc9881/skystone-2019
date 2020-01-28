@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.math;
 
+import com.qualcomm.robotcore.util.Range;
+
 import java.util.List;
 
 public class GeneralMath {
@@ -51,6 +53,14 @@ public class GeneralMath {
     public static double round(double number, int places) {
         double placeholders = Math.pow(10, places);
         return Math.floor(number * placeholders) / placeholders;
+    }
+
+    public static double clipPower(double power) {
+        return clipPower(power, 0);
+    }
+
+    public static double clipPower(double power, double min) {
+        return Range.clip(Math.abs(power), min, 1.0) * (power < 1 ? -1 : 1);
     }
 
 }

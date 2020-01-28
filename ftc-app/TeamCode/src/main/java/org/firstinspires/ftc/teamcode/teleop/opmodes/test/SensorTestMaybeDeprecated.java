@@ -2,7 +2,7 @@
  * Michael - Sharp IR-LED Distance Sensor Test
  */
 
-package org.firstinspires.ftc.teamcode.teleop.opmodes;
+package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
 import org.firstinspires.ftc.teamcode.sensors.MaxSonarI2CXL;
 

@@ -55,8 +55,8 @@ public class OdometryMove extends Action {
 
         double XYMagnitude = Math.sqrt(Math.pow(errorPose.x, 2) + Math.pow(errorPose.y, 2));
 
-        drivePose.x = Range.clip(-XYMagnitude * Math.cos(relAngleError), -1, 1);
-        drivePose.y = Range.clip(XYMagnitude * Math.sin(relAngleError), -1, 1);
+        drivePose.y = Range.clip(-XYMagnitude * Math.cos(relAngleError), -1, 1);
+        drivePose.x = Range.clip(XYMagnitude * Math.sin(relAngleError), -1, 1);
         drivePose.r = Range.clip(targetPose.r - currentPose.r, -1, 1);
 
         robot.driveTrain.drive(drivePose, powerFactor);

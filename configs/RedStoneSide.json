@@ -33,8 +33,7 @@
 "comment": "Moves forwards",
 			"command": "MOVE",
 			"power": "1.0",
-			"LC distance": "15",
-			"distance": "13",
+			"distance": "12.5",
 			"move angle": "0",
 			"target angle": "0",
 			"timeout": "5000"
@@ -43,26 +42,30 @@
 "comment": "turn so side arm faces stones",
 			"command": "TURN",
 			"power": "1.0",
-			"angle": "90",
+			"angle": "-90",
 			"error": "0.5",
-			"base power": "0.08",
-			"kp": "2.5",
+			"base power": "0.1",
+			"kp": "0.02",
 			"ki": "0",
-			"kd": "0.2",
+			"kd": "0.001",
+			"deploy arm": "true",
+				"deploy clicks": "200",
+				"pivot state": "open",
+				"claw state": "open",
 			"timeout": "1000"
-		},
-		{ 
-			"command": "CLAW",
-			"state": "open"
 		},
 		{ 
 			"command": "PIVOT",
 			"state": "open"
 		},
+		{ 
+			"command": "CLAW",
+			"state": "open"
+		},
 		{
 "comment": "line up with desired sky stone",
 			"command": "MOVE",
-			"target angle": "91",
+			"target angle": "-91",
 			"distance stone l": "6",
 			"distance stone c": "-2.2",
 			"distance stone r": "-6",
@@ -102,13 +105,12 @@
 				"claw state": "open",
 			"ramp down": "1600",
 			"power": "1.0",
-			"distance": "-74",
+			"distance": "74",
 			"distance stone l": "-80",
 			"distance stone c": "-85",
 			"distance stone r": "-70",
-			"OLD move angle": "5",
-			"move angle": "0",
-			"target angle": "91",
+			"move angle": "180",
+			"target angle": "-91",
 			"timeout": "5000"
 		},
 		{
@@ -146,9 +148,8 @@
 			"distance stone c": "105",
 			"distance stone r": "110",
 			"ramp down": "2000",
-			"OLD move angle": "5",
-			"move angle": "0",
-			"target angle": "90",
+			"move angle": "-4",
+			"target angle": "-90",
 			"timeout": "5000"
 		},
 		{
@@ -170,14 +171,13 @@
 				"deploy clicks": "3200",
 				"pivot state": "open",
 				"claw state": "open",
-			"distance stone l": "-90",
-			"distance stone c": "-82",
-			"distance stone r": "-77",
+			"distance stone l": "90",
+			"distance stone c": "82",
+			"distance stone r": "77",
 			"ramp down": "1600",
 			"power": "1.0",
-			"OLD move angle": "5",
-			"move angle": "0",
-			"target angle": "91",
+			"move angle": "180",
+			"target angle": "-91",
 			"timeout": "5000"
 		},
 		{
@@ -186,8 +186,8 @@
 			"deploy arm": "true",
 				"deploy clicks": "500",
 				"pivot state": "rest",
-			"target angle": "91",
-			"move angle": "-90",
+			"target angle": "-91",
+			"move angle": "90",
 			"power": "0.4",
 			"distance": "-7",
 			"timeout": "3000"
@@ -203,10 +203,10 @@
 			"deploy arm": "true",
 				"deploy clicks": "10",
 				"claw state": "closed",
-			"target angle": "91",
-			"move angle": "90",
+			"target angle": "-91",
+			"move angle": "-90",
 			"power": "1.0",
-			"distance": "-50",
+			"distance": "50",
 			"timeout": "5000"
 		},
 		{
@@ -229,9 +229,9 @@
 "comment": "strafe towards bridge",
 			"command": "MOVE",
 			"target angle": "-100",
-			"move angle": "0",
+			"move angle": "180",
 			"power": "1.0",
-			"distance": "-30",
+			"distance": "30",
 			"ramp down": "1600",
 			"timeout": "5000"
 		},

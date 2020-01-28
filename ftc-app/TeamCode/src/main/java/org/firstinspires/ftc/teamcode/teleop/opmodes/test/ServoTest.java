@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.teleop.opmodes;
+package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
@@ -16,9 +16,12 @@ public class ServoTest extends TeleOpBase {
     private Button downButton = new Button();
     private Button yButton = new Button();
     private Button aButton = new Button();
+    private Button bButton = new Button();
 
     private String servoName;
     private Servo servo;
+
+    private ToggleServo toggleServo;
 
     @Override
     protected void initialize() {
@@ -26,6 +29,7 @@ public class ServoTest extends TeleOpBase {
         servoName = config.getString("debug servo", "NONE");
         if (!servoName.equals("NONE")) {
             servo = hardwareMap.servo.get(servoName);
+            toggleServo = new ToggleServo(hardwareMap, servoName);
         }
     }
 
@@ -33,8 +37,9 @@ public class ServoTest extends TeleOpBase {
     protected void update() {
         if (servo != null) {
             updateConfigureServos();
+            updateToggleServo();
+            telemetry.update();
         }
-        updateTelemetry();
     }
 
     private void updateConfigureServos() {
@@ -55,18 +60,15 @@ public class ServoTest extends TeleOpBase {
         if (aButton.is(Button.State.DOWN)) {
             servo.setPosition( servo.getPosition() - 0.01);
         }
-
         telemetry.addData(servoName, servo.getPosition());
     }
 
-
-    private void updateTelemetry() {
-        telemetry.addData("LF", robot.driveTrain.lf.getCurrentPosition());
-        telemetry.addData("LB", robot.driveTrain.lb.getCurrentPosition());
-        telemetry.addData("RF", robot.driveTrain.rf.getCurrentPosition());
-        telemetry.addData("RB", robot.driveTrain.rb.getCurrentPosition());
-
-        telemetry.update();
+    private void updateToggleServo() {
+        bButton.update(gamepad1.b);
+        if (bButton.is(Button.State.DOWN)) {
+            toggleServo.toggle();
+        }
+        telemetry.addData("ToggleState", toggleServo.getState());
     }
 
 }

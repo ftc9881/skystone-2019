@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop.opmodes;
+package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;

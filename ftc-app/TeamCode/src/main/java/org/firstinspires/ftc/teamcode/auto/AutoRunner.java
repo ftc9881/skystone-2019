@@ -4,9 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
+import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
+import org.firstinspires.ftc.teamcode.auto.actions.BadTurn;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMoveWithVuforia;
+import org.firstinspires.ftc.teamcode.auto.actions.Turn;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
@@ -125,12 +127,12 @@ public class AutoRunner {
                 boolean useVuforia = command.getBoolean("use vuforia", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
                 int deployClicks = command.getInt("deploy clicks", 0);
-                String pivotState = command.getString("pivot state", batMobile.sideArm.pivot.getState().name());
-                String clawState = command.getString("claw state", batMobile.sideArm.claw.getState().name());
-                Action move = useVuforia? new RelativeMoveWithVuforia(command, skystonePosition) : new RelativeMove(command, skystonePosition);
+                Action move = useVuforia ? new RelativeMoveWithVuforia(command, skystonePosition) : new RelativeMove(command, skystonePosition);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition);
                 if (deployArm) {
+                    String pivotState = command.getString("pivot state", batMobile.sideArm.pivot.getState().name());
+                    String clawState = command.getString("claw state", batMobile.sideArm.claw.getState().name());
                     Watcher deployPivot = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(pivotState), robot.driveTrain.rf, deployClicks);
                     Watcher deployClaw = new DeployServoByDistance(batMobile.sideArm.claw, ToggleServo.stringToState(clawState), robot.driveTrain.rf, deployClicks);
                     conditions.add(deployClaw, deployPivot);
@@ -166,8 +168,21 @@ public class AutoRunner {
             }
 
             case "TURN": {
-                Action relativeTurn = new AbsoluteTurn(command);
-                runActionWithTimeout(relativeTurn, command);
+                BatMobile batMobile = BatMobile.getInstance();
+                boolean deployArm = command.getBoolean("deploy arm", false);
+                double timeoutMs = command.getDouble("timeout", 5 * 1000);
+                int deployClicks = command.getInt("deploy clicks", 0);
+                IEndCondition timeoutCondition = new Timeout(timeoutMs);
+                CombinedConditions conditions = new CombinedConditions(timeoutCondition);
+                if (deployArm) {
+                    String pivotState = command.getString("pivot state", batMobile.sideArm.pivot.getState().name());
+                    String clawState = command.getString("claw state", batMobile.sideArm.claw.getState().name());
+                    Watcher deployPivot = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(pivotState), robot.driveTrain.rf, deployClicks);
+                    Watcher deployClaw = new DeployServoByDistance(batMobile.sideArm.claw, ToggleServo.stringToState(clawState), robot.driveTrain.rf, deployClicks);
+                    conditions.add(deployClaw, deployPivot);
+                }
+                Action turn = new Turn(command);
+                runActionWithTimeout(turn, command);
                 break;
             }
 

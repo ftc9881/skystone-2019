@@ -9,13 +9,11 @@ public class SideArm {
 
     public ToggleServo claw;
     public ToggleServo pivot;
-    private double pivotFoundationPosition;
 
     public SideArm(HardwareMap hardwareMap) {
         claw = new ToggleServo(hardwareMap, "claw");
         pivot = new ToggleServo(hardwareMap, "pivot");
         Configuration config = new Configuration("HardwareConstants");
-        pivotFoundationPosition = config.getDouble("pivot foundation", 0.0);
     }
 
 }

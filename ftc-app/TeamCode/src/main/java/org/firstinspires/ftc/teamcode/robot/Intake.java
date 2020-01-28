@@ -4,14 +4,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.robot.devices.CachingMotor;
+
 public class Intake {
 
-    public DcMotor left;
-    public DcMotor right;
+    public CachingMotor left;
+    public CachingMotor right;
 
     public Intake(HardwareMap hardwareMap) {
-        left = hardwareMap.dcMotor.get("left intake");
-        right = hardwareMap.dcMotor.get("right intake");
+        left = new CachingMotor(hardwareMap, "left intake");
+        right = new CachingMotor(hardwareMap, "right intake");
         left.setDirection(DcMotor.Direction.FORWARD);
         right.setDirection(DcMotor.Direction.REVERSE);
         left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

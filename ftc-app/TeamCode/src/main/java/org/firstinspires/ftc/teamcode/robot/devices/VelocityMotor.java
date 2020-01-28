@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class VelocityMotor {
 
-    public DcMotor motor;
+    public CachingMotor motor;
     private double currentTime = 0;
     private double previousTime = 0;
     private int currentClicks = 0;
@@ -13,7 +13,7 @@ public class VelocityMotor {
     private double velocity;
 
     public VelocityMotor(DcMotor motor) {
-        this.motor = motor;
+        this.motor = new CachingMotor(motor);
         currentTime = System.currentTimeMillis();
     }
 

@@ -51,42 +51,13 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         vuforiaYPidController = new PIDController(command, "vuforia y", vuforiaTargetY);
     }
 
-
-    @Override
-    protected void onRun() {
-        robot.driveTrain.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.driveTrain.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        targetClicks = Math.abs(distance) * CLICKS_PER_INCH;
-
-        drivePose = new Pose(0, 0, 0);
-        int direction = distance > 0 ? 1 : -1;
-        drivePose.x = Math.cos(moveAngle.getRadians()) * direction;
-        drivePose.y = Math.sin(moveAngle.getRadians()) * direction;
-
-        AutoRunner.log("TargetClicks", targetClicks);
-        AutoRunner.log("VuforiaTargetY", vuforiaTargetY);
-        AutoRunner.log("DrivePowerX", drivePose.x);
-        AutoRunner.log("DrivePowerY", drivePose.y);
-    }
-
-
     @Override
     protected boolean runIsComplete() {
         if (vuforiaFoundSomething()) {
             return vuforiaYStopConditional.evaluate(vuforia.getPose().y, vuforiaTargetY, vuforiaCloseThreshold);
         }
         else {
-            List<Integer> clicksArray = new ArrayList<>();
-            clicksArray.add(Math.abs(robot.driveTrain.lf.getCurrentPosition()));
-            clicksArray.add(Math.abs(robot.driveTrain.lb.getCurrentPosition()));
-            clicksArray.add(Math.abs(robot.driveTrain.rf.getCurrentPosition()));
-            clicksArray.add(Math.abs(robot.driveTrain.rb.getCurrentPosition()));
-            actualClicks = Collections.max(clicksArray);
-            boolean reachedTarget = Math.abs(actualClicks - targetClicks) < clicksError;
-
-            AutoRunner.log("ActualClicks", actualClicks);
-            return reachedTarget;
+          return reachedTargetClicks();
         }
     }
 
@@ -99,11 +70,11 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
         if (vuforiaFoundSomething()) {
             double vuforiaCorrectX = vuforiaXPidController.getCorrectedOutput(vuforiaPose.x);
-            correctedDrivePose.y += vuforiaCorrectX;
+            correctedDrivePose.x += vuforiaCorrectX;
             AutoRunner.log("VuforiaCorrectX", vuforiaCorrectX);
 
             double vuforiaCorrectY = -vuforiaYPidController.getCorrectedOutput(vuforiaPose.y);
-            correctedDrivePose.x = clipPower(vuforiaCorrectY, vuforiaBasePower);
+            correctedDrivePose.y = clipPower(vuforiaCorrectY, vuforiaBasePower);
             AutoRunner.log("VuforiaCorrectY", vuforiaCorrectY);
         }
         else {
@@ -128,7 +99,6 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     }
 
     private double clipPower(double power, double basePower) {
-
         int sign = power < 0 ? -1 : 1;
         double absPower = Math.abs(power);
         return sign * Range.clip(absPower, basePower, 1.0);
@@ -136,6 +106,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
 
     @Override
     protected void onEndRun() {
+        AutoRunner.log("MoveVuforia", "onEndRun");
         robot.driveTrain.stop();
         vuforia.stopLook();
     }

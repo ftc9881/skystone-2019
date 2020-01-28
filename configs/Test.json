@@ -1,94 +1,89 @@
 {
 	"properties": {
 		"debug mode": "true",
-		"angle unit": "deg",
-
-		"turn error": "0.4",
-		"turn base power": "0.0",
-		"turn kp": "2.0",
-		"turn ki": "0",
-		"turn kd": "0.2",
-
-		"move clicks error": "50",
-		"elevator clicks error": "50",
-		"move base power": "0.05",
-		"move kp": "1.8",
-		"move ki": "1.0",
-		"move kd": "0.2",
-
-		"lift kp": "0.01",
-		"lift ki": "0.0",
-		"lift kd": "0.0",
-
-		"vuforia x kp": "0.1",
-		"vuforia y kp": "0.0135",
-		"vuforia y kd": "0.00004",
-
-		"crop x": "30",
-		"crop y": "45",
-		"crop w": "250",
-		"crop h": "75",
-		"stone distance": "4",
-		"stone blob distance": "90",
-		"stone min area": "10",
-		"skystone left": "120",
-		"skystone right": "220"
+		"angle unit": "deg"
 	},
 
 	"init": [
 		{ "command": "skip IDENTIFY SKYSTONE" },
-		{ "command": "INIT VUFORIA" }
+		{ "command": "skip INIT VUFORIA" }
 	],
 
 	"commands": [
-	{
-			"command": "MOVE VUFORIA",
-			"camera": "back webcam",
-			"vuforia target": "all",
-			"vuforia x kp": "0.1",
-			"vuforia x": "-2",
-			"vuforia y kp": "0.0135",
-			"vuforia y kd": "0.00004",
-			"vuforia y stone l": "6",
-			"vuforia y stone c": "15",
-			"vuforia y stone r": "22",
-			"vuforia stop when": "close",
-			"vuforia close threshold": "0.1",
+		{
+"comment": "Moves forwards",
+			"command": "MOVE",
+			"power": "0.4",
+			"distance": "7",
+			"move angle": "0",
+			"target angle": "0",
+			"timeout": "5000"
+		},
+
+		{
+"comment": "turn so side arm faces stones",
+			"command": "TURN",
 			"power": "1.0",
+			"angle": "-90",
+			"error": "1",
 			"base power": "0.1",
-			"distance stone l": "100",
-			"distance stone c": "105",
-			"distance stone r": "110",
-			"ramp down": "2000",
-			"move angle": "180",
+			"kp": "0.02",
+			"ki": "0",
+			"kd": "0.001",
+			"timeout": "10000"
+		},
+{
+"comment": "Moves forwards",
+			"command": "MOVE",
+			"power": "0.4",
+			"distance": "7",
+			"move angle": "0",
 			"target angle": "0",
 			"timeout": "5000"
 		},
 
 
 		{
-			"command": "MOVE VUFORIA",
-			"camera": "front webcam",
-			"vuforia target": "all",
-			"vuforia x kp": "0.1",
-			"vuforia x": "2",
-			"vuforia y kp": "0.0135",
-			"vuforia y kd": "0.00004",
-			"vuforia y stone l": "6",
-			"vuforia y stone c": "15",
-			"vuforia y stone r": "22",
-			"vuforia stop when": "close",
-			"vuforia close threshold": "0.1",
-			"power": "1.0",
-			"base power": "0.1",
-			"distance stone l": "100",
-			"distance stone c": "105",
-			"distance stone r": "110",
-			"ramp down": "2000",
+"comment": "strafe torwards foundation",
+			"command": "MOVE",
+			"target angle": "-91",
 			"move angle": "0",
-			"target angle": "0",
-			"timeout": "5000"
+			"power": "0.4",
+			"distance": "-7",
+			"timeout": "3000"
 		},
+{
+"comment": "strafe torwards foundation",
+			"command": "MOVE",
+			"target angle": "-91",
+			"move angle": "90",
+			"power": "0.4",
+			"distance": "-7",
+			"timeout": "3000"
+		},
+{
+"comment": "strafe torwards foundation",
+			"command": "MOVE",
+			"target angle": "-91",
+			"move angle": "180",
+			"power": "0.4",
+			"distance": "-7",
+			"timeout": "3000"
+		},
+{
+"comment": "strafe torwards foundation",
+			"command": "MOVE",
+			"target angle": "-91",
+			"move angle": "-90",
+			"power": "0.4",
+			"distance": "-7",
+			"timeout": "3000"
+		},
+
+
+
+
+
 
 		
 		{ "command": "STOP" }

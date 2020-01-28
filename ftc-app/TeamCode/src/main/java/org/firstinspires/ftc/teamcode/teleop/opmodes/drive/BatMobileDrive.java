@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.teleop.opmodes;
+package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
@@ -190,6 +191,8 @@ public class BatMobileDrive extends BaseDrive {
     private void updateToggle(ToggleServo.State stateA, ToggleServo.State stateB, Button button, ToggleServo ... servos) {
         if (button.is(DOWN)) {
             for (ToggleServo servo : servos) {
+                AutoRunner.log("ToggleServo", servo.servo.getDeviceName());
+                AutoRunner.log("ToggleServo", servo.servo.getConnectionInfo());
                 servo.toggle(stateA, stateB);
             }
         }

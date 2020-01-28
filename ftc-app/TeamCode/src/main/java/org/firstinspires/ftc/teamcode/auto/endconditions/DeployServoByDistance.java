@@ -19,6 +19,8 @@ public class DeployServoByDistance extends Watcher {
         this.state = state;
         this.trackingMotor = trackingMotor;
         this.clicksToDeployAt = Math.abs(clicksToDeployAt);
+        trackingMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        trackingMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void update() {

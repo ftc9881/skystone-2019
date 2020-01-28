@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.teamcode.teleop.opmodes;
+package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.sensors.SharpPair;
@@ -27,7 +28,7 @@ public class SensorTest extends TeleOpBase {
     PIDController yPid;
     PIDController rPid;
 
-    boolean isAutoMode;
+    boolean isAutoMode = false;
 
     @Override
     protected void initialize() {
@@ -42,10 +43,8 @@ public class SensorTest extends TeleOpBase {
 
 
         // foundation detection
-        foundationDetectorInputL = robot.hardwareMap.analogInput.get("foundationDetectorL");
-        foundationDetectorInputR = robot.hardwareMap.analogInput.get("foundationDetectorR");
-        foundationSensorL = new SharpDistanceSensor(foundationDetectorInputL);
-        foundationSensorR = new SharpDistanceSensor(foundationDetectorInputR);
+        foundationSensorL = new SharpDistanceSensor(hardwareMap, "foundationDetectorL");
+        foundationSensorR = new SharpDistanceSensor(hardwareMap, "foundationDetectorR");
 
         /*
          blockDetector = new SharpPair(baseSensorL, baseSensorR,
@@ -55,41 +54,57 @@ public class SensorTest extends TeleOpBase {
         */
 
          foundationDetector = new SharpPair(foundationSensorL, foundationSensorR,
-             config.getDouble("foundationDetectDist", 10),
-             config.getDouble("foundationDetectMargin", 2)
+//             config.getDouble("foundationDetectDist", 10),
+//             config.getDouble("foundationDetectMargin", 2)
+                 25,
+                 1
          );
 
-         /*
         double idealXPosition = config.getDouble("sensor X target", 0);
         //x is f/b, y is strafe direction
-        xPid = new PIDController(config, "sensor x", idealXPosition);
-        yPid = new PIDController(config, "sensor y", 0);
-        rPid = new PIDController(config, "sensor r", 0);
-          */
+//        xPid = new PIDController(config, "sensor x", idealXPosition);
+//        yPid = new PIDController(config, "sensor y", 25);
+//        rPid = new PIDController(config, "sensor r", 0);
+
+        xPid = new PIDController(0.05, 0, 0, idealXPosition);
+        yPid = new PIDController(0.05, 0, 0, 25);
+        rPid = new PIDController(0.05, 0, 0, 0);
     }
 
     @Override
     protected void update() {
-        telemetry.addData("Left  Foundation Dist: ", foundationDetector.getDistanceL());
-        telemetry.addData("Right Foundation Dist: ", foundationDetector.getDistanceR());
-        telemetry.addData("Raw voltage L: ", foundationDetectorInputL.getVoltage());
-        telemetry.addData("Raw voltage R: ", foundationDetectorInputR.getVoltage());
-        telemetry.update();
-
         autoModeButton.update(gamepad1.a);
 
         if (autoModeButton.is(Button.State.DOWN)) {
+            robot.driveTrain.stop();
             isAutoMode = !isAutoMode;
         }
+
+//        if (inputFromPlayer()) {
+//            isAutoMode = false;
+//        }
 
         if (isAutoMode) {
             Pose drivePose = new Pose(0, 0, 0);
             drivePose.r = rPid.getCorrectedOutput(foundationDetector.getDiff());
             if (Math.abs(drivePose.r) < 0.3) {
-                drivePose.x = xPid.getCorrectedOutput(blockDetector.getDistanceAvg());
-                drivePose.y = yPid.getCorrectedOutput(foundationDetector.getDiff());
+//                drivePose.x = xPid.getCorrectedOutput(blockDetector.getDistanceAvg());
+                drivePose.y = yPid.getCorrectedOutput(foundationDetector.getDistanceAvg());
             }
+            AutoRunner.log("SensorTestDriveY", drivePose.y);
+            AutoRunner.log("SensorTestDriveR", drivePose.r);
+            telemetry.addData("drive y", drivePose.y);
+            telemetry.addData("drive r", drivePose.r);
             robot.driveTrain.drive(drivePose);
         }
+
+
+        telemetry.addData("Auto Align Mode", isAutoMode);
+        telemetry.addData("Left  Foundation Dist", foundationDetector.getDistanceL());
+        telemetry.addData("Right Foundation Dist", foundationDetector.getDistanceR());
+        telemetry.addData("Raw voltage L", foundationDetectorInputL.getVoltage());
+        telemetry.addData("Raw voltage R", foundationDetectorInputR.getVoltage());
+        telemetry.update();
+
     }
 }

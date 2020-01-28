@@ -16,7 +16,7 @@ import static android.os.SystemClock.sleep;
 
 public class Configuration extends Command {
 
-    private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
+    public static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Robot/";
 
     public Configuration(String name) {
         super(name, new JSONObject());

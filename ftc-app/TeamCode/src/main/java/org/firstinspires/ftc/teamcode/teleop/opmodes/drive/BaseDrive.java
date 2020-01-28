@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop.opmodes;
+package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -28,9 +28,9 @@ public class BaseDrive extends TeleOpBase {
     protected void updateDrive() {
         // x and y are reversed because y is forwards
         // up on the gamepad stick is negative
-        drivePose.y = Math.pow(gamepad1.left_stick_x, 3);
-        drivePose.x = -Math.pow(gamepad1.left_stick_y, 3);
-        drivePose.r = -Math.pow(gamepad1.right_stick_x, 3);
+        drivePose.x = Math.pow(gamepad1.left_stick_x, 3);
+        drivePose.y = -Math.pow(gamepad1.left_stick_y, 3);
+        drivePose.r = Math.pow(gamepad1.right_stick_x, 3);
         robot.driveTrain.drive(drivePose, drivePowerFactor);
     }
 
