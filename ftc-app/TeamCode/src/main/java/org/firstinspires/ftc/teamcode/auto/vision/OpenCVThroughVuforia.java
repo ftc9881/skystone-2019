@@ -45,11 +45,6 @@ public class OpenCVThroughVuforia extends OpenCV {
     }
 
     @Override
-    public void startLook(TargetType targetType) {
-
-    }
-
-    @Override
     protected void startCamera() {
         queuer = new VuforiaFrameQueuer();
         queuer.start();
