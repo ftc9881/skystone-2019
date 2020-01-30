@@ -42,7 +42,7 @@ public class Vuforia implements VisionSystem {
 
     private static final float mmPerInch = 25.4f;
 
-    private VuforiaLocalizer vuforiaLocalizer = null;
+    public VuforiaLocalizer vuforiaLocalizer = null;
     private VuforiaLocalizer.Parameters parameters = null;
     private VuforiaTrackables trackables = null;
 

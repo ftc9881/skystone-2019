@@ -31,9 +31,9 @@ public class OpenCV implements VisionSystem {
     public static final Rect CAMERA_RECT = new Rect(0, 0, 320, 240);
     public SkystoneDetector detector;
 
-    private CameraType cameraType = CameraType.FRONT_WEBCAM;
-    private OpenCvCamera openCvCamera;
-    private Configuration config;
+    protected CameraType cameraType = CameraType.FRONT_WEBCAM;
+    protected OpenCvCamera openCvCamera;
+    protected Configuration config;
 
     public OpenCV(CameraType cameraType) {
         initializeCamera(cameraType);
@@ -106,7 +106,7 @@ public class OpenCV implements VisionSystem {
         openCvCamera.openCameraDevice();
     }
 
-    private void startCamera() {
+    protected void startCamera() {
         openCvCamera.setPipeline(detector);
         openCvCamera.startStreaming(CAMERA_RECT.width, CAMERA_RECT.height, OpenCvCameraRotation.UPRIGHT);
     }
@@ -115,20 +115,19 @@ public class OpenCV implements VisionSystem {
     public SkystonePosition identifyPosition(LinearOpMode opMode) {
         Configuration config = new Configuration("Vision");
 
-        int stdDevThreshold = config.getInt("std dev threshold", 10);
-        int maxDetectList = config.getInt("max detection list size", 10);
-        double stdDev = 999;
+        int skystoneLeftBound = config.getInt("skystone left", 0);
+        int skystoneRightBound = config.getInt("skystone right", 0);
+        int listSize = config.getInt("list size", 10);
         int centerX = 0;
         List<Integer> foundPositions = new ArrayList<>();
 
-        while (!opMode.isStopRequested() && (centerX == 0 || stdDev > stdDevThreshold)) {
+        while (!opMode.isStopRequested() && !opMode.isStarted() && centerX == 0) {
             Rect foundRect = detector.foundRectangle();
             centerX = foundRect.x + foundRect.width / 2;
-            if (foundPositions.size() >= maxDetectList) {
+            if (foundPositions.size() >= listSize) {
                 foundPositions.remove(0);
             }
             foundPositions.add(centerX);
-            stdDev = GeneralMath.standardDeviation(foundPositions);
         }
 
         // Debug
@@ -136,8 +135,6 @@ public class OpenCV implements VisionSystem {
 
         int averageCenterX = (int) GeneralMath.mean(foundPositions);
         AutoRunner.log("Mean", averageCenterX);
-        int skystoneLeftBound = config.getInt("skystone left", 0);
-        int skystoneRightBound = config.getInt("skystone right", 0);
         if (averageCenterX < skystoneLeftBound) {
             return VisionSystem.SkystonePosition.LEFT;
         } else if (averageCenterX > skystoneRightBound) {
