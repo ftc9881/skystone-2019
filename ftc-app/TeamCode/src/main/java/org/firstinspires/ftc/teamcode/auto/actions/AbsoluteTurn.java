@@ -29,7 +29,7 @@ public class AbsoluteTurn extends Turn {
     @Override
     protected void onRun() {
         cumulativeDegrees = 0;
-        currentAngle = robot.getImuHeading();
+        currentAngle = robot.imu.getHeading();
         AutoRunner.log("AngleToTurn", turnAngle.getDegrees());
         AutoRunner.log("CurrentAngle", currentAngle.getDegrees());
     }
@@ -50,7 +50,7 @@ public class AbsoluteTurn extends Turn {
 
     private double getCorrectedPower() {
         Angle previousAngle = currentAngle;
-        currentAngle = robot.getImuHeading();
+        currentAngle = robot.imu.getHeading();
         double deltaDegrees = currentAngle.getDegrees() - previousAngle.getDegrees();
         if (deltaDegrees > 180) {
             deltaDegrees -= 360;

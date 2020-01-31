@@ -21,7 +21,6 @@ public class BatMobile extends Robot {
 
     public ToggleServo backDepositServo;
     public ToggleServo frontDepositServo;
-    public ToggleServo capstoneServo;
     public ToggleServo leftFoundationServo;
     public ToggleServo rightFoundationServo;
 
@@ -37,7 +36,6 @@ public class BatMobile extends Robot {
 
         backDepositServo = new ToggleServo(hardwareMap, "back deposit");
         frontDepositServo = new ToggleServo(hardwareMap, "front deposit");
-        capstoneServo = new ToggleServo(hardwareMap, "capstone");
         leftFoundationServo = new ToggleServo(hardwareMap, "left foundation");
         rightFoundationServo = new ToggleServo(hardwareMap, "right foundation");
     }

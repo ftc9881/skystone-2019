@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.DifferentialElevator;
 import org.firstinspires.ftc.teamcode.robot.devices.OptimizedI2cDevice;
+import org.firstinspires.ftc.teamcode.robot.devices.OptimizedIMU;
 
 public class Robot {
 
@@ -31,18 +32,15 @@ public class Robot {
         return instance;
     }
 
-
-    private AngleUnit angleUnit = AngleUnit.RADIANS;
+    private AngleUnit angleUnit = AngleUnit.DEGREES;
     public LinearOpMode opMode;
     public HardwareMap hardwareMap;
     public DriveTrain driveTrain;
-
+    public OptimizedIMU imu;
     public Pose currentPose;
 
-    public BNO055IMU imu;
 
-    protected Robot() {
-    }
+    protected Robot() {}
 
     protected Robot(LinearOpMode opMode) {
         this.opMode = opMode;
@@ -50,31 +48,9 @@ public class Robot {
         opMode.msStuckDetectInitLoop = 3000;
 
         hardwareMap = opMode.hardwareMap;
+        imu = new OptimizedIMU(hardwareMap, angleUnit);
 
         driveTrain = new DriveTrain(hardwareMap);
-    }
-
-    public void initializeImu(AngleUnit angleUnit) {
-        this.angleUnit = angleUnit;
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        BNO055IMU.AngleUnit imuAngleUnit = angleUnit == AngleUnit.DEGREES ? BNO055IMU.AngleUnit.DEGREES : BNO055IMU.AngleUnit.RADIANS;
-        parameters.angleUnit = imuAngleUnit;
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-
-//        imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
-        LynxModule module = hardwareMap.getAll(LynxModule.class).iterator().next();
-        AutoRunner.log("LynxModule::name", module.getDeviceName());
-        imu = new LynxEmbeddedIMU(OptimizedI2cDevice.createLynxI2cDeviceSynch(module, 0));
-        imu.initialize(parameters);
-    }
-
-
-    public Angle getImuHeading() {
-        if (imu == null) {
-            initializeImu(angleUnit);
-        }
-        return new Angle(-imu.getAngularOrientation().firstAngle, angleUnit);
     }
 
 }

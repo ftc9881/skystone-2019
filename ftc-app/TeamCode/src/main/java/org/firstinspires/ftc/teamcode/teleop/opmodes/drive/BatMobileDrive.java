@@ -61,7 +61,6 @@ public class BatMobileDrive extends BaseDrive {
         slowLiftPowerFactor = config.getDouble("slow lift power", 0.3);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
 
-        batMobile.capstoneServo.set(ToggleServo.State.CLOSED);
         batMobile.sideArm.pivot.set(ToggleServo.State.CLOSED);
     }
 
@@ -177,9 +176,9 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateServos() {
-        updateToggle(capstoneButton, batMobile.capstoneServo);
         updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.REST, pivotButton, batMobile.sideArm.pivot);
         updateToggle(clawButton, batMobile.sideArm.claw);
+        updateCapstone();
         updateFoundationServos();
         updateDepositServos();
     }
@@ -191,10 +190,14 @@ public class BatMobileDrive extends BaseDrive {
     private void updateToggle(ToggleServo.State stateA, ToggleServo.State stateB, Button button, ToggleServo ... servos) {
         if (button.is(DOWN)) {
             for (ToggleServo servo : servos) {
-                AutoRunner.log("ToggleServo", servo.servo.getDeviceName());
-                AutoRunner.log("ToggleServo", servo.servo.getConnectionInfo());
                 servo.toggle(stateA, stateB);
             }
+        }
+    }
+
+    private void updateCapstone() {
+        if (capstoneButton.is(DOWN)) {
+            batMobile.backDepositServo.set(ToggleServo.State.REST);
         }
     }
 

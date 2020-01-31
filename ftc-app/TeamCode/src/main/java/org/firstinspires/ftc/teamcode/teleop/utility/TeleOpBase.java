@@ -14,9 +14,15 @@ public abstract class TeleOpBase extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        telemetry.addData("Initializing...", "Please wait until complete");
+        telemetry.update();
+
         robot = Robot.newInstance(this);
         config = new Configuration("TeleOp");
         initialize();
+
+        telemetry.addData("Initialized!", "Ready to run");
+        telemetry.update();
 
         waitForStart();
         while (opModeIsActive()) {

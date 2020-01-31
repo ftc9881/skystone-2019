@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
+import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.math.Angle;
@@ -50,7 +51,7 @@ public class RelativeMove extends Action {
         useTargetAngle = command.getBoolean("use target angle", true);
 
         config = AutoOpConfiguration.getInstance();
-        anglePidController = new PIDController(config.properties, "move", targetAngle.getRadians());
+        anglePidController = new PIDController(config.properties, "move angle", targetAngle.getRadians());
         clicksError = config.properties.getInt("move clicks error", 100);
         basePower = config.properties.getDouble("move base power", 0.3);
     }
@@ -93,10 +94,10 @@ public class RelativeMove extends Action {
     }
 
     @Override
-    protected void insideRun() {
+    protected void insideRun() throws SomethingBadHappened {
         Pose correctedDrivePose = new Pose(drivePose);
 
-        Angle actualHeading = robot.getImuHeading();
+        Angle actualHeading = robot.imu.getHeading();
         if (useTargetAngle) {
             correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
         }

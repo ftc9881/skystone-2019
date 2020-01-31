@@ -10,6 +10,18 @@
 	],
 
 	"commands": [
+{
+"comment": "move to next to foundation",
+			"command": "MOVE",
+			"ramp down": "1600",
+			"power": "0.5",
+			"distance": "74",
+			"move angle": "-160",
+			"target angle": "0",
+			"timeout": "5000"
+		},
+
+
 		{
 "comment": "Moves forwards",
 			"command": "MOVE",

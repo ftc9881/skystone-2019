@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.vision;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
@@ -39,7 +41,6 @@ public interface VisionSystem {
         }
     }
 
-    enum Type {VUFORIA, OPENCV}
     enum TargetType {
         SKYSTONE, BRIDGE, PERIMETER, ALL;
 
@@ -60,6 +61,6 @@ public interface VisionSystem {
 
     void startLook(TargetType targetType);
     void stopLook();
-    boolean found();
+    SkystonePosition identifySkystonePosition();
 
 }

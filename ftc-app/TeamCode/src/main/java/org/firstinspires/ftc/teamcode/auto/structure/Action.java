@@ -20,7 +20,7 @@ public abstract class Action implements Runnable {
     private AtomicBoolean stopped = new AtomicBoolean(true);
 
     protected abstract void onRun();
-    protected abstract void insideRun();
+    protected abstract void insideRun() throws SomethingBadHappened;
     protected abstract void onEndRun();
     protected abstract boolean runIsComplete();
 
@@ -47,7 +47,12 @@ public abstract class Action implements Runnable {
                 AutoRunner.log(TAG, "Action thread was interrupted");
                 return;
             }
-            insideRun();
+
+            try {
+                insideRun();
+            } catch (SomethingBadHappened x) {
+                Robot.getInstance().opMode.requestOpModeStop();
+            }
         }
 
         onEndRun();

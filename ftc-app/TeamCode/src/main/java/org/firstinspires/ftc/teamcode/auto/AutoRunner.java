@@ -4,16 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.actions.AbsoluteTurn;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
-import org.firstinspires.ftc.teamcode.auto.actions.BadTurn;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMoveWithVuforia;
 import org.firstinspires.ftc.teamcode.auto.actions.Turn;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
-import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
@@ -50,7 +47,7 @@ public class AutoRunner {
     private VisionSystem.SkystonePosition skystonePosition = VisionSystem.SkystonePosition.CENTER;
 
     public AutoRunner(String name, LinearOpMode opMode) {
-        opMode.msStuckDetectStop = 10000;
+        opMode.msStuckDetectStop = 3000;
         this.opMode = opMode;
 
         config = AutoOpConfiguration.newInstance(name + ".json");
@@ -59,7 +56,6 @@ public class AutoRunner {
         debugMode = config.properties.getBoolean("debug mode", false);
 
         robot = Robot.newInstance(opMode);
-        robot.initializeImu(angleUnit);
 
         for (Command command : config.initCommands) {
             logAndTelemetry(TAG, "Init Command: " + command.name);
@@ -80,17 +76,18 @@ public class AutoRunner {
                 logAndTelemetry(TAG, "STOPPING...");
                 return;
             }
-            try {
-                execute(command);
-            } catch (SomethingBadHappened exception) {
-                stopped = true;
-            }
+            execute(command);
+
             waitIfDebugMode();
         }
     }
 
     private boolean shouldStop() {
-        return stopped || !opMode.opModeIsActive();
+        return stopped || !opMode.opModeIsActive() || opMode.isStopRequested();
+    }
+
+    private boolean opModeIsActive() {
+        return !shouldStop();
     }
 
     private void waitIfDebugMode() {
@@ -114,9 +111,9 @@ public class AutoRunner {
             }
 
             case "IDENTIFY SKYSTONE": {
-                OpenCV openCV = new OpenCV();
-                openCV.startLook(VisionSystem.TargetType.SKYSTONE);
-                skystonePosition = openCV.identifyPosition(opMode);
+                VisionSystem vision = command.getString("vision system", "opencv").toUpperCase().contains("VUFORIA") ? Vuforia.getInstance() : OpenCV.getInstance();
+                vision.startLook(VisionSystem.TargetType.SKYSTONE);
+                skystonePosition = vision.identifySkystonePosition();
                 logAndTelemetry("Skystone Position", skystonePosition.name());
                 break;
             }
@@ -145,12 +142,6 @@ public class AutoRunner {
                 Action relativeMoveVuforia = new RelativeMoveWithVuforia(command, skystonePosition);
                 runActionWithTimeout(relativeMoveVuforia, command);
                 break;
-            }
-
-            case "CAPSTONE": {
-                BatMobile batMobile = BatMobile.getInstance();
-                String state = command.getString("state", "REST");
-                batMobile.capstoneServo.set(ToggleServo.stringToState(state));
             }
 
             case "CLAW": {
@@ -184,12 +175,6 @@ public class AutoRunner {
                 Action turn = new Turn(command);
                 runActionWithTimeout(turn, command);
                 break;
-            }
-
-            case "INTAKE": {
-                BatMobile batMobile = BatMobile.getInstance();
-                double power = command.getDouble("power", 0.5);
-                batMobile.intake.setPower(power);
             }
 
             case "SLEEP": {
@@ -239,7 +224,7 @@ public class AutoRunner {
 
     private void waitUntilButtonPressed() {
         Button button = new Button();
-        while (!button.is(Button.State.DOWN) && opMode.opModeIsActive()) {
+        while (!button.is(Button.State.DOWN) && opModeIsActive()) {
             boolean anyButton = opMode.gamepad1.a || opMode.gamepad1.b || opMode.gamepad1.x || opMode.gamepad1.y ||
                     opMode.gamepad2.a || opMode.gamepad2.b || opMode.gamepad2.x || opMode.gamepad2.y;
             button.update(anyButton);

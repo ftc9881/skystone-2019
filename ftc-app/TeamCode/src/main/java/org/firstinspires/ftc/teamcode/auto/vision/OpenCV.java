@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.vision;
 
 import android.content.Context;
+import android.graphics.Path;
 import android.os.Environment;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -31,16 +32,15 @@ public class OpenCV implements VisionSystem {
     public static final Rect CAMERA_RECT = new Rect(0, 0, 320, 240);
     public SkystoneDetector detector;
 
-    protected CameraType cameraType = CameraType.FRONT_WEBCAM;
-    protected OpenCvCamera openCvCamera;
+    public CameraType cameraType = CameraType.FRONT_WEBCAM;
     protected Configuration config;
+    protected OpenCvCamera openCvCamera;
 
-    public OpenCV(CameraType cameraType) {
-        initializeCamera(cameraType);
-        config = new Configuration("Vision");
+    public static OpenCV getInstance() {
+        return new OpenCV();
     }
 
-    public OpenCV() {
+    private OpenCV() {
         initializeCamera(cameraType);
         config = new Configuration("Vision");
     }
@@ -81,11 +81,6 @@ public class OpenCV implements VisionSystem {
         detector.cropRect.height= config.getInt("crop h", detector.cropRect.height);
     }
 
-    @Override
-    public boolean found() {
-        return detector.isDetected();
-    }
-
     private void initializeCamera(CameraType cameraType) {
         this.cameraType = cameraType;
         HardwareMap hardwareMap = Robot.getInstance().hardwareMap;
@@ -112,14 +107,16 @@ public class OpenCV implements VisionSystem {
     }
 
 
-    public SkystonePosition identifyPosition(LinearOpMode opMode) {
+    @Override
+    public SkystonePosition identifySkystonePosition() {
         Configuration config = new Configuration("Vision");
+        LinearOpMode opMode = Robot.getInstance().opMode;
 
         int skystoneLeftBound = config.getInt("skystone left", 0);
         int skystoneRightBound = config.getInt("skystone right", 0);
         int listSize = config.getInt("list size", 10);
         int centerX = 0;
-        List<Integer> foundPositions = new ArrayList<>();
+        List<Number> foundPositions = new ArrayList<>();
 
         while (!opMode.isStopRequested() && !opMode.isStarted() && centerX == 0) {
             Rect foundRect = detector.foundRectangle();

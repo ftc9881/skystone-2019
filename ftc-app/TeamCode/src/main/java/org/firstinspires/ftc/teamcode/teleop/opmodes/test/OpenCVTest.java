@@ -20,7 +20,7 @@ public class OpenCVTest extends TeleOpBase {
     protected void initialize() {
         robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        openCV = new OpenCV();
+        openCV = OpenCV.getInstance();
         openCV.startLook(VisionSystem.TargetType.SKYSTONE);
     }
 

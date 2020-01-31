@@ -4,15 +4,9 @@
 
 		"move clicks error": "50",
 		"move base power": "0.05",
-
-		"move kp": "3.0",
-		"move ki": "0.0",
-		"move kd": "0.1",
-
-		"elevator clicks error": "50",
-		"lift kp": "0.01",
-		"lift ki": "0.0",
-		"lift kd": "0.0"
+		"move angle kp": "3.2",
+		"move angle ki": "0.0",
+		"move angle kd": "0.1"
 	},
 
 	"init": [
@@ -22,10 +16,6 @@
 
 	"commands": [
 		{ 
-			"command": "CAPSTONE",
-			"state": "CLOSED"
-		},
-		{ 
 			"command": "PIVOT",
 			"state": "CLOSED"
 		},
@@ -33,7 +23,7 @@
 "comment": "Moves forwards",
 			"command": "MOVE",
 			"power": "1.0",
-			"distance": "12.5",
+			"distance": "12",
 			"move angle": "0",
 			"target angle": "0",
 			"timeout": "5000"
@@ -63,9 +53,9 @@
 			"state": "open"
 		},
 		{
-"comment": "line up with desired sky stone",
+"comment": "line up with desired skystone",
 			"command": "MOVE",
-			"target angle": "-91",
+			"target angle": "-90",
 			"distance stone l": "6",
 			"distance stone c": "-2.2",
 			"distance stone r": "-6",
@@ -82,6 +72,7 @@
 			"timeout": "1500",
 			"power": "1.0"
 		},
+		{ "command": "BREAKPOINT" },
 		{ 
 			"command": "CLAW",
 			"state": "closed"
@@ -109,8 +100,8 @@
 			"distance stone l": "-80",
 			"distance stone c": "-85",
 			"distance stone r": "-70",
-			"move angle": "180",
-			"target angle": "-91",
+			"move angle": "-170",
+			"target angle": "-90",
 			"timeout": "5000"
 		},
 		{
@@ -131,13 +122,13 @@
 			"use vuforia": "true",
 				"vuforia x kp": "0.1",
 				"vuforia x": "0",
-				"vuforia y kp": "0.022",
+				"vuforia y kp": "0.014",
 				"vuforia y kd": "0.00004",
 				"vuforia y stone l": "5.3",
 				"vuforia y stone c": "13",
 				"vuforia y stone r": "20",
 				"vuforia stop when": "close",
-				"vuforia close threshold": "0.1",
+				"vuforia close threshold": "0.2",
 			"deploy arm": "true",
 				"deploy clicks": "3300",
 				"pivot state": "open",
@@ -148,7 +139,7 @@
 			"distance stone c": "105",
 			"distance stone r": "110",
 			"ramp down": "2000",
-			"move angle": "-4",
+			"move angle": "-5",
 			"target angle": "-90",
 			"timeout": "5000"
 		},
@@ -176,8 +167,8 @@
 			"distance stone r": "77",
 			"ramp down": "1600",
 			"power": "1.0",
-			"move angle": "180",
-			"target angle": "-91",
+			"move angle": "-170",
+			"target angle": "-90",
 			"timeout": "5000"
 		},
 		{
@@ -186,7 +177,7 @@
 			"deploy arm": "true",
 				"deploy clicks": "500",
 				"pivot state": "rest",
-			"target angle": "-91",
+			"target angle": "-90",
 			"move angle": "90",
 			"power": "0.4",
 			"distance": "-7",
@@ -203,7 +194,7 @@
 			"deploy arm": "true",
 				"deploy clicks": "10",
 				"claw state": "closed",
-			"target angle": "-91",
+			"target angle": "-90",
 			"move angle": "-90",
 			"power": "1.0",
 			"distance": "50",

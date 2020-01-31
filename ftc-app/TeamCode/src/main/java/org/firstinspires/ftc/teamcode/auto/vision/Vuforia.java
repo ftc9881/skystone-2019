@@ -48,7 +48,6 @@ public class Vuforia implements VisionSystem {
 
     private CameraType cameraType;
 //    private SwitchableCamera switchableCamera;
-    private boolean found = false;
     private Pose cameraOffset = new Pose();
     private Pose lastPose = new Pose();
     private LookAction lookAction;
@@ -56,6 +55,7 @@ public class Vuforia implements VisionSystem {
     private Configuration config;
     private HardwareMap hardwareMap;
 
+    private boolean initialized;
     private static Vuforia instance;
 
     public static Vuforia createInstance(HardwareMap hardwareMap, CameraType cameraType) {
@@ -82,11 +82,11 @@ public class Vuforia implements VisionSystem {
         orientTrackablesAtZero();
         applyCameraOrientation();
         AutoRunner.log("Vuforia", "Initialization complete");
+        initialized = true;
     }
 
     @Override
     public void startLook(TargetType target) {
-        found = false;
         lastPose = new Pose();
         lookAction = new LookAction(target);
         lookAction.start();
@@ -97,13 +97,19 @@ public class Vuforia implements VisionSystem {
         lookAction.stop();
     }
 
-    @Override
-    public boolean found() {
-        return found;
-    }
-
     public Pose getPose() {
         return lastPose;
+    }
+
+    public CameraType getCameraType() {
+        return cameraType;
+    }
+
+    @Override
+    public SkystonePosition identifySkystonePosition() {
+        SkystonePosition position = SkystonePosition.NONE;
+
+        return position;
     }
 
     @Deprecated
@@ -111,17 +117,12 @@ public class Vuforia implements VisionSystem {
         if (lookAction != null && lookAction.isRunning()) {
             lookAction.resetLastLocation();
         }
-        found = false;
         lastPose = new Pose();
         cameraOffset = config.getPose(cameraType.name.toLowerCase(), 0);
 //        if (switchableCamera != null) {
 //            this.cameraType = cameraType;
 //            switchableCamera.setActiveCamera(hardwareMap.get(WebcamName.class, cameraType.name));
 //        }
-    }
-
-    public CameraType getCameraType() {
-        return cameraType;
     }
 
     private void startEngine() {

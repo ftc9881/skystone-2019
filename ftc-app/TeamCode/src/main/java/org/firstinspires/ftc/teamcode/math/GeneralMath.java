@@ -33,19 +33,19 @@ public class GeneralMath {
         }
     }
 
-    public static double mean(List<Integer> numbers) {
+    public static double mean(List<Number> numbers) {
         double total = 0;
-        for (Integer number : numbers) {
-            total += number;
+        for (Number number : numbers) {
+            total += number.doubleValue();
         }
         return total / numbers.size();
     }
 
-    public static double standardDeviation(List<Integer> numbers) {
+    public static double standardDeviation(List<Number> numbers) {
         double mean = mean(numbers);
         double stdDev = 0;
-        for (Integer number : numbers) {
-            stdDev += Math.pow(number - mean, 2);
+        for (Number number : numbers) {
+            stdDev += Math.pow(number.doubleValue() - mean, 2);
         }
         return Math.sqrt(stdDev);
     }

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
@@ -62,10 +63,14 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     }
 
     @Override
-    protected void insideRun() {
+    protected void insideRun() throws SomethingBadHappened {
         Pose correctedDrivePose = new Pose(drivePose);
-        Angle actualHeading = robot.getImuHeading();
+        Angle actualHeading = robot.imu.getHeading();
         Pose vuforiaPose = vuforia.getPose();
+
+//        if (Math.abs(vuforiaPose.r) > 10) {
+//            throw new SomethingBadHappened("Vuforia pose is way off, pose.r=" + vuforiaPose.r);
+//        }
 
         correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
         if (vuforiaFoundSomething()) {
