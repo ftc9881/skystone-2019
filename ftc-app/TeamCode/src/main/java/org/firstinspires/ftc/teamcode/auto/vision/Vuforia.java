@@ -59,7 +59,9 @@ public class Vuforia implements VisionSystem {
     private static Vuforia instance;
 
     public static Vuforia createInstance(HardwareMap hardwareMap, CameraType cameraType) {
-        instance = new Vuforia(hardwareMap, cameraType);
+        if (instance == null) {
+            instance = new Vuforia(hardwareMap, cameraType);
+        }
         return instance;
     }
 
@@ -143,8 +145,8 @@ public class Vuforia implements VisionSystem {
     private void activateSwitchableCamera() {
 //            WebcamName activeWebcam = hardwareMap.get(WebcamName.class, cameraType.name);
 //            WebcamName inactiveWebcam = hardwareMap.get(WebcamName.class, cameraType == CameraType.FRONT_WEBCAM ? CameraType.BACK_WEBCAM.name : CameraType.FRONT_WEBCAM.name);
-//            parameters.cameraName = ClassFactory.getInstance().getCameraManager().nameForSwitchableCamera(activeWebcam, inactiveWebcam);
-//            vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
+//            parameters.cameraName = ClassFactory.createInstance().getCameraManager().nameForSwitchableCamera(activeWebcam, inactiveWebcam);
+//            vuforiaLocalizer = ClassFactory.createInstance().createVuforia(parameters);
 //            switchableCamera = (SwitchableCamera) vuforiaLocalizer.getCamera();
 //            setActiveCamera(cameraType);
     }

@@ -15,7 +15,7 @@
 			"command": "MOVE",
 			"ramp down": "1600",
 			"power": "0.5",
-			"distance": "74",
+			"distance": "30",
 			"move angle": "-160",
 			"target angle": "0",
 			"timeout": "5000"

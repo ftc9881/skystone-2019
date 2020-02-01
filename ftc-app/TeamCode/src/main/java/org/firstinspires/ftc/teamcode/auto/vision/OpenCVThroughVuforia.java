@@ -1,47 +1,34 @@
 package org.firstinspires.ftc.teamcode.auto.vision;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Environment;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.vuforia.PIXEL_FORMAT;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
-import org.firstinspires.ftc.teamcode.math.GeneralMath;
-import org.firstinspires.ftc.teamcode.robot.Robot;
-import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-import org.opencv.core.Rect;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
-import org.openftc.easyopencv.OpenCvWebcam;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
+
+import static org.firstinspires.ftc.teamcode.auto.vision.VisionSystem.CameraType.FRONT_WEBCAM;
 
 public class OpenCVThroughVuforia extends OpenCV {
 
-    VuforiaFrameQueuer queuer;
+    private Vuforia vuforia;
+    private VuforiaFrameQueuer queuer;
 
-    public static OpenCVThroughVuforia getInstance() {
-        return new OpenCVThroughVuforia();
+    public static OpenCVThroughVuforia createInstance(Configuration config, HardwareMap hardwareMap, CameraType cameraType) {
+        return new OpenCVThroughVuforia(config, hardwareMap, cameraType);
     }
 
-    private OpenCVThroughVuforia() {
-        config = new Configuration("Vision");
+    private OpenCVThroughVuforia(Configuration config, HardwareMap hardwareMap, CameraType cameraType) {
+        this.config = config;
+        vuforia = Vuforia.createInstance(hardwareMap, cameraType);
     }
 
     @Override
@@ -57,30 +44,34 @@ public class OpenCVThroughVuforia extends OpenCV {
 
     class VuforiaFrameQueuer extends Action {
 
-        private VuforiaLocalizer vuforia;
+        private VuforiaLocalizer vuforiaLocalizer;
         private BlockingQueue<VuforiaLocalizer.CloseableFrame> queue;
 
         @Override
         protected void onRun() {
-            vuforia = Vuforia.getInstance().vuforiaLocalizer;
-            vuforia.setFrameQueueCapacity(1);
-            queue = vuforia.getFrameQueue();
+            vuforiaLocalizer = vuforia.vuforiaLocalizer;
+            vuforiaLocalizer.enableConvertFrameToBitmap();
+            vuforiaLocalizer.setFrameQueueCapacity(1);
+            queue = vuforiaLocalizer.getFrameQueue();
         }
 
         @Override
-        protected void insideRun() {
-            if (!queue.isEmpty()) {
-                Mat mat = new Mat();
-                VuforiaLocalizer.CloseableFrame frame;
-                try {
-                    frame = queue.take();
-                } catch (InterruptedException e) {
-                    throw new SomethingBadHappened("OpenCVThroughVuforia: error while taking frame from queue");
-                }
-                Bitmap bitmap = vuforia.convertFrameToBitmap(frame);
-                Utils.bitmapToMat(bitmap, mat);
+        protected void insideRun() throws SomethingBadHappened {
+            VuforiaLocalizer.CloseableFrame frame;
+            try {
+                frame = queue.take();
+            } catch (InterruptedException e) {
+                throw new SomethingBadHappened("OpenCVThroughVuforia: error while taking frame from queue");
+            }
 
+            if (frame != null) {
+                Bitmap bitmap = vuforiaLocalizer.convertFrameToBitmap(frame);
+                Mat mat = new Mat();
+                Utils.bitmapToMat(bitmap, mat);
                 detector.process(mat);
+            }
+            else {
+                AutoRunner.log(":(");
             }
         }
 
@@ -91,7 +82,7 @@ public class OpenCVThroughVuforia extends OpenCV {
 
         @Override
         protected void onEndRun() {
-            vuforia.setFrameQueueCapacity(0);
+            vuforiaLocalizer.setFrameQueueCapacity(0);
         }
     }
 

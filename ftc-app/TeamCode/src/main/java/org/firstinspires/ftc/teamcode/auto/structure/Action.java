@@ -88,7 +88,7 @@ public abstract class Action implements Runnable {
                 opMode = robot.opMode;
             }
         }
-        return opMode != null && opMode.opModeIsActive();
+        return opMode != null && (!opMode.isStopRequested());
     }
 
 }

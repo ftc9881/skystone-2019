@@ -40,7 +40,7 @@ public class OpenCV implements VisionSystem {
         return new OpenCV();
     }
 
-    private OpenCV() {
+    protected OpenCV() {
         initializeCamera(cameraType);
         config = new Configuration("Vision");
     }

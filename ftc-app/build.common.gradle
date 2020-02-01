@@ -37,9 +37,10 @@ android {
     }
 
     defaultConfig {
+        signingConfig signingConfigs.debug
         applicationId 'com.qualcomm.ftcrobotcontroller'
-        minSdkVersion 24
-        targetSdkVersion 26
+        minSdkVersion 19
+        targetSdkVersion 28
 
         /**
          * We keep the versionCode and versionName of robot controller applications in sync with
@@ -77,9 +78,7 @@ android {
             // Disable debugging for release versions so it can be uploaded to Google Play.
             //debuggable true
             ndk {
-                // remove 64-bit to solve external camera error
-//                abiFilters "armeabi-v7a", "arm64-v8a"
-                abiFilters "armeabi-v7a"
+                abiFilters "armeabi-v7a"//, "arm64-v8a"
             }
         }
         debug {
@@ -87,9 +86,7 @@ android {
             jniDebuggable true
             renderscriptDebuggable true
             ndk {
-                // remove 64-bit to solve external camera error
-//                abiFilters "armeabi-v7a", "arm64-v8a"
-                abiFilters "armeabi-v7a"
+                abiFilters "armeabi-v7a"//, "arm64-v8a"
             }
         }
     }

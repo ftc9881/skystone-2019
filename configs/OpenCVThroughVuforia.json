@@ -1,0 +1,13 @@
+{
+	"crop x": "120",
+	"crop y": "140",
+	"crop w": "420",
+	"crop h": "100",
+	"std dev threshold": "100",
+	"max detection list size": "10",
+	"yellow blobbing": "300",
+	"black blobbing": "200",
+	"stone min area": "200",
+	"skystone left": "260",
+	"skystone right": "400"
+}
