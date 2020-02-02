@@ -1,21 +1,14 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.Range;
-
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
-import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.math.Angle;
+import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.GeneralMath.Conditional;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class RelativeMoveWithVuforia extends RelativeMove {
 
@@ -26,6 +19,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     private Conditional vuforiaYStopConditional;
     private double vuforiaBasePower;
     private double vuforiaCloseThreshold;
+    private double vuforiaBadRThreshold;
 
     public RelativeMoveWithVuforia(Command command) {
         super(command);
@@ -33,6 +27,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         VisionSystem.TargetType target = VisionSystem.TargetType.stringToType(command.getString("vuforia target", "PERIMETER"));
         vuforia = Vuforia.getInstance();
         vuforia.startLook(target);
+        vuforiaBadRThreshold = command.getDouble("vuforia bad r", 20);
 
         vuforiaCloseThreshold = command.getDouble("vuforia close threshold", 4);
         String vuforiaYStopConditionString = command.getString("vuforia stop when", "close");
@@ -54,7 +49,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
 
     @Override
     protected boolean runIsComplete() {
-        if (vuforiaFoundSomething()) {
+        if (shouldUseVuforia()) {
             return vuforiaYStopConditional.evaluate(vuforia.getPose().y, vuforiaTargetY, vuforiaCloseThreshold);
         }
         else {
@@ -63,23 +58,19 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     }
 
     @Override
-    protected void insideRun() throws SomethingBadHappened {
+    protected void insideRun() {
         Pose correctedDrivePose = new Pose(drivePose);
         Angle actualHeading = robot.imu.getHeading();
         Pose vuforiaPose = vuforia.getPose();
 
-//        if (Math.abs(vuforiaPose.r) > 10) {
-//            throw new SomethingBadHappened("Vuforia pose is way off, pose.r=" + vuforiaPose.r);
-//        }
-
         correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
-        if (vuforiaFoundSomething()) {
+        if (shouldUseVuforia()) {
             double vuforiaCorrectX = vuforiaXPidController.getCorrectedOutput(vuforiaPose.x);
             correctedDrivePose.x += vuforiaCorrectX;
             AutoRunner.log("VuforiaCorrectX", vuforiaCorrectX);
 
             double vuforiaCorrectY = -vuforiaYPidController.getCorrectedOutput(vuforiaPose.y);
-            correctedDrivePose.y = clipPower(vuforiaCorrectY, vuforiaBasePower);
+            correctedDrivePose.y = GeneralMath.clipPower(vuforiaCorrectY, vuforiaBasePower);
             AutoRunner.log("VuforiaCorrectY", vuforiaCorrectY);
         }
         else {
@@ -98,15 +89,13 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         AutoRunner.log("VuforiaPose", vuforiaPose);
     }
 
+    private boolean shouldUseVuforia() {
+        return vuforiaFoundSomething() && Math.abs(vuforia.getPose().r) < vuforiaBadRThreshold;
+    }
+
     private boolean vuforiaFoundSomething() {
         Pose pose = vuforia.getPose();
         return pose.x + pose.y + pose.r != 0;
-    }
-
-    private double clipPower(double power, double basePower) {
-        int sign = power < 0 ? -1 : 1;
-        double absPower = Math.abs(power);
-        return sign * Range.clip(absPower, basePower, 1.0);
     }
 
     @Override
