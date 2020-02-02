@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop.utility;
+package org.firstinspires.ftc.teamcode.teleop.utility.experimental;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -41,10 +41,10 @@ public class GamepadCombiner {
             result.right_trigger = gamepad.right_trigger > result.right_trigger ? gamepad.right_trigger : result.right_trigger;
             result.left_trigger = gamepad.left_trigger > result.left_trigger ? gamepad.left_trigger : result.left_trigger;
 
-            result.right_stick_x = Math.abs(gamepad.right_stick_x) > Math.abs(result.right_stick_x) ? Math.abs(gamepad.right_stick_x) : Math.abs(result.right_stick_x);
-            result.right_stick_y = Math.abs(gamepad.right_stick_y) > Math.abs(result.right_stick_y) ? Math.abs(gamepad.right_stick_y) : Math.abs(result.right_stick_y);
-            result.left_stick_x = Math.abs(gamepad.left_stick_x) > Math.abs(result.left_stick_x) ? Math.abs(gamepad.left_stick_x) : Math.abs(result.left_stick_x);
-            result.left_stick_y = Math.abs(gamepad.left_stick_y) > Math.abs(result.left_stick_y) ? Math.abs(gamepad.left_stick_y) : Math.abs(result.left_stick_y);
+            result.right_stick_x = Math.abs(gamepad.right_stick_x) > Math.abs(result.right_stick_x) ? gamepad.right_stick_x : result.right_stick_x;
+            result.right_stick_y = Math.abs(gamepad.right_stick_y) > Math.abs(result.right_stick_y) ? gamepad.right_stick_y : result.right_stick_y;
+            result.left_stick_x = Math.abs(gamepad.left_stick_x) > Math.abs(result.left_stick_x) ? gamepad.left_stick_x : result.left_stick_x;
+            result.left_stick_y = Math.abs(gamepad.left_stick_y) > Math.abs(result.left_stick_y) ? gamepad.left_stick_y : result.left_stick_y;
         }
         return result;
     }
