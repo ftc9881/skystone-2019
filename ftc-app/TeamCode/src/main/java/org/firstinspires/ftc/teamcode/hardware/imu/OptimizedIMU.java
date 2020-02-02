@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot.devices;
+package org.firstinspires.ftc.teamcode.hardware.imu;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxEmbeddedIMU;
@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
-import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 

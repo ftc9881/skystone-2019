@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode.sensors;
+package org.firstinspires.ftc.teamcode.hardware.sensor;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 /**
  * Created by ftc on 11/19/2017.
@@ -16,6 +18,10 @@ public class SharpDistanceSensor implements IDistanceSensor {
 
     public SharpDistanceSensor(HardwareMap hardwareMap, String name) {
         _analogInput = hardwareMap.analogInput.get(name);
+        Configuration hardwareConfig = new Configuration("HardwareConstants");
+        _a = hardwareConfig.getDouble(name + " a", _a);
+        _b = hardwareConfig.getDouble(name + " b", _b);
+        _c = hardwareConfig.getDouble(name + " c", _c);
     }
 
     public SharpDistanceSensor(HardwareMap hardwareMap, String name, double a, double b, double c) {

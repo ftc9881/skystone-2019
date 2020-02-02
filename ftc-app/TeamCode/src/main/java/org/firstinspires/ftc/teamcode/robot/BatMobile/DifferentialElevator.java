@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.robot.BatMobile;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.robot.devices.VelocityMotor;
+import org.firstinspires.ftc.teamcode.hardware.motor.VelocityMotor;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 public class DifferentialElevator {

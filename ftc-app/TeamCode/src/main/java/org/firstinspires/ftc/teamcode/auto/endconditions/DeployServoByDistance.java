@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
-import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
+import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 
 public class DeployServoByDistance extends Watcher {
 

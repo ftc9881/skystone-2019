@@ -5,8 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.math.Pose;
-import org.firstinspires.ftc.teamcode.robot.devices.CachingMotor;
-import org.firstinspires.ftc.teamcode.robot.devices.CachingServo;
+import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotor;
 
 public class DriveTrain {
 

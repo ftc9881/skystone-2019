@@ -1,22 +1,10 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.lynx.LynxEmbeddedIMU;
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.hardware.lynx.commands.core.LynxFirmwareVersionManager;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
-import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
-import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.Pose;
-import org.firstinspires.ftc.teamcode.robot.BatMobile.DifferentialElevator;
-import org.firstinspires.ftc.teamcode.robot.devices.OptimizedI2cDevice;
-import org.firstinspires.ftc.teamcode.robot.devices.OptimizedIMU;
+import org.firstinspires.ftc.teamcode.hardware.imu.OptimizedIMU;
 
 public class Robot {
 

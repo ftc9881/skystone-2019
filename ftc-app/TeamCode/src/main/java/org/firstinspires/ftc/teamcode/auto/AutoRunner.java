@@ -12,16 +12,14 @@ import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
-import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCVThroughVuforia;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
-import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.robot.Robot;
-import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
+import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 import static android.os.SystemClock.sleep;

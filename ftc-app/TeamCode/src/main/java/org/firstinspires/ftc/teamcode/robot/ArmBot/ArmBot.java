@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.robot.ArmBot;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.teamcode.robot.Intake;
 import org.firstinspires.ftc.teamcode.robot.Robot;
-import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
+import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 
 public class ArmBot extends Robot {
 

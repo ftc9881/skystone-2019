@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.robot.devices.CachingMotor;
+import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotor;
 
 public class Intake {
 

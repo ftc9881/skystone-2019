@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot.devices;
+package org.firstinspires.ftc.teamcode.hardware.imu;
 
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.lynx.commands.core.LynxFirmwareVersionManager;

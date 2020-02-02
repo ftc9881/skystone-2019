@@ -1,9 +1,7 @@
-package org.firstinspires.ftc.teamcode.robot.devices;
+package org.firstinspires.ftc.teamcode.hardware.servo;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 public class ToggleServo {

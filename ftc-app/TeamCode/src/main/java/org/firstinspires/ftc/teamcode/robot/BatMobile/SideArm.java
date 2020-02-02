@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
+import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 public class SideArm {

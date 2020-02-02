@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
-import org.firstinspires.ftc.teamcode.robot.devices.ToggleServo;
+import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOUBLE_TAP;
