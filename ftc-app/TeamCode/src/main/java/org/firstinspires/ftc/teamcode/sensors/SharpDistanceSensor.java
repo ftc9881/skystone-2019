@@ -33,7 +33,7 @@ public class SharpDistanceSensor implements IDistanceSensor {
         double voltReading = getVoltage();
 
         if(_a * voltReading - _b > 0) {
-            return (1 / (_a * voltReading - _b)) - _c;
+            return (1 / (_a * (voltReading - _b))) - _c;
         }
         else {
             return Double.NaN;
