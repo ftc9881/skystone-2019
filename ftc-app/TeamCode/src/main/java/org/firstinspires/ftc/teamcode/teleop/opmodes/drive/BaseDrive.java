@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
-@TeleOp(name = "Base Drive", group = "TeamCode")
+@TeleOp(group="Drive")
 //@Disabled
 public class BaseDrive extends TeleOpBase {
 
@@ -26,7 +26,6 @@ public class BaseDrive extends TeleOpBase {
     }
 
     protected void updateDrive() {
-        // x and y are reversed because y is forwards
         // up on the gamepad stick is negative
         drivePose.x = Math.pow(gamepad1.left_stick_x, 3);
         drivePose.y = -Math.pow(gamepad1.left_stick_y, 3);

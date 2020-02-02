@@ -15,7 +15,7 @@ import org.opencv.core.Rect;
 
 import static org.firstinspires.ftc.teamcode.auto.vision.VisionSystem.CameraType.FRONT_WEBCAM;
 
-@TeleOp
+@TeleOp(group="Test")
 //@Disabled
 public class OpenCVThroughVuforiaTest extends TeleOpBase {
 
@@ -32,6 +32,7 @@ public class OpenCVThroughVuforiaTest extends TeleOpBase {
         openCV.startLook(VisionSystem.TargetType.SKYSTONE);
 
         vuforia = Vuforia.getInstance();
+        vuforia.startLook(VisionSystem.TargetType.ALL);
     }
 
     @Override

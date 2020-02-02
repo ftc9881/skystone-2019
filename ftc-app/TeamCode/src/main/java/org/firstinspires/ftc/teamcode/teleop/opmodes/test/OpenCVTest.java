@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import org.opencv.core.Rect;
 
-@TeleOp
+@TeleOp(group="Test")
 //@Disabled
 public class OpenCVTest extends TeleOpBase {
 

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
-@TeleOp
+@TeleOp(group="Test")
 //@Disabled
 public class ServoTest extends TeleOpBase {
 

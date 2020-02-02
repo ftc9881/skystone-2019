@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.robot.ArmBot.ArmBot;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
-@TeleOp
+@TeleOp(group="Drive")
 //@Disabled
 public class ArmBotDrive extends BaseDrive {
 

@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
-@TeleOp
+@TeleOp(group="Test")
 //@Disabled
 public class VuforiaTest extends TeleOpBase {
 

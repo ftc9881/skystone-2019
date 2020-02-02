@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
-@TeleOp
+@TeleOp(group="Test")
 public class IMUTest extends BaseDrive {
 
     @Override

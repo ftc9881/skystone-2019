@@ -10,7 +10,7 @@ import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOUBLE_
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.HELD;
 
-@TeleOp
+@TeleOp(group="Drive")
 public class BatMobileDrive extends BaseDrive {
 
     private BatMobile batMobile;

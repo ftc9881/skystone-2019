@@ -13,7 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@TeleOp
+@TeleOp(group="Test")
 public class ExceptionTest extends TeleOpBase {
 
     Button throwButton = new Button();
