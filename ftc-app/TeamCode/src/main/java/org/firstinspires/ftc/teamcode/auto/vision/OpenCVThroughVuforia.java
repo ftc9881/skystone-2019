@@ -3,9 +3,12 @@ package org.firstinspires.ftc.teamcode.auto.vision;
 import android.graphics.Bitmap;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.vuforia.Frame;
+import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
@@ -57,7 +60,6 @@ public class OpenCVThroughVuforia extends OpenCV {
         @Override
         protected void onRun() {
             vuforiaLocalizer = vuforia.vuforiaLocalizer;
-            vuforiaLocalizer.enableConvertFrameToBitmap();
             vuforiaLocalizer.setFrameQueueCapacity(1);
             queue = vuforiaLocalizer.getFrameQueue();
         }
@@ -70,12 +72,8 @@ public class OpenCVThroughVuforia extends OpenCV {
             } catch (InterruptedException e) {
                 throw new SomethingBadHappened("OpenCVThroughVuforia: error while taking frame from queue");
             }
-            if (frame != null) {
-                Bitmap bitmap = vuforiaLocalizer.convertFrameToBitmap(frame);
-                Mat mat = new Mat();
-                Utils.bitmapToMat(bitmap, mat);
-                detector.process(mat);
-            }
+            Mat mat = convertFrameToMat(frame);
+            detector.process(mat);
         }
 
         @Override
@@ -86,6 +84,25 @@ public class OpenCVThroughVuforia extends OpenCV {
         @Override
         protected void onEndRun() {
             vuforiaLocalizer.setFrameQueueCapacity(0);
+        }
+
+        private Bitmap convertFrameToBitmap(Frame frame) throws SomethingBadHappened {
+            for (int i = 0; i < frame.getNumImages(); i++) {
+                Image image = frame.getImage(i);
+                if (image.getFormat() == PIXEL_FORMAT.RGB565) {
+                    Bitmap bitmap = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.RGB_565);
+                    bitmap.copyPixelsFromBuffer(image.getPixels());
+                    return bitmap;
+                }
+            }
+            throw new SomethingBadHappened("Vuforia frame is not RGB565");
+        }
+
+        private Mat convertFrameToMat(Frame frame) throws SomethingBadHappened {
+            Bitmap bitmap = convertFrameToBitmap(frame);
+            Mat mat = new Mat();
+            Utils.bitmapToMat(bitmap, mat);
+            return mat;
         }
     }
 
