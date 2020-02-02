@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
+import org.firstinspires.ftc.teamcode.auto.vision.OpenCVThroughVuforia;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
@@ -43,8 +44,6 @@ public class AutoRunner {
     private static AngleUnit angleUnit = AngleUnit.DEGREES;
     private boolean debugMode;
     private boolean stopped = false;
-
-    private VisionSystem.SkystonePosition skystonePosition = VisionSystem.SkystonePosition.CENTER;
 
     public AutoRunner(String name, LinearOpMode opMode) {
         opMode.msStuckDetectStop = 3000;
@@ -105,16 +104,10 @@ public class AutoRunner {
 
         switch (command.name) {
 
-            case "INIT VUFORIA": {
-                Vuforia.createInstance(opMode.hardwareMap, VisionSystem.CameraType.FRONT_WEBCAM);
-                break;
-            }
-
             case "IDENTIFY SKYSTONE": {
-                VisionSystem vision = command.getString("vision system", "opencv").toUpperCase().contains("VUFORIA") ? Vuforia.getInstance() : OpenCV.getInstance();
+                OpenCVThroughVuforia vision = OpenCVThroughVuforia.createInstance(config.properties, VisionSystem.CameraType.FRONT_WEBCAM);
                 vision.startLook(VisionSystem.TargetType.SKYSTONE);
-                skystonePosition = vision.identifySkystonePosition();
-                logAndTelemetry("Skystone Position", skystonePosition.name());
+                vision.startIdentifyingSkystonePosition();
                 break;
             }
 
@@ -124,7 +117,7 @@ public class AutoRunner {
                 boolean useVuforia = command.getBoolean("use vuforia", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
                 int deployClicks = command.getInt("deploy clicks", 0);
-                Action move = useVuforia ? new RelativeMoveWithVuforia(command, skystonePosition) : new RelativeMove(command, skystonePosition);
+                Action move = useVuforia ? new RelativeMoveWithVuforia(command, getSkystonePosition()) : new RelativeMove(command, getSkystonePosition());
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition);
                 if (deployArm) {
@@ -139,7 +132,7 @@ public class AutoRunner {
             }
 
             case "MOVE VUFORIA": {
-                Action relativeMoveVuforia = new RelativeMoveWithVuforia(command, skystonePosition);
+                Action relativeMoveVuforia = new RelativeMoveWithVuforia(command, getSkystonePosition());
                 runActionWithTimeout(relativeMoveVuforia, command);
                 break;
             }
@@ -198,6 +191,12 @@ public class AutoRunner {
                 break;
             }
         }
+    }
+
+    private VisionSystem.SkystonePosition getSkystonePosition() {
+        VisionSystem.SkystonePosition position = OpenCVThroughVuforia.getInstance().getSkystonePosition();
+//        return position == VisionSystem.SkystonePosition.NONE ? VisionSystem.SkystonePosition.CENTER : position;
+        return position;
     }
 
     private void runActionWithTimeout(Action action, Command command) {

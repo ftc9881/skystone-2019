@@ -61,6 +61,5 @@ public interface VisionSystem {
 
     void startLook(TargetType targetType);
     void stopLook();
-    SkystonePosition identifySkystonePosition();
 
 }

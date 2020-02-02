@@ -1,17 +1,29 @@
 {
 	"properties": {
+		"debug mode": "true",
 		"angle unit": "deg",
 
 		"move clicks error": "50",
 		"move base power": "0.05",
 		"move angle kp": "3.2",
 		"move angle ki": "0.0",
-		"move angle kd": "0.1"
+		"move angle kd": "0.1",
+
+		"crop x": "120",
+		"crop y": "140",
+		"crop w": "420",
+		"crop h": "100",
+		"std dev threshold": "100",
+		"max detection list size": "10",
+		"yellow blobbing": "300",
+		"black blobbing": "200",
+		"stone min area": "200",
+		"skystone left": "260",
+		"skystone right": "400"
 	},
 
 	"init": [
-		{ "command": "IDENTIFY SKYSTONE" },
-		{ "command": "INIT VUFORIA" }
+		{ "command": "IDENTIFY SKYSTONE" }
 	],
 
 	"commands": [

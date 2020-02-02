@@ -17,7 +17,7 @@ public class VuforiaTest extends TeleOpBase {
 
     @Override
     protected void initialize() {
-        vuforia = Vuforia.createInstance(hardwareMap, VisionSystem.CameraType.FRONT_WEBCAM);
+        vuforia = Vuforia.createInstance(VisionSystem.CameraType.FRONT_WEBCAM);
         vuforia.startLook(VisionSystem.TargetType.ALL);
         robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 

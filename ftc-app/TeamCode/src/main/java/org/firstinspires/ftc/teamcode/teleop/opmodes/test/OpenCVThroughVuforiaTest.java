@@ -28,7 +28,7 @@ public class OpenCVThroughVuforiaTest extends TeleOpBase {
         robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         Configuration config = new Configuration("OpenCVThroughVuforia");
-        openCV = OpenCVThroughVuforia.createInstance(config, hardwareMap, FRONT_WEBCAM);
+        openCV = OpenCVThroughVuforia.createInstance(config, FRONT_WEBCAM);
         openCV.startLook(VisionSystem.TargetType.SKYSTONE);
 
         vuforia = Vuforia.getInstance();

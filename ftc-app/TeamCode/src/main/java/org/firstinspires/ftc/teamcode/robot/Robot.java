@@ -32,7 +32,6 @@ public class Robot {
         return instance;
     }
 
-    private AngleUnit angleUnit = AngleUnit.DEGREES;
     public LinearOpMode opMode;
     public HardwareMap hardwareMap;
     public DriveTrain driveTrain;
@@ -48,7 +47,7 @@ public class Robot {
         opMode.msStuckDetectInitLoop = 3000;
 
         hardwareMap = opMode.hardwareMap;
-        imu = new OptimizedIMU(hardwareMap, angleUnit);
+        imu = new OptimizedIMU(hardwareMap, opMode);
 
         driveTrain = new DriveTrain(hardwareMap);
     }

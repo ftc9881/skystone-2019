@@ -20,7 +20,7 @@ public class VuforiaTwoWebcamsTest extends TeleOpBase {
 
     @Override
     protected void initialize() {
-        vuforia = Vuforia.createInstance(hardwareMap, VisionSystem.CameraType.BACK_WEBCAM);
+        vuforia = Vuforia.createInstance(VisionSystem.CameraType.BACK_WEBCAM);
         vuforia.startLook(VisionSystem.TargetType.ALL);
 
         telemetry.addData("Initialized Vuforia", "Ready to run");

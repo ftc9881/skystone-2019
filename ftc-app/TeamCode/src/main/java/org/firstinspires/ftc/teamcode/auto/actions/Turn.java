@@ -31,9 +31,8 @@ public class Turn extends Action {
 
     protected Robot robot;
     protected PIDController pidController;
+    protected double integratedDegrees;
     protected Angle turnAngle;
-    protected Angle currentAngle;
-    protected double cumulativeDegrees;
     protected double powerFactor;
     protected double basePower;
     protected Angle errorRange;
@@ -49,40 +48,25 @@ public class Turn extends Action {
 
     @Override
     protected void onRun() {
-        cumulativeDegrees = 0;
-        currentAngle = robot.imu.getHeading();
+        integratedDegrees = robot.imu.getIntegratedHeading().getDegrees();
         AutoRunner.log("AngleToTurn", turnAngle.getDegrees());
-        AutoRunner.log("CurrentAngle", currentAngle.getDegrees());
+        AutoRunner.log("CurrentAngle", integratedDegrees);
     }
 
     @Override
     protected boolean runIsComplete() {
-        double error = Math.abs(cumulativeDegrees - turnAngle.getDegrees());
+        double error = Math.abs(robot.imu.getIntegratedHeading().getDegrees() - turnAngle.getDegrees());
         return error < errorRange.getDegrees();
     }
 
     @Override
     protected void insideRun() {
-        double power = getCorrectedPower() * powerFactor;
+        double pidCorrectedPower = pidController.getCorrectedOutput(robot.imu.getIntegratedHeading().getDegrees());
+        double power = GeneralMath.clipPower(pidCorrectedPower, basePower) * powerFactor;
         robot.driveTrain.drive(new Pose(0, 0, power));
         AutoRunner.log("TurnPower", power);
-        AutoRunner.log("Angle", currentAngle.getDegrees());
-    }
-
-    private double getCorrectedPower() {
-        Angle previousAngle = currentAngle;
-        currentAngle = robot.imu.getHeading();
-        double deltaDegrees = currentAngle.getDegrees() - previousAngle.getDegrees();
-        if (deltaDegrees > 180) {
-            deltaDegrees -= 360;
-        } else if (deltaDegrees < -180) {
-            deltaDegrees += 360;
-        }
-        cumulativeDegrees += deltaDegrees;
-        double pidCorrectedPower = pidController.getCorrectedOutput(cumulativeDegrees);
-        AutoRunner.log("CumulativeDegrees", cumulativeDegrees);
         AutoRunner.log("PIDPower", pidCorrectedPower);
-        return GeneralMath.clipPower(pidCorrectedPower, basePower);
+        AutoRunner.log("IntegratedAngle", integratedDegrees);
     }
 
     @Override

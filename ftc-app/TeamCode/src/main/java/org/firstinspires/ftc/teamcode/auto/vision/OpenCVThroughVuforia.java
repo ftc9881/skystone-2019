@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
@@ -21,14 +22,20 @@ public class OpenCVThroughVuforia extends OpenCV {
 
     private Vuforia vuforia;
     private VuforiaFrameQueuer queuer;
+    private static OpenCVThroughVuforia instance;
 
-    public static OpenCVThroughVuforia createInstance(Configuration config, HardwareMap hardwareMap, CameraType cameraType) {
-        return new OpenCVThroughVuforia(config, hardwareMap, cameraType);
+    public static OpenCVThroughVuforia createInstance(Command config, CameraType cameraType) {
+        instance = new OpenCVThroughVuforia(config, cameraType);
+        return instance;
     }
 
-    private OpenCVThroughVuforia(Configuration config, HardwareMap hardwareMap, CameraType cameraType) {
+    public static OpenCVThroughVuforia getInstance() {
+        return instance;
+    }
+
+    private OpenCVThroughVuforia(Command config, CameraType cameraType) {
         this.config = config;
-        vuforia = Vuforia.createInstance(hardwareMap, cameraType);
+        vuforia = Vuforia.createInstance(cameraType);
     }
 
     @Override
@@ -63,15 +70,11 @@ public class OpenCVThroughVuforia extends OpenCV {
             } catch (InterruptedException e) {
                 throw new SomethingBadHappened("OpenCVThroughVuforia: error while taking frame from queue");
             }
-
             if (frame != null) {
                 Bitmap bitmap = vuforiaLocalizer.convertFrameToBitmap(frame);
                 Mat mat = new Mat();
                 Utils.bitmapToMat(bitmap, mat);
                 detector.process(mat);
-            }
-            else {
-                AutoRunner.log(":(");
             }
         }
 
@@ -85,6 +88,5 @@ public class OpenCVThroughVuforia extends OpenCV {
             vuforiaLocalizer.setFrameQueueCapacity(0);
         }
     }
-
 
 }

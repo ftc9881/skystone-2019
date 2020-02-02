@@ -66,7 +66,7 @@ public class ServoTest extends TeleOpBase {
     private void updateToggleServo() {
         bButton.update(gamepad1.b);
         if (bButton.is(Button.State.DOWN)) {
-            toggleServo.toggle();
+            toggleServo.toggle(ToggleServo.State.CLOSED, ToggleServo.State.REST);
         }
         telemetry.addData("ToggleState", toggleServo.getState());
     }

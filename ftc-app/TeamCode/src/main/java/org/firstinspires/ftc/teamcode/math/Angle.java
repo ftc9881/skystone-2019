@@ -13,18 +13,11 @@ public class Angle {
     }
 
     public double getRadians() {
-        return unit.toRadians(value);
+        return unit == AngleUnit.DEGREES ? value * Math.PI / 180 : value;
     }
 
     public double getDegrees() {
-        return unit.toDegrees(value);
+        return unit == AngleUnit.RADIANS ? value / Math.PI * 180 : value;
     }
 
-    public void setRadians(double radians) {
-        this.value = unit.fromRadians(radians);
-    }
-
-    public void setDegrees(double degrees) {
-        this.value = unit.fromDegrees(degrees);
-    }
 }

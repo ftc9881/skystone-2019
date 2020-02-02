@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.internal.camera.delegating.SwitchableCame
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.math.Pose;
+import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 import java.util.ArrayList;
@@ -58,9 +59,9 @@ public class Vuforia implements VisionSystem {
     private boolean initialized;
     private static Vuforia instance;
 
-    public static Vuforia createInstance(HardwareMap hardwareMap, CameraType cameraType) {
+    public static Vuforia createInstance(CameraType cameraType) {
         if (instance == null) {
-            instance = new Vuforia(hardwareMap, cameraType);
+            instance = new Vuforia(cameraType);
         }
         return instance;
     }
@@ -69,9 +70,9 @@ public class Vuforia implements VisionSystem {
         return instance;
     }
 
-    private Vuforia(HardwareMap hardwareMap, CameraType cameraType) {
+    private Vuforia(CameraType cameraType) {
         this.cameraType = cameraType;
-        this.hardwareMap = hardwareMap;
+        this.hardwareMap = Robot.getInstance().hardwareMap;
         config = new Configuration("HardwareConstants");
         cameraOffset = config.getPose(cameraType.name.toLowerCase(), 0);
 
@@ -105,13 +106,6 @@ public class Vuforia implements VisionSystem {
 
     public CameraType getCameraType() {
         return cameraType;
-    }
-
-    @Override
-    public SkystonePosition identifySkystonePosition() {
-        SkystonePosition position = SkystonePosition.NONE;
-
-        return position;
     }
 
     @Deprecated

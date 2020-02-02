@@ -8,7 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+import org.firstinspires.ftc.teamcode.auto.structure.Action;
+import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.Robot;
@@ -33,8 +36,10 @@ public class OpenCV implements VisionSystem {
     public SkystoneDetector detector;
 
     public CameraType cameraType = CameraType.FRONT_WEBCAM;
-    protected Configuration config;
+    protected Command config;
     protected OpenCvCamera openCvCamera;
+
+    private PositionDeterminer positionDeterminer;
 
     public static OpenCV getInstance() {
         return new OpenCV();
@@ -107,49 +112,88 @@ public class OpenCV implements VisionSystem {
     }
 
 
-    @Override
-    public SkystonePosition identifySkystonePosition() {
-        Configuration config = new Configuration("Vision");
-        LinearOpMode opMode = Robot.getInstance().opMode;
+    public void startIdentifyingSkystonePosition() {
+        positionDeterminer = new PositionDeterminer();
+        positionDeterminer.start();
+    }
 
-        int skystoneLeftBound = config.getInt("skystone left", 0);
-        int skystoneRightBound = config.getInt("skystone right", 0);
-        int listSize = config.getInt("list size", 10);
-        int centerX = 0;
-        List<Number> foundPositions = new ArrayList<>();
+    public SkystonePosition getSkystonePosition() {
+        return positionDeterminer != null ? positionDeterminer.getPosition() : SkystonePosition.NONE;
+    }
 
-        while (!opMode.isStopRequested() && !opMode.isStarted() && centerX == 0) {
+    public void writeCurrentImage() {
+        Mat mat = detector.getRenderMat(1);
+        if (mat != null && !mat.empty()) {
+            Mat newMat = new Mat();
+            SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy_HH:mm:ss.SSS");
+            Date date = new Date(System.currentTimeMillis());
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + formatter.format(date) + ".png";
+            Imgproc.cvtColor(mat, newMat, Imgproc.COLOR_BGR2RGB);
+            boolean success = Imgcodecs.imwrite(path, newMat);
+            AutoRunner.log("OpenCV", success);
+            AutoRunner.log("OpenCV", "Wrote image " + path);
+        } else {
+            AutoRunner.log("OpenCV", "Detector did not have image to write");
+        }
+
+
+    }
+
+
+    class PositionDeterminer extends Action {
+        SkystonePosition position;
+        int skystoneLeftBound;
+        int skystoneRightBound;
+        int listSize;
+        int centerX;
+        List<Number> foundPositions;
+
+        public SkystonePosition getPosition() {
+            return position;
+        }
+
+        @Override
+        protected void onRun() {
+            position = SkystonePosition.NONE;
+            skystoneLeftBound = config.getInt("skystone left", 0);
+            skystoneRightBound = config.getInt("skystone right", 0);
+            listSize = config.getInt("list size", 4);
+            foundPositions = new ArrayList<>();
+            centerX = 0;
+        }
+
+        @Override
+        protected void insideRun() {
             Rect foundRect = detector.foundRectangle();
             centerX = foundRect.x + foundRect.width / 2;
             if (foundPositions.size() >= listSize) {
                 foundPositions.remove(0);
             }
             foundPositions.add(centerX);
+
+            int averageCenterX = (int) GeneralMath.mean(foundPositions);
+            if (averageCenterX < skystoneLeftBound) {
+                position = VisionSystem.SkystonePosition.LEFT;
+            } else if (averageCenterX > skystoneRightBound) {
+                position = VisionSystem.SkystonePosition.RIGHT;
+            } else {
+                position = VisionSystem.SkystonePosition.CENTER;
+            }
+
+            opMode.telemetry.addData("Skystone Position", position);
+            opMode.telemetry.update();
         }
 
-        // Debug
-        writeCurrentImage();
-
-        int averageCenterX = (int) GeneralMath.mean(foundPositions);
-        AutoRunner.log("Mean", averageCenterX);
-        if (averageCenterX < skystoneLeftBound) {
-            return VisionSystem.SkystonePosition.LEFT;
-        } else if (averageCenterX > skystoneRightBound) {
-            return VisionSystem.SkystonePosition.RIGHT;
+        @Override
+        protected boolean runIsComplete() {
+            return opMode.isStarted();
         }
-        return VisionSystem.SkystonePosition.CENTER;
-    }
 
-    public void writeCurrentImage() {
-        Mat mat = detector.getRenderMat(1);
-        Mat newMat = new Mat();
-        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy_HH:mm:ss.SSS");
-        Date date = new Date(System.currentTimeMillis());
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + formatter.format(date) + ".png";
-        Imgproc.cvtColor(mat, newMat, Imgproc.COLOR_BGR2RGB);
-        boolean success = Imgcodecs.imwrite(path, newMat);
-        AutoRunner.log("OpenCV", success);
-        AutoRunner.log("OpenCV", "Wrote image " + path);
+        @Override
+        protected void onEndRun() {
+            writeCurrentImage();
+        }
+
     }
 
 }
