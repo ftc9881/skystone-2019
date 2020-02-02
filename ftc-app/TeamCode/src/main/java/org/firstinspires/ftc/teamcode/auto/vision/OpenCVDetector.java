@@ -27,10 +27,6 @@ public abstract class OpenCVDetector extends OpenCvPipeline {
     protected Stage stageToRenderToViewport = Stage.FINAL_DISPLAY;
     private Stage[] stages = Stage.values();
 
-    public boolean isDetected(){
-        return found;
-    }
-
     @Override
     public final Mat processFrame(Mat input) {
         input.copyTo(workingMat);
@@ -44,12 +40,9 @@ public abstract class OpenCVDetector extends OpenCvPipeline {
     @Override
     public void onViewportTapped()
     {
-        int currentStageNum = stageToRenderToViewport.ordinal();
-        int nextStageNum = currentStageNum + 1;
-        if (nextStageNum >= stages.length) {
-            nextStageNum = 0;
-        }
-        stageToRenderToViewport = stages[nextStageNum];
+        int current = stageToRenderToViewport.ordinal();
+        int next = current + 1 >= stages.length ? 0 : current + 1;
+        stageToRenderToViewport = stages[next];
     }
 
 }
