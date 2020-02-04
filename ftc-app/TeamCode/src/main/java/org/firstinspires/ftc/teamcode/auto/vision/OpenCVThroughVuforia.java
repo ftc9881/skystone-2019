@@ -60,6 +60,7 @@ public class OpenCVThroughVuforia extends OpenCV {
         @Override
         protected void onRun() {
             vuforiaLocalizer = vuforia.vuforiaLocalizer;
+            com.vuforia.Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
             vuforiaLocalizer.setFrameQueueCapacity(1);
             queue = vuforiaLocalizer.getFrameQueue();
         }
@@ -86,19 +87,20 @@ public class OpenCVThroughVuforia extends OpenCV {
             vuforiaLocalizer.setFrameQueueCapacity(0);
         }
 
-        private Bitmap convertFrameToBitmap(Frame frame) throws SomethingBadHappened {
+        private Bitmap convertFrameToBitmap(VuforiaLocalizer.CloseableFrame frame) throws SomethingBadHappened {
             for (int i = 0; i < frame.getNumImages(); i++) {
                 Image image = frame.getImage(i);
                 if (image.getFormat() == PIXEL_FORMAT.RGB565) {
                     Bitmap bitmap = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.RGB_565);
                     bitmap.copyPixelsFromBuffer(image.getPixels());
+                    frame.close();
                     return bitmap;
                 }
             }
             throw new SomethingBadHappened("Vuforia frame is not RGB565");
         }
 
-        private Mat convertFrameToMat(Frame frame) throws SomethingBadHappened {
+        private Mat convertFrameToMat(VuforiaLocalizer.CloseableFrame frame) throws SomethingBadHappened {
             Bitmap bitmap = convertFrameToBitmap(frame);
             Mat mat = new Mat();
             Utils.bitmapToMat(bitmap, mat);

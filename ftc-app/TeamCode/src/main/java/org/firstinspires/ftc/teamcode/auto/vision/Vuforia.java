@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.auto.vision;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.SwitchableCamera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -12,8 +10,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.internal.camera.delegating.SwitchableCameraName;
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
@@ -60,9 +56,7 @@ public class Vuforia implements VisionSystem {
     private static Vuforia instance;
 
     public static Vuforia createInstance(CameraType cameraType) {
-        if (instance == null) {
-            instance = new Vuforia(cameraType);
-        }
+        instance = new Vuforia(cameraType);
         return instance;
     }
 
@@ -84,13 +78,13 @@ public class Vuforia implements VisionSystem {
         loadTrackables();
         orientTrackablesAtZero();
         applyCameraOrientation();
-        AutoRunner.log("Vuforia", "Initialization complete");
         initialized = true;
     }
 
     @Override
     public void startLook(TargetType target) {
         lastPose = new Pose();
+        trackables.activate();
         lookAction = new LookAction(target);
         lookAction.start();
     }
@@ -98,6 +92,7 @@ public class Vuforia implements VisionSystem {
     @Override
     public void stopLook() {
         lookAction.stop();
+        trackables.deactivate();
     }
 
     public Pose getPose() {
@@ -204,7 +199,6 @@ public class Vuforia implements VisionSystem {
 
         @Override
         protected void onRun() {
-            trackables.activate();
             targetVisible = false;
             lastLocation = null;
             targetTrackables = getTargetTrackables();
@@ -230,7 +224,7 @@ public class Vuforia implements VisionSystem {
 
         @Override
         protected void onEndRun() {
-            trackables.deactivate();
+
         }
 
         private void setLastPose() {

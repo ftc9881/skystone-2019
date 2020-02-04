@@ -68,12 +68,19 @@ public class AutoRunner {
 
     public void run() {
         for (Command command : config.commands) {
-            logAndTelemetry(TAG, "Command: " + command.name);
             if (shouldStop()) {
                 logAndTelemetry(TAG, "STOPPING...");
                 return;
             }
+            logAndTelemetry(TAG, "Command: " + command.name);
             execute(command);
+
+            log("in AutoRunner");
+            log("lf power", robot.driveTrain.lf.getPower());
+            log("rf power", robot.driveTrain.rf.getPower());
+            log("lb power", robot.driveTrain.lb.getPower());
+            log("rb power", robot.driveTrain.rb.getPower());
+            robot.driveTrain.stop();
 
             waitIfDebugMode();
         }
@@ -192,8 +199,8 @@ public class AutoRunner {
     }
 
     private VisionSystem.SkystonePosition getSkystonePosition() {
-        VisionSystem.SkystonePosition position = OpenCVThroughVuforia.getInstance().getSkystonePosition();
-//        return position == VisionSystem.SkystonePosition.NONE ? VisionSystem.SkystonePosition.CENTER : position;
+        OpenCVThroughVuforia vision = OpenCVThroughVuforia.getInstance();
+        VisionSystem.SkystonePosition position = vision != null ? vision.getSkystonePosition() : VisionSystem.SkystonePosition.NONE;
         return position;
     }
 
@@ -203,21 +210,28 @@ public class AutoRunner {
         runActionWithCondition(action, timeoutCondition);
     }
 
+//    private void runActionWithCondition(Action action, IEndCondition endCondition) {
+//        action.start();
+//        endCondition.start();
+//
+//        // If end condition completes before action, then action is stopped.
+//        // If action completes before end condition, then complete.
+//        while (!action.isStopped() && !endCondition.isTrue()) {
+//            sleep(SLEEP_LOOP_TIME);
+//        }
+//
+//        action.stop();
+//        endCondition.stop();
+//
+//        log(TAG, "Run task completed");
+//    }
+
     private void runActionWithCondition(Action action, IEndCondition endCondition) {
-        action.start();
-        endCondition.start();
-
-        // If end condition completes before action, then action is stopped.
-        // If action completes before end condition, then complete.
-        while (!action.isStopped() && !endCondition.isTrue()) {
-            sleep(SLEEP_LOOP_TIME);
-        }
-
-        action.stop();
-        endCondition.stop();
-
+        action.runSynchronized(endCondition);
         log(TAG, "Run task completed");
     }
+
+
 
     private void waitUntilButtonPressed() {
         Button button = new Button();

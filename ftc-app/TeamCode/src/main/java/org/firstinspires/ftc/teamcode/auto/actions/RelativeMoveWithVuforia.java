@@ -23,6 +23,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
 
     public RelativeMoveWithVuforia(Command command) {
         super(command);
+        tag = "RelativeMoveWithVuforia";
 
         VisionSystem.TargetType target = VisionSystem.TargetType.stringToType(command.getString("vuforia target", "PERIMETER"));
         vuforia = Vuforia.getInstance();
@@ -69,8 +70,8 @@ public class RelativeMoveWithVuforia extends RelativeMove {
             correctedDrivePose.x += vuforiaCorrectX;
             AutoRunner.log("VuforiaCorrectX", vuforiaCorrectX);
 
-            double vuforiaCorrectY = -vuforiaYPidController.getCorrectedOutput(vuforiaPose.y);
-            correctedDrivePose.y = GeneralMath.clipPower(vuforiaCorrectY, vuforiaBasePower);
+            double vuforiaCorrectY = vuforiaYPidController.getCorrectedOutput(vuforiaPose.y);
+            correctedDrivePose.y *= GeneralMath.clipPower(vuforiaCorrectY, vuforiaBasePower);
             AutoRunner.log("VuforiaCorrectY", vuforiaCorrectY);
         }
         else {
@@ -101,8 +102,9 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     @Override
     protected void onEndRun() {
         AutoRunner.log("MoveVuforia", "onEndRun");
-        robot.driveTrain.stop();
         vuforia.stopLook();
+        robot.driveTrain.stop();
+        AutoRunner.log("MoveVuforia", "Stop");
     }
 
 }

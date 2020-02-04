@@ -39,7 +39,7 @@ public class OptimizedIMU {
     }
 
     public Angle getHeading() {
-        return new Angle(AngleUnit.normalizeDegrees(-getIntegratedHeading().getDegrees()), AngleUnit.DEGREES);
+        return new Angle(AngleUnit.normalizeDegrees(getIntegratedHeading().getDegrees()), AngleUnit.DEGREES);
     }
 
     public Angle getIntegratedHeading() {

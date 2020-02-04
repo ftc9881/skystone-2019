@@ -1,100 +1,92 @@
 {
 	"properties": {
 		"debug mode": "true",
-		"angle unit": "deg"
+		"angle unit": "deg",
+
+		"move clicks error": "50",
+		"move base power": "0.05",
+		"move angle kp": "3.2",
+		"move angle ki": "0.0",
+		"move angle kd": "0.1",
+
+		"crop x": "120",
+		"crop y": "140",
+		"crop w": "420",
+		"crop h": "100",
+		"std dev threshold": "100",
+		"max detection list size": "10",
+		"yellow blobbing": "300",
+		"black blobbing": "200",
+		"stone min area": "200",
+		"skystone left": "260",
+		"skystone right": "400"
 	},
 
 	"init": [
-		{ "command": "skip IDENTIFY SKYSTONE" },
-		{ "command": "skip INIT VUFORIA" }
+		{ "command": "skip IDENTIFY SKYSTONE" }
 	],
 
 	"commands": [
-{
-"comment": "move to next to foundation",
-			"command": "MOVE",
-			"ramp down": "1600",
-			"power": "0.5",
-			"distance": "30",
-			"move angle": "-160",
-			"target angle": "0",
-			"timeout": "5000"
-		},
-
 
 		{
-"comment": "Moves forwards",
 			"command": "MOVE",
-			"power": "0.4",
-			"distance": "7",
-			"move angle": "0",
 			"target angle": "0",
-			"timeout": "5000"
-		},
-
-		{
-"comment": "turn so side arm faces stones",
-			"command": "TURN",
-			"power": "1.0",
-			"angle": "-90",
-			"error": "1",
-			"base power": "0.1",
-			"kp": "0.02",
-			"ki": "0",
-			"kd": "0.001",
-			"timeout": "10000"
+			"move angle": "0",
+			"distance":"10",
+			"timeout": "1500",
+			"power": "0.3"
 		},
 {
-"comment": "Moves forwards",
 			"command": "MOVE",
-			"power": "0.4",
-			"distance": "7",
-			"move angle": "0",
 			"target angle": "0",
-			"timeout": "5000"
-		},
-
-
-		{
-"comment": "strafe torwards foundation",
-			"command": "MOVE",
-			"target angle": "-91",
-			"move angle": "0",
-			"power": "0.4",
-			"distance": "-7",
-			"timeout": "3000"
-		},
-{
-"comment": "strafe torwards foundation",
-			"command": "MOVE",
-			"target angle": "-91",
 			"move angle": "90",
-			"power": "0.4",
-			"distance": "-7",
-			"timeout": "3000"
+			"distance":"10",
+			"timeout": "1500",
+			"power": "0.3"
 		},
 {
-"comment": "strafe torwards foundation",
 			"command": "MOVE",
-			"target angle": "-91",
+			"target angle": "0",
 			"move angle": "180",
-			"power": "0.4",
-			"distance": "-7",
-			"timeout": "3000"
+			"distance":"10",
+			"timeout": "1500",
+			"power": "0.3"
 		},
+
 {
-"comment": "strafe torwards foundation",
 			"command": "MOVE",
-			"target angle": "-91",
+			"target angle": "0",
 			"move angle": "-90",
-			"power": "0.4",
-			"distance": "-7",
-			"timeout": "3000"
+			"distance":"10",
+			"timeout": "1500",
+			"power": "0.3"
 		},
 
 
 
 
+
+
+{
+"comment": "line up with desired skystone",
+			"command": "MOVE",
+			"target angle": "0",
+			"distance stone l": "6",
+			"distance stone c": "-2.2",
+			"distance stone r": "-6",
+			"use vuforia": "true",
+				"vuforia x": "0",
+				"vuforia y kp": "0.014",
+				"vuforia y kd": "0.00004",
+				"vuforia y stone l": "28",
+				"vuforia y stone c": "36",
+				"vuforia y stone r": "44",
+				"vuforia stop when": "close",
+				"vuforia close threshold": "0.2",
+			"base power": "0.08",
+			"timeout": "10000",
+			"power": "0.5"
+		},
 
 
 		

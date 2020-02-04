@@ -41,6 +41,7 @@ public class RelativeMove extends Action {
     protected boolean useTargetAngle;
 
     public RelativeMove(Command command) {
+        tag = "RelativeMove";
         robot = Robot.getInstance();
         moveAngle = command.getAngle("move angle", 0);
         targetAngle = command.getAngle("target angle", 0);
@@ -127,7 +128,6 @@ public class RelativeMove extends Action {
 
     @Override
     protected void onEndRun() {
-        AutoRunner.log("Move", "onEndRun");
         robot.driveTrain.stop();
     }
 

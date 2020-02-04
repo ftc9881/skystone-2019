@@ -7,17 +7,15 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static android.os.SystemClock.sleep;
-
 public abstract class Action implements Runnable {
 
-    private static final String TAG = "Action";
     private static final long SLEEP_INTERVAL = 10;
 
     private Thread thread;
     private AtomicBoolean running = new AtomicBoolean(false);
     private AtomicBoolean stopped = new AtomicBoolean(true);
 
+    protected String tag = "Action";
     protected LinearOpMode opMode;
 
     protected abstract void onRun();
@@ -26,8 +24,7 @@ public abstract class Action implements Runnable {
     protected abstract boolean runIsComplete();
 
     public void start() {
-        running.set(true);
-        stopped.set(false);
+        internalStart();
         thread = new Thread(this);
         thread.start();
     }
@@ -37,36 +34,42 @@ public abstract class Action implements Runnable {
         onRun();
 
         while (opModeIsActive() && isRunning() && !runIsComplete()) {
-            try {
-                Thread.sleep(SLEEP_INTERVAL);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                AutoRunner.log(TAG, "Action thread was interrupted");
-                internalStop();
-                return;
-            }
 
             try {
                 insideRun();
             } catch (SomethingBadHappened x) {
                 opMode.requestOpModeStop();
             }
+
+            try {
+                Thread.sleep(SLEEP_INTERVAL);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                AutoRunner.log(tag, "Action thread was interrupted");
+                break;
+            }
+
         }
 
         internalStop();
-        AutoRunner.log(TAG, "Completed");
+//        notify();
+        AutoRunner.log(tag, "Completed");
     }
 
     public void stop() {
-        AutoRunner.log(TAG, "Stop");
+        AutoRunner.log(tag, "Stop");
         thread.interrupt();
+    }
+
+    private void internalStart() {
+        running.set(true);
+        stopped.set(false);
     }
 
     private void internalStop() {
         running.set(false);
         stopped.set(true);
         onEndRun();
-        notify();
     }
 
     public boolean isRunning() {
@@ -82,6 +85,24 @@ public abstract class Action implements Runnable {
             opMode = Robot.getInstance().opMode;
         }
         return !opMode.isStopRequested();
+    }
+
+    public void runSynchronized(IEndCondition condition) {
+        onRun();
+        condition.start();
+        AutoRunner.log("opmodeactive", opModeIsActive());
+        AutoRunner.log("runComplete", runIsComplete());
+        AutoRunner.log("condition", condition.isTrue());
+        while (opModeIsActive() && !runIsComplete() && !condition.isTrue()) {
+            try {
+                insideRun();
+            } catch (SomethingBadHappened x) {
+                opMode.requestOpModeStop();
+            }
+        }
+        condition.stop();
+        onEndRun();
+        AutoRunner.log(tag, "Completed");
     }
 
 }

@@ -4,21 +4,27 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotor;
 
 public class DriveTrain {
 
-    public CachingMotor lf;
-    public CachingMotor rf;
-    public CachingMotor lb;
-    public CachingMotor rb;
+    public DcMotor lf;
+    public DcMotor rf;
+    public DcMotor lb;
+    public DcMotor rb;
 
     public DriveTrain(HardwareMap hardwareMap) {
         lf = new CachingMotor(hardwareMap, "lf");
         rf = new CachingMotor(hardwareMap, "rf");
         lb = new CachingMotor(hardwareMap, "lb");
         rb = new CachingMotor(hardwareMap, "rb");
+//        lf = hardwareMap.dcMotor.get("lf");
+//        rf = hardwareMap.dcMotor.get("rf");
+//        lb = hardwareMap.dcMotor.get("lb");
+//        rb = hardwareMap.dcMotor.get("rb");
+
 
         lf.setDirection(DcMotor.Direction.FORWARD);
         rf.setDirection(DcMotor.Direction.REVERSE);
@@ -53,6 +59,7 @@ public class DriveTrain {
         double lbp = Range.clip(pose.y + pose.r - pose.x, -1.0, 1.0);
         double rbp = Range.clip(pose.y - pose.r + pose.x, -1.0, 1.0);
 
+        AutoRunner.log("DriveTrain", "setPower");
         lf.setPower(lfp * powerFactor);
         rf.setPower(rfp * powerFactor);
         lb.setPower(lbp * powerFactor);

@@ -5,12 +5,16 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+
 public class CachingMotor implements DcMotor {
     private DcMotor delegate;
     private double cachedPower;
+    private String name;
 
     public CachingMotor(HardwareMap hardwareMap, String name) {
         this(hardwareMap.dcMotor.get(name));
+        this.name = name;
     }
 
     public CachingMotor(DcMotor delegate) {
@@ -99,9 +103,11 @@ public class CachingMotor implements DcMotor {
     }
 
     @Override
-    public void setPower(double power) {
+    public synchronized void setPower(double power) {
         if (power != cachedPower) {
+            AutoRunner.log(name, "set power to " + power);
             delegate.setPower(power);
+            AutoRunner.log(name, delegate.getPower());
             cachedPower = power;
         }
     }
