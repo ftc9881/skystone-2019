@@ -2,24 +2,17 @@ package org.firstinspires.ftc.teamcode.auto.vision;
 
 import android.graphics.Bitmap;
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.vuforia.Frame;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
-import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
 import java.util.concurrent.BlockingQueue;
-
-import static org.firstinspires.ftc.teamcode.auto.vision.VisionSystem.CameraType.FRONT_WEBCAM;
 
 public class OpenCVThroughVuforia extends OpenCV {
 
@@ -73,8 +66,10 @@ public class OpenCVThroughVuforia extends OpenCV {
             } catch (InterruptedException e) {
                 throw new SomethingBadHappened("OpenCVThroughVuforia: error while taking frame from queue");
             }
-            Mat mat = convertFrameToMat(frame);
-            detector.process(mat);
+            if (frame.getNumImages() > 0) {
+                Mat mat = convertFrameToMat(frame);
+                detector.process(mat);
+            }
         }
 
         @Override

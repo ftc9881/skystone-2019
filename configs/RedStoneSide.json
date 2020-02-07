@@ -23,14 +23,18 @@
 	},
 
 	"init": [
-		{ "command": "IDENTIFY SKYSTONE" }
-	],
-
-	"commands": [
 		{ 
 			"command": "PIVOT",
 			"state": "CLOSED"
 		},
+		{ 
+			"command": "CLAW",
+			"state": "REST"
+		},
+		{ "command": "IDENTIFY SKYSTONE" }
+	],
+
+	"commands": [
 		{
 "comment": "Moves forwards",
 			"command": "MOVE",
@@ -51,9 +55,10 @@
 			"ki": "0",
 			"kd": "0.001",
 			"deploy arm": "true",
-				"deploy clicks": "200",
 				"pivot state": "open",
+				"pivot deploy clicks": "200",
 				"claw state": "open",
+				"claw deploy clicks": "200",
 			"timeout": "1000"
 		},
 		{ 
@@ -73,15 +78,17 @@
 			"distance stone r": "-6",
 			"use vuforia": "true",
 				"vuforia x": "0",
-				"vuforia y kp": "0.014",
+				"vuforia x kp": "0.1",
+				"vuforia x kd": "0.0001",
+				"vuforia y kp": "0.025",
 				"vuforia y kd": "0.00004",
 				"vuforia y stone l": "28",
 				"vuforia y stone c": "36",
 				"vuforia y stone r": "44",
 				"vuforia stop when": "close",
-				"vuforia close threshold": "0.2",
-			"base power": "0.08",
-			"timeout": "1500",
+				"vuforia close threshold": "0.1",
+			"base power": "0.1",
+			"timeout": "5000",
 			"power": "1.0"
 		},
 		{ 
@@ -98,20 +105,24 @@
 		{ 
 			"command": "SLEEP", "time":"100" 
 		},
+
+		{ "command": "BREAKPOINT" },
+
 		{
 "comment": "move to next to foundation",
 			"command": "MOVE",
 			"deploy arm": "true",
-				"deploy clicks": "3200",
 				"pivot state": "open",
+				"pivot deploy clicks": "3200",
 				"claw state": "open",
+				"claw deploy clicks": "3400",
 			"ramp down": "1600",
 			"power": "1.0",
 			"distance": "74",
 			"distance stone l": "-80",
 			"distance stone c": "-85",
 			"distance stone r": "-70",
-			"move angle": "-170",
+			"move angle": "-175",
 			"target angle": "-90",
 			"timeout": "5000"
 		},
@@ -131,21 +142,22 @@
 "comment": "move to second skystone",
 			"command": "MOVE",
 			"use vuforia": "true",
-				"vuforia x kp": "0.1",
 				"vuforia x": "0",
-				"vuforia y kp": "0.014",
+				"vuforia x kp": "0.1",
+				"vuforia y kp": "0.025",
 				"vuforia y kd": "0.00004",
-				"vuforia y stone l": "5.3",
+				"vuforia y stone l": "5.2",
 				"vuforia y stone c": "13",
 				"vuforia y stone r": "20",
 				"vuforia stop when": "close",
-				"vuforia close threshold": "0.2",
+				"vuforia close threshold": "0.1",
 			"deploy arm": "true",
-				"deploy clicks": "3300",
 				"pivot state": "open",
+				"pivot deploy clicks": "3300",
 				"claw state": "open",
+				"claw deploy clicks": "3300",
 			"power": "1.0",
-			"base power": "0.1",
+			"base power": "0.08",
 			"distance stone l": "100",
 			"distance stone c": "105",
 			"distance stone r": "110",
@@ -170,15 +182,16 @@
 "comment": "move to next to foundation second time",
 			"command": "MOVE",
 			"deploy arm": "true",
-				"deploy clicks": "3200",
 				"pivot state": "open",
+				"pivot deploy clicks": "3200",
 				"claw state": "open",
+				"claw deploy clicks": "3400",
 			"distance stone l": "90",
 			"distance stone c": "82",
 			"distance stone r": "77",
 			"ramp down": "1600",
 			"power": "1.0",
-			"move angle": "-170",
+			"move angle": "-175",
 			"target angle": "-90",
 			"timeout": "5000"
 		},
@@ -186,8 +199,8 @@
 "comment": "strafe torwards foundation",
 			"command": "MOVE",
 			"deploy arm": "true",
-				"deploy clicks": "500",
 				"pivot state": "rest",
+				"pivot deploy clicks": "500",
 			"target angle": "-90",
 			"move angle": "90",
 			"power": "0.4",
@@ -198,13 +211,15 @@
 			"command": "CLAW",
 			"state": "open"
 		},
+
+		{ "command": "BREAKPOINT" },
 		
 		{
 "comment": "drag foundation into build zone (high power)",
 			"command": "MOVE",
 			"deploy arm": "true",
-				"deploy clicks": "10",
 				"claw state": "closed",
+				"claw deploy clicks": "10",
 			"target angle": "-90",
 			"move angle": "-90",
 			"power": "1.0",

@@ -10,7 +10,10 @@ import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
-public class RelativeMoveWithVuforia extends RelativeMove {
+import java.util.ArrayList;
+import java.util.List;
+
+public class RelativeMoveWithVuforiaInterpolated extends RelativeMove {
 
     private PIDController vuforiaXPidController;
     private PIDController vuforiaYPidController;
@@ -23,7 +26,10 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     private Pose previousCorrectedDrivePose;
     private Pose vuforiaPose;
 
-    public RelativeMoveWithVuforia(Command command) {
+    private List<Double> vuforiaYList;
+    private List<Integer> clicksList;
+
+    public RelativeMoveWithVuforiaInterpolated(Command command) {
         super(command);
         tag = "RelativeMoveWithVuforia";
 
@@ -45,11 +51,18 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         previousCorrectedDrivePose = drivePose;
     }
 
-    public RelativeMoveWithVuforia(Command command, VisionSystem.SkystonePosition skystonePosition) {
+    public RelativeMoveWithVuforiaInterpolated(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
         distance = command.getDouble("distance " + skystonePosition.key, distance);
         vuforiaTargetY = command.getDouble("vuforia y " + skystonePosition.key, vuforiaTargetY);
         vuforiaYPidController = new PIDController(command, "vuforia y", vuforiaTargetY);
+    }
+
+    @Override
+    protected void onRun() {
+        super.onRun();
+        vuforiaYList = new ArrayList<>();
+        clicksList = new ArrayList<>();
     }
 
     @Override
@@ -70,6 +83,9 @@ public class RelativeMoveWithVuforia extends RelativeMove {
 
         correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
         if (shouldUseVuforia()) {
+            vuforiaYList.add(vuforiaPose.y);
+            clicksList.add(robot.driveTrain.rb.getCurrentPosition());
+            
             double vuforiaCorrectX;
             double vuforiaCorrectY;
             if (vuforiaPose.y > 0) {

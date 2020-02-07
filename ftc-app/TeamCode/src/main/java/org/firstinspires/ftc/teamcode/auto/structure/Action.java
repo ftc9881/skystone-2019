@@ -7,13 +7,14 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static android.os.SystemClock.sleep;
+
 public abstract class Action implements Runnable {
 
     private static final long SLEEP_INTERVAL = 10;
 
     private Thread thread;
     private AtomicBoolean running = new AtomicBoolean(false);
-    private AtomicBoolean stopped = new AtomicBoolean(true);
 
     protected String tag = "Action";
     protected LinearOpMode opMode;
@@ -63,21 +64,15 @@ public abstract class Action implements Runnable {
 
     private void internalStart() {
         running.set(true);
-        stopped.set(false);
     }
 
     private void internalStop() {
         running.set(false);
-        stopped.set(true);
         onEndRun();
     }
 
     public boolean isRunning() {
         return running.get();
-    }
-
-    public boolean isStopped() {
-        return stopped.get();
     }
 
     private boolean opModeIsActive() {
@@ -88,21 +83,20 @@ public abstract class Action implements Runnable {
     }
 
     public void runSynchronized(IEndCondition condition) {
+        AutoRunner.log(tag, "START");
         onRun();
         condition.start();
-        AutoRunner.log("opmodeactive", opModeIsActive());
-        AutoRunner.log("runComplete", runIsComplete());
-        AutoRunner.log("condition", condition.isTrue());
         while (opModeIsActive() && !runIsComplete() && !condition.isTrue()) {
             try {
                 insideRun();
+                sleep(SLEEP_INTERVAL);
             } catch (SomethingBadHappened x) {
                 opMode.requestOpModeStop();
             }
         }
         condition.stop();
         onEndRun();
-        AutoRunner.log(tag, "Completed");
+        AutoRunner.log(tag, "FINISH");
     }
 
 }

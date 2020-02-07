@@ -33,7 +33,6 @@ public class AutoRunner {
 
     private static final String TAG_PREFIX = "TeamCode@";
     private static final String TAG = "AutoRunner";
-    private static final long SLEEP_LOOP_TIME = 20;
 
     private AutoOpConfiguration config;
     private LinearOpMode opMode;
@@ -53,6 +52,7 @@ public class AutoRunner {
         debugMode = config.properties.getBoolean("debug mode", false);
 
         robot = Robot.newInstance(opMode);
+        robot.initializeIMU();
 
         for (Command command : config.initCommands) {
             logAndTelemetry(TAG, "Init Command: " + command.name);
@@ -75,11 +75,6 @@ public class AutoRunner {
             logAndTelemetry(TAG, "Command: " + command.name);
             execute(command);
 
-            log("in AutoRunner");
-            log("lf power", robot.driveTrain.lf.getPower());
-            log("rf power", robot.driveTrain.rf.getPower());
-            log("lb power", robot.driveTrain.lb.getPower());
-            log("rb power", robot.driveTrain.rb.getPower());
             robot.driveTrain.stop();
 
             waitIfDebugMode();
@@ -121,18 +116,19 @@ public class AutoRunner {
                 boolean deployArm = command.getBoolean("deploy arm", false);
                 boolean useVuforia = command.getBoolean("use vuforia", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
-                int deployClicks = command.getInt("deploy clicks", 0);
                 Action move = useVuforia ? new RelativeMoveWithVuforia(command, getSkystonePosition()) : new RelativeMove(command, getSkystonePosition());
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition);
                 if (deployArm) {
                     String pivotState = command.getString("pivot state", batMobile.sideArm.pivot.getState().name());
                     String clawState = command.getString("claw state", batMobile.sideArm.claw.getState().name());
-                    Watcher deployPivot = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(pivotState), robot.driveTrain.rf, deployClicks);
-                    Watcher deployClaw = new DeployServoByDistance(batMobile.sideArm.claw, ToggleServo.stringToState(clawState), robot.driveTrain.rf, deployClicks);
+                    int pivotDeployClicks = command.getInt("pivot deploy clicks", 0);
+                    int clawDeployClicks = command.getInt("claw deploy clicks", 0);
+                    Watcher deployPivot = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(pivotState), robot.driveTrain.rf, pivotDeployClicks);
+                    Watcher deployClaw = new DeployServoByDistance(batMobile.sideArm.claw, ToggleServo.stringToState(clawState), robot.driveTrain.rf, clawDeployClicks);
                     conditions.add(deployClaw, deployPivot);
                 }
-                runActionWithCondition(move, conditions);
+                move.runSynchronized(conditions);
                 break;
             }
 
@@ -207,31 +203,8 @@ public class AutoRunner {
     private void runActionWithTimeout(Action action, Command command) {
         double timeoutMs = command.getDouble("timeout", 5 * 1000);
         IEndCondition timeoutCondition = new Timeout(timeoutMs);
-        runActionWithCondition(action, timeoutCondition);
+        action.runSynchronized(timeoutCondition);
     }
-
-//    private void runActionWithCondition(Action action, IEndCondition endCondition) {
-//        action.start();
-//        endCondition.start();
-//
-//        // If end condition completes before action, then action is stopped.
-//        // If action completes before end condition, then complete.
-//        while (!action.isStopped() && !endCondition.isTrue()) {
-//            sleep(SLEEP_LOOP_TIME);
-//        }
-//
-//        action.stop();
-//        endCondition.stop();
-//
-//        log(TAG, "Run task completed");
-//    }
-
-    private void runActionWithCondition(Action action, IEndCondition endCondition) {
-        action.runSynchronized(endCondition);
-        log(TAG, "Run task completed");
-    }
-
-
 
     private void waitUntilButtonPressed() {
         Button button = new Button();

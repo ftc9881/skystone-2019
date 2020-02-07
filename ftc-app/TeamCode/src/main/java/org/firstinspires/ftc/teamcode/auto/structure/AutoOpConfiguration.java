@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.structure;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 import org.json.JSONArray;
@@ -55,4 +56,5 @@ public class AutoOpConfiguration {
         }
         return commandList;
     }
+
 }

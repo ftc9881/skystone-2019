@@ -16,7 +16,10 @@ public class ServoTest extends TeleOpBase {
     private Button downButton = new Button();
     private Button yButton = new Button();
     private Button aButton = new Button();
-    private Button bButton = new Button();
+
+    private Button openButton = new Button();
+    private Button restButton = new Button();
+    private Button closedButton = new Button();
 
     private String servoName;
     private Servo servo;
@@ -64,9 +67,18 @@ public class ServoTest extends TeleOpBase {
     }
 
     private void updateToggleServo() {
-        bButton.update(gamepad1.b);
-        if (bButton.is(Button.State.DOWN)) {
-            toggleServo.toggle(ToggleServo.State.CLOSED, ToggleServo.State.REST);
+        openButton.update(gamepad2.a);
+        restButton.update(gamepad2.x);
+        closedButton.update(gamepad2.y);
+
+        if (openButton.is(Button.State.DOWN)) {
+            toggleServo.set(ToggleServo.State.OPEN);
+        }
+        if (restButton.is(Button.State.DOWN)) {
+            toggleServo.set(ToggleServo.State.REST);
+        }
+        if (closedButton.is(Button.State.DOWN)) {
+            toggleServo.set(ToggleServo.State.CLOSED);
         }
         telemetry.addData("ToggleState", toggleServo.getState());
     }

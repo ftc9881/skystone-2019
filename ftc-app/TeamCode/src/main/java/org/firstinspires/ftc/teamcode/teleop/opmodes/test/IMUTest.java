@@ -13,6 +13,7 @@ public class IMUTest extends BaseDrive {
     @Override
     protected void initialize() {
         super.initialize();
+        robot.initializeIMU();
     }
 
     @Override

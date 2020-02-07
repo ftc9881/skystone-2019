@@ -72,7 +72,6 @@ public class RelativeMove extends Action {
         drivePose.x = Math.sin(moveAngle.getRadians());
         drivePose.y = Math.cos(moveAngle.getRadians());
 
-
         AutoRunner.log("TargetClicks", targetClicks);
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
@@ -95,7 +94,7 @@ public class RelativeMove extends Action {
     }
 
     @Override
-    protected void insideRun() throws SomethingBadHappened {
+    protected void insideRun() {
         Pose correctedDrivePose = new Pose(drivePose);
 
         Angle actualHeading = robot.imu.getHeading();

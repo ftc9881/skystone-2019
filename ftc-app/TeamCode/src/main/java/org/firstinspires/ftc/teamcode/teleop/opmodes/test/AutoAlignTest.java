@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp(group="Test")
+@Disabled
 public class AutoAlignTest extends BaseDrive {
 
     private SharpSensorPair foundationSensorPair;
@@ -26,21 +28,6 @@ public class AutoAlignTest extends BaseDrive {
 
     @Override
     protected void initialize() {
-        /*
-        TODO: put into HardwareConstants.json
-        "left block sensor a": "0.171417",
-        "left block sensor b": "-0.0219884",
-        "left block sensor c": "0.978115",
-        "right block sensor a": "0.195896",
-        "right block sensor b": "-0.0127493",
-        "right block sensor c": "0.288843",
-        "left foundation sensor a": "0.438663",
-        "left foundation sensor b": "-0.00528896",
-        "left foundation sensor c": "0.404581"
-        "right foundation sensor a": "0.422507",
-        "right foundation sensor b": "-0.0545958",
-        "right foundation sensor c": "0.461312"
-         */
         deadZone = config.getDouble("dead zone", 0.1);
 
         foundationSensorPair = new SharpSensorPair(hardwareMap, "left foundation sensor", "right foundation sensor");

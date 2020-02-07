@@ -35,9 +35,12 @@ public class Robot {
         opMode.msStuckDetectInitLoop = 3000;
 
         hardwareMap = opMode.hardwareMap;
-        imu = new OptimizedIMU(hardwareMap, opMode);
 
         driveTrain = new DriveTrain(hardwareMap);
+    }
+
+    public void initializeIMU() {
+        imu = new OptimizedIMU(hardwareMap, opMode);
     }
 
 }

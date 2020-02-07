@@ -7,6 +7,7 @@ public class PIDController {
     private double integral = 0;
     private double currentError, previousError, deltaError, derivative;
     private double kP, kI, kD, targetValue;
+    private double previousOutput;
 
     public PIDController (double kP, double kI, double kD, double targetValue) {
         this.kP = kP;
@@ -35,18 +36,24 @@ public class PIDController {
     public double getCorrectedOutput(double processValue) {
         previousTime = currentTime;
         currentTime = getTimeSeconds();
-
         deltaTime = currentTime - previousTime;
-        currentError = processValue - targetValue;
-        deltaError = currentError - previousError;
-        derivative =  deltaError/deltaTime;
 
-        integral += currentError * deltaTime;
+        if (deltaTime > 0) {
+            currentError = processValue - targetValue;
+            deltaError = currentError - previousError;
 
-        previousError = currentError;
+            derivative =  deltaError/deltaTime;
+            integral += currentError * deltaTime;
 
-        double output = -(currentError * kP + integral * kI + derivative * kD);
-        return output;
+            double output = -(currentError * kP + integral * kI + derivative * kD);
+
+            previousError = currentError;
+            previousOutput = output;
+
+            return output;
+        }
+
+        return previousOutput;
     }
 
     private double getTimeSeconds() {

@@ -60,7 +60,7 @@ public class GeneralMath {
     }
 
     public static double clipPower(double power, double min) {
-        return Range.clip(Math.abs(power), min, 1.0) * (power < 1 ? -1 : 1);
+        return Range.clip(Math.abs(power), min, 1.0) * (power < 0 ? -1 : 1);
     }
 
 }

@@ -20,6 +20,10 @@ public class Pose {
         this(p.x, p.y, p.r);
     }
 
+    public boolean isAllZero() {
+        return this.x == 0 && this.y == 0 && this.r == 0;
+    }
+
     public Pose add(Pose other) {
         return new Pose(x + other.x, y + other.y, y + other.r);
     }

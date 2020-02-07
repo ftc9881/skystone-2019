@@ -59,7 +59,6 @@ public class DriveTrain {
         double lbp = Range.clip(pose.y + pose.r - pose.x, -1.0, 1.0);
         double rbp = Range.clip(pose.y - pose.r + pose.x, -1.0, 1.0);
 
-        AutoRunner.log("DriveTrain", "setPower");
         lf.setPower(lfp * powerFactor);
         rf.setPower(rfp * powerFactor);
         lb.setPower(lbp * powerFactor);

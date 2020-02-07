@@ -39,10 +39,6 @@ public class Configuration extends Command {
             sb.append(line);
         } while (line != null);
         br.close();
-        if (sb.toString().length() < 1) {
-            sleep(100);
-            return readFile(name);
-        }
         return sb.toString();
     }
 }

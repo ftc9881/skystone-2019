@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @TeleOp(group="Test")
+@Disabled
 public class ExceptionTest extends TeleOpBase {
 
     Button throwButton = new Button();

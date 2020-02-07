@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import org.opencv.core.Rect;
 
 @TeleOp(group="Test")
-//@Disabled
+@Disabled
 public class OpenCVTest extends TeleOpBase {
 
     OpenCV openCV;
