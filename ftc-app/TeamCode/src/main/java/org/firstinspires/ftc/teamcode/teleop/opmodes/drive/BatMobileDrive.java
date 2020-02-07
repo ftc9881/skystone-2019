@@ -17,12 +17,6 @@ public class BatMobileDrive extends BaseDrive {
 
     private boolean reverseIntakeMotor = false;
 
-    private boolean isElevatorAutoMode = false;
-    private boolean isLifted = false;
-    private boolean isExtended = false;
-    private int liftLevel = 0;
-    private int extendLevel = 0;
-
     private double deadZone;
     private double liftPowerFactor;
     private double extendPowerFactor;
@@ -104,35 +98,7 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateElevator() {
-        updateElevatorLevels();
-        if (isManuallyInputtingForElevator()) {
-            isElevatorAutoMode = false;
-        }
-        if (isElevatorAutoMode) {
-            updateElevatorShortcuts();
-        } else {
-            updateElevatorManual();
-        }
-    }
-
-    private void updateElevatorLevels() {
-        if (increaseLiftLevelButton.is(DOWN)) {
-            liftLevel += 1;
-        }
-        if (decreaseLiftLevelButton.is(DOWN)) {
-            liftLevel -= 1;
-        }
-        if (increaseExtendLevelButton.is(DOWN)) {
-            extendLevel += 1;
-        }
-        if (decreaseExtendLevelButton.is(DOWN)) {
-            extendLevel -= 1;
-        }
-    }
-
-    private boolean isManuallyInputtingForElevator() {
-        return gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left ||
-                Math.abs(gamepad2.left_stick_y) > deadZone || Math.abs(gamepad2.right_stick_x) > deadZone;
+        updateElevatorManual();
     }
 
     private void updateElevatorManual() {
@@ -146,22 +112,6 @@ public class BatMobileDrive extends BaseDrive {
 
     private boolean isInputting(double input) {
         return Math.abs(input) > deadZone;
-    }
-
-    private void updateElevatorShortcuts() {
-        if (toggleLiftButton.is(DOWN)) {
-            isLifted = !isLifted;
-            if (isLifted) {
-                liftLevel += 1;
-            }
-            int level = isLifted ? liftLevel : -liftLevel;
-            batMobile.elevator.relativeLiftToLevel(level);
-        }
-        if (toggleExtendButton.is(DOWN)) {
-            isExtended = !isExtended;
-            int level = isExtended ? extendLevel : -extendLevel;
-            batMobile.elevator.relativeExtendToLevel(level);
-        }
     }
 
     private void updateIntake() {
@@ -227,12 +177,6 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateTelemetry() {
-//        telemetry.addData("Left Lift Position", batMobile.elevator.leftLift.motor.getCurrentPosition());
-//        telemetry.addData("Right Lift Position", batMobile.elevator.rightLift.motor.getCurrentPosition());
-//        telemetry.addData("Left Lift Power", batMobile.elevator.leftLift.motor.getPower());
-//        telemetry.addData("Right Lift Power", batMobile.elevator.rightLift.motor.getPower());
-//        telemetry.addData("Lift Level", liftLevel);
-//        telemetry.addData("Extend Level", extendLevel);
         telemetry.addData("Drive Power Factor", drivePowerFactor);
         telemetry.addData("Lift Power Factor", liftPowerFactor);
         telemetry.addData("Intake Power Factor", outtakePowerFactor);

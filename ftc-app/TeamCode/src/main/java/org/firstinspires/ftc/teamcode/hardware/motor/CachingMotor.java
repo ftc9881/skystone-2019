@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware.motor;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -18,7 +19,6 @@ public class CachingMotor implements DcMotor {
     public CachingMotor(DcMotor delegate) {
         this.delegate = delegate;
     }
-
 
     @Override
     public MotorConfigurationType getMotorType() {
