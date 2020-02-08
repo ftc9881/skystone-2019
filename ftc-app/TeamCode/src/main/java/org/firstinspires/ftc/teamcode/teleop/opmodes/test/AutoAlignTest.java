@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp(group="Test")
-@Disabled
 public class AutoAlignTest extends BaseDrive {
 
     private SharpSensorPair foundationSensorPair;
@@ -34,8 +33,9 @@ public class AutoAlignTest extends BaseDrive {
         blockSensorPair = new SharpSensorPair(hardwareMap, "left block sensor", "right block sensor");
 
         double idealXPosition = config.getDouble("sensor x target", 0);
+        double idealYPosition = config.getDouble("sensor y target", 0);
         xPid = new PIDController(config, "sensor x", idealXPosition);
-        yPid = new PIDController(config, "sensor y", 25);
+        yPid = new PIDController(config, "sensor y", idealYPosition);
         rPid = new PIDController(config, "sensor r", 0);
     }
 
@@ -53,7 +53,7 @@ public class AutoAlignTest extends BaseDrive {
     private void updateAutoMode() {
         autoModeButton.update(gamepad1.a);
         if (autoModeButton.is(Button.State.DOWN)) {
-            robot.driveTrain.stop();
+            initAutoAlign();
             isAutoMode = !isAutoMode;
         }
         if (driveInput()) {
@@ -61,6 +61,12 @@ public class AutoAlignTest extends BaseDrive {
         }
     }
 
+    private void initAutoAlign() {
+        robot.driveTrain.stop();
+        xPid.reset();
+        yPid.reset();
+        rPid.reset();
+    }
     private void doAutoAlign() {
         Pose drivePose = new Pose(0, 0, 0);
         drivePose.r = rPid.getCorrectedOutput(foundationSensorPair.getDifference());
