@@ -12,6 +12,15 @@ public class Robot {
     private static Robot instance;
 
     public static Robot newInstance(LinearOpMode opMode) {
+        /*
+            CD: It's problemastic to create an instance with the opMode as an argument since  the opmode can
+                change based on the user selection and this is a static instance.  Since you don't actually
+                use a singleton (see second comment) it isen't a problem, but when you fix that it will be.
+        */
+
+        /*
+            CD: In singleton you should check to see if the static instance is null before doign the lazy instantiation here
+         */
         instance = new Robot(opMode);
         return instance;
     }
@@ -31,9 +40,15 @@ public class Robot {
 
     protected Robot(LinearOpMode opMode) {
         this.opMode = opMode;
+        /*
+            CD: This should be done in an intitialization method
+         */
         opMode.msStuckDetectInit = 3000;
         opMode.msStuckDetectInitLoop = 3000;
 
+        /*
+            CD: Since the hardware map is a field of opMode, you should just have opMode as a field and then wrap it with Robot.getHardwareMap() { return opMode.getHardwareMap(); }
+         */
         hardwareMap = opMode.hardwareMap;
 
         driveTrain = new DriveTrain(hardwareMap);

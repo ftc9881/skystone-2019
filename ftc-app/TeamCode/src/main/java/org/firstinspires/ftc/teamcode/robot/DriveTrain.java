@@ -15,6 +15,21 @@ public class DriveTrain {
     public DcMotor lb;
     public DcMotor rb;
 
+    /*
+        CD: Try to have a consistent object life cycle across all Robot and "component" classes.  That is,
+            you should have the constructor set up the original fields, etc.  Then have methods like:
+                initialize() - do things like setMode(. . .), only called once after constructing
+                start() - called right before operating
+                update() - called while operating (driving, etc.)
+                finish() - called at completion of peration
+                terminate() - called once, as a bookend to initialize() to free up resources
+            Objects that are containers of other objects (such as Robot -> DriveTrain) would propagate
+                calls to each of thesir contained objects.
+            Objects that have specialzed behaviors (such as drive() here) should have a corresponding
+                method in the containing object (i.e. Robot.drive()) which forms the interface which
+                invokes drive() here
+     */
+
     public DriveTrain(HardwareMap hardwareMap) {
         lf = new CachingMotor(hardwareMap, "lf");
         rf = new CachingMotor(hardwareMap, "rf");
@@ -24,7 +39,6 @@ public class DriveTrain {
 //        rf = hardwareMap.dcMotor.get("rf");
 //        lb = hardwareMap.dcMotor.get("lb");
 //        rb = hardwareMap.dcMotor.get("rb");
-
 
         lf.setDirection(DcMotor.Direction.FORWARD);
         rf.setDirection(DcMotor.Direction.REVERSE);
