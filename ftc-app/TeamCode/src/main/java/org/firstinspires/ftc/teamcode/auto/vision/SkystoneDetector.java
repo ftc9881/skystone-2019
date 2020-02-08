@@ -4,6 +4,7 @@ import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
 import com.disnodeteam.dogecv.filters.GrayscaleFilter;
 import com.disnodeteam.dogecv.filters.LeviColorFilter;
 
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -16,41 +17,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 
+import static org.firstinspires.ftc.teamcode.math.GeneralMath.distance;
+import static org.firstinspires.ftc.teamcode.math.GeneralMath.getCenterPoint;
+
 public class SkystoneDetector extends OpenCVDetector {
     public DogeCVColorFilter blackFilter;
     public DogeCVColorFilter yellowFilter;
     public int yellowBlobbingThreshold;
     public int blackBlobbingThreshold;
     public int minimumArea;
-    public boolean flipImage = true;
     public Rect cropRect = new Rect();
-
-    private Rect foundRect = new Rect();
 
     private Mat rawImage = new Mat();
     private Mat workingMat = new Mat();
-    private Mat displayMat = new Mat();
     private Mat blackMask = new Mat();
     private Mat yellowMask = new Mat();
     private Mat hierarchy  = new Mat();
 
-    public SkystoneDetector() {
-        useDefaults();
-    }
-
-    public Rect foundRectangle() {
-        return foundRect;
-    }
+    public SkystoneDetector() { }
 
     @Override
     public Mat process(Mat input) {
-        if (flipImage) {
-            Core.rotate(input, input, Core.ROTATE_180);
-        }
-
         input.copyTo(rawImage);
         input.copyTo(workingMat);
-        input.copyTo(displayMat);
         input.copyTo(blackMask);
 
         List<MatOfPoint> contoursYellow = findContours(yellowFilter, yellowMask);
@@ -80,49 +69,24 @@ public class SkystoneDetector extends OpenCVDetector {
         }
 
         // RENDER
-        return getRenderMat(stageToRenderToViewport);
-    }
-
-    public Mat getRenderMat(int stage) {
-        switch (stage) {
-            case 2:
-                return blackMask;
-            case 1:
-                return displayMat;
-            case 0:
-            default:
-                return rawImage;
-        }
-    }
-    private Mat getRenderMat(Stage stage) {
-        switch (stage) {
-            case THRESHOLD:
-                Imgproc.cvtColor(blackMask, blackMask, Imgproc.COLOR_GRAY2BGR);
-                return blackMask;
-            case RAW_IMAGE:
-                return rawImage;
-            default:
-                return displayMat;
-        }
+        Imgproc.cvtColor(blackMask, thresholdMat, Imgproc.COLOR_GRAY2BGR);
+        return getMat(stageToRenderToViewport);
     }
 
     @Override
-    public void useDefaults() {
+    public void setConfig(Command config) {
         blackFilter = new GrayscaleFilter(0, 50);
         yellowFilter = new LeviColorFilter(LeviColorFilter.ColorPreset.YELLOW, 90);
-        yellowBlobbingThreshold = 100;
-        blackBlobbingThreshold = 50;
-        minimumArea = 100;
+        yellowBlobbingThreshold = config.getInt("yellow blobbing", 100);
+        blackBlobbingThreshold = config.getInt("black blobbing", 50);
+        minimumArea = config.getInt("min area", 100);
+        cropRect.x = config.getInt("crop x", 0);
+        cropRect.y = config.getInt("crop y", 0);
+        cropRect.width = config.getInt("crop w", 0);
+        cropRect.height= config.getInt("crop h", 0);
     }
 
 
-    private double distance(Point a, Point b) {
-        return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
-    }
-
-    private Point getCenterPoint(Rect rect) {
-        return new Point(rect.x + rect.width/2, rect.y + rect.height/2);
-    }
 
     private Rect boundingRect(List<Rect> rects) {
         int minX = 999;
@@ -145,21 +109,6 @@ public class SkystoneDetector extends OpenCVDetector {
         Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
         return contours;
     }
-
-
-    private void draw(Rect rect, Scalar color) {
-        Imgproc.rectangle(displayMat, rect.tl(), rect.br(), color, 2);
-    }
-
-    private void draw(Point point, Scalar color) {
-        Imgproc.circle(displayMat, point, 2, color);
-    }
-
-    private void draw(List<MatOfPoint> contours, Scalar color) {
-        // Not draw contours for now, since can look messy
-        Imgproc.drawContours(displayMat, contours, -1, color, 2);
-    }
-
 
    private Rect chooseBestYellow(List<List<Rect>> listOfYellowBlobs) {
        Rect bestYellowRect = new Rect();

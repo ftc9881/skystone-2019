@@ -104,8 +104,8 @@ public class BatMobileDrive extends BaseDrive {
     private void updateElevatorManual() {
         double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0) * liftPowerFactor;
         double extendPowerP1 = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0) * extendPowerFactor;
-        double liftPowerP2 = -gamepad2.left_stick_y;
-        double extendPowerP2 = gamepad2.right_stick_x;
+        double liftPowerP2 = Math.pow(-gamepad2.left_stick_y, 3);
+        double extendPowerP2 = Math.pow(gamepad2.right_stick_x, 3);
         double powerFactor = isInputting(gamepad2.right_trigger) || isInputting(gamepad2.left_trigger) ? slowLiftPowerFactor : 1.0;
         batMobile.elevator.setPowerLE(liftPowerP1 + liftPowerP2, extendPowerP1 + extendPowerP2, powerFactor);
     }

@@ -12,7 +12,7 @@ import org.opencv.core.Rect;
 
 @TeleOp(group="Test")
 @Disabled
-public class OpenCVTest extends TeleOpBase {
+public class OpenCVSkystoneTest extends TeleOpBase {
 
     OpenCV openCV;
     Button shutterButton = new Button();
@@ -29,7 +29,7 @@ public class OpenCVTest extends TeleOpBase {
     protected void update() {
         updateShutter();
 
-        Rect rect = openCV.detector.foundRectangle();
+        Rect rect = openCV.getFoundRect();
         telemetry.addData("Rect", rect.toString());
         telemetry.addData("CenterX", rect.x + rect.width / 2);
         telemetry.update();

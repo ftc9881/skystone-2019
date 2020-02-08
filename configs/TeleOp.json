@@ -16,5 +16,10 @@
 	"skystone blob distance": "200",
 	"skystone min area": "30",
 
+	"line threshold": "30",
+	"min line length": "30",
+	"max line gap": "20",
+	"min vumark width": "30",
+
 	"debug servo": "right foundation"
 }

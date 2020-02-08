@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.math;
 
 import com.qualcomm.robotcore.util.Range;
 
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+
 import java.util.List;
 
 public class GeneralMath {
@@ -62,5 +65,15 @@ public class GeneralMath {
     public static double clipPower(double power, double min) {
         return Range.clip(Math.abs(power), min, 1.0) * (power < 0 ? -1 : 1);
     }
+
+    public static double distance(Point a, Point b) {
+        return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
+    }
+
+    public static Point getCenterPoint(Rect rect) {
+        return new Point(rect.x + rect.width/2, rect.y + rect.height/2);
+    }
+
+
 
 }

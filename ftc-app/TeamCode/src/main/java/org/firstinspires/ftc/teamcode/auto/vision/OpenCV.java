@@ -1,17 +1,13 @@
 package org.firstinspires.ftc.teamcode.auto.vision;
 
 import android.content.Context;
-import android.graphics.Path;
 import android.os.Environment;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
-import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.Robot;
@@ -33,16 +29,24 @@ import java.util.List;
 public class OpenCV implements VisionSystem {
 
     public static final Rect CAMERA_RECT = new Rect(0, 0, 320, 240);
-    public SkystoneDetector detector;
+    protected OpenCVDetector detector;
 
     public CameraType cameraType = CameraType.FRONT_WEBCAM;
     protected Command config;
     protected OpenCvCamera openCvCamera;
 
-    private PositionDeterminer positionDeterminer;
+    private SkystonePositionIdentifierAction positionDeterminer;
 
     public static OpenCV getInstance() {
         return new OpenCV();
+    }
+
+    public void setConfig(Command config) {
+        this.config = config;
+    }
+
+    public Rect getFoundRect() {
+        return detector != null ? detector.getFoundRect() : new Rect();
     }
 
     protected OpenCV() {
@@ -54,18 +58,19 @@ public class OpenCV implements VisionSystem {
     public void startLook(TargetType targetType) {
 
         switch (targetType) {
-            case ALL:
             case SKYSTONE: {
                 detector = new SkystoneDetector();
-                detector.useDefaults();
-                detector.flipImage = cameraType == CameraType.FRONT_WEBCAM;
+            }
+            case PERIMETER: {
+                detector = new VumarkDetector();
             }
             default: {
 
             }
         }
         if (detector != null) {
-            setDetectorConfig(config);
+            detector.flipImage = cameraType == CameraType.FRONT_WEBCAM;
+            detector.setConfig(config);
         }
         startCamera();
     }
@@ -74,16 +79,6 @@ public class OpenCV implements VisionSystem {
     public void stopLook() {
         openCvCamera.stopStreaming();
         openCvCamera.closeCameraDevice();
-    }
-
-    public void setDetectorConfig(Command config) {
-        detector.yellowBlobbingThreshold = config.getInt("yellow blobbing", detector.yellowBlobbingThreshold);
-        detector.blackBlobbingThreshold = config.getInt("black blobbing", detector.blackBlobbingThreshold);
-        detector.minimumArea = config.getInt("min area", detector.minimumArea);
-        detector.cropRect.x = config.getInt("crop x", detector.cropRect.x);
-        detector.cropRect.y = config.getInt("crop y", detector.cropRect.y);
-        detector.cropRect.width = config.getInt("crop w", detector.cropRect.width);
-        detector.cropRect.height= config.getInt("crop h", detector.cropRect.height);
     }
 
     private void initializeCamera(CameraType cameraType) {
@@ -113,7 +108,7 @@ public class OpenCV implements VisionSystem {
 
 
     public void startIdentifyingSkystonePosition() {
-        positionDeterminer = new PositionDeterminer();
+        positionDeterminer = new SkystonePositionIdentifierAction();
         positionDeterminer.start();
     }
 
@@ -122,12 +117,20 @@ public class OpenCV implements VisionSystem {
     }
 
     public void writeCurrentImage() {
-        Mat mat = detector.getRenderMat(1);
+        writeCurrentImage(OpenCVDetector.Stage.DISPLAY);
+    }
+
+    public void writeCurrentImage(OpenCVDetector.Stage stage) {
+        Mat mat = detector.getMat(stage);
+        writeImage(mat, stage.name());
+    }
+
+    public static void writeImage(Mat mat, String tag) {
         if (mat != null && !mat.empty()) {
             Mat newMat = new Mat();
             SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy_HH:mm:ss.SSS");
             Date date = new Date(System.currentTimeMillis());
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + formatter.format(date) + ".png";
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + formatter.format(date) + "_" + tag + ".png";
             Imgproc.cvtColor(mat, newMat, Imgproc.COLOR_BGR2RGB);
             boolean success = Imgcodecs.imwrite(path, newMat);
             AutoRunner.log("OpenCV", success);
@@ -135,12 +138,10 @@ public class OpenCV implements VisionSystem {
         } else {
             AutoRunner.log("OpenCV", "Detector did not have image to write");
         }
-
-
     }
 
 
-    class PositionDeterminer extends Action {
+    class SkystonePositionIdentifierAction extends Action {
         SkystonePosition position;
         int skystoneLeftBound;
         int skystoneRightBound;
@@ -164,7 +165,7 @@ public class OpenCV implements VisionSystem {
 
         @Override
         protected void insideRun() {
-            Rect foundRect = detector.foundRectangle();
+            Rect foundRect = detector.getFoundRect();
             centerX = foundRect.x + foundRect.width / 2;
             if (foundPositions.size() >= listSize) {
                 foundPositions.remove(0);

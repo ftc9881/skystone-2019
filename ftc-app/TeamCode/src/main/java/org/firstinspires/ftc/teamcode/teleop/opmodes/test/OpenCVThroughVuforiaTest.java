@@ -39,7 +39,7 @@ public class OpenCVThroughVuforiaTest extends TeleOpBase {
     protected void update() {
         updateShutter();
 
-        Rect rect = openCV.detector.foundRectangle();
+        Rect rect = openCV.getFoundRect();
         telemetry.addData("Rect", rect.toString());
         telemetry.addData("CenterX", rect.x + rect.width / 2);
 
