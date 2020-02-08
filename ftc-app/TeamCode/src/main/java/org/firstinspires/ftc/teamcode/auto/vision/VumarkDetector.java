@@ -5,6 +5,7 @@ import com.disnodeteam.dogecv.filters.LeviColorFilter;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.math.Line;
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -25,7 +26,6 @@ public class VumarkDetector extends OpenCVDetector {
     public int minLineLength;
     public int maxLineGap;
     public int maxLineWidth;
-    public Rect cropRect = new Rect();
 
     private Mat whiteMask = new Mat();
 
@@ -39,17 +39,13 @@ public class VumarkDetector extends OpenCVDetector {
         draw(contoursWhite, new Scalar(255, 255, 255));
         Imgproc.cvtColor(whiteMask, thresholdMat, Imgproc.COLOR_GRAY2BGR);
         List<Line> lines = detectLines(thresholdMat);
-        Line diagonal = getDiagonal(lines);
-        int vumarkWidth = (int) diagonal.width();
+        Line vumarkDiagonal = getDiagonal(lines);
+        draw(vumarkDiagonal, new Scalar(0, 200, 0));
 
-//        if (cropRect.width > 0 && cropRect.height > 0) {
-//            draw(cropRect, new Scalar(255, 255, 255));
-//        }
-
-        found = vumarkWidth > minVumarkWidth;
+        found = vumarkDiagonal.width() > minVumarkWidth;
         if (found) {
-            draw(diagonal, new Scalar(0, 255, 0));
-            foundRect = new Rect(diagonal.point1, diagonal.point2);
+            foundRect = new Rect(vumarkDiagonal.point1, vumarkDiagonal.point2);
+            draw(foundRect, new Scalar(0, 255, 0));
         }
 
         // RENDER
@@ -66,6 +62,16 @@ public class VumarkDetector extends OpenCVDetector {
         maxLineWidth = config.getInt("max line width", 10);
     }
 
+    @Override
+    public Pose getPose() {
+        // TODO: Regresison function mapping width to y distance
+        return new Pose(
+            foundRect.x - (OpenCV.CAMERA_RECT.x + OpenCV.CAMERA_RECT.width / 2),
+            foundRect.width,
+            0
+        );
+    }
+
     private List<MatOfPoint> findContours(DogeCVColorFilter filter, Mat mask) {
         filter.process(workingMat.clone(), mask);
         List<MatOfPoint> contours = new ArrayList<>();
@@ -77,26 +83,22 @@ public class VumarkDetector extends OpenCVDetector {
         Mat dst = new Mat();
         Mat cdst = new Mat();
 
-        // Edge detection
-        Imgproc.Canny(src, dst, 50, 200, 3, false);
-        // Copy edges to the images that will display the results in BGR
+//        Imgproc.Canny(src, dst, 50, 200, 3, false);
+        Imgproc.Canny(src, dst, 0, 255, Imgproc.THRESH_BINARY | Imgproc.THRESH_OTSU);
         Imgproc.cvtColor(dst, cdst, Imgproc.COLOR_GRAY2BGR);
         Mat cdstP = cdst.clone();
 
-        // Probabilistic Line Transform
         Mat linesP = new Mat();
         Imgproc.HoughLinesP(dst, linesP, 1, Math.PI/180, lineThreshold, minLineLength, maxLineGap);
-        // Draw the lines
+
         List<Line> lines = new ArrayList<>();
         for (int x = 0; x < linesP.rows(); x++) {
             double[] l = linesP.get(x, 0);
             Line line = new Line(l);
 
+            draw(cdstP, line, new Scalar(80, 80, 255));
             if (line.width() < maxLineWidth) {
                 lines.add(line);
-                draw(cdstP, line, new Scalar(0, 255, 255));
-            } else {
-                draw(cdstP, line, new Scalar(255, 0, 255));
             }
         }
         debugMat = cdstP;

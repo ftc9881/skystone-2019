@@ -22,7 +22,7 @@ public class OpenCVVumarkTest extends TeleOpBase {
     protected void initialize() {
         robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        openCV = OpenCV.getInstance();
+        openCV = new OpenCV(config, VisionSystem.CameraType.FRONT_WEBCAM);
         openCV.setConfig(config);
         openCV.cameraType = VisionSystem.CameraType.FRONT_WEBCAM;
         openCV.startLook(VisionSystem.TargetType.PERIMETER);

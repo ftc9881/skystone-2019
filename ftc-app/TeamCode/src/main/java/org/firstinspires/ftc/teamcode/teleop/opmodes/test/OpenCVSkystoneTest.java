@@ -21,7 +21,7 @@ public class OpenCVSkystoneTest extends TeleOpBase {
     protected void initialize() {
         robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        openCV = OpenCV.getInstance();
+        openCV = new OpenCV(config, VisionSystem.CameraType.FRONT_WEBCAM);
         openCV.startLook(VisionSystem.TargetType.SKYSTONE);
     }
 

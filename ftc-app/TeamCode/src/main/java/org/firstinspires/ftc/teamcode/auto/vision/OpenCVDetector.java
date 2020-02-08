@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.vision;
 
 import org.firstinspires.ftc.teamcode.math.Line;
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -28,6 +29,7 @@ public abstract class OpenCVDetector extends OpenCvPipeline {
 
     public abstract Mat process(Mat input);
     public abstract void setConfig(Command config);
+    public abstract Pose getPose();
 
     protected boolean found = false;
     protected boolean flipImage = false;

@@ -4,6 +4,7 @@ import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
 import com.disnodeteam.dogecv.filters.GrayscaleFilter;
 import com.disnodeteam.dogecv.filters.LeviColorFilter;
 
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -86,7 +87,11 @@ public class SkystoneDetector extends OpenCVDetector {
         cropRect.height= config.getInt("crop h", 0);
     }
 
-
+    @Override
+    public Pose getPose() {
+        // TODO: pose for skystone; although probably won't need
+        return new Pose();
+    }
 
     private Rect boundingRect(List<Rect> rects) {
         int minX = 999;

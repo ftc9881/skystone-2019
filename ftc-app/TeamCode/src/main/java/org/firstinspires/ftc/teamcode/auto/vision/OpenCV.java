@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
+import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
+import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.Robot;
@@ -37,10 +39,6 @@ public class OpenCV implements VisionSystem {
 
     private SkystonePositionIdentifierAction positionDeterminer;
 
-    public static OpenCV getInstance() {
-        return new OpenCV();
-    }
-
     public void setConfig(Command config) {
         this.config = config;
     }
@@ -49,9 +47,17 @@ public class OpenCV implements VisionSystem {
         return detector != null ? detector.getFoundRect() : new Rect();
     }
 
+    public Pose getPose() {
+        return detector.getPose();
+    }
+
     protected OpenCV() {
+
+    }
+
+    public OpenCV(Command config, CameraType cameraType) {
         initializeCamera(cameraType);
-        config = new Configuration("Vision");
+        this.config = config;
     }
 
     @Override
@@ -65,19 +71,20 @@ public class OpenCV implements VisionSystem {
                 detector = new VumarkDetector();
             }
             default: {
-
+                AutoRunner.log("OpenCV", "Unsupported target type :(");
             }
         }
         if (detector != null) {
             detector.flipImage = cameraType == CameraType.FRONT_WEBCAM;
             detector.setConfig(config);
+            startCamera();
         }
-        startCamera();
     }
 
     @Override
     public void stopLook() {
-        openCvCamera.stopStreaming();
+        // TODO: Why crash on stop stream?
+//        openCvCamera.stopStreaming();
         openCvCamera.closeCameraDevice();
     }
 
@@ -106,7 +113,6 @@ public class OpenCV implements VisionSystem {
         openCvCamera.startStreaming(CAMERA_RECT.width, CAMERA_RECT.height, OpenCvCameraRotation.UPRIGHT);
     }
 
-
     public void startIdentifyingSkystonePosition() {
         positionDeterminer = new SkystonePositionIdentifierAction();
         positionDeterminer.start();
@@ -133,13 +139,15 @@ public class OpenCV implements VisionSystem {
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + formatter.format(date) + "_" + tag + ".png";
             Imgproc.cvtColor(mat, newMat, Imgproc.COLOR_BGR2RGB);
             boolean success = Imgcodecs.imwrite(path, newMat);
-            AutoRunner.log("OpenCV", success);
-            AutoRunner.log("OpenCV", "Wrote image " + path);
+            if (success) {
+                AutoRunner.log("OpenCV", "Wrote image " + path);
+            } else {
+                AutoRunner.log("OpenCV", "Failed to write image " + path);
+            }
         } else {
             AutoRunner.log("OpenCV", "Detector did not have image to write");
         }
     }
-
 
     class SkystonePositionIdentifierAction extends Action {
         SkystonePosition position;
