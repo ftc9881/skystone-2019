@@ -15,8 +15,6 @@ public class BatMobileDrive extends BaseDrive {
 
     private BatMobile batMobile;
 
-    private boolean reverseIntakeMotor = false;
-
     private double deadZone;
     private double liftPowerFactor;
     private double extendPowerFactor;
@@ -44,7 +42,7 @@ public class BatMobileDrive extends BaseDrive {
     @Override
     protected void initialize() {
         super.initialize();
-        batMobile = BatMobile.getInstance();
+        batMobile = BatMobile.createInstance();
 
         deadZone = config.getDouble("dead zone", 0.1);
         liftPowerFactor = config.getDouble("lift power", 1.0);
@@ -115,12 +113,8 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateIntake() {
-        if (reverseIntakeMotorButton.is(DOWN)) {
-            reverseIntakeMotor = !reverseIntakeMotor;
-        }
-
         double intakePower = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
-        batMobile.intake.left.setPower(intakePower * (reverseIntakeMotor ? 1 : -1));
+        batMobile.intake.left.setPower(intakePower);
         batMobile.intake.right.setPower(-intakePower);
     }
 

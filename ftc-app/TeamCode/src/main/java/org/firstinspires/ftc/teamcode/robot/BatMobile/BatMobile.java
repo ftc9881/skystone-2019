@@ -7,11 +7,18 @@ import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 public class BatMobile extends Robot {
 
     private static BatMobile instance;
+
     public static BatMobile getInstance() {
         Robot robot = Robot.getInstance();
         if (instance == null && robot != null) {
             instance = new BatMobile(robot);
         }
+        return instance;
+    }
+
+    public static BatMobile createInstance() {
+        Robot robot = Robot.getInstance();
+        instance = new BatMobile(robot);
         return instance;
     }
 

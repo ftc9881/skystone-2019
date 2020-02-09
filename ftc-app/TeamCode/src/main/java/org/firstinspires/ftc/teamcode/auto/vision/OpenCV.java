@@ -8,12 +8,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
-import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.Robot;
-import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -68,7 +66,7 @@ public class OpenCV implements VisionSystem {
                 detector = new SkystoneDetector();
             }
             case PERIMETER: {
-                detector = new VumarkDetector();
+                detector = new VumarkDetectorOld();
             }
             default: {
                 AutoRunner.log("OpenCV", "Unsupported target type :(");
@@ -85,7 +83,7 @@ public class OpenCV implements VisionSystem {
     public void stopLook() {
         // TODO: Why crash on stop stream?
 //        openCvCamera.stopStreaming();
-        openCvCamera.closeCameraDevice();
+//        openCvCamera.closeCameraDevice();
     }
 
     private void initializeCamera(CameraType cameraType) {

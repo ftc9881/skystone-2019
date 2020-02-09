@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.firstinspires.ftc.teamcode.math.GeneralMath.getCenterPoint;
 
-public class VumarkDetector extends OpenCVDetector {
+public class VumarkTemplateDetector extends OpenCVDetector {
     public DogeCVColorFilter whiteFilter;
     public int minVumarkWidth;
     public int lineThreshold;
@@ -29,7 +29,7 @@ public class VumarkDetector extends OpenCVDetector {
 
     private Mat whiteMask = new Mat();
 
-    public VumarkDetector() { }
+    public VumarkTemplateDetector() { }
 
     @Override
     public Mat process(Mat input) {

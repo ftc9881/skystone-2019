@@ -35,9 +35,8 @@ public class OpenCVVumarkTest extends TeleOpBase {
         Rect rect = openCV.getFoundRect();
         telemetry.addData("Vumark", rect.area() > 0);
         telemetry.addData("Width", rect.width);
-        telemetry.addData("Left", rect.x);
-        telemetry.addData("Right", rect.x + rect.width);
         telemetry.addData("Rect", rect);
+        telemetry.addData("Pose", openCV.getPose());
         telemetry.update();
     }
 
@@ -47,12 +46,13 @@ public class OpenCVVumarkTest extends TeleOpBase {
             openCV.writeCurrentImage(OpenCVDetector.Stage.THRESHOLD);
             openCV.writeCurrentImage(OpenCVDetector.Stage.DISPLAY);
             openCV.writeCurrentImage(OpenCVDetector.Stage.DEBUG);
+            openCV.writeCurrentImage(OpenCVDetector.Stage.RAW_IMAGE);
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        openCV.stopLook();
+        openCV.stopLook();
     }
 }

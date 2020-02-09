@@ -75,9 +75,9 @@ public abstract class OpenCVDetector extends OpenCvPipeline {
         }
 
         input.copyTo(rawImage);
-        input.copyTo(displayMat);
         input.copyTo(workingMat);
         input.copyTo(hierarchy);
+        input.copyTo(displayMat);
 
         return process(input);
     }
