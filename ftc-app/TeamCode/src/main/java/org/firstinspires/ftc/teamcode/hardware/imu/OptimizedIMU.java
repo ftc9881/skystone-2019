@@ -29,6 +29,7 @@ public class OptimizedIMU {
         List<LynxModule> modules = hardwareMap.getAll(LynxModule.class);
         delegates = new ArrayList<>();
         for (LynxModule module : modules) {
+            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
             BNO055IMU imu = new LynxEmbeddedIMU(OptimizedI2cDevice.createLynxI2cDeviceSynch(module, 0));
             imu.initialize(parameters);
             delegates.add(imu);

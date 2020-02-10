@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
+import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
@@ -19,18 +20,18 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     private Conditional vuforiaYStopConditional;
     private double vuforiaBasePower;
     private double vuforiaCloseThreshold;
-    private double vuforiaBadRThreshold;
-    private Pose previousCorrectedDrivePose;
     private Pose vuforiaPose;
+    private SimpleRegression regression;
 
     public RelativeMoveWithVuforia(Command command) {
         super(command);
         tag = "RelativeMoveWithVuforia";
 
+        regression = new SimpleRegression();
+
         VisionSystem.TargetType target = VisionSystem.TargetType.stringToType(command.getString("vuforia target", "PERIMETER"));
         vuforia = Vuforia.getInstance();
         vuforia.startLook(target);
-        vuforiaBadRThreshold = command.getDouble("vuforia bad r", 20);
 
         vuforiaCloseThreshold = command.getDouble("vuforia close threshold", 4);
         String vuforiaYStopConditionString = command.getString("vuforia stop when", "close");
@@ -41,8 +42,6 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         vuforiaXPidController = new PIDController(command, "vuforia x", vuforiaTargetX);
         vuforiaTargetY = command.getDouble("vuforia y", 0);
         vuforiaYPidController = new PIDController(command, "vuforia y", vuforiaTargetY);
-
-        previousCorrectedDrivePose = drivePose;
     }
 
     public RelativeMoveWithVuforia(Command command, VisionSystem.SkystonePosition skystonePosition) {
@@ -54,7 +53,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
 
     @Override
     protected boolean runIsComplete() {
-        if (shouldUseVuforia()) {
+        if (vuforiaFoundSomething()) {
             return vuforiaYStopConditional.evaluate(vuforia.getPose().y, vuforiaTargetY, vuforiaCloseThreshold);
         }
         else {
@@ -69,20 +68,16 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         vuforiaPose = vuforia.getPose();
 
         correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
-        if (shouldUseVuforia()) {
-            double vuforiaCorrectX;
-            double vuforiaCorrectY;
-            if (vuforiaPose.y > 0) {
-                vuforiaCorrectX = vuforiaXPidController.getCorrectedOutput(vuforiaPose.x);
-                correctedDrivePose.x += vuforiaCorrectX;
-                vuforiaCorrectY = -vuforiaYPidController.getCorrectedOutput(vuforiaPose.y);
-                correctedDrivePose.y = GeneralMath.clipPower(vuforiaCorrectY, vuforiaBasePower);
-
-                AutoRunner.log("VuforiaCorrectX", vuforiaCorrectX);
-                AutoRunner.log("VuforiaCorrectY", vuforiaCorrectY);
+        if (vuforiaFoundSomething()) {
+            double vuforiaY = vuforiaPose.y;
+            if (vuforiaIsReasonable()) {
+                regression.addData(getTrackingClicks(), vuforiaPose.y);
+                correctedDrivePose.x += vuforiaXPidController.getCorrectedOutput(vuforiaPose.x);
             } else {
-                correctedDrivePose.y = previousCorrectedDrivePose.y;
+                vuforiaY = getPredictedY();
+                AutoRunner.log("PredictedY", vuforiaY);
             }
+            correctedDrivePose.y = GeneralMath.clipPower(-vuforiaYPidController.getCorrectedOutput(vuforiaY), vuforiaBasePower);
         }
         else {
             double rampFactor = calculateRampFactor();
@@ -91,7 +86,6 @@ public class RelativeMoveWithVuforia extends RelativeMove {
             AutoRunner.log("RampFactor", rampFactor);
         }
 
-        previousCorrectedDrivePose = correctedDrivePose;
         robot.driveTrain.drive(correctedDrivePose, powerFactor);
 
         AutoRunner.log("ActualXPower", correctedDrivePose.x);
@@ -101,16 +95,27 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         AutoRunner.log("VuforiaPose", vuforiaPose);
     }
 
-    private boolean shouldUseVuforia() {
-        return vuforiaPose != null && !vuforiaPose.isAllZero() && Math.abs(vuforiaPose.r) < vuforiaBadRThreshold;
-    }
-
     @Override
     protected void onEndRun() {
-        AutoRunner.log("MoveVuforia", "onEndRun");
         vuforia.stopLook();
         robot.driveTrain.stop();
-        AutoRunner.log("MoveVuforia", "Stop");
+    }
+
+    private double getTrackingClicks() {
+        // TODO: May want to get averaged motor clicks
+        return robot.driveTrain.rf.getCurrentPosition();
+    }
+
+    private boolean vuforiaFoundSomething() {
+        return vuforiaPose != null && !vuforiaPose.isAllZero();
+    }
+
+    private boolean vuforiaIsReasonable() {
+        return vuforiaPose.y > 0;
+    }
+
+    private double getPredictedY() {
+        return regression.getSlope() * getTrackingClicks() + regression.getIntercept();
     }
 
 }

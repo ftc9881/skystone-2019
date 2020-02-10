@@ -5,8 +5,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DriveTrain {
 
@@ -21,11 +25,11 @@ public class DriveTrain {
                 initialize() - do things like setMode(. . .), only called once after constructing
                 start() - called right before operating
                 update() - called while operating (driving, etc.)
-                finish() - called at completion of peration
+                finish() - called at completion of operation
                 terminate() - called once, as a bookend to initialize() to free up resources
             Objects that are containers of other objects (such as Robot -> DriveTrain) would propagate
-                calls to each of thesir contained objects.
-            Objects that have specialzed behaviors (such as drive() here) should have a corresponding
+                calls to each of their contained objects.
+            Objects that have specialized behaviors (such as drive() here) should have a corresponding
                 method in the containing object (i.e. Robot.drive()) which forms the interface which
                 invokes drive() here
      */
@@ -35,10 +39,6 @@ public class DriveTrain {
         rf = new CachingMotor(hardwareMap, "rf");
         lb = new CachingMotor(hardwareMap, "lb");
         rb = new CachingMotor(hardwareMap, "rb");
-//        lf = hardwareMap.dcMotor.get("lf");
-//        rf = hardwareMap.dcMotor.get("rf");
-//        lb = hardwareMap.dcMotor.get("lb");
-//        rb = hardwareMap.dcMotor.get("rb");
 
         lf.setDirection(DcMotor.Direction.FORWARD);
         rf.setDirection(DcMotor.Direction.REVERSE);
@@ -54,6 +54,15 @@ public class DriveTrain {
         lb.setMode(mode);
         rf.setMode(mode);
         rb.setMode(mode);
+    }
+
+    public double getAverageClicks() {
+        List<Number> clicks = new ArrayList<>();
+        clicks.add(lf.getCurrentPosition());
+        clicks.add(rf.getCurrentPosition());
+        clicks.add(lb.getCurrentPosition());
+        clicks.add(rb.getCurrentPosition());
+        return GeneralMath.mean(clicks);
     }
 
     public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior) {

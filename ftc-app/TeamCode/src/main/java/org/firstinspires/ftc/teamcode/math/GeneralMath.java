@@ -46,6 +46,10 @@ public class GeneralMath {
 
     public static double standardDeviation(List<Number> numbers) {
         double mean = mean(numbers);
+        return standardDeviation(numbers, mean);
+    }
+
+    public static double standardDeviation(List<Number> numbers, double mean) {
         double stdDev = 0;
         for (Number number : numbers) {
             stdDev += Math.pow(number.doubleValue() - mean, 2);
@@ -74,6 +78,9 @@ public class GeneralMath {
         return new Point(rect.x + rect.width/2, rect.y + rect.height/2);
     }
 
-
+    public static boolean isOutlier(List<Number> numbers, double value, double maxDeviation) {
+        double mean = mean(numbers);
+        return maxDeviation < Math.abs(value - mean) / standardDeviation(numbers, mean);
+    }
 
 }
