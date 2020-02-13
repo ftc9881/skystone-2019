@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
-public class RelativeMoveWithVuforia extends RelativeMove {
+public class RelativeMoveWithVuforiaOld extends RelativeMove {
 
     private PIDController vuforiaXPidController;
     private PIDController vuforiaYPidController;
@@ -35,7 +35,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     private double minimumLookTime;
     private double startTime;
 
-    public RelativeMoveWithVuforia(Command command) {
+    public RelativeMoveWithVuforiaOld(Command command) {
         super(command);
         tag = "RelativeMoveWithVuforia";
 
@@ -67,7 +67,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         vuforiaYPidController = new PIDController(command, "vuforia y", targetVY);
     }
 
-    public RelativeMoveWithVuforia(Command command, VisionSystem.SkystonePosition skystonePosition) {
+    public RelativeMoveWithVuforiaOld(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
         clicks = command.getDouble("clicks " + skystonePosition.key, clicks);
         targetVY = command.getDouble("vuforia y " + skystonePosition.key, targetVY);

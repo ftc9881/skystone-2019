@@ -36,13 +36,18 @@ public class Pose {
         return Math.sqrt(Math.pow(x-b.x, 2) + Math.pow(y-b.y, 2));
     }
 
+    public boolean sameAs(Pose other) {
+        return x == other.x && y == other.y && r == other.r;
+    }
+
     public String toString() {
-       return (round(x, 3) + ", " + round(y, 3) + ", " + round(r, 3));
+        return (round(x, 3) + ", " + round(y, 3) + ", " + round(r, 3));
     }
 
     private double round(double number, int places) {
         double scale = Math.pow(10, places);
         return Math.round(number * scale) / scale;
     }
+
 
 }

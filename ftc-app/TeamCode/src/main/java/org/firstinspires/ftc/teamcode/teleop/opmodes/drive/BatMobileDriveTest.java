@@ -1,17 +1,19 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOUBLE_TAP;
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.HELD;
 
-@TeleOp(group="Drive")
-public class BatMobileDrive extends BaseDrive {
+@TeleOp(group="Test")
+public class BatMobileDriveTest extends BaseDrive {
 
     private BatMobile batMobile;
 
@@ -37,8 +39,8 @@ public class BatMobileDrive extends BaseDrive {
     private Button toggleLiftButton = new Button();
     private Button toggleExtendButton = new Button();
 
-    private Button reverseIntakeMotorButton = new Button();
-    private boolean reverseIntake = false;
+    private boolean holdingPosition = false;
+
 
     @Override
     protected void initialize() {
@@ -93,24 +95,53 @@ public class BatMobileDrive extends BaseDrive {
         decreaseExtendLevelButton.update(gamepad1.dpad_left);
         toggleExtendButton.update(gamepad2.b);
         toggleLiftButton.update(gamepad2.a);
-        reverseIntakeMotorButton.update(gamepad2.dpad_up);
     }
 
     private void updateElevator() {
-//        if (givingLiftInput()) {
+        if (increaseLiftLevelButton.is(DOWN)) {
+            double p = batMobile.elevator.left.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER).p;
+            batMobile.elevator.left.setVelocityPIDFCoefficients(p + 0.5, 3, 0, 0);
+            batMobile.elevator.right.setVelocityPIDFCoefficients(p + 0.5, 3, 0, 0);
+        }
+        if (decreaseLiftLevelButton.is(DOWN)) {
+            double p = batMobile.elevator.left.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER).p;
+            batMobile.elevator.left.setVelocityPIDFCoefficients(p - 0.5, 3, 0, 0);
+            batMobile.elevator.right.setVelocityPIDFCoefficients(p - 0.5, 3, 0, 0);
+        }
+
+        boolean holdLift = isInputting(gamepad2.left_trigger);
+        if (holdLift && !holdingPosition) {
+            holdingPosition = true;
+            batMobile.elevator.runToRelativePosition(0, 0);
+            AutoRunner.log("BatMobileDriveTest", "Set position");
+        }
+        if (!holdLift) {
+            holdingPosition = false;
             updateElevatorManual();
+        }
+//        holdingPosition = isInputting(gamepad2.left_trigger);
+//        if (holdingPosition) {
+//            batMobile.elevator.setVelocity(0, 0);
 //        } else {
-//            batMobile.elevator.runToRelativePosition(0, 0);
+//            updateElevatorManual();
 //        }
     }
 
-    private void updateElevatorManual() {
+    private double getLiftInputPower() {
         double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0) * liftPowerFactor;
-        double extendPowerP1 = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0) * extendPowerFactor;
         double liftPowerP2 = Math.pow(-gamepad2.left_stick_y, 3);
+        return liftPowerP1 + liftPowerP2;
+    }
+
+    private double getExtendInputPower() {
+        double extendPowerP1 = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0) * extendPowerFactor;
         double extendPowerP2 = Math.pow(gamepad2.right_stick_x, 3);
-        double powerFactor = isInputting(gamepad2.right_trigger) || isInputting(gamepad2.left_trigger) ? slowLiftPowerFactor : 1.0;
-        batMobile.elevator.setPowerLE(liftPowerP1 + liftPowerP2, extendPowerP1 + extendPowerP2, powerFactor);
+        return extendPowerP1 + extendPowerP2;
+    }
+
+    private void updateElevatorManual() {
+        double powerFactor = isInputting(gamepad2.right_trigger) ? slowLiftPowerFactor : 1.0;
+        batMobile.elevator.setPowerLE(getLiftInputPower(), getExtendInputPower(), powerFactor);
     }
 
     private boolean isInputting(double input) {
@@ -118,13 +149,9 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateIntake() {
-        if (reverseIntakeMotorButton.is(DOWN)) {
-            reverseIntake = !reverseIntake;
-        }
-
         double intakePower = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
         batMobile.intake.left.setPower(intakePower);
-        batMobile.intake.right.setPower(intakePower * (reverseIntake ? -1 : 1) );
+        batMobile.intake.right.setPower(-intakePower);
     }
 
     private void updateServos() {
@@ -180,6 +207,12 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateTelemetry() {
+        telemetry.addData("Lift kP", batMobile.elevator.left.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER).p);
+        telemetry.addData("Target Pos", batMobile.elevator.left.getTargetPosition());
+        telemetry.addData("Mode", batMobile.elevator.left.getMode());
+        telemetry.addData("Left Lift Position", batMobile.elevator.left.getCurrentPosition());
+        telemetry.addData("Right Lift Position", batMobile.elevator.right.getCurrentPosition());
+        telemetry.addData("Running to position", holdingPosition);
         telemetry.addData("Drive Power Factor", drivePowerFactor);
         telemetry.addData("Lift Power Factor", liftPowerFactor);
         telemetry.addData("Intake Power Factor", outtakePowerFactor);

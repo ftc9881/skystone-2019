@@ -64,16 +64,17 @@ public class OpenCV implements VisionSystem {
         switch (targetType) {
             case SKYSTONE: {
                 detector = new SkystoneDetector();
+                break;
             }
             case PERIMETER: {
                 detector = new VumarkDetectorOld();
+                break;
             }
             default: {
                 AutoRunner.log("OpenCV", "Unsupported target type :(");
             }
         }
         if (detector != null) {
-            detector.flipImage = cameraType == CameraType.FRONT_WEBCAM;
             detector.setConfig(config);
             startCamera();
         }
@@ -88,7 +89,7 @@ public class OpenCV implements VisionSystem {
 
     private void initializeCamera(CameraType cameraType) {
         this.cameraType = cameraType;
-        HardwareMap hardwareMap = Robot.getInstance().hardwareMap;
+        HardwareMap hardwareMap = Robot.getInstance().getHardwareMap();
 
         switch (cameraType) {
             case PHONE:

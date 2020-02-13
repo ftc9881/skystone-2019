@@ -38,7 +38,7 @@ public class RelativeMoveWithOpenCV extends RelativeMove {
 
     public RelativeMoveWithOpenCV(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
-        distance = command.getDouble("distance " + skystonePosition.key, distance);
+        clicks = command.getDouble("clicks " + skystonePosition.key, clicks);
         vumarkTargetY = command.getDouble("vumark y " + skystonePosition.key, vumarkTargetY);
         vumarkYPID = new PIDController(command, "vumark y", vumarkTargetY);
     }

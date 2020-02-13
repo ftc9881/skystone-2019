@@ -11,6 +11,8 @@ import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -99,6 +101,7 @@ public class OpenCVThroughVuforia extends OpenCV {
             Bitmap bitmap = convertFrameToBitmap(frame);
             Mat mat = new Mat();
             Utils.bitmapToMat(bitmap, mat);
+            Imgproc.resize(mat, mat, new Size(CAMERA_RECT.width, CAMERA_RECT.height));
             return mat;
         }
     }

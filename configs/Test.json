@@ -25,18 +25,58 @@
 	"init": [
 		{ 
 			"command": "PIVOT",
-			"state": "REST"
+			"state": "CLOSED"
 		},
-		{ "command": "skip IDENTIFY SKYSTONE" }
+		{ "command": "IDENTIFY SKYSTONE" }
 	],
 
 
 	"commands": [
 
+
+
+
+
+{
+"comment": "move to second skystone",
+			"command": "MOVE",
+			"use vuforia": "true",
+				"vuforia min look time": "2000",
+				"vuforia x": "6",
+				"vuforia x kp": "0.1",
+				"vuforia x close threshold": "0.4",
+				"vuforia x clicks until correct": "1500",
+				"vuforia y kp": "0.025",
+				"vuforia y kd": "0.00004",
+				"vuforia y stone l": "7.7",
+				"vuforia y stone c": "15",
+				"vuforia y stone r": "22",
+				"vuforia y stop when": "close",
+				"vuforia y close threshold": "0.1",
+			"deploy arm": "true",
+				"pivot state": "open",
+				"pivot deploy clicks": "3300",
+				"claw state": "open",
+				"claw deploy clicks": "3300",
+			"distance stone l": "100",
+			"distance stone c": "105",
+			"distance stone r": "110",
+			"ramp down": "2000",
+			"move angle": "-5",
+			"target angle": "0",
+			"base power": "0.08",
+			"power": "0.5",
+			"timeout": "10000"
+		},
+
+
+
 		{ 
 			"command": "PIVOT",
 			"state": "OPEN"
 		},
+
+
 
 		{
 "comment": "move to next to foundation",

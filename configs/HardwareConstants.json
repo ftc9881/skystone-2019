@@ -1,7 +1,7 @@
 {
 	"phone r y": "-90",
 	"phone r x": "90",
-	"webcam 1 r": "90",
+	"webcam 1 r": "-90",
 
 	"left foundation open": "0.22",
 	"left foundation closed": "0.82",
@@ -9,21 +9,26 @@
 	"right foundation open": "0.74",
 	"right foundation closed": "0.14",
 
-	"front deposit open": "0.3",
-	"front deposit closed": "0.8",
+	"front deposit open": "0.32",
+	"front deposit closed": "0.40",
 
 	"back deposit open": "0.45",
 	"back deposit closed": "0.0",
 	"back deposit rest": "0.59",
 
-	"pivot open": "0.2",
-	"pivot closed": "0.5",
-	"pivot rest": "0.27",
+	"pivot open": "0.61",
+	"pivot closed": "0.3",
+	"pivot rest": "0.56",
 
-	"claw open": "0.6",
-	"claw closed": "0.1",
+	"claw open": "0.35",
+	"claw closed": "0.65",
 	"claw rest": "0.5",
 
+"default pidf": "10, 3, 0, 0, 0",
+	"elevator kp": "15",
+	"elevator ki": "3",
+	"elevator kd": "0",
+	"elevator kf": "0",
 	
 	"left block sensor a": "0.171417",
 	"left block sensor b": "-0.0219884",

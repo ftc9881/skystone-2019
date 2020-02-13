@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 public class CachingMotorEx implements DcMotorEx {
     private DcMotorEx delegate;
     private double cachedPower;
+    private double cachedVelocity;
 
     public CachingMotorEx(HardwareMap hardwareMap, String name) {
         this(hardwareMap.dcMotor.get(name));
@@ -164,12 +165,19 @@ public class CachingMotorEx implements DcMotorEx {
 
     @Override
     public void setVelocity(double angularRate) {
-        delegate.setVelocity(angularRate);
+        if (angularRate != cachedVelocity) {
+            delegate.setVelocity(angularRate);
+            cachedVelocity = angularRate;
+        }
+
     }
 
     @Override
     public void setVelocity(double angularRate, AngleUnit unit) {
-        delegate.setVelocity(angularRate, unit);
+        if (angularRate != cachedVelocity) {
+            delegate.setVelocity(angularRate, unit);
+            cachedVelocity = angularRate;
+        }
     }
 
     @Override
@@ -206,10 +214,10 @@ public class CachingMotorEx implements DcMotorEx {
 
     public void setVelocityPIDFCoefficients(Command config, String key) {
         PIDFCoefficients pidf = getPIDFCoefficients(RunMode.RUN_USING_ENCODER);
-        double p = config.getDouble(key + "kp", pidf.p);
-        double i = config.getDouble(key + "ki", pidf.i);
-        double d = config.getDouble(key + "kd", pidf.d);
-        double f = config.getDouble(key + "kf", pidf.f);
+        double p = config.getDouble(key + " kp", pidf.p);
+        double i = config.getDouble(key + " ki", pidf.i);
+        double d = config.getDouble(key + " kd", pidf.d);
+        double f = config.getDouble(key + " kf", pidf.f);
         setVelocityPIDFCoefficients(p, i, d, f);
     }
 

@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import org.opencv.core.Rect;
 
 @TeleOp(group="Test")
-@Disabled
+//@Disabled
 public class OpenCVSkystoneTest extends TeleOpBase {
 
     OpenCV openCV;

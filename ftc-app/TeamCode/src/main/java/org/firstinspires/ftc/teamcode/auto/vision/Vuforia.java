@@ -60,13 +60,17 @@ public class Vuforia implements VisionSystem {
         return instance;
     }
 
+    public boolean  isLooking() {
+        return lookAction != null;
+    }
+
     public static Vuforia getInstance() {
         return instance;
     }
 
     private Vuforia(CameraType cameraType) {
         this.cameraType = cameraType;
-        this.hardwareMap = Robot.getInstance().hardwareMap;
+        this.hardwareMap = Robot.getInstance().getHardwareMap();
         config = new Configuration("HardwareConstants");
         cameraOffset = config.getPose(cameraType.name.toLowerCase(), 0);
 

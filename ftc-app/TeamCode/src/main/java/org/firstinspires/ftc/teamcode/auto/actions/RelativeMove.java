@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
-import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.math.Angle;
@@ -15,28 +14,28 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RelativeMove extends Action {
 
-    protected static final double CLICKS_PER_INCH = 50.0;
+//    protected static final double CLICKS_PER_INCH = 50.0;
 
     protected PIDController anglePidController;
 
     protected Robot robot;
     protected AutoOpConfiguration config;
     protected int clicksError;
-    protected int actualClicks;
+    protected int averageClicks;
     protected int decelerateClicks;
     protected int accelerateClicks;
     protected double basePower;
     protected double targetClicks;
-    protected double distance;
+    protected double clicks;
     protected Angle moveAngle;
     protected Angle targetAngle;
     protected double powerFactor;
     protected Pose drivePose;
+    protected Pose correctedDrivePose;
 
     protected boolean useTargetAngle;
 
@@ -45,7 +44,7 @@ public class RelativeMove extends Action {
         robot = Robot.getInstance();
         moveAngle = command.getAngle("move angle", 0);
         targetAngle = command.getAngle("target angle", 0);
-        distance = command.getDouble("distance", 5.0);
+        clicks = command.getDouble("clicks", 5.0);
         powerFactor = command.getDouble("power", 0.5);
         accelerateClicks = command.getInt("ramp up", 0);
         decelerateClicks = command.getInt("ramp down", 0);
@@ -59,18 +58,19 @@ public class RelativeMove extends Action {
 
     public RelativeMove(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
-        distance = command.getDouble("distance " + skystonePosition.key, distance);
+        clicks = command.getDouble("clicks " + skystonePosition.key, clicks);
     }
 
     @Override
     protected void onRun() {
         robot.driveTrain.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.driveTrain.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        targetClicks = Math.abs(distance) * CLICKS_PER_INCH;
+        targetClicks = Math.abs(clicks);
 
         drivePose = new Pose(0, 0, 0);
         drivePose.x = Math.sin(moveAngle.getRadians());
         drivePose.y = Math.cos(moveAngle.getRadians());
+        correctedDrivePose = new Pose(drivePose);
 
         AutoRunner.log("TargetClicks", targetClicks);
         AutoRunner.log("DrivePowerX", drivePose.x);
@@ -79,7 +79,6 @@ public class RelativeMove extends Action {
 
     @Override
     protected boolean runIsComplete() {
-        AutoRunner.log("ActualClicks", actualClicks);
         return reachedTargetClicks();
     }
 
@@ -89,13 +88,15 @@ public class RelativeMove extends Action {
         clicksArray.add(Math.abs(robot.driveTrain.lb.getCurrentPosition()));
         clicksArray.add(Math.abs(robot.driveTrain.rf.getCurrentPosition()));
         clicksArray.add(Math.abs(robot.driveTrain.rb.getCurrentPosition()));
-        actualClicks = Collections.max(clicksArray);
-        return Math.abs(actualClicks - targetClicks) < clicksError;
+//        averageClicks = Collections.max(clicksArray);
+        averageClicks = (int) robot.driveTrain.getAverageClicks();
+        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s", averageClicks, clicksArray.get(0), clicksArray.get(1), clicksArray.get(2), clicksArray.get(3), correctedDrivePose.y));
+        return Math.abs(averageClicks - targetClicks) < clicksError;
     }
 
     @Override
     protected void insideRun() {
-        Pose correctedDrivePose = new Pose(drivePose);
+        correctedDrivePose = new Pose(drivePose);
 
         Angle actualHeading = robot.imu.getHeading();
         if (useTargetAngle) {
@@ -117,10 +118,10 @@ public class RelativeMove extends Action {
 
     protected double calculateRampFactor() {
         double rampValue = 1.0;
-        if (actualClicks > (targetClicks - decelerateClicks)) {
-            rampValue = 1.0 - (actualClicks - (targetClicks-decelerateClicks)) / (double) decelerateClicks;
-        } else if (actualClicks < accelerateClicks) {
-            rampValue = Math.max(Math.sqrt(actualClicks/(double)accelerateClicks), 0.1);
+        if (averageClicks > (targetClicks - decelerateClicks)) {
+            rampValue = 1.0 - (averageClicks - (targetClicks-decelerateClicks)) / (double) decelerateClicks;
+        } else if (averageClicks < accelerateClicks) {
+            rampValue = Math.max(Math.sqrt(averageClicks /(double)accelerateClicks), 0.1);
         }
         return Range.clip(rampValue, basePower, 1.0);
     }

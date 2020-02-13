@@ -70,7 +70,7 @@ public class VumarkDetectorOld extends OpenCVDetector {
 
     @Override
     public Pose getPose() {
-        // TODO: Regresison function mapping width to y distance
+        // TODO: Regresison function mapping width to y clicks
         return new Pose(
                 foundRect.x - (OpenCV.CAMERA_RECT.x + OpenCV.CAMERA_RECT.width / 2),
                 foundRect.width,

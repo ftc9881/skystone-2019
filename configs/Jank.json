@@ -12,15 +12,30 @@
 		"move kd": "0.2"
 	},
 
-	"init": [ ],
+	"init": [
+		{ 
+			"command": "PIVOT",
+			"state": "CLOSED"
+		},
+		{ 
+			"command": "CLAW",
+			"state": "REST"
+		}
+	],
 
 	"commands": [
 		{
+"comment": "Moves forwards",
 			"command": "MOVE",
+			"clicks": "500",
+			"move clicks error": "0",
 			"power": "1.0",
-			"distance": "18",
-			"angle": "0",
-			"timeout": "3000"
-		}
+			"-ramp up": "100",
+			"-ramp down": "400",
+			"move angle": "0",
+			"target angle": "0",
+			"timeout": "10000"
+		},
+		{"command": "BREAKPOINT"}
 	]
 }

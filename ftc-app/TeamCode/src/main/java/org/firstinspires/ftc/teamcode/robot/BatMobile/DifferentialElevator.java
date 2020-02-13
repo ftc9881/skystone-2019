@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.robot.BatMobile;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotorEx;
+import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 public class DifferentialElevator {
 
@@ -24,16 +26,33 @@ public class DifferentialElevator {
 
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        AutoRunner.log("elevatorDefaultVelocityPidf", left.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+
+        Configuration config = new Configuration("HardwareConstants");
+        left.setVelocityPIDFCoefficients(config, "elevator");
+        right.setVelocityPIDFCoefficients(config, "elevator");
+
+        AutoRunner.log("elevatorOurVelocityPidf", left.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+
     }
 
     public void runToRelativePosition(int liftClicks, int extendClicks) {
         int leftClicks = left.getCurrentPosition() + extendClicks + liftClicks;
         int rightClicks = right.getCurrentPosition() + extendClicks - liftClicks;
+        AutoRunner.log("LeftTargetPosition", leftClicks);
+        AutoRunner.log("RightTargetPosition", rightClicks);
         left.setTargetPosition(leftClicks);
         right.setTargetPosition(rightClicks);
-        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        setPowerLR(1, 1);
+        checkAndSetMode(DcMotor.RunMode.RUN_TO_POSITION);
+        left.setVelocity(100);
+        right.setVelocity(100);
+    }
+
+    public void setVelocity(double leftVelocity, double rightVelocity) {
+        checkAndSetMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left.setVelocity(leftVelocity);
+        right.setVelocity(rightVelocity);
     }
 
     public void setPowerLR(double left, double right, double powerFactor) {

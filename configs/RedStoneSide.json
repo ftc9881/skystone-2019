@@ -9,17 +9,16 @@
 		"move angle ki": "0.0",
 		"move angle kd": "0.1",
 
-		"crop x": "120",
-		"crop y": "140",
-		"crop w": "420",
-		"crop h": "100",
-		"std dev threshold": "100",
+		"crop x": "0",
+		"crop y": "60",
+		"crop w": "320",
+		"crop h": "180",
 		"max detection list size": "10",
-		"yellow blobbing": "300",
-		"black blobbing": "200",
-		"stone min area": "200",
-		"skystone left": "260",
-		"skystone right": "400"
+		"yellow blobbing": "80",
+		"black blobbing": "50",
+		"stone min area": "100",
+		"skystone left": "45",
+		"skystone right": "140"
 	},
 
 	"init": [
@@ -77,17 +76,21 @@
 			"distance stone c": "-2.2",
 			"distance stone r": "-6",
 			"use vuforia": "true",
-				"vuforia x": "0",
-				"vuforia x kp": "0.1",
+				"jump threshold": "0",
+				"min regression n": "4",
+				"vuforia min look time": "2000",
+				"vuforia x": "-3",
+				"vuforia x kp": "0.08",
 				"vuforia x kd": "0.0001",
-				"vuforia y kp": "0.025",
+				"vuforia x close threshold": "2",
+				"vuforia y stone l": "5.6",
+				"vuforia y stone c": "13",
+				"vuforia y stone r": "21.5",
+				"vuforia y kp": "0.06",
 				"vuforia y kd": "0.00004",
-				"vuforia y stone l": "28",
-				"vuforia y stone c": "36",
-				"vuforia y stone r": "44",
-				"vuforia stop when": "close",
-				"vuforia close threshold": "0.1",
-			"base power": "0.1",
+				"vuforia y stop when": "close",
+				"vuforia y close threshold": "0.4",
+			"base power": "0.05",
 			"timeout": "5000",
 			"power": "1.0"
 		},
@@ -106,8 +109,6 @@
 			"command": "SLEEP", "time":"100" 
 		},
 
-		{ "command": "BREAKPOINT" },
-
 		{
 "comment": "move to next to foundation",
 			"command": "MOVE",
@@ -120,8 +121,18 @@
 			"power": "1.0",
 			"distance": "74",
 			"distance stone l": "-80",
-			"distance stone c": "-85",
+			"distance stone c": "-75",
 			"distance stone r": "-70",
+			"u_se vuforia": "false",
+				"jump threshold": "0",
+				"vuforia x": "-3",
+				"vuforia x kp": "0",
+				"vuforia x close threshold": "2",
+				"vuforia y kp": "0.035",
+				"vuforia y kd": "0.00004",
+				"vuforia y": "112",
+				"vuforia y stop when": "close",
+				"vuforia y close threshold": "2",
 			"move angle": "-175",
 			"target angle": "-90",
 			"timeout": "5000"
@@ -142,29 +153,34 @@
 "comment": "move to second skystone",
 			"command": "MOVE",
 			"use vuforia": "true",
-				"vuforia x": "0",
-				"vuforia x kp": "0.1",
-				"vuforia y kp": "0.025",
+				"jump threshold": "0",
+				"min regression n": "100",
+				"vuforia min look time": "2000",
+				"vuforia x": "-3",
+				"vuforia x kp": "0.08",
+				"vuforia x close threshold": "2",
+				"vuforia x clicks until correct": "2000",
+				"vuforia y kp": "0.03",
 				"vuforia y kd": "0.00004",
-				"vuforia y stone l": "5.2",
-				"vuforia y stone c": "13",
-				"vuforia y stone r": "20",
-				"vuforia stop when": "close",
-				"vuforia close threshold": "0.1",
+				"vuforia y stone l": "30",
+				"vuforia y stone c": "38",
+				"vuforia y stone r": "46",
+				"vuforia y stop when": "close",
+				"vuforia y close threshold": "0.3",
 			"deploy arm": "true",
 				"pivot state": "open",
 				"pivot deploy clicks": "3300",
 				"claw state": "open",
 				"claw deploy clicks": "3300",
-			"power": "1.0",
-			"base power": "0.08",
 			"distance stone l": "100",
 			"distance stone c": "105",
 			"distance stone r": "110",
 			"ramp down": "2000",
 			"move angle": "-5",
 			"target angle": "-90",
-			"timeout": "5000"
+			"base power": "0.06",
+			"power": "1",
+			"timeout": "10000"
 		},
 		{
 			"command": "CLAW",
@@ -181,15 +197,21 @@
 		{
 "comment": "move to next to foundation second time",
 			"command": "MOVE",
-			"deploy arm": "true",
-				"pivot state": "open",
-				"pivot deploy clicks": "3200",
-				"claw state": "open",
-				"claw deploy clicks": "3400",
+			"ramp down": "1600",
 			"distance stone l": "90",
 			"distance stone c": "82",
 			"distance stone r": "77",
-			"ramp down": "1600",
+			"u.se vuforia": "false",
+				"vuforia x clicks until correct": "9999999",
+				"vuforia min look time": "0",
+				"vuforia x": "-3",
+				"vuforia x kp": "0",
+				"vuforia x close threshold": "0.4",
+				"vuforia y kp": "0.035",
+				"vuforia y kd": "0.00004",
+				"vuforia y": "120",
+				"vuforia y stop when": "close",
+				"vuforia y close threshold": "2",
 			"power": "1.0",
 			"move angle": "-175",
 			"target angle": "-90",
@@ -200,17 +222,65 @@
 			"command": "MOVE",
 			"deploy arm": "true",
 				"pivot state": "rest",
-				"pivot deploy clicks": "500",
+				"pivot deploy clicks": "250",
+				"claw state": "open",
+				"claw deploy clicks": "350",
 			"target angle": "-90",
 			"move angle": "90",
-			"power": "0.4",
-			"distance": "-7",
+			"power": "0.7",
+			"distance": "-10",
+			"ramp down": "200",
 			"timeout": "3000"
 		},
+
+	
+		{ "command": "BREAKPOINT" },
+
 		{
-			"command": "CLAW",
-			"state": "open"
+"comment": "turn so foundation in build site",
+			"command": "TURN",
+			"power": "1.0",
+			"angle": "90",
+			"error": "0.4",
+			"base power": "0.2",
+			"kp": "2.0",
+			"ki": "0",
+			"kd": "0.2",
+			"timeout": "3000"
 		},
+
+		{
+			"command": "PIVOT",
+			"state": "closed"
+		},
+
+		{ "command": "BREAKPOINT" },
+
+		{
+"comment": "drag foundation into build zone (high power)",
+			"command": "MOVE",
+			"deploy arm": "true",
+				"claw state": "closed",
+				"claw deploy clicks": "100",
+			"target angle": "0",
+			"move angle": "-90",
+			"power": "1.0",
+			"distance": "50",
+			"timeout": "5000"
+		},
+		
+
+
+
+
+
+
+
+
+
+
+
+
 
 		{ "command": "BREAKPOINT" },
 		
@@ -219,13 +289,16 @@
 			"command": "MOVE",
 			"deploy arm": "true",
 				"claw state": "closed",
-				"claw deploy clicks": "10",
+				"claw deploy clicks": "100",
 			"target angle": "-90",
 			"move angle": "-90",
 			"power": "1.0",
 			"distance": "50",
 			"timeout": "5000"
 		},
+		
+		{ "command": "BREAKPOINT" },
+
 		{
 "comment": "turn so foundation in build site",
 			"command": "TURN",
@@ -238,10 +311,14 @@
 			"kd": "0.2",
 			"timeout": "3000"
 		},
+
 		{
 			"command": "PIVOT",
 			"state": "closed"
 		},
+
+		{ "command": "BREAKPOINT" },
+
 		{
 "comment": "strafe towards bridge",
 			"command": "MOVE",

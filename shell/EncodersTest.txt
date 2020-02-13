@@ -1,0 +1,39 @@
+2020-02-12 14:33:06.709 1826-2017/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLF: 571
+2020-02-12 14:33:06.709 1826-2017/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLB: 462
+2020-02-12 14:33:06.709 1826-2017/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRF: 584
+2020-02-12 14:33:06.709 1826-2017/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRB: 507
+2020-02-12 14:33:06.709 1826-2017/com.qualcomm.ftcrobotcontroller D/TeamCode@AverageClicks: 499
+
+13.75
+
+2020-02-12 14:33:36.569 1826-2024/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLF: 576
+2020-02-12 14:33:36.569 1826-2024/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLB: 468
+2020-02-12 14:33:36.569 1826-2024/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRF: 577
+2020-02-12 14:33:36.569 1826-2024/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRB: 500
+2020-02-12 14:33:36.569 1826-2024/com.qualcomm.ftcrobotcontroller D/TeamCode@AverageClicks: 495
+
+13.875
+
+Ê0-02-12 14:34:23.387 1826-2032/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLF: 553
+2020-02-12 14:34:23.388 1826-2032/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLB: 435
+2020-02-12 14:34:23.388 1826-2032/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRF: 555
+2020-02-12 14:34:23.388 1826-2032/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRB: 477
+2020-02-12 14:34:23.388 1826-2032/com.qualcomm.ftcrobotcontroller D/TeamCode@AverageClicks: 463
+
+13.5
+
+Ê0-02-12 14:35:10.226 1826-2039/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLF: 546
+2020-02-12 14:35:10.227 1826-2039/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLB: 438
+2020-02-12 14:35:10.227 1826-2039/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRF: 553
+2020-02-12 14:35:10.227 1826-2039/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRB: 468
+2020-02-12 14:35:10.227 1826-2039/com.qualcomm.ftcrobotcontroller D/TeamCode@AverageClicks: 469
+
+13.45
+
+2020-02-12 14:37:07.247 1826-2076/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLF: 1143
+2020-02-12 14:37:07.247 1826-2076/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksLB: 1033
+2020-02-12 14:37:07.247 1826-2076/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRF: 1242
+2020-02-12 14:37:07.247 1826-2076/com.qualcomm.ftcrobotcontroller D/TeamCode@ClicksRB: 1073
+2020-02-12 14:37:07.247 1826-2076/com.qualcomm.ftcrobotcontroller D/TeamCode@AverageClicks: 1066
+
+31.5

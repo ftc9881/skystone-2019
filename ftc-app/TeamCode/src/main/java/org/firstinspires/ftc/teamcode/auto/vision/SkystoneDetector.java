@@ -29,19 +29,20 @@ public class SkystoneDetector extends OpenCVDetector {
     public int minimumArea;
     public Rect cropRect = new Rect();
 
-    private Mat rawImage = new Mat();
-    private Mat workingMat = new Mat();
     private Mat blackMask = new Mat();
     private Mat yellowMask = new Mat();
-    private Mat hierarchy  = new Mat();
 
     public SkystoneDetector() { }
 
     @Override
     public Mat process(Mat input) {
+//        Core.rotate(input, input, Core.ROTATE_180);
         input.copyTo(rawImage);
         input.copyTo(workingMat);
+        input.copyTo(displayMat);
+        input.copyTo(thresholdMat);
         input.copyTo(blackMask);
+        input.copyTo(yellowMask);
 
         List<MatOfPoint> contoursYellow = findContours(yellowFilter, yellowMask);
         List<Rect> rectsYellow = contoursToRects(contoursYellow);

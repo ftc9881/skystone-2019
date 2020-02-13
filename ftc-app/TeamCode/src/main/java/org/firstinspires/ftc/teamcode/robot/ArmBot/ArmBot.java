@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot.ArmBot;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.teamcode.robot.Intake;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
@@ -38,7 +40,7 @@ public class ArmBot extends Robot {
                     fields in getters/setters to abstract things from accessing classes.
          */
         this.opMode = robot.opMode;
-        this.hardwareMap = robot.hardwareMap;
+        HardwareMap hardwareMap = robot.getHardwareMap();
         this.imu = robot.imu;
         this.driveTrain = robot.driveTrain;
 

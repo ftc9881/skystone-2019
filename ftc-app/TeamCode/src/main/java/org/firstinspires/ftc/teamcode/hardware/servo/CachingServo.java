@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware.servo;
 
+import com.qualcomm.hardware.lynx.LynxNackException;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;

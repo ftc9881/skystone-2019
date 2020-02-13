@@ -49,7 +49,7 @@ public class MaxSonarI2CXL extends I2cDeviceSynchDevice<I2cDeviceSynch> implemen
     {
         super(deviceClient, true);
 
-        this.deviceClient.setI2cAddress(I2cAddr.create8bit(0xE0));
+//        this.deviceClient.setI2cAddress(I2cAddr.create8bit(0x70));
 
         super.registerArmingStateCallback(false);
         this.deviceClient.engage();

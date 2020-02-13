@@ -70,9 +70,8 @@ public abstract class OpenCVDetector extends OpenCvPipeline {
             return input;
         }
 
-        if (flipImage) {
-            Core.rotate(input, input, Core.ROTATE_180);
-        }
+        // TODO: Flip depending on CameraType
+//        Core.rotate(input, input, Core.ROTATE_180);
 
         input.copyTo(rawImage);
         input.copyTo(workingMat);
