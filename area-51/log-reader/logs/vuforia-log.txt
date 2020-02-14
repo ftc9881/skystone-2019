@@ -1,0 +1,1244 @@
+2020-02-11 18:10:16.390 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.415 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.432 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.453 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.475 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.492 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.516 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.539 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.572 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.601 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.629 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.653 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.681 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.712 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.737 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.758 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.782 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.816 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.843 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.877 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.905 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.931 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.965 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:16.994 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.020 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.046 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.083 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.117 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.140 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.171 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.203 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.229 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.253 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.277 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.301 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.319 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.337 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.354 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.372 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.391 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.427 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.460 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.477 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.502 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.533 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.560 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.590 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.621 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.640 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.669 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.696 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.714 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.730 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.756 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.778 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.797 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.813 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.829 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.847 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.866 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.893 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.935 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.952 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.969 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:17.988 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.007 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.035 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.058 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.076 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.094 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.110 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.127 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.147 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.171 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.193 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.209 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.225 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.243 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.262 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.280 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.297 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.314 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.333 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.362 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.389 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.407 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.429 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.448 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.466 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.484 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.503 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.519 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.536 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.552 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.591 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.618 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.636 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.654 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.671 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.690 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.707 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.724 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.740 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.756 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.774 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.793 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.813 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.830 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.851 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.871 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.887 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.906 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.923 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.939 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.956 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.972 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:18.988 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.006 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.023 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.039 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.057 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.077 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.098 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.118 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.135 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.153 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.169 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.187 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.203 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.222 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.238 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.256 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.273 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.288 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.305 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.321 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.337 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.356 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.375 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.392 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.410 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.429 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.448 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.465 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.481 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.498 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.518 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.537 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.552 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.569 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.587 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.611 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.629 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.645 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.661 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.679 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.696 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.711 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.730 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.747 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.765 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.781 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.796 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.814 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.831 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.847 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.873 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.893 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.912 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.930 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.946 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.965 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.981 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:19.999 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.023 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.039 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.056 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.072 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.089 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.105 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.123 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.145 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.163 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.178 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.194 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.212 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.228 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.245 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.265 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.281 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.301 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.320 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.338 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.357 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.374 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.397 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.417 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.435 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.453 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.469 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.486 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.502 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.519 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.536 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.553 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.571 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.586 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.603 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.619 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.635 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.653 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.669 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.685 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.702 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.719 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.736 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.753 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.769 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.786 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.808 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.825 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.841 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.859 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.877 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.894 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.912 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.933 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.950 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.968 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:20.986 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.002 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.020 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.036 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.056 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.072 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.090 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.108 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.128 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.144 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.160 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.177 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.197 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.213 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.231 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.249 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.264 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.280 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.296 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.311 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.329 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.347 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:10:21.363 3269-3416/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:12:00.116 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:12:00.143 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:12:00.173 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:12:00.198 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:12:00.222 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:12:00.244 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:12:00.263 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:12:00.286 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.0, 0.0, 0.0
+2020-02-11 18:12:00.312 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.07997131347656
+2020-02-11 18:12:00.325 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.141, 37.08, -4.503
+2020-02-11 18:12:00.343 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.07997131347656
+2020-02-11 18:12:00.354 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.141, 37.08, -4.503
+2020-02-11 18:12:00.372 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.07997131347656
+2020-02-11 18:12:00.378 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.141, 37.08, -4.503
+2020-02-11 18:12:00.396 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.07997131347656
+2020-02-11 18:12:00.405 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.141, 37.08, -4.503
+2020-02-11 18:12:00.433 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 33.359889439174104
+2020-02-11 18:12:00.443 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.075, 33.174, -5.726
+2020-02-11 18:12:00.461 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 34.28990990774972
+2020-02-11 18:12:00.468 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.075, 33.174, -5.726
+2020-02-11 18:12:00.488 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 35.87094470432827
+2020-02-11 18:12:00.499 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.075, 33.174, -5.726
+2020-02-11 18:12:00.519 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.823987688337056
+2020-02-11 18:12:00.535 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.075, 33.174, -5.726
+2020-02-11 18:12:00.561 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 39.4050224849156
+2020-02-11 18:12:00.567 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 0.075, 33.174, -5.726
+2020-02-11 18:12:00.594 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 30.687445945550678
+2020-02-11 18:12:00.608 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.338, 30.287, -5.717
+2020-02-11 18:12:00.628 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 30.573711579831276
+2020-02-11 18:12:00.639 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.338, 30.287, -5.717
+2020-02-11 18:12:00.658 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 30.488410805541726
+2020-02-11 18:12:00.668 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.338, 30.287, -5.717
+2020-02-11 18:12:00.690 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 30.260942074102925
+2020-02-11 18:12:00.699 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.338, 30.287, -5.717
+2020-02-11 18:12:00.725 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 54.49374686455981
+2020-02-11 18:12:00.732 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.277, 59.082, -6.935
+2020-02-11 18:12:00.753 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 54.49374686455981
+2020-02-11 18:12:00.759 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.277, 59.082, -6.935
+2020-02-11 18:12:00.777 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 54.31193702783396
+2020-02-11 18:12:00.793 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.277, 59.082, -6.935
+2020-02-11 18:12:00.812 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 54.31193702783396
+2020-02-11 18:12:00.828 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.277, 59.082, -6.935
+2020-02-11 18:12:00.858 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 36.51841611579183
+2020-02-11 18:12:00.863 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.838, 30.947, -0.954
+2020-02-11 18:12:00.883 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.13705430589685
+2020-02-11 18:12:00.889 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.838, 30.947, -0.954
+2020-02-11 18:12:00.907 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.83817758801586
+2020-02-11 18:12:00.919 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.838, 30.947, -0.954
+2020-02-11 18:12:00.939 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 38.45681577812087
+2020-02-11 18:12:00.953 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.838, 30.947, -0.954
+2020-02-11 18:12:00.985 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 34.30108943912549
+2020-02-11 18:12:00.993 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.679, 31.122, 2.292
+2020-02-11 18:12:01.011 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 34.345736932898745
+2020-02-11 18:12:01.018 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.679, 31.122, 2.292
+2020-02-11 18:12:01.037 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 34.3825054571826
+2020-02-11 18:12:01.060 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.679, 31.122, 2.292
+2020-02-11 18:12:01.080 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 34.448163536260914
+2020-02-11 18:12:01.091 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.679, 31.122, 2.292
+2020-02-11 18:12:01.120 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 32.60295442153462
+2020-02-11 18:12:01.135 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.704, 31.442, 2.291
+2020-02-11 18:12:01.154 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 32.46355218814594
+2020-02-11 18:12:01.166 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.704, 31.442, 2.291
+2020-02-11 18:12:01.187 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 32.33963909180045
+2020-02-11 18:12:01.197 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.704, 31.442, 2.291
+2020-02-11 18:12:01.218 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 32.20023685841177
+2020-02-11 18:12:01.225 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.704, 31.442, 2.291
+2020-02-11 18:12:01.255 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 33.081739406323464
+2020-02-11 18:12:01.261 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.715, 33.243, -0.777
+2020-02-11 18:12:01.278 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 33.039116507507465
+2020-02-11 18:12:01.287 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.715, 33.243, -0.777
+2020-02-11 18:12:01.306 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 33.202504286302144
+2020-02-11 18:12:01.321 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.715, 33.243, -0.777
+2020-02-11 18:12:01.342 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 33.40141114744348
+2020-02-11 18:12:01.354 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.715, 33.243, -0.777
+2020-02-11 18:12:01.383 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 34.8281488322569
+2020-02-11 18:12:01.393 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.844, 35.319, 0.471
+2020-02-11 18:12:01.413 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 34.9749660348672
+2020-02-11 18:12:01.425 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.844, 35.319, 0.471
+2020-02-11 18:12:01.443 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 35.115399880842276
+2020-02-11 18:12:01.454 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.844, 35.319, 0.471
+2020-02-11 18:12:01.476 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 35.268600440087816
+2020-02-11 18:12:01.485 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.844, 35.319, 0.471
+2020-02-11 18:12:01.516 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 36.76360223122049
+2020-02-11 18:12:01.521 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.254, 37.735, -1.122
+2020-02-11 18:12:01.538 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 36.8564888903374
+2020-02-11 18:12:01.548 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.254, 37.735, -1.122
+2020-02-11 18:12:01.569 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 36.97414532521883
+2020-02-11 18:12:01.577 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.254, 37.735, -1.122
+2020-02-11 18:12:01.598 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.08560931615912
+2020-02-11 18:12:01.605 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.254, 37.735, -1.122
+2020-02-11 18:12:01.623 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.18468841921715
+2020-02-11 18:12:01.643 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.254, 37.735, -1.122
+2020-02-11 18:12:01.671 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 38.782641561125025
+2020-02-11 18:12:01.677 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.43, 40.135, -1.266
+2020-02-11 18:12:01.696 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 38.87651398202786
+2020-02-11 18:12:01.702 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.43, 40.135, -1.266
+2020-02-11 18:12:01.723 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 38.977607358384745
+2020-02-11 18:12:01.735 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.43, 40.135, -1.266
+2020-02-11 18:12:01.756 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 39.10036360110382
+2020-02-11 18:12:01.764 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.43, 40.135, -1.266
+2020-02-11 18:12:01.788 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 40.47489223079262
+2020-02-11 18:12:01.794 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.141, 41.929, -1.709
+2020-02-11 18:12:01.812 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 40.57345698342439
+2020-02-11 18:12:01.823 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.141, 41.929, -1.709
+2020-02-11 18:12:01.842 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 40.68098216811359
+2020-02-11 18:12:01.858 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.141, 41.929, -1.709
+2020-02-11 18:12:01.877 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 40.80642821691765
+2020-02-11 18:12:01.889 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.141, 41.929, -1.709
+2020-02-11 18:12:01.915 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 42.149714536583915
+2020-02-11 18:12:01.922 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.363, 43.496, -1.476
+2020-02-11 18:12:01.940 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 42.23603954863469
+2020-02-11 18:12:01.946 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.363, 43.496, -1.476
+2020-02-11 18:12:01.967 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 42.32236456068547
+2020-02-11 18:12:01.980 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.363, 43.496, -1.476
+2020-02-11 18:12:02.002 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 42.43027082574895
+2020-02-11 18:12:02.015 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.363, 43.496, -1.476
+2020-02-11 18:12:02.045 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 43.62217703094534
+2020-02-11 18:12:02.054 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.196, 44.819, -1.581
+2020-02-11 18:12:02.072 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 43.70846314854715
+2020-02-11 18:12:02.087 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.196, 44.819, -1.581
+2020-02-11 18:12:02.105 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 43.78242267792014
+2020-02-11 18:12:02.115 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.196, 44.819, -1.581
+2020-02-11 18:12:02.135 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 43.85638220729312
+2020-02-11 18:12:02.154 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.196, 44.819, -1.581
+2020-02-11 18:12:02.176 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 44.615689138908564
+2020-02-11 18:12:02.188 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.356, 45.595, -1.448
+2020-02-11 18:12:02.207 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 44.65589197840612
+2020-02-11 18:12:02.218 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.356, 45.595, -1.448
+2020-02-11 18:12:02.236 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 44.70949576440286
+2020-02-11 18:12:02.237 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.356, 45.595, -1.448
+2020-02-11 18:12:02.256 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 44.73629765740124
+2020-02-11 18:12:02.256 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.356, 45.595, -1.448
+2020-02-11 18:12:02.276 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 44.7630995503996
+2020-02-11 18:12:02.277 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.356, 45.595, -1.448
+2020-02-11 18:12:02.296 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 44.77650049689879
+2020-02-11 18:12:02.306 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.356, 45.595, -1.448
+2020-02-11 18:12:02.332 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.28886650785952
+2020-02-11 18:12:02.337 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.397, 46.114, -1.411
+2020-02-11 18:12:02.353 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.30301132843759
+2020-02-11 18:12:02.361 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.397, 46.114, -1.411
+2020-02-11 18:12:02.380 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.31715614901567
+2020-02-11 18:12:02.387 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.397, 46.114, -1.411
+2020-02-11 18:12:02.405 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.331300969593755
+2020-02-11 18:12:02.421 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.397, 46.114, -1.411
+2020-02-11 18:12:02.451 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.579116068052045
+2020-02-11 18:12:02.460 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.775, 46.305, -0.965
+2020-02-11 18:12:02.480 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.593789514692226
+2020-02-11 18:12:02.486 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.775, 46.305, -0.965
+2020-02-11 18:12:02.507 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.593789514692226
+2020-02-11 18:12:02.513 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.775, 46.305, -0.965
+2020-02-11 18:12:02.534 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.60846296133241
+2020-02-11 18:12:02.542 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.775, 46.305, -0.965
+2020-02-11 18:12:02.567 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.76965561992585
+2020-02-11 18:12:02.582 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.78, 46.405, -0.911
+2020-02-11 18:12:02.600 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.78471543256634
+2020-02-11 18:12:02.613 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.78, 46.405, -0.911
+2020-02-11 18:12:02.633 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.79977524520682
+2020-02-11 18:12:02.633 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.78, 46.405, -0.911
+2020-02-11 18:12:02.651 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.814835057847304
+2020-02-11 18:12:02.667 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.78, 46.405, -0.911
+2020-02-11 18:12:02.695 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.952801669831544
+2020-02-11 18:12:02.708 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.761, 46.487, -0.941
+2020-02-11 18:12:02.724 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.96814389976146
+2020-02-11 18:12:02.738 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.761, 46.487, -0.941
+2020-02-11 18:12:02.759 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.96814389976146
+2020-02-11 18:12:02.766 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.761, 46.487, -0.941
+2020-02-11 18:12:02.785 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.983486129691364
+2020-02-11 18:12:02.786 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.761, 46.487, -0.941
+2020-02-11 18:12:02.806 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.983486129691364
+2020-02-11 18:12:02.806 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.761, 46.487, -0.941
+2020-02-11 18:12:02.830 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.13181824561637
+2020-02-11 18:12:02.841 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.44, 46.62, -1.348
+2020-02-11 18:12:02.859 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.11624828549177
+2020-02-11 18:12:02.868 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.44, 46.62, -1.348
+2020-02-11 18:12:02.888 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.11624828549177
+2020-02-11 18:12:02.896 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.44, 46.62, -1.348
+2020-02-11 18:12:02.919 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.08510836524256
+2020-02-11 18:12:02.924 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.44, 46.62, -1.348
+2020-02-11 18:12:02.943 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.06953840511797
+2020-02-11 18:12:02.943 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.44, 46.62, -1.348
+2020-02-11 18:12:02.967 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.11543567135405
+2020-02-11 18:12:02.975 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.616, 46.599, -1.099
+2020-02-11 18:12:02.994 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.09967171199537
+2020-02-11 18:12:03.006 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.616, 46.599, -1.099
+2020-02-11 18:12:03.025 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.05237983391933
+2020-02-11 18:12:03.025 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.616, 46.599, -1.099
+2020-02-11 18:12:03.045 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.03661587456065
+2020-02-11 18:12:03.056 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.616, 46.599, -1.099
+2020-02-11 18:12:03.083 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.005087955843294
+2020-02-11 18:12:03.097 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.616, 46.599, -1.099
+2020-02-11 18:12:03.121 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.04071578373181
+2020-02-11 18:12:03.134 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.439, 46.593, -1.354
+2020-02-11 18:12:03.156 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.008811207270156
+2020-02-11 18:12:03.163 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.439, 46.593, -1.354
+2020-02-11 18:12:03.182 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.99285891903932
+2020-02-11 18:12:03.195 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.439, 46.593, -1.354
+2020-02-11 18:12:03.227 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.93274542954096
+2020-02-11 18:12:03.236 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.875, 46.337, -0.784
+2020-02-11 18:12:03.254 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.93274542954096
+2020-02-11 18:12:03.261 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.875, 46.337, -0.784
+2020-02-11 18:12:03.281 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.94882229530593
+2020-02-11 18:12:03.287 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.875, 46.337, -0.784
+2020-02-11 18:12:03.304 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.96489916107091
+2020-02-11 18:12:03.316 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.875, 46.337, -0.784
+2020-02-11 18:12:03.337 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.99705289260087
+2020-02-11 18:12:03.338 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.875, 46.337, -0.784
+2020-02-11 18:12:03.357 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.01312975836585
+2020-02-11 18:12:03.372 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.875, 46.337, -0.784
+2020-02-11 18:12:03.399 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.98803031882493
+2020-02-11 18:12:03.405 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.676, 46.301, -1.014
+2020-02-11 18:12:03.424 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.020357135393475
+2020-02-11 18:12:03.430 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.676, 46.301, -1.014
+2020-02-11 18:12:03.455 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.004193727109204
+2020-02-11 18:12:03.455 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.676, 46.301, -1.014
+2020-02-11 18:12:03.477 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.98803031882493
+2020-02-11 18:12:03.487 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.676, 46.301, -1.014
+2020-02-11 18:12:03.516 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.156225103990636
+2020-02-11 18:12:03.527 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.573, 46.486, -1.161
+2020-02-11 18:12:03.545 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.13996792985388
+2020-02-11 18:12:03.556 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.573, 46.486, -1.161
+2020-02-11 18:12:03.573 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.09119640744361
+2020-02-11 18:12:03.578 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.573, 46.486, -1.161
+2020-02-11 18:12:03.595 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.09119640744361
+2020-02-11 18:12:03.596 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.573, 46.486, -1.161
+2020-02-11 18:12:03.617 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.07493923330686
+2020-02-11 18:12:03.618 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.573, 46.486, -1.161
+2020-02-11 18:12:03.647 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.08764385522357
+2020-02-11 18:12:03.663 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.594, 46.488, -1.147
+2020-02-11 18:12:03.683 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.054936153714394
+2020-02-11 18:12:03.699 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.594, 46.488, -1.147
+2020-02-11 18:12:03.716 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.038582302959796
+2020-02-11 18:12:03.716 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.594, 46.488, -1.147
+2020-02-11 18:12:03.734 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.02222845220521
+2020-02-11 18:12:03.734 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.594, 46.488, -1.147
+2020-02-11 18:12:03.760 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.02222845220521
+2020-02-11 18:12:03.760 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.594, 46.488, -1.147
+2020-02-11 18:12:03.787 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.97368293982129
+2020-02-11 18:12:03.792 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.739, 46.373, -0.952
+2020-02-11 18:12:03.812 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.9901231563665
+2020-02-11 18:12:03.819 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.739, 46.373, -0.952
+2020-02-11 18:12:03.840 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.023003589456934
+2020-02-11 18:12:03.847 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.739, 46.373, -0.952
+2020-02-11 18:12:03.866 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.006563372911714
+2020-02-11 18:12:03.876 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.739, 46.373, -0.952
+2020-02-11 18:12:03.902 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.956957011316
+2020-02-11 18:12:03.913 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.517, 46.299, -1.225
+2020-02-11 18:12:03.934 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00648633048657
+2020-02-11 18:12:03.947 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.517, 46.299, -1.225
+2020-02-11 18:12:03.970 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.98997655742971
+2020-02-11 18:12:03.979 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.517, 46.299, -1.225
+2020-02-11 18:12:03.998 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.98997655742971
+2020-02-11 18:12:04.005 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.517, 46.299, -1.225
+2020-02-11 18:12:04.033 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.032553257187296
+2020-02-11 18:12:04.044 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 46.289, -1.071
+2020-02-11 18:12:04.062 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.01599249222004
+2020-02-11 18:12:04.072 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 46.289, -1.071
+2020-02-11 18:12:04.090 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.99943172725279
+2020-02-11 18:12:04.100 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 46.289, -1.071
+2020-02-11 18:12:04.120 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.032553257187296
+2020-02-11 18:12:04.128 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 46.289, -1.071
+2020-02-11 18:12:04.152 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.03886055781619
+2020-02-11 18:12:04.169 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.649, 46.307, -1.035
+2020-02-11 18:12:04.186 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00564431468762
+2020-02-11 18:12:04.196 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.649, 46.307, -1.035
+2020-02-11 18:12:04.216 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00564431468762
+2020-02-11 18:12:04.216 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.649, 46.307, -1.035
+2020-02-11 18:12:04.235 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00564431468762
+2020-02-11 18:12:04.236 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.649, 46.307, -1.035
+2020-02-11 18:12:04.257 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.98903619312333
+2020-02-11 18:12:04.274 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.649, 46.307, -1.035
+2020-02-11 18:12:04.305 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.05005636631163
+2020-02-11 18:12:04.314 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.694, 46.303, -0.985
+2020-02-11 18:12:04.335 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.03340346080348
+2020-02-11 18:12:04.340 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.694, 46.303, -0.985
+2020-02-11 18:12:04.357 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00009764978717
+2020-02-11 18:12:04.364 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.694, 46.303, -0.985
+2020-02-11 18:12:04.383 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.03340346080348
+2020-02-11 18:12:04.400 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.694, 46.303, -0.985
+2020-02-11 18:12:04.429 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.02820018972348
+2020-02-11 18:12:04.435 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 46.302, -1.128
+2020-02-11 18:12:04.453 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.01150458096038
+2020-02-11 18:12:04.458 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 46.302, -1.128
+2020-02-11 18:12:04.476 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.01150458096038
+2020-02-11 18:12:04.476 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 46.302, -1.128
+2020-02-11 18:12:04.495 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.01150458096038
+2020-02-11 18:12:04.495 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 46.302, -1.128
+2020-02-11 18:12:04.514 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.99480897219728
+2020-02-11 18:12:04.524 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 46.302, -1.128
+2020-02-11 18:12:04.544 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.01150458096038
+2020-02-11 18:12:04.555 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 46.302, -1.128
+2020-02-11 18:12:04.579 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.99613105130412
+2020-02-11 18:12:04.586 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.787, 46.248, -0.854
+2020-02-11 18:12:04.605 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.99613105130412
+2020-02-11 18:12:04.611 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.787, 46.248, -0.854
+2020-02-11 18:12:04.629 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.02960046116145
+2020-02-11 18:12:04.644 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.787, 46.248, -0.854
+2020-02-11 18:12:04.665 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.012865756232785
+2020-02-11 18:12:04.665 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.787, 46.248, -0.854
+2020-02-11 18:12:04.691 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.02095678807561
+2020-02-11 18:12:04.710 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.728 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.02095678807561
+2020-02-11 18:12:04.735 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.753 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.02095678807561
+2020-02-11 18:12:04.767 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.785 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.98741182101409
+2020-02-11 18:12:04.799 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.818 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00418430454485
+2020-02-11 18:12:04.824 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.842 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00418430454485
+2020-02-11 18:12:04.842 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.859 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.98741182101409
+2020-02-11 18:12:04.868 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.887 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00418430454485
+2020-02-11 18:12:04.901 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.922 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00418430454485
+2020-02-11 18:12:04.922 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.943 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.97063933748334
+2020-02-11 18:12:04.951 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.534, 46.275, -1.154
+2020-02-11 18:12:04.978 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.02203524601303
+2020-02-11 18:12:04.984 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.501, 46.256, -1.188
+2020-02-11 18:12:05.009 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00522740997452
+2020-02-11 18:12:05.015 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.501, 46.256, -1.188
+2020-02-11 18:12:05.034 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.988419573936014
+2020-02-11 18:12:05.043 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.501, 46.256, -1.188
+2020-02-11 18:12:05.059 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 46.00522740997452
+2020-02-11 18:12:05.074 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.501, 46.256, -1.188
+2020-02-11 18:12:05.102 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.9992236386907
+2020-02-11 18:12:05.110 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.527, 46.258, -1.156
+2020-02-11 18:12:08.758 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 119.82963562011719
+2020-02-11 18:12:08.770 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.746, 119.83, -4.761
+2020-02-11 18:12:08.799 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 119.82963562011719
+2020-02-11 18:12:08.806 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.746, 119.83, -4.761
+2020-02-11 18:12:08.833 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 119.82963562011719
+2020-02-11 18:12:08.837 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.746, 119.83, -4.761
+2020-02-11 18:12:08.860 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 119.82963562011719
+2020-02-11 18:12:08.867 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.746, 119.83, -4.761
+2020-02-11 18:12:08.900 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 119.82963562011719
+2020-02-11 18:12:08.905 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.746, 119.83, -4.761
+2020-02-11 18:12:08.926 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 119.82963562011719
+2020-02-11 18:12:08.937 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 2.746, 119.83, -4.761
+2020-02-11 18:12:08.972 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 122.66228248528273
+2020-02-11 18:12:08.976 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.271, 122.609, -0.703
+2020-02-11 18:12:09.001 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 122.91379843692044
+2020-02-11 18:12:09.005 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.271, 122.609, -0.703
+2020-02-11 18:12:09.035 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 123.20654651177743
+2020-02-11 18:12:09.039 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.271, 122.609, -0.703
+2020-02-11 18:12:09.072 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 123.53228028520985
+2020-02-11 18:12:09.075 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.271, 122.609, -0.703
+2020-02-11 18:12:09.104 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 120.7119505372668
+2020-02-11 18:12:09.113 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.287, 120.238, -1.789
+2020-02-11 18:12:09.141 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 120.75054932219392
+2020-02-11 18:12:09.145 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.287, 120.238, -1.789
+2020-02-11 18:12:09.171 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 120.78349950444878
+2020-02-11 18:12:09.174 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.287, 120.238, -1.789
+2020-02-11 18:12:09.203 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 116.22673683485564
+2020-02-11 18:12:09.211 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 7.137, 115.153, -1.775
+2020-02-11 18:12:09.237 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 116.00544726593776
+2020-02-11 18:12:09.242 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 7.137, 115.153, -1.775
+2020-02-11 18:12:09.266 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 115.81840489220954
+2020-02-11 18:12:09.270 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 7.137, 115.153, -1.775
+2020-02-11 18:12:09.295 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 115.63663131774126
+2020-02-11 18:12:09.299 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 7.137, 115.153, -1.775
+2020-02-11 18:12:09.327 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 115.4443201447531
+2020-02-11 18:12:09.334 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 7.137, 115.153, -1.775
+2020-02-11 18:12:09.369 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 110.65494604703063
+2020-02-11 18:12:09.374 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.629, 109.76, -1.387
+2020-02-11 18:12:09.398 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 110.31295315139516
+2020-02-11 18:12:09.409 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.629, 109.76, -1.387
+2020-02-11 18:12:09.433 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 109.90712158190773
+2020-02-11 18:12:09.441 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.629, 109.76, -1.387
+2020-02-11 18:12:09.469 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 109.49673010714515
+2020-02-11 18:12:09.481 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.629, 109.76, -1.387
+2020-02-11 18:12:09.516 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 103.47128814549576
+2020-02-11 18:12:09.521 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.444, 102.318, -0.335
+2020-02-11 18:12:09.550 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 102.9611156226975
+2020-02-11 18:12:09.554 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.444, 102.318, -0.335
+2020-02-11 18:12:09.575 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 102.56498166381886
+2020-02-11 18:12:09.582 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.444, 102.318, -0.335
+2020-02-11 18:12:09.619 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 96.98696525928335
+2020-02-11 18:12:09.627 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.671, 95.483, 0.376
+2020-02-11 18:12:09.655 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 96.30241816953081
+2020-02-11 18:12:09.659 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.671, 95.483, 0.376
+2020-02-11 18:12:09.684 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 95.75195762313186
+2020-02-11 18:12:09.687 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.671, 95.483, 0.376
+2020-02-11 18:12:09.711 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 95.28618331464044
+2020-02-11 18:12:09.719 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 6.671, 95.483, 0.376
+2020-02-11 18:12:09.753 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 89.82259049721056
+2020-02-11 18:12:09.760 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.696, 88.447, -0.177
+2020-02-11 18:12:09.781 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 89.25600468279217
+2020-02-11 18:12:09.787 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.696, 88.447, -0.177
+2020-02-11 18:12:09.820 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 88.51866697909702
+2020-02-11 18:12:09.820 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.696, 88.447, -0.177
+2020-02-11 18:12:09.850 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 87.92103536662832
+2020-02-11 18:12:09.850 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.696, 88.447, -0.177
+2020-02-11 18:12:09.883 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 81.95252627025812
+2020-02-11 18:12:09.886 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.388, 80.191, 0.975
+2020-02-11 18:12:09.907 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 81.43971300926844
+2020-02-11 18:12:09.913 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.388, 80.191, 0.975
+2020-02-11 18:12:09.941 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 80.70832360425038
+2020-02-11 18:12:09.948 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.388, 80.191, 0.975
+2020-02-11 18:12:09.976 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 79.94330710015103
+2020-02-11 18:12:09.983 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.388, 80.191, 0.975
+2020-02-11 18:12:10.014 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 74.23729733406395
+2020-02-11 18:12:10.021 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.314, 72.472, 1.017
+2020-02-11 18:12:10.055 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 73.28476165455704
+2020-02-11 18:12:10.063 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.314, 72.472, 1.017
+2020-02-11 18:12:10.094 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 72.38563919072344
+2020-02-11 18:12:10.098 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.314, 72.472, 1.017
+2020-02-11 18:12:10.127 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 71.63785417129746
+2020-02-11 18:12:10.133 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.314, 72.472, 1.017
+2020-02-11 18:12:10.167 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 65.89861578401657
+2020-02-11 18:12:10.174 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 7.643, 64.482, 3.377
+2020-02-11 18:12:10.210 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 64.83492921750928
+2020-02-11 18:12:10.221 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 7.643, 64.482, 3.377
+2020-02-11 18:12:10.242 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 64.03022720632549
+2020-02-11 18:12:10.246 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 7.643, 64.482, 3.377
+2020-02-11 18:12:10.263 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 63.52150754408288
+2020-02-11 18:12:10.269 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 7.643, 64.482, 3.377
+2020-02-11 18:12:10.289 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 58.34730173190496
+2020-02-11 18:12:10.305 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.645, 56.87, -1.672
+2020-02-11 18:12:10.327 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 57.46179917985402
+2020-02-11 18:12:10.332 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.645, 56.87, -1.672
+2020-02-11 18:12:10.351 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 56.928593342059905
+2020-02-11 18:12:10.358 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.645, 56.87, -1.672
+2020-02-11 18:12:10.378 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 56.319215241723775
+2020-02-11 18:12:10.384 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.645, 56.87, -1.672
+2020-02-11 18:12:10.411 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 51.61182130373562
+2020-02-11 18:12:10.414 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: -0.23, 50.192, -2.927
+2020-02-11 18:12:10.435 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 51.07594395749398
+2020-02-11 18:12:10.438 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: -0.23, 50.192, -2.927
+2020-02-11 18:12:10.458 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 50.54980983572946
+2020-02-11 18:12:10.462 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: -0.23, 50.192, -2.927
+2020-02-11 18:12:10.483 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 50.01393248948783
+2020-02-11 18:12:10.489 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: -0.23, 50.192, -2.927
+2020-02-11 18:12:10.507 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 49.468311918769075
+2020-02-11 18:12:10.513 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: -0.23, 50.192, -2.927
+2020-02-11 18:12:10.542 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 45.02921119144883
+2020-02-11 18:12:10.555 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.244, 43.738, 3.181
+2020-02-11 18:12:10.575 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 44.33608066999188
+2020-02-11 18:12:10.586 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.244, 43.738, 3.181
+2020-02-11 18:12:10.604 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 43.71226320068062
+2020-02-11 18:12:10.617 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.244, 43.738, 3.181
+2020-02-11 18:12:10.638 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 43.06864200218488
+2020-02-11 18:12:10.650 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.244, 43.738, 3.181
+2020-02-11 18:12:10.671 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 37.00463275946553
+2020-02-11 18:12:10.687 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.038, 34.559, -0.17
+2020-02-11 18:12:10.706 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 36.56831872777974
+2020-02-11 18:12:10.715 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.038, 34.559, -0.17
+2020-02-11 18:12:10.735 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 36.497290862156476
+2020-02-11 18:12:10.743 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.038, 34.559, -0.17
+2020-02-11 18:12:10.762 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 36.497290862156476
+2020-02-11 18:12:10.770 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.038, 34.559, -0.17
+2020-02-11 18:12:10.790 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 36.497290862156476
+2020-02-11 18:12:10.802 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.038, 34.559, -0.17
+2020-02-11 18:12:10.829 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 31.939226916055716
+2020-02-11 18:12:10.842 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.956, 27.652, 1.591
+2020-02-11 18:12:10.861 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 31.855426599943634
+2020-02-11 18:12:10.873 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.956, 27.652, 1.591
+2020-02-11 18:12:10.891 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 31.687825967719476
+2020-02-11 18:12:10.901 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 1.956, 27.652, 1.591
+2020-02-11 18:12:10.928 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 26.830585699239627
+2020-02-11 18:12:10.934 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.568, 21.124, 1.514
+2020-02-11 18:12:10.956 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 26.483707904519918
+2020-02-11 18:12:10.962 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.568, 21.124, 1.514
+2020-02-11 18:12:10.981 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 26.136830109800215
+2020-02-11 18:12:10.987 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.568, 21.124, 1.514
+2020-02-11 18:12:11.006 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 25.822472108335482
+2020-02-11 18:12:11.023 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.568, 21.124, 1.514
+2020-02-11 18:12:11.043 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 25.356355071680873
+2020-02-11 18:12:11.061 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.568, 21.124, 1.514
+2020-02-11 18:12:11.081 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 24.879398103941284
+2020-02-11 18:12:11.092 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.568, 21.124, 1.514
+2020-02-11 18:12:11.118 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.120898042414503
+2020-02-11 18:12:11.124 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.404, 16.105, 0.683
+2020-02-11 18:12:11.143 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.06524185619969
+2020-02-11 18:12:11.151 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.404, 16.105, 0.683
+2020-02-11 18:12:11.171 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.06524185619969
+2020-02-11 18:12:11.182 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.404, 16.105, 0.683
+2020-02-11 18:12:11.207 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.541562515006355
+2020-02-11 18:12:11.213 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.63, 12.866, 0.747
+2020-02-11 18:12:11.232 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.644225011610104
+2020-02-11 18:12:11.242 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.63, 12.866, 0.747
+2020-02-11 18:12:11.261 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.815329172616345
+2020-02-11 18:12:11.275 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.63, 12.866, 0.747
+2020-02-11 18:12:11.296 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.020654165823842
+2020-02-11 18:12:11.316 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 3.63, 12.866, 0.747
+2020-02-11 18:12:11.340 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 17.66097620473417
+2020-02-11 18:12:11.354 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.375 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 17.789271264495987
+2020-02-11 18:12:11.380 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.399 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 17.859250388002437
+2020-02-11 18:12:11.406 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.423 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 17.882576762504584
+2020-02-11 18:12:11.436 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.457 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 17.917566324257812
+2020-02-11 18:12:11.470 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.489 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 17.94089269875996
+2020-02-11 18:12:11.498 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.519 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 17.987545447764255
+2020-02-11 18:12:11.529 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.548 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.04586138401963
+2020-02-11 18:12:11.555 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.573 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.092514133023933
+2020-02-11 18:12:11.592 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.610 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.209146005534677
+2020-02-11 18:12:11.620 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.639 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.302451503543274
+2020-02-11 18:12:11.647 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.666 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.372430627049724
+2020-02-11 18:12:11.676 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.701 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.46573612505832
+2020-02-11 18:12:11.711 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.730 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.535715248564763
+2020-02-11 18:12:11.739 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.759 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.582367997569065
+2020-02-11 18:12:11.771 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.791 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.617357559322286
+2020-02-11 18:12:11.802 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.823 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.652347121075515
+2020-02-11 18:12:11.837 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.862 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.69899987007981
+2020-02-11 18:12:11.874 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.892 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.757315806335185
+2020-02-11 18:12:11.899 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.919 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.815631742590554
+2020-02-11 18:12:11.925 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.945 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.87394767884593
+2020-02-11 18:12:11.954 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:11.977 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.955589989603453
+2020-02-11 18:12:11.983 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 4.149, 11.31, 3.056
+2020-02-11 18:12:12.007 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.261721130271873
+2020-02-11 18:12:12.012 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 13.126, 0.586
+2020-02-11 18:12:12.030 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.28545831794409
+2020-02-11 18:12:12.040 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 13.126, 0.586
+2020-02-11 18:12:12.058 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.28545831794409
+2020-02-11 18:12:12.064 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 13.126, 0.586
+2020-02-11 18:12:12.093 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.3091955056163
+2020-02-11 18:12:12.108 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 13.126, 0.586
+2020-02-11 18:12:12.137 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.969575881037336
+2020-02-11 18:12:12.146 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.788, 13.479, 0.236
+2020-02-11 18:12:12.166 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.981609486711584
+2020-02-11 18:12:12.173 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.788, 13.479, 0.236
+2020-02-11 18:12:12.193 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.00567669806007
+2020-02-11 18:12:12.206 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.788, 13.479, 0.236
+2020-02-11 18:12:12.228 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.041777515082806
+2020-02-11 18:12:12.240 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.788, 13.479, 0.236
+2020-02-11 18:12:12.265 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.853646396997256
+2020-02-11 18:12:12.273 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.623, 13.891, -0.18
+2020-02-11 18:12:12.293 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.89015264335446
+2020-02-11 18:12:12.305 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.623, 13.891, -0.18
+2020-02-11 18:12:12.325 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.914490140925928
+2020-02-11 18:12:12.336 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.623, 13.891, -0.18
+2020-02-11 18:12:12.355 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.9388276384974
+2020-02-11 18:12:12.367 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.623, 13.891, -0.18
+2020-02-11 18:12:12.390 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.719201848422742
+2020-02-11 18:12:12.403 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.658, 14.147, -0.125
+2020-02-11 18:12:12.422 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.756049050065414
+2020-02-11 18:12:12.430 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.658, 14.147, -0.125
+2020-02-11 18:12:12.450 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.76833145061297
+2020-02-11 18:12:12.456 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.658, 14.147, -0.125
+2020-02-11 18:12:12.476 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.792896251708086
+2020-02-11 18:12:12.484 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.658, 14.147, -0.125
+2020-02-11 18:12:12.508 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.82974345335075
+2020-02-11 18:12:12.516 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.658, 14.147, -0.125
+2020-02-11 18:12:12.541 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.68856344941384
+2020-02-11 18:12:12.552 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.613, 14.449, -0.161
+2020-02-11 18:12:12.571 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.725700800503503
+2020-02-11 18:12:12.585 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.613, 14.449, -0.161
+2020-02-11 18:12:12.604 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.750459034563285
+2020-02-11 18:12:12.617 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.613, 14.449, -0.161
+2020-02-11 18:12:12.638 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.775217268623067
+2020-02-11 18:12:12.645 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.613, 14.449, -0.161
+2020-02-11 18:12:12.667 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.62651100583939
+2020-02-11 18:12:12.679 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.642, 14.652, -0.042
+2020-02-11 18:12:12.696 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.651436886026723
+2020-02-11 18:12:12.708 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.642, 14.652, -0.042
+2020-02-11 18:12:12.726 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.676362766214055
+2020-02-11 18:12:12.736 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.642, 14.652, -0.042
+2020-02-11 18:12:12.757 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.701288646401387
+2020-02-11 18:12:12.768 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.642, 14.652, -0.042
+2020-02-11 18:12:12.795 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.591591008500522
+2020-02-11 18:12:12.800 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.627, 14.861, -0.157
+2020-02-11 18:12:12.819 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.604126894934147
+2020-02-11 18:12:12.827 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.627, 14.861, -0.157
+2020-02-11 18:12:12.848 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.629198667801404
+2020-02-11 18:12:12.856 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.627, 14.861, -0.157
+2020-02-11 18:12:12.875 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.65427044066866
+2020-02-11 18:12:12.884 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.627, 14.861, -0.157
+2020-02-11 18:12:12.904 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.679342213535918
+2020-02-11 18:12:12.917 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.627, 14.861, -0.157
+2020-02-11 18:12:12.944 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.619687797046794
+2020-02-11 18:12:12.955 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.615, 15.067, -0.227
+2020-02-11 18:12:12.975 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.644888952474254
+2020-02-11 18:12:12.983 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.615, 15.067, -0.227
+2020-02-11 18:12:13.003 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.670090107901714
+2020-02-11 18:12:13.010 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.615, 15.067, -0.227
+2020-02-11 18:12:13.039 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.695291263329175
+2020-02-11 18:12:13.054 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.615, 15.067, -0.227
+2020-02-11 18:12:13.081 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.663854123538755
+2020-02-11 18:12:13.088 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 15.283, -0.363
+2020-02-11 18:12:13.108 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.676512287281682
+2020-02-11 18:12:13.114 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 15.283, -0.363
+2020-02-11 18:12:13.133 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.701828614767535
+2020-02-11 18:12:13.140 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 15.283, -0.363
+2020-02-11 18:12:13.163 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.727144942253396
+2020-02-11 18:12:13.170 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 15.283, -0.363
+2020-02-11 18:12:13.195 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.73160136212765
+2020-02-11 18:12:13.200 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.567, 15.576, -0.408
+2020-02-11 18:12:13.219 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.769728005852024
+2020-02-11 18:12:13.226 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.567, 15.576, -0.408
+2020-02-11 18:12:13.245 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.795145768334933
+2020-02-11 18:12:13.253 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.567, 15.576, -0.408
+2020-02-11 18:12:13.272 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.820563530817843
+2020-02-11 18:12:13.281 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.567, 15.576, -0.408
+2020-02-11 18:12:13.302 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.84598129330076
+2020-02-11 18:12:13.303 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.567, 15.576, -0.408
+2020-02-11 18:12:13.332 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.852338813722284
+2020-02-11 18:12:13.344 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.583, 15.84, -0.207
+2020-02-11 18:12:13.365 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.877847632240986
+2020-02-11 18:12:13.373 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.583, 15.84, -0.207
+2020-02-11 18:12:13.392 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.903356450759688
+2020-02-11 18:12:13.393 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.583, 15.84, -0.207
+2020-02-11 18:12:13.412 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.91611086001904
+2020-02-11 18:12:13.413 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.583, 15.84, -0.207
+2020-02-11 18:12:13.430 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.92886526927839
+2020-02-11 18:12:13.431 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.583, 15.84, -0.207
+2020-02-11 18:12:13.458 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.922336948695936
+2020-02-11 18:12:13.474 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 16.048, -0.192
+2020-02-11 18:12:13.493 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.947927611433443
+2020-02-11 18:12:13.499 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 16.048, -0.192
+2020-02-11 18:12:13.516 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.960722942802192
+2020-02-11 18:12:13.525 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 16.048, -0.192
+2020-02-11 18:12:13.550 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 18.99910893690845
+2020-02-11 18:12:13.565 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 16.048, -0.192
+2020-02-11 18:12:13.595 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.003231482931
+2020-02-11 18:12:13.610 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.62, 16.228, -0.177
+2020-02-11 18:12:13.629 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.0288969007969
+2020-02-11 18:12:13.637 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.62, 16.228, -0.177
+2020-02-11 18:12:13.659 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.054562318662796
+2020-02-11 18:12:13.667 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.62, 16.228, -0.177
+2020-02-11 18:12:13.690 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.08022773652869
+2020-02-11 18:12:13.690 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.62, 16.228, -0.177
+2020-02-11 18:12:13.711 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.105893154394593
+2020-02-11 18:12:13.711 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.62, 16.228, -0.177
+2020-02-11 18:12:13.737 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.12488843158922
+2020-02-11 18:12:13.746 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.632, 16.444, -0.22
+2020-02-11 18:12:13.767 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.150622251938543
+2020-02-11 18:12:13.775 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.632, 16.444, -0.22
+2020-02-11 18:12:13.794 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.189222982462518
+2020-02-11 18:12:13.803 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.632, 16.444, -0.22
+2020-02-11 18:12:13.825 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.21495680281184
+2020-02-11 18:12:13.831 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.632, 16.444, -0.22
+2020-02-11 18:12:13.858 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.278066048063778
+2020-02-11 18:12:13.874 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.586, 16.702, -0.324
+2020-02-11 18:12:13.893 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.31676028623336
+2020-02-11 18:12:13.894 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.586, 16.702, -0.324
+2020-02-11 18:12:13.914 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.329658365623224
+2020-02-11 18:12:13.914 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.586, 16.702, -0.324
+2020-02-11 18:12:13.932 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.355454524402944
+2020-02-11 18:12:13.940 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.586, 16.702, -0.324
+2020-02-11 18:12:13.966 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.381250683182664
+2020-02-11 18:12:13.983 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.586, 16.702, -0.324
+2020-02-11 18:12:14.009 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.489663763472535
+2020-02-11 18:12:14.014 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.572, 17.032, -0.293
+2020-02-11 18:12:14.033 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.502590059588528
+2020-02-11 18:12:14.039 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.572, 17.032, -0.293
+2020-02-11 18:12:14.055 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.515516355704527
+2020-02-11 18:12:14.073 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.572, 17.032, -0.293
+2020-02-11 18:12:14.096 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.55429524405251
+2020-02-11 18:12:14.111 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.572, 17.032, -0.293
+2020-02-11 18:12:14.139 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.604672269691328
+2020-02-11 18:12:14.146 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.164 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.617624412246727
+2020-02-11 18:12:14.165 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.183 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.643528697357517
+2020-02-11 18:12:14.183 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.203 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.656480839912916
+2020-02-11 18:12:14.203 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.221 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.669432982468308
+2020-02-11 18:12:14.236 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.255 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.682385125023707
+2020-02-11 18:12:14.267 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.285 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.72124155268989
+2020-02-11 18:12:14.292 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.311 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.73419369524529
+2020-02-11 18:12:14.327 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.356 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.77305012291147
+2020-02-11 18:12:14.356 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.377 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.79895440802226
+2020-02-11 18:12:14.377 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.579, 17.257, -0.248
+2020-02-11 18:12:14.404 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.908284160353986
+2020-02-11 18:12:14.416 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.602, 17.588, -0.279
+2020-02-11 18:12:14.434 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.9342364852711
+2020-02-11 18:12:14.435 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.602, 17.588, -0.279
+2020-02-11 18:12:14.453 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.947212647729664
+2020-02-11 18:12:14.461 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.602, 17.588, -0.279
+2020-02-11 18:12:14.482 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 19.986141135105335
+2020-02-11 18:12:14.498 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.602, 17.588, -0.279
+2020-02-11 18:12:14.522 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.035242582613932
+2020-02-11 18:12:14.530 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.638, 17.789, -0.228
+2020-02-11 18:12:14.549 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.061239575565104
+2020-02-11 18:12:14.550 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.638, 17.789, -0.228
+2020-02-11 18:12:14.568 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.087236568516268
+2020-02-11 18:12:14.576 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.638, 17.789, -0.228
+2020-02-11 18:12:14.595 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.100235064991857
+2020-02-11 18:12:14.612 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.638, 17.789, -0.228
+2020-02-11 18:12:14.632 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.139230554418603
+2020-02-11 18:12:14.633 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.638, 17.789, -0.228
+2020-02-11 18:12:14.652 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.165227547369774
+2020-02-11 18:12:14.669 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.638, 17.789, -0.228
+2020-02-11 18:12:14.697 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.281177947054594
+2020-02-11 18:12:14.703 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.59, 18.062, -0.379
+2020-02-11 18:12:14.724 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.29419729840742
+2020-02-11 18:12:14.730 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.59, 18.062, -0.379
+2020-02-11 18:12:14.757 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.320236001113074
+2020-02-11 18:12:14.757 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.59, 18.062, -0.379
+2020-02-11 18:12:14.782 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.392499046381474
+2020-02-11 18:12:14.794 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 18.312, -0.341
+2020-02-11 18:12:14.811 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.40553730564409
+2020-02-11 18:12:14.821 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 18.312, -0.341
+2020-02-11 18:12:14.843 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.418575564906696
+2020-02-11 18:12:14.854 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 18.312, -0.341
+2020-02-11 18:12:14.876 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.431613824169304
+2020-02-11 18:12:14.877 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 18.312, -0.341
+2020-02-11 18:12:14.896 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.44465208343191
+2020-02-11 18:12:14.897 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 18.312, -0.341
+2020-02-11 18:12:14.923 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.504121155309143
+2020-02-11 18:12:14.930 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.54, 18.527, -0.485
+2020-02-11 18:12:14.949 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.51717671613678
+2020-02-11 18:12:14.955 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.54, 18.527, -0.485
+2020-02-11 18:12:14.973 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.530232276964426
+2020-02-11 18:12:14.981 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.54, 18.527, -0.485
+2020-02-11 18:12:15.000 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.543287837792064
+2020-02-11 18:12:15.013 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.54, 18.527, -0.485
+2020-02-11 18:12:15.032 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.569398959447348
+2020-02-11 18:12:15.037 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.54, 18.527, -0.485
+2020-02-11 18:12:15.063 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.570030374328134
+2020-02-11 18:12:15.070 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.625, 18.618, -0.121
+2020-02-11 18:12:15.089 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.58310236675341
+2020-02-11 18:12:15.097 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.625, 18.618, -0.121
+2020-02-11 18:12:15.118 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.58310236675341
+2020-02-11 18:12:15.137 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.625, 18.618, -0.121
+2020-02-11 18:12:15.156 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.60924635160395
+2020-02-11 18:12:15.157 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.625, 18.618, -0.121
+2020-02-11 18:12:15.182 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.62834005384883
+2020-02-11 18:12:15.196 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.606, 18.738, -0.261
+2020-02-11 18:12:15.216 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.654514595979286
+2020-02-11 18:12:15.224 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.606, 18.738, -0.261
+2020-02-11 18:12:15.244 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.66760186704451
+2020-02-11 18:12:15.256 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.606, 18.738, -0.261
+2020-02-11 18:12:15.275 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.693776409174966
+2020-02-11 18:12:15.276 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.606, 18.738, -0.261
+2020-02-11 18:12:15.305 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.7366041425742
+2020-02-11 18:12:15.315 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.558, 18.875, -0.362
+2020-02-11 18:12:15.334 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.7628077843354
+2020-02-11 18:12:15.339 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.558, 18.875, -0.362
+2020-02-11 18:12:15.360 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.789011426096607
+2020-02-11 18:12:15.367 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.558, 18.875, -0.362
+2020-02-11 18:12:15.389 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.815215067857807
+2020-02-11 18:12:15.389 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.558, 18.875, -0.362
+2020-02-11 18:12:15.408 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.841418709619006
+2020-02-11 18:12:15.408 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.558, 18.875, -0.362
+2020-02-11 18:12:15.428 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.854520530499606
+2020-02-11 18:12:15.428 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.558, 18.875, -0.362
+2020-02-11 18:12:15.456 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.93350537114854
+2020-02-11 18:12:15.468 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.666, 19.055, -0.041
+2020-02-11 18:12:15.489 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.959736897340967
+2020-02-11 18:12:15.500 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.666, 19.055, -0.041
+2020-02-11 18:12:15.519 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 20.999084186629617
+2020-02-11 18:12:15.534 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.666, 19.055, -0.041
+2020-02-11 18:12:15.556 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.038431475918266
+2020-02-11 18:12:15.556 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.666, 19.055, -0.041
+2020-02-11 18:12:15.583 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.14867451257267
+2020-02-11 18:12:15.589 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.57, 19.342, -0.344
+2020-02-11 18:12:15.610 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.188060373990197
+2020-02-11 18:12:15.617 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.57, 19.342, -0.344
+2020-02-11 18:12:15.636 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.20118899446271
+2020-02-11 18:12:15.646 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.57, 19.342, -0.344
+2020-02-11 18:12:15.665 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.240574855880247
+2020-02-11 18:12:15.678 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.57, 19.342, -0.344
+2020-02-11 18:12:15.703 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.375376043529513
+2020-02-11 18:12:15.717 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.585, 19.647, -0.139
+2020-02-11 18:12:15.737 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.401657034673846
+2020-02-11 18:12:15.748 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.585, 19.647, -0.139
+2020-02-11 18:12:15.766 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.414797530246013
+2020-02-11 18:12:15.775 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.585, 19.647, -0.139
+2020-02-11 18:12:15.797 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.441078521390345
+2020-02-11 18:12:15.798 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.585, 19.647, -0.139
+2020-02-11 18:12:15.818 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.441078521390345
+2020-02-11 18:12:15.835 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.585, 19.647, -0.139
+2020-02-11 18:12:15.862 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.501219554583116
+2020-02-11 18:12:15.874 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 19.823, -0.133
+2020-02-11 18:12:15.893 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.514371174951272
+2020-02-11 18:12:15.893 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 19.823, -0.133
+2020-02-11 18:12:15.912 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.514371174951272
+2020-02-11 18:12:15.913 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 19.823, -0.133
+2020-02-11 18:12:15.934 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.514371174951272
+2020-02-11 18:12:15.941 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 19.823, -0.133
+2020-02-11 18:12:15.961 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.540674415687597
+2020-02-11 18:12:15.969 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.605, 19.823, -0.133
+2020-02-11 18:12:15.994 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.573171429322656
+2020-02-11 18:12:16.006 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.553, 19.965, -0.315
+2020-02-11 18:12:16.027 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.59949536624014
+2020-02-11 18:12:16.039 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.553, 19.965, -0.315
+2020-02-11 18:12:16.062 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.612657334698888
+2020-02-11 18:12:16.071 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.553, 19.965, -0.315
+2020-02-11 18:12:16.093 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.625819303157634
+2020-02-11 18:12:16.093 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.553, 19.965, -0.315
+2020-02-11 18:12:16.123 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.63787736757842
+2020-02-11 18:12:16.131 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.569, 20.038, -0.256
+2020-02-11 18:12:16.149 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.651049300205294
+2020-02-11 18:12:16.161 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.569, 20.038, -0.256
+2020-02-11 18:12:16.181 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.677393165459044
+2020-02-11 18:12:16.193 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.569, 20.038, -0.256
+2020-02-11 18:12:16.210 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.69056509808592
+2020-02-11 18:12:16.211 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.569, 20.038, -0.256
+2020-02-11 18:12:16.243 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.740331252447582
+2020-02-11 18:12:16.254 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.576, 20.156, -0.253
+2020-02-11 18:12:16.275 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.75351265443679
+2020-02-11 18:12:16.276 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.576, 20.156, -0.253
+2020-02-11 18:12:16.295 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.766694056425997
+2020-02-11 18:12:16.296 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.576, 20.156, -0.253
+2020-02-11 18:12:16.313 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.779875458415198
+2020-02-11 18:12:16.313 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.576, 20.156, -0.253
+2020-02-11 18:12:16.335 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.806238262393613
+2020-02-11 18:12:16.336 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.576, 20.156, -0.253
+2020-02-11 18:12:16.357 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.81941966438282
+2020-02-11 18:12:16.370 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.576, 20.156, -0.253
+2020-02-11 18:12:16.394 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.876140496130382
+2020-02-11 18:12:16.406 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.618, 20.287, -0.128
+2020-02-11 18:12:16.426 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.902521698514633
+2020-02-11 18:12:16.427 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.618, 20.287, -0.128
+2020-02-11 18:12:16.448 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.91571229970676
+2020-02-11 18:12:16.448 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.618, 20.287, -0.128
+2020-02-11 18:12:16.465 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.928902900898883
+2020-02-11 18:12:16.472 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.618, 20.287, -0.128
+2020-02-11 18:12:16.493 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.955284103283134
+2020-02-11 18:12:16.502 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.618, 20.287, -0.128
+2020-02-11 18:12:16.527 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.062644692102943
+2020-02-11 18:12:16.540 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 20.49, -0.096
+2020-02-11 18:12:16.559 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.062644692102943
+2020-02-11 18:12:16.570 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 20.49, -0.096
+2020-02-11 18:12:16.592 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.062644692102943
+2020-02-11 18:12:16.592 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 20.49, -0.096
+2020-02-11 18:12:16.612 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.049445401841034
+2020-02-11 18:12:16.613 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.63, 20.49, -0.096
+2020-02-11 18:12:16.641 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.11453171265498
+2020-02-11 18:12:16.650 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.695, 20.706, 0.175
+2020-02-11 18:12:16.667 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.074910746388774
+2020-02-11 18:12:16.678 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.695, 20.706, 0.175
+2020-02-11 18:12:16.698 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.048496768877968
+2020-02-11 18:12:16.698 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.695, 20.706, 0.175
+2020-02-11 18:12:16.716 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.02208279136716
+2020-02-11 18:12:16.716 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.695, 20.706, 0.175
+2020-02-11 18:12:16.745 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.982461825100955
+2020-02-11 18:12:16.752 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.695, 20.706, 0.175
+2020-02-11 18:12:16.769 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.982461825100955
+2020-02-11 18:12:16.769 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.695, 20.706, 0.175
+2020-02-11 18:12:16.798 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.953346578273013
+2020-02-11 18:12:16.806 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.573, 20.7, -0.2
+2020-02-11 18:12:16.826 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.96656042013818
+2020-02-11 18:12:16.826 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.573, 20.7, -0.2
+2020-02-11 18:12:16.843 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.96656042013818
+2020-02-11 18:12:16.854 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.573, 20.7, -0.2
+2020-02-11 18:12:16.873 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.979774262003353
+2020-02-11 18:12:16.886 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.573, 20.7, -0.2
+2020-02-11 18:12:16.914 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.87921282894675
+2020-02-11 18:12:16.920 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.526, 20.476, -0.195
+2020-02-11 18:12:16.938 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.905655275473862
+2020-02-11 18:12:16.938 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.526, 20.476, -0.195
+2020-02-11 18:12:16.957 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.932097722000975
+2020-02-11 18:12:16.957 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.526, 20.476, -0.195
+2020-02-11 18:12:16.978 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.95854016852809
+2020-02-11 18:12:16.978 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.526, 20.476, -0.195
+2020-02-11 18:12:17.000 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.984982615055202
+2020-02-11 18:12:17.001 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.526, 20.476, -0.195
+2020-02-11 18:12:17.022 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.011425061582315
+2020-02-11 18:12:17.038 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.526, 20.476, -0.195
+2020-02-11 18:12:17.063 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.08139901851675
+2020-02-11 18:12:17.076 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.587, 20.672, -0.052
+2020-02-11 18:12:17.096 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.08139901851675
+2020-02-11 18:12:17.108 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.587, 20.672, -0.052
+2020-02-11 18:12:17.126 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.0549422529768
+2020-02-11 18:12:17.126 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.587, 20.672, -0.052
+2020-02-11 18:12:17.145 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.041713870206827
+2020-02-11 18:12:17.146 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.587, 20.672, -0.052
+2020-02-11 18:12:17.171 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.09270898183877
+2020-02-11 18:12:17.185 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 20.9, -0.077
+2020-02-11 18:12:17.203 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.053005610700765
+2020-02-11 18:12:17.213 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 20.9, -0.077
+2020-02-11 18:12:17.231 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.013302239562762
+2020-02-11 18:12:17.231 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 20.9, -0.077
+2020-02-11 18:12:17.251 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.986833325470762
+2020-02-11 18:12:17.262 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 20.9, -0.077
+2020-02-11 18:12:17.281 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.986833325470762
+2020-02-11 18:12:17.291 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.595, 20.9, -0.077
+2020-02-11 18:12:17.319 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.875210182962434
+2020-02-11 18:12:17.325 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.524, 20.721, -0.22
+2020-02-11 18:12:17.343 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.90169073810017
+2020-02-11 18:12:17.350 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.524, 20.721, -0.22
+2020-02-11 18:12:17.371 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.92817129323791
+2020-02-11 18:12:17.377 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.524, 20.721, -0.22
+2020-02-11 18:12:17.395 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.954651848375647
+2020-02-11 18:12:17.407 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.524, 20.721, -0.22
+2020-02-11 18:12:17.429 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.981132403513385
+2020-02-11 18:12:17.444 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.524, 20.721, -0.22
+2020-02-11 18:12:17.472 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.90829009802127
+2020-02-11 18:12:17.477 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 20.521, 0.036
+2020-02-11 18:12:17.497 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.93478390957958
+2020-02-11 18:12:17.503 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 20.521, 0.036
+2020-02-11 18:12:17.529 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.961277721137883
+2020-02-11 18:12:17.535 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 20.521, 0.036
+2020-02-11 18:12:17.555 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.00101843847535
+2020-02-11 18:12:17.568 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.574, 20.521, 0.036
+2020-02-11 18:12:17.596 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.11101180619316
+2020-02-11 18:12:17.609 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.596, 20.815, 0.006
+2020-02-11 18:12:17.628 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.11101180619316
+2020-02-11 18:12:17.636 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.596, 20.815, 0.006
+2020-02-11 18:12:17.654 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.084505925581745
+2020-02-11 18:12:17.665 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.596, 20.815, 0.006
+2020-02-11 18:12:17.689 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.031494164358904
+2020-02-11 18:12:17.704 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.596, 20.815, 0.006
+2020-02-11 18:12:17.729 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.055208091531
+2020-02-11 18:12:17.734 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.631, 21.007, 0.068
+2020-02-11 18:12:17.752 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.028692285982302
+2020-02-11 18:12:17.762 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.631, 21.007, 0.068
+2020-02-11 18:12:17.781 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.98891857765925
+2020-02-11 18:12:17.795 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.631, 21.007, 0.068
+2020-02-11 18:12:17.814 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.975660674884892
+2020-02-11 18:12:17.815 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.631, 21.007, 0.068
+2020-02-11 18:12:17.843 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.852363516567664
+2020-02-11 18:12:17.854 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.504, 20.798, -0.245
+2020-02-11 18:12:17.875 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.865626344558528
+2020-02-11 18:12:17.881 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.504, 20.798, -0.245
+2020-02-11 18:12:17.898 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.878889172549393
+2020-02-11 18:12:17.910 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.504, 20.798, -0.245
+2020-02-11 18:12:17.931 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.91867765652198
+2020-02-11 18:12:17.947 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.504, 20.798, -0.245
+2020-02-11 18:12:17.975 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.84632274957427
+2020-02-11 18:12:17.981 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.516, 20.59, -0.097
+2020-02-11 18:12:18.000 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.87285958681072
+2020-02-11 18:12:18.006 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.516, 20.59, -0.097
+2020-02-11 18:12:18.024 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.89939642404716
+2020-02-11 18:12:18.034 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.516, 20.59, -0.097
+2020-02-11 18:12:18.052 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.92593326128361
+2020-02-11 18:12:18.052 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.516, 20.59, -0.097
+2020-02-11 18:12:18.072 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.939201679901835
+2020-02-11 18:12:18.087 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.516, 20.59, -0.097
+2020-02-11 18:12:18.114 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.10413112301105
+2020-02-11 18:12:18.130 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.517, 20.882, -0.212
+2020-02-11 18:12:18.149 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.090857494080403
+2020-02-11 18:12:18.161 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.517, 20.882, -0.212
+2020-02-11 18:12:18.183 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.077583865149762
+2020-02-11 18:12:18.189 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.517, 20.882, -0.212
+2020-02-11 18:12:18.210 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.051036607288474
+2020-02-11 18:12:18.219 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.517, 20.882, -0.212
+2020-02-11 18:12:18.244 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.090556129745842
+2020-02-11 18:12:18.255 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.54, 21.074, -0.146
+2020-02-11 18:12:18.275 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.03744412109903
+2020-02-11 18:12:18.287 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.54, 21.074, -0.146
+2020-02-11 18:12:18.306 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.997610114613927
+2020-02-11 18:12:18.320 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.54, 21.074, -0.146
+2020-02-11 18:12:18.340 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.984332112452222
+2020-02-11 18:12:18.349 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.54, 21.074, -0.146
+2020-02-11 18:12:18.373 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.89300993349675
+2020-02-11 18:12:18.381 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.475, 20.898, -0.319
+2020-02-11 18:12:18.401 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.906292224263176
+2020-02-11 18:12:18.402 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.475, 20.898, -0.319
+2020-02-11 18:12:18.422 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.919574515029595
+2020-02-11 18:12:18.432 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.475, 20.898, -0.319
+2020-02-11 18:12:18.453 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.94613909656244
+2020-02-11 18:12:18.460 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.475, 20.898, -0.319
+2020-02-11 18:12:18.481 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.985985968861712
+2020-02-11 18:12:18.487 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.475, 20.898, -0.319
+2020-02-11 18:12:18.512 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.878981019095882
+2020-02-11 18:12:18.523 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.541, 20.67, 0.031
+2020-02-11 18:12:18.542 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.9188429031396
+2020-02-11 18:12:18.543 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.541, 20.67, 0.031
+2020-02-11 18:12:18.560 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.9188429031396
+2020-02-11 18:12:18.561 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.541, 20.67, 0.031
+2020-02-11 18:12:18.579 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.932130197820833
+2020-02-11 18:12:18.580 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.541, 20.67, 0.031
+2020-02-11 18:12:18.601 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 21.958704787183308
+2020-02-11 18:12:18.616 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.541, 20.67, 0.031
+2020-02-11 18:12:18.644 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.122358035718847
+2020-02-11 18:12:18.656 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.549, 20.955, -0.047
+2020-02-11 18:12:18.674 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.095774246525153
+2020-02-11 18:12:18.688 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.549, 20.955, -0.047
+2020-02-11 18:12:18.704 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.0824823519283
+2020-02-11 18:12:18.718 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.549, 20.955, -0.047
+2020-02-11 18:12:18.737 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPosePredictedY: 22.055898562734605
+2020-02-11 18:12:18.748 3269-3520/com.qualcomm.ftcrobotcontroller D/TeamCode@VuforiaPose: 5.549, 20.955, -0.047
