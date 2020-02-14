@@ -9,12 +9,9 @@
 	"right foundation open": "0.74",
 	"right foundation closed": "0.14",
 
-	"front deposit open": "0.32",
-	"front deposit closed": "0.40",
-
-	"back deposit open": "0.45",
-	"back deposit closed": "0.0",
-	"back deposit rest": "0.59",
+	"deposit open": "0.67",
+	"deposit closed": "0.25",
+	"deposit rest": "1.00",
 
 	"pivot open": "0.61",
 	"pivot closed": "0.3",
@@ -24,9 +21,8 @@
 	"claw closed": "0.65",
 	"claw rest": "0.5",
 
-"default pidf": "10, 3, 0, 0, 0",
-	"elevator kp": "15",
-	"elevator ki": "3",
+	"elevator kp": "0.001",
+	"elevator ki": "0",
 	"elevator kd": "0",
 	"elevator kf": "0",
 	

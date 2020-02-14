@@ -20,9 +20,10 @@ public class FrontSensorTest extends BaseDrive {
     protected void initialize() {
         super.initialize();
         frontSensor = hardwareMap.get(MaxSonarI2CXL.class, "front sensor");
+        frontSensor.startAutoPing(100);
 
-//        frontSensor.setI2cAddress(I2cAddr.create8bit(0xE0));
-        frontSensor.setI2cAddress(I2cAddr.create7bit(0x00));
+//        frontSensor.setI2cAddress(I2cAddr.create7bit(0x00));
+        frontSensor.setI2cAddress(I2cAddr.create8bit(0xE0));
 //        frontSensor.setI2cAddress(I2cAddr.create8bit(0xDE));
     }
 
@@ -31,8 +32,14 @@ public class FrontSensorTest extends BaseDrive {
 
         if (button.is(Button.State.DOWN)) {
             I2cAddr addr = frontSensor.getDeviceClient().getI2cAddress();
-            frontSensor.setI2cAddress(I2cAddr.create7bit(0x00));
+            if (addr.equals(I2cAddr.create7bit(0x00))) {
+                frontSensor.setI2cAddress(I2cAddr.create7bit(0xE0));
+            } else if (addr.equals(I2cAddr.create7bit(0xE0))) {
+                frontSensor.setI2cAddress(I2cAddr.create7bit(0xDE));
+            } else if (addr.equals(I2cAddr.create7bit(0xDE))) {
+            frontSensor.setI2cAddress(I2cAddr.create8bit(0x00));
         }
+    }
 
 
         super.update();

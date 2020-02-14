@@ -1,8 +1,13 @@
 package org.firstinspires.ftc.teamcode.auto.vision;
 
+import android.graphics.Bitmap;
+
+import com.acmerobotics.dashboard.FtcDashboard;
+
 import org.firstinspires.ftc.teamcode.math.Line;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -14,6 +19,8 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.List;
+
+import static org.firstinspires.ftc.teamcode.auto.vision.OpenCV.CAMERA_RECT;
 
 /**
  * Modified DogeCVDetector.
@@ -50,6 +57,11 @@ public abstract class OpenCVDetector extends OpenCvPipeline {
     }
 
     public Mat getMat(Stage stage) {
+
+//        Bitmap bitmap = Bitmap.createBitmap(CAMERA_RECT.width, CAMERA_RECT.height, new Bitmap.Config());
+//        Utils.matToBitmap(mat, bitmap);
+//        FtcDashboard.getInstance().sendImage(bitmap);
+
         switch (stage) {
             case THRESHOLD:
                 return thresholdMat;

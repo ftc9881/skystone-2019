@@ -8,4 +8,5 @@ dependencies {
     implementation (name: 'tensorflow-lite-0.0.0-nightly', ext:'aar')
     implementation 'com.github.dogecv:dogecv:2020.4-alpha'
     implementation 'org.apache.commons:commons-math3:3.6.1'
+    implementation 'com.acmerobotics.dashboard:dashboard:0.3.8'
 }

@@ -25,6 +25,12 @@ public class CachingMotorEx implements DcMotorEx {
         this.delegate = (DcMotorEx) delegate;
     }
 
+    public void checkAndSetMode(RunMode mode) {
+        if (getMode() != mode) {
+            setMode(mode);
+        }
+    }
+
     @Override
     public MotorConfigurationType getMotorType() {
         return delegate.getMotorType();

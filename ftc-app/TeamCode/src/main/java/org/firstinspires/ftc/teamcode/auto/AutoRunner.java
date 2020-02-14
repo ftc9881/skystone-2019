@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.auto;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
 import org.firstinspires.ftc.teamcode.auto.actions.RelativeMoveWithVuforia;
@@ -218,6 +221,12 @@ public class AutoRunner {
 
     public static void log(String tag, Object message) {
         RobotLog.dd(TAG_PREFIX + tag, message.toString());
+//        Telemetry dashboard = FtcDashboard.getInstance().getTelemetry();
+//        dashboard.addData(tag, message.toString());
+//        dashboard.update();
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put(tag, message.toString());
+        FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 
     public static void log(Object message) {

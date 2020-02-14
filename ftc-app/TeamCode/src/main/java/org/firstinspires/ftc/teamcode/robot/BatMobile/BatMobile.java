@@ -29,8 +29,7 @@ public class BatMobile extends Robot {
     public SideArm sideArm;
     public DifferentialElevator elevator;
 
-    public ToggleServo backDepositServo;
-    public ToggleServo frontDepositServo;
+    public ToggleServo depositServo;
     public ToggleServo leftFoundationServo;
     public ToggleServo rightFoundationServo;
 
@@ -45,8 +44,7 @@ public class BatMobile extends Robot {
         elevator = new DifferentialElevator(hardwareMap);
         intake = new Intake(hardwareMap);
 
-        backDepositServo = new ToggleServo(hardwareMap, "back deposit");
-        frontDepositServo = new ToggleServo(hardwareMap, "front deposit");
+        depositServo = new ToggleServo(hardwareMap, "deposit");
         leftFoundationServo = new ToggleServo(hardwareMap, "left foundation");
         rightFoundationServo = new ToggleServo(hardwareMap, "right foundation");
     }

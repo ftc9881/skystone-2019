@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.auto.vision;
 
 import android.graphics.Bitmap;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 

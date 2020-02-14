@@ -38,7 +38,7 @@
 "comment": "Moves forwards",
 			"command": "MOVE",
 			"power": "1.0",
-			"distance": "12",
+			"clicks": "400",
 			"move angle": "0",
 			"target angle": "0",
 			"timeout": "5000"
@@ -72,14 +72,14 @@
 "comment": "line up with desired skystone",
 			"command": "MOVE",
 			"target angle": "-90",
-			"distance stone l": "6",
-			"distance stone c": "-2.2",
-			"distance stone r": "-6",
+			"clicks stone l": "300",
+			"clicks stone c": "-110",
+			"clicks stone r": "-300",
 			"use vuforia": "true",
 				"jump threshold": "0",
 				"min regression n": "4",
 				"vuforia min look time": "2000",
-				"vuforia x": "-3",
+				"vuforia x": "3",
 				"vuforia x kp": "0.08",
 				"vuforia x kd": "0.0001",
 				"vuforia x close threshold": "2",
@@ -90,9 +90,9 @@
 				"vuforia y kd": "0.00004",
 				"vuforia y stop when": "close",
 				"vuforia y close threshold": "0.4",
-			"base power": "0.05",
+			"base power": "0.12",
 			"timeout": "5000",
-			"power": "1.0"
+			"power": "0.6"
 		},
 		{ 
 			"command": "CLAW",
@@ -118,21 +118,11 @@
 				"claw state": "open",
 				"claw deploy clicks": "3400",
 			"ramp down": "1600",
-			"power": "1.0",
-			"distance": "74",
-			"distance stone l": "-80",
-			"distance stone c": "-75",
-			"distance stone r": "-70",
-			"u_se vuforia": "false",
-				"jump threshold": "0",
-				"vuforia x": "-3",
-				"vuforia x kp": "0",
-				"vuforia x close threshold": "2",
-				"vuforia y kp": "0.035",
-				"vuforia y kd": "0.00004",
-				"vuforia y": "112",
-				"vuforia y stop when": "close",
-				"vuforia y close threshold": "2",
+			"power": "0.6",
+			"clicks": "3700",
+			"clicks stone l": "-4000",
+			"clicks stone c": "-3750",
+			"clicks stone r": "-3500",
 			"move angle": "-175",
 			"target angle": "-90",
 			"timeout": "5000"
@@ -156,7 +146,7 @@
 				"jump threshold": "0",
 				"min regression n": "100",
 				"vuforia min look time": "2000",
-				"vuforia x": "-3",
+				"vuforia x": "3",
 				"vuforia x kp": "0.08",
 				"vuforia x close threshold": "2",
 				"vuforia x clicks until correct": "2000",
@@ -172,14 +162,14 @@
 				"pivot deploy clicks": "3300",
 				"claw state": "open",
 				"claw deploy clicks": "3300",
-			"distance stone l": "100",
-			"distance stone c": "105",
-			"distance stone r": "110",
+			"clicks stone l": "5000",
+			"clicks stone c": "5250",
+			"clicks stone r": "5500",
 			"ramp down": "2000",
 			"move angle": "-5",
 			"target angle": "-90",
-			"base power": "0.06",
-			"power": "1",
+			"base power": "0.12",
+			"power": "0.06",
 			"timeout": "10000"
 		},
 		{
@@ -198,21 +188,10 @@
 "comment": "move to next to foundation second time",
 			"command": "MOVE",
 			"ramp down": "1600",
-			"distance stone l": "90",
-			"distance stone c": "82",
-			"distance stone r": "77",
-			"u.se vuforia": "false",
-				"vuforia x clicks until correct": "9999999",
-				"vuforia min look time": "0",
-				"vuforia x": "-3",
-				"vuforia x kp": "0",
-				"vuforia x close threshold": "0.4",
-				"vuforia y kp": "0.035",
-				"vuforia y kd": "0.00004",
-				"vuforia y": "120",
-				"vuforia y stop when": "close",
-				"vuforia y close threshold": "2",
-			"power": "1.0",
+			"clicks stone l": "4500",
+			"clicks stone c": "4100",
+			"clicks stone r": "3850",
+			"power": "0.06",
 			"move angle": "-175",
 			"target angle": "-90",
 			"timeout": "5000"
@@ -227,8 +206,8 @@
 				"claw deploy clicks": "350",
 			"target angle": "-90",
 			"move angle": "90",
-			"power": "0.7",
-			"distance": "-10",
+			"power": "0.6",
+			"clicks": "-500",
 			"ramp down": "200",
 			"timeout": "3000"
 		},
@@ -265,17 +244,10 @@
 			"target angle": "0",
 			"move angle": "-90",
 			"power": "1.0",
-			"distance": "50",
+			"clicks": "250",
 			"timeout": "5000"
 		},
 		
-
-
-
-
-
-
-
 
 
 
@@ -333,3 +305,4 @@
 		{ "command": "STOP" }
 	]
 }
+

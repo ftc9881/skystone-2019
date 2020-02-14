@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
@@ -10,6 +11,8 @@ import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 
 @TeleOp(group="Test")
+@Disabled
+@Deprecated
 public class ElevatorTest extends TeleOpBase {
 
     private BatMobile batMobile;
@@ -79,7 +82,7 @@ public class ElevatorTest extends TeleOpBase {
     }
 
     private void holdLiftPosition() {
-        batMobile.elevator.runToRelativePosition(0, 0);
+        batMobile.elevator.setRunToRelativePosition(0, 0);
     }
 
     private void updateElevatorManual() {
@@ -101,7 +104,7 @@ public class ElevatorTest extends TeleOpBase {
                 liftLevel += 1;
             }
             int level = isLifted ? liftLevel : -liftLevel;
-            batMobile.elevator.runToRelativePosition(level * clicksPerLiftLevel, 0);
+//            batMobile.elevator.runToRelativePosition(level * clicksPerLiftLevel, 0);
         }
     }
 
