@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
-import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
@@ -11,7 +10,7 @@ import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
-public class RelativeMoveWithVuforia extends RelativeMove {
+public class MoveWithVuforia extends Move {
 
     private PIDController vuforiaXPidController;
     private PIDController vuforiaYPidController;
@@ -25,29 +24,25 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     private double vuforiaBasePower;
     private Pose pose = new Pose();
     private Pose lastPose = new Pose();
-    private SimpleRegression regression;
 
     private int clicksUntilCorrectX;
-    private int minRegressionN;
 
     private double jumpThreshold;
+    private double lastCorrectedDriveY;
 
     private double minimumLookTime;
     private double startTime;
 
-    public RelativeMoveWithVuforia(Command command) {
+    public MoveWithVuforia(Command command) {
         super(command);
         tag = "RelativeMoveWithVuforia";
 
-        regression = new SimpleRegression();
-
-        VisionSystem.TargetType target = VisionSystem.TargetType.stringToType(command.getString("vuforia target", "PERIMETER"));
         vuforia = Vuforia.getInstance();
         if (!vuforia.isLooking()) {
+            VisionSystem.TargetType target = VisionSystem.TargetType.stringToType(command.getString("vuforia target", "PERIMETER"));
             vuforia.startLook(target);
         }
 
-        minRegressionN = command.getInt("min regression n", 30);
         jumpThreshold = command.getDouble("jump threshold", 1);
 
         clicksUntilCorrectX = command.getInt("vuforia x clicks until correct", 0);
@@ -67,7 +62,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         vuforiaYPidController = new PIDController(command, "vuforia y", targetVY);
     }
 
-    public RelativeMoveWithVuforia(Command command, VisionSystem.SkystonePosition skystonePosition) {
+    public MoveWithVuforia(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
         clicks = command.getDouble("clicks " + skystonePosition.key, clicks);
         targetVY = command.getDouble("vuforia y " + skystonePosition.key, targetVY);
@@ -78,6 +73,7 @@ public class RelativeMoveWithVuforia extends RelativeMove {
     protected void onRun() {
         super.onRun();
         startTime = System.currentTimeMillis();
+        lastCorrectedDriveY = drivePose.y;
     }
 
     @Override
@@ -100,17 +96,14 @@ public class RelativeMoveWithVuforia extends RelativeMove {
         correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
         if (vuforiaFoundSomething()) {
             if (vuforiaIsReasonable()) {
-                if (!lastPose.sameAs(pose)) {
-                    AutoRunner.log("Clicks,Y", getTrackingClicks() + '\t' + pose.y);
-                    regression.addData(getTrackingClicks(), pose.y);
-                }
                 if (getTrackingClicks() > clicksUntilCorrectX) {
                     correctedDrivePose.x += vuforiaXPidController.getCorrectedOutput(pose.x);
                 }
+                correctedDrivePose.y = GeneralMath.clipPower(-vuforiaYPidController.getCorrectedOutput(pose.y), vuforiaBasePower);
+                lastCorrectedDriveY = correctedDrivePose.y;
+            } else {
+                correctedDrivePose.y = lastCorrectedDriveY;
             }
-            double bestGuessY = getBestGuessY();
-            AutoRunner.log("VuforiaPosePredictedY", bestGuessY);
-            correctedDrivePose.y = GeneralMath.clipPower(-vuforiaYPidController.getCorrectedOutput(bestGuessY), vuforiaBasePower);
         }
         else {
             double rampFactor = calculateRampFactor();
@@ -135,24 +128,8 @@ public class RelativeMoveWithVuforia extends RelativeMove {
 //        vuforia.stopLook();
     }
 
-    private int getTrackingClicks() {
-        // TODO: May want to get averaged motor clicks
-        return Math.abs(robot.driveTrain.rf.getCurrentPosition());
-    }
-
-    private double getBestGuessY() {
-        double current = pose.y;
-        double guess = getPredictedY();
-
-        if (!Double.isNaN(guess) && regression.getN() > minRegressionN) {
-            if (!vuforiaIsReasonable()) {
-                return guess;
-            } else {
-                return (current + guess) / 2.0;
-            }
-        }
-
-        return current;
+    private double getTrackingClicks() {
+        return Math.abs(robot.driveTrain.getAverageClicks());
     }
 
     private boolean vuforiaFoundSomething() {
@@ -163,10 +140,6 @@ public class RelativeMoveWithVuforia extends RelativeMove {
 //        return pose.y > 0;
         // Since getting closer, new should be less than last
         return pose.y - lastPose.y < jumpThreshold;
-    }
-
-    private double getPredictedY() {
-        return regression.getSlope() * getTrackingClicks() + regression.getIntercept();
     }
 
     private double getElapsedTime() {

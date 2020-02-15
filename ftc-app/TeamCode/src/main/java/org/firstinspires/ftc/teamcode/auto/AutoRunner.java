@@ -1,14 +1,14 @@
 package org.firstinspires.ftc.teamcode.auto;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.actions.RelativeMove;
-import org.firstinspires.ftc.teamcode.auto.actions.RelativeMoveWithVuforia;
+import org.firstinspires.ftc.teamcode.auto.actions.Move;
+import org.firstinspires.ftc.teamcode.auto.actions.MoveDebug;
+import org.firstinspires.ftc.teamcode.auto.actions.MoveWithVuforia;
 import org.firstinspires.ftc.teamcode.auto.actions.Turn;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
@@ -119,7 +119,7 @@ public class AutoRunner {
                 boolean deployArm = command.getBoolean("deploy arm", false);
                 boolean useVuforia = command.getBoolean("use vuforia", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
-                Action move = useVuforia ? new RelativeMoveWithVuforia(command, getSkystonePosition()) : new RelativeMove(command, getSkystonePosition());
+                Action move = useVuforia ? new MoveWithVuforia(command, getSkystonePosition()) : new Move(command, getSkystonePosition());
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition);
                 if (deployArm) {
@@ -135,9 +135,9 @@ public class AutoRunner {
                 break;
             }
 
-            case "MOVE VUFORIA": {
-                Action relativeMoveVuforia = new RelativeMoveWithVuforia(command, getSkystonePosition());
-                runActionWithTimeout(relativeMoveVuforia, command);
+            case "MOVE DEBUG": {
+                Action move = new MoveDebug(command);
+                runActionWithTimeout(move, command);
                 break;
             }
 
@@ -221,12 +221,12 @@ public class AutoRunner {
 
     public static void log(String tag, Object message) {
         RobotLog.dd(TAG_PREFIX + tag, message.toString());
-//        Telemetry dashboard = FtcDashboard.getInstance().getTelemetry();
-//        dashboard.addData(tag, message.toString());
-//        dashboard.update();
-        TelemetryPacket packet = new TelemetryPacket();
-        packet.put(tag, message.toString());
-        FtcDashboard.getInstance().sendTelemetryPacket(packet);
+        Telemetry dashboard = FtcDashboard.getInstance().getTelemetry();
+        dashboard.addData(tag, message.toString());
+        dashboard.update();
+//        TelemetryPacket packet = new TelemetryPacket();
+//        packet.put(tag, message.toString());
+//        FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 
     public static void log(Object message) {

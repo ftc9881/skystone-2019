@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 
 @TeleOp(group="Test")
+@Disabled
 public class LiftControlTest extends TeleOpBase {
 
     private BatMobile batMobile;

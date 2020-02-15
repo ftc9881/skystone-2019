@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.math.PIDController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RelativeMove extends Action {
+public class Move extends Action {
 
 //    protected static final double CLICKS_PER_INCH = 50.0;
 
@@ -39,7 +39,7 @@ public class RelativeMove extends Action {
 
     protected boolean useTargetAngle;
 
-    public RelativeMove(Command command) {
+    public Move(Command command) {
         tag = "RelativeMove";
         robot = Robot.getInstance();
         moveAngle = command.getAngle("move angle", 0);
@@ -56,7 +56,7 @@ public class RelativeMove extends Action {
         basePower = config.properties.getDouble("move base power", 0.3);
     }
 
-    public RelativeMove(Command command, VisionSystem.SkystonePosition skystonePosition) {
+    public Move(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
         clicks = command.getDouble("clicks " + skystonePosition.key, clicks);
     }
@@ -83,14 +83,7 @@ public class RelativeMove extends Action {
     }
 
     protected boolean reachedTargetClicks() {
-        List<Integer> clicksArray = new ArrayList<>();
-        clicksArray.add(Math.abs(robot.driveTrain.lf.getCurrentPosition()));
-        clicksArray.add(Math.abs(robot.driveTrain.lb.getCurrentPosition()));
-        clicksArray.add(Math.abs(robot.driveTrain.rf.getCurrentPosition()));
-        clicksArray.add(Math.abs(robot.driveTrain.rb.getCurrentPosition()));
-//        averageClicks = Collections.max(clicksArray);
         averageClicks = (int) robot.driveTrain.getAverageClicks();
-        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s", averageClicks, clicksArray.get(0), clicksArray.get(1), clicksArray.get(2), clicksArray.get(3), correctedDrivePose.y));
         return Math.abs(averageClicks - targetClicks) < clicksError;
     }
 
@@ -124,6 +117,15 @@ public class RelativeMove extends Action {
             rampValue = Math.max(Math.sqrt(averageClicks /(double)accelerateClicks), 0.1);
         }
         return Range.clip(rampValue, basePower, 1.0);
+    }
+
+    protected List<Integer> getClicksArray() {
+        List<Integer> clicksArray = new ArrayList<>();
+        clicksArray.add(Math.abs(robot.driveTrain.lf.getCurrentPosition()));
+        clicksArray.add(Math.abs(robot.driveTrain.rf.getCurrentPosition()));
+        clicksArray.add(Math.abs(robot.driveTrain.lb.getCurrentPosition()));
+        clicksArray.add(Math.abs(robot.driveTrain.rb.getCurrentPosition()));
+        return clicksArray;
     }
 
     @Override

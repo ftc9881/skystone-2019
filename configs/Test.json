@@ -32,8 +32,15 @@
 
 
 	"commands": [
-
-
+		
+		{
+			"command": "MOVE DEBUG",
+			"target angle": "0",
+			"move angle": "0",
+			"clicks":"2000",
+			"timeout": "1500",
+			"power": "0.6"
+		},
 
 
 

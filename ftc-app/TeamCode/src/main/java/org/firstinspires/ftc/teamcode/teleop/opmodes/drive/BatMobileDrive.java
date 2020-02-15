@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
+import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
@@ -26,15 +28,10 @@ public class BatMobileDrive extends BaseDrive {
 
     private Button pivotButton = new Button();
     private Button clawButton = new Button();
-    private Button foundationButtonP1 = new Button();
-    private Button foundationButtonP2 = new Button();
+    private Button foundationButton = new Button();
     private Button capstoneButton = new Button();
     private Button depositLeftButton = new Button();
     private Button depositRightButton = new Button();
-    private Button increaseLiftLevelButton = new Button();
-    private Button decreaseLiftLevelButton = new Button();
-    private Button increaseExtendLevelButton = new Button();
-    private Button decreaseExtendLevelButton = new Button();
     private Button toggleLiftButton = new Button();
     private Button toggleExtendButton = new Button();
 
@@ -42,8 +39,8 @@ public class BatMobileDrive extends BaseDrive {
 
     private boolean holdingPosition = false;
     private boolean runningToPosition = false;
-    private boolean holdingWhileExtending = false;
-    private boolean coasting = false;
+//    private boolean holdingWhileExtending = false;
+    private boolean coasting = true;
     private boolean wasInputtingFullDown = false;
 
     enum LiftState {
@@ -110,21 +107,15 @@ public class BatMobileDrive extends BaseDrive {
     private void updateButtons() {
         pivotButton.update(gamepad1.y);
         clawButton.update(gamepad1.x);
-        foundationButtonP1.update(gamepad1.b);
+        foundationButton.update(gamepad1.b);
         capstoneButton.update(gamepad2.y);
         depositLeftButton.update(gamepad2.left_bumper);
         depositRightButton.update(gamepad2.right_bumper);
-        increaseLiftLevelButton.update(gamepad2.dpad_up);
-        decreaseLiftLevelButton.update(gamepad2.dpad_down);
-        increaseExtendLevelButton.update(gamepad2.dpad_right);
-        decreaseExtendLevelButton.update(gamepad1.dpad_left);
         toggleExtendButton.update(gamepad2.b);
         toggleLiftButton.update(gamepad2.a);
     }
 
     private void updateElevator() {
-        updateLevels();
-
         if (toggleLiftButton.is(DOWN)) {
             runningToPosition = true;
             holdingPosition = false;
@@ -137,7 +128,6 @@ public class BatMobileDrive extends BaseDrive {
         boolean isExtending = isInputting(getExtendInputPower());
         boolean isInputting = isLifting || isExtending;
 
-//        coasting = liftPower < 0 && Math.abs(gamepad2.left_stick_y) < coastDownZone && !isExtending;
         boolean inputtingFullDown = (int)liftPower == -1;
         if (wasInputtingFullDown && !inputtingFullDown) {
             coasting = true;
@@ -158,22 +148,20 @@ public class BatMobileDrive extends BaseDrive {
             runningToPosition = false;
         }
 
-        if (!isExtending || (isLifting && isExtending)) {
-            holdingWhileExtending = false;
-        }
+//        if (!isExtending || (isLifting && isExtending)) {
+//            holdingWhileExtending = false;
+//        }
 
-        if (isExtending && !isLifting) {
-            holdingWhileExtending = true;
-            extendPid = new PIDController(config, "extend", batMobile.elevator.getClicksDifference());
-        }
-
+//        if (isExtending && !isLifting && !holdingWhileExtending) {
+//            holdingWhileExtending = true;
+//
+//            extendPid = new PIDController(config, "extend", batMobile.elevator.getClicksDifference());
+//            int difference = batMobile.elevator.getClicksDifference();
+//            AutoRunner.log("Setpoint", difference);
+//        }
 
         if (holdingPosition || runningToPosition) {
             batMobile.elevator.updateRunToRelativePosition();
-        } else if (holdingWhileExtending) {
-            int difference = batMobile.elevator.getClicksDifference();
-            double correctedPower = Range.clip(extendPid.getCorrectedOutput(difference), minExtendPower, 1);
-            batMobile.elevator.setPowerLE(correctedPower, getExtendInputPower());
         } else if (coasting) {
             batMobile.elevator.left.setPower(0);
             batMobile.elevator.right.setPower(0);
@@ -182,19 +170,14 @@ public class BatMobileDrive extends BaseDrive {
         }
     }
 
-    private void updateLevels() {
-        if (increaseLiftLevelButton.is(DOWN)) {
-            liftLevel += 1;
-        }
-        if (decreaseLiftLevelButton.is(DOWN)) {
-            liftLevel -= 1;
-        }
-    }
-
     private double getLiftInputPower() {
         double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0) * liftPowerFactor;
 //        double liftPowerP2 = Math.pow(-gamepad2.left_stick_y, 3);
-        double liftPowerP2 = -gamepad2.left_stick_y;
+        double liftPowerP2 = Math.sqrt(Math.abs(gamepad2.left_stick_y)) * (-gamepad2.left_stick_y > 0 ? 1 : -1);
+        if (liftPowerP2 < 0 && liftPowerP2 > -0.5) {
+            liftPowerP2 *= slowLiftPowerFactor;
+        }
+//        double liftPowerP2 = -gamepad2.left_stick_y;
         return liftPowerP1 + liftPowerP2;
     }
 
@@ -216,8 +199,6 @@ public class BatMobileDrive extends BaseDrive {
 
     private void updateIntake() {
         double intakePower = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
-//        batMobile.intake.left.setPower(intakePower);
-//        batMobile.intake.right.setPower(-intakePower);
         batMobile.intake.setPower(intakePower);
     }
 
@@ -257,9 +238,8 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateFoundationServos() {
-        updateToggle(foundationButtonP1, batMobile.leftFoundationServo, batMobile.rightFoundationServo);
-        updateToggle(foundationButtonP2, batMobile.leftFoundationServo, batMobile.rightFoundationServo);
-        if (foundationButtonP1.is(DOUBLE_TAP) || foundationButtonP2.is(DOUBLE_TAP)) {
+        updateToggle(foundationButton, batMobile.leftFoundationServo, batMobile.rightFoundationServo);
+        if (foundationButton.is(DOUBLE_TAP)) {
             batMobile.leftFoundationServo.set(ToggleServo.State.REST);
             batMobile.rightFoundationServo.set(ToggleServo.State.REST);
         }

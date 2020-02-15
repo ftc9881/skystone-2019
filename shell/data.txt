@@ -1,0 +1,5 @@
+odo click/inch = 3500
+motors ~ 660/inch
+
+black = gnd
+red = vc (voltage)

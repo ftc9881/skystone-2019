@@ -142,8 +142,6 @@ public class DifferentialElevator {
             int currentPosition = motor.getCurrentPosition();
             double correctedPower = Range.clip(pid.getCorrectedOutput(currentPosition), minPower, 1);
             motor.setPower(correctedPower);
-            AutoRunner.log(motor.getConnectionInfo() + ":Position", currentPosition);
-            AutoRunner.log(motor.getConnectionInfo() + ":Power", correctedPower);
         }
 
         @Override
