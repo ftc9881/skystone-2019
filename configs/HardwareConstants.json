@@ -1,13 +1,15 @@
 {
 	"phone r y": "-90",
 	"phone r x": "90",
-	"webcam 1 r": "-90",
+	"webcam 1 r": "90",
 
-	"left foundation open": "0.22",
-	"left foundation closed": "0.82",
+	"odometry clicks per inch": "210",
 
-	"right foundation open": "0.74",
-	"right foundation closed": "0.14",
+	"left foundation open": "0.25",
+	"left foundation closed": "0.85",
+
+	"right foundation open": "0.72",
+	"right foundation closed": "0.12",
 
 	"deposit open": "0.67",
 	"deposit closed": "0.25",

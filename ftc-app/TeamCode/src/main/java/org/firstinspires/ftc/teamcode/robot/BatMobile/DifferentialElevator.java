@@ -19,8 +19,8 @@ public class DifferentialElevator {
 
     public CachingMotorEx left;
     public CachingMotorEx right;
-    private Configuration pidConfig;
-
+    private Command pidConfig;
+    private double minPower;
     private RunToPosition leftRunToPositionAction;
     private RunToPosition rightRunToPositionAction;
 
@@ -40,6 +40,7 @@ public class DifferentialElevator {
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         pidConfig = new Configuration("HardwareConstants");
+        minPower = pidConfig.getDouble("elevator min power", 0.25);
 //        AutoRunner.log("elevatorDefaultVelocityPidf", left.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
 //
 //        left.setVelocityPIDFCoefficients(pidConfig, "elevator");
@@ -47,6 +48,11 @@ public class DifferentialElevator {
 //
 //        AutoRunner.log("elevatorOurVelocityPidf", left.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
 
+    }
+
+    public void setPidConfig(Command pidConfig) {
+        this.pidConfig = pidConfig;
+        minPower = pidConfig.getDouble("elevator min power", 0.25);
     }
 
     public int getClicksDifference() {
@@ -60,6 +66,24 @@ public class DifferentialElevator {
         AutoRunner.log("RightTargetPosition", rightClicks);
         leftRunToPositionAction = new RunToPosition(left, leftClicks);
         rightRunToPositionAction = new RunToPosition(right, rightClicks);
+    }
+
+    public void startRunToRelativePosition() {
+        if (leftRunToPositionAction != null) {
+            leftRunToPositionAction.start();
+        }
+        if (rightRunToPositionAction!= null) {
+            rightRunToPositionAction.start();
+        }
+    }
+
+    public void stopRunToRelativePosition() {
+        if (leftRunToPositionAction != null) {
+            leftRunToPositionAction.stop();
+        }
+        if (rightRunToPositionAction!= null) {
+            rightRunToPositionAction.stop();
+        }
     }
 
     public void updateRunToRelativePosition() {
@@ -124,13 +148,11 @@ public class DifferentialElevator {
     public class RunToPosition extends Action {
         private PIDController pid;
         private DcMotor motor;
-        private double minPower;
 
         RunToPosition(CachingMotorEx motor, int target) {
             this.motor = motor;
             motor.checkAndSetMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             pid = new PIDController(pidConfig, "elevator", target);
-            minPower = pidConfig.getDouble("elevator min power", 0.25);
         }
 
         @Override

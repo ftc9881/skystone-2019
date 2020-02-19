@@ -216,9 +216,10 @@ public class Vuforia implements VisionSystem {
                     OpenGLMatrix robotTransform = getRobotTransform(trackable);
                     lastLocation = robotTransform != null ? robotTransform : lastLocation;
                     setLastPose();
-                    break;
+                    return;
                 }
             }
+            lastPose = new Pose();
         }
 
         @Override
@@ -227,9 +228,7 @@ public class Vuforia implements VisionSystem {
         }
 
         @Override
-        protected void onEndRun() {
-
-        }
+        protected void onEndRun() { }
 
         private void setLastPose() {
             if (lastLocation != null) {

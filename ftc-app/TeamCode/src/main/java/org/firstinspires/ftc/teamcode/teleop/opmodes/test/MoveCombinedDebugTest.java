@@ -1,27 +1,31 @@
-package org.firstinspires.ftc.teamcode.auto.actions;
+package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
-import org.firstinspires.ftc.teamcode.math.GeneralMath.Conditional;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
+import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
-public class MoveCombined extends MoveWithClicks {
+@TeleOp(group="Test")
+//@Disabled
+public class MoveCombinedDebugTest extends BaseDrive {
 
     private Vuforia vuforia;
 
     private PIDController pidX;
-    private Conditional conditionalX;
+    private GeneralMath.Conditional conditionalX;
     private double targetX;
     private double closeX;
 
     private PIDController pidY;
-    private Conditional conditionalY;
+    private GeneralMath.Conditional conditionalY;
     private double targetY;
     private double closeY;
 
@@ -32,38 +36,38 @@ public class MoveCombined extends MoveWithClicks {
 
     private OdometryWheel odometryWheel;
     private double initialInchesGuess;
-    private double odometryInitialInches;
     private double odometryInchesAtSetpoint = 0;
     private double vuforiaYAtSetpoint = 0;
     private int inchesUntilCorrectX;
 
-    // TODO: Integrate sensor
-//    private IDistanceSensor frontSensor;
-//    private double sensorOffset;
-//        frontSensor = BatMobile.getInstance().frontSensor;
+    private Pose drivePose = new Pose(0, 1, 0);
 
-    public MoveCombined(Command command) {
-        super(command);
-        tag = "MoveCombined";
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        robot.initializeIMU();
+
+        Command command = config;
 
         odometryWheel = BatMobile.getInstance().odometryY;
-        odometryInitialInches = odometryWheel.getInches();
+        odometryWheel.resetEncoder();
+//        frontSensor = BatMobile.getInstance().frontSensor;
 
-        vuforia = Vuforia.getInstance();
-        if (!vuforia.isLooking()) {
-            VisionSystem.TargetType target = VisionSystem.TargetType.stringToType(command.getString("vuforia target", "PERIMETER"));
-            vuforia.startLook(target);
-        }
+        vuforia = Vuforia.createInstance(VisionSystem.CameraType.FRONT_WEBCAM);
+        VisionSystem.TargetType target = VisionSystem.TargetType.stringToType(command.getString("vuforia target", "PERIMETER"));
+        vuforia.startLook(target);
 
         inchesUntilCorrectX = command.getInt("inches until correct x", 40);
         initialInchesGuess = command.getInt("initial inches guess", 80);
 
-        closeX = command.getDouble("x close threshold", 2);
-        conditionalX = Conditional.CLOSE;
+        closeX = command.getDouble("close threshold x", 2);
+        conditionalX = GeneralMath.Conditional.CLOSE;
 
-        closeY = command.getDouble("y close threshold", 1);
-        String conditionalString = command.getString("y stop when", "close");
-        conditionalY = Conditional.convertString(conditionalString);
+        closeY = command.getDouble("close threshold y", 1);
+        String conditionalString = command.getString("stop when y", "close");
+        conditionalY = GeneralMath.Conditional.convertString(conditionalString);
+
 
         targetX = command.getDouble("target x", 0);
         pidX = new PIDController(command, "x", targetX);
@@ -71,45 +75,37 @@ public class MoveCombined extends MoveWithClicks {
         pidY = new PIDController(command, "y", targetY);
     }
 
-    public MoveCombined(Command command, VisionSystem.SkystonePosition skystonePosition) {
-        this(command);
-        targetY = command.getDouble("target y " + skystonePosition.key, targetY);
-        pidY = new PIDController(command, "y", targetY);
-    }
-
     @Override
-    protected void onRun() {
-        super.onRun();
-        AutoRunner.log("TargetY", targetY);
-    }
+    protected void update() {
+        super.update();
 
-    @Override
-    protected boolean runIsComplete() {
-        return conditionalY.evaluate(bestGuessPose.y, targetY, closeY) && conditionalX.evaluate(bestGuessPose.x, targetX, closeX);
-    }
-
-    @Override
-    protected void insideRun() {
         Pose correctedDrivePose = new Pose(drivePose);
         currentVuforiaPose = vuforia.getPose();
         newVuforiaPose = currentVuforiaPose.sameAs(lastVuforiaPose) ? new Pose() : currentVuforiaPose;
         lastVuforiaPose = currentVuforiaPose;
 
         bestGuessPose.r = robot.imu.getHeading().getRadians();
-        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
-
+//        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
         bestGuessPose.y = getBestGuessY();
-        correctedDrivePose.y = GeneralMath.clipPower(-pidY.getCorrectedOutput(bestGuessPose.y), basePower);
+        correctedDrivePose.y = -pidY.getCorrectedOutput(bestGuessPose.y);
         bestGuessPose.x = getBestGuessX();
         if (bestGuessPose.y < inchesUntilCorrectX) {
             correctedDrivePose.x += pidX.getCorrectedOutput(bestGuessPose.x);
         }
 
-        robot.driveTrain.drive(correctedDrivePose, powerFactor);
+//        robot.driveTrain.drive(correctedDrivePose);
 
-        AutoRunner.log("BestGuessPose", bestGuessPose);
-        AutoRunner.log("VuforiaPose", currentVuforiaPose);
-        AutoRunner.log("DrivePose", correctedDrivePose);
+        telemetry.addData("BestGuessPose", bestGuessPose);
+        telemetry.addData("VuforiaPose", currentVuforiaPose);
+        telemetry.addData("DrivePose", correctedDrivePose);
+        telemetry.addData("==","==");
+        telemetry.addData("Odometry (clicks/vuf.in)", currentVuforiaPose.y != 0 ? odometryWheel.getPosition()/currentVuforiaPose.y : "?");
+        telemetry.addData("Odometry(in)", odometryWheel.getInches());
+        telemetry.addData("OdometrySetpoint", odometryInchesAtSetpoint);
+        telemetry.addData("OdometryDirection", odometryWheel.getDirection());
+        telemetry.addData("InitialInchesGuess", initialInchesGuess);
+
+        telemetry.update();
     }
 
     private double getBestGuessX() {
@@ -127,13 +123,14 @@ public class MoveCombined extends MoveWithClicks {
         } else if (vuforiaYAtSetpoint != 0){
             return vuforiaYAtSetpoint - (odometryWheel.getInches() - odometryInchesAtSetpoint);
         } else {
-            return initialInchesGuess - (odometryWheel.getInches() - odometryInitialInches);
+            return initialInchesGuess - odometryWheel.getInches();
         }
     }
 
     @Override
-    protected void onEndRun() {
-        robot.driveTrain.stop();
+    protected void onStop() {
+        super.onStop();
+        vuforia.stopLook();
     }
 
 }

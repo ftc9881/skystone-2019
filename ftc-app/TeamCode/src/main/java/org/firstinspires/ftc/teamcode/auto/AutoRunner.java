@@ -2,13 +2,15 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.actions.Move;
+import org.firstinspires.ftc.teamcode.auto.actions.MoveWithClicks;
+import org.firstinspires.ftc.teamcode.auto.actions.MoveCombined;
 import org.firstinspires.ftc.teamcode.auto.actions.MoveDebug;
-import org.firstinspires.ftc.teamcode.auto.actions.MoveWithVuforia;
+import org.firstinspires.ftc.teamcode.auto.actions.MoveWithOneOdometry;
 import org.firstinspires.ftc.teamcode.auto.actions.Turn;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
@@ -40,6 +42,7 @@ public class AutoRunner {
     private AutoOpConfiguration config;
     private LinearOpMode opMode;
     private Robot robot;
+    private BatMobile batMobile;
 
     private static AngleUnit angleUnit = AngleUnit.DEGREES;
     private boolean debugMode;
@@ -56,6 +59,7 @@ public class AutoRunner {
 
         robot = Robot.newInstance(opMode);
         robot.initializeIMU();
+        batMobile = BatMobile.createInstance();
 
         for (Command command : config.initCommands) {
             logAndTelemetry(TAG, "Init Command: " + command.name);
@@ -115,22 +119,27 @@ public class AutoRunner {
             }
 
             case "MOVE": {
-                BatMobile batMobile = BatMobile.getInstance();
                 boolean deployArm = command.getBoolean("deploy arm", false);
                 boolean useVuforia = command.getBoolean("use vuforia", false);
+                boolean useOdometry = command.getBoolean("use odometry", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
-                Action move = useVuforia ? new MoveWithVuforia(command, getSkystonePosition()) : new Move(command, getSkystonePosition());
+
+                Action moveNoVuforia = useOdometry ? new MoveWithOneOdometry(command, getSkystonePosition()) : new MoveWithClicks(command, getSkystonePosition());
+                Action move = useVuforia ? new MoveCombined(command, getSkystonePosition()) : moveNoVuforia;
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition);
+
                 if (deployArm) {
                     String pivotState = command.getString("pivot state", batMobile.sideArm.pivot.getState().name());
                     String clawState = command.getString("claw state", batMobile.sideArm.claw.getState().name());
                     int pivotDeployClicks = command.getInt("pivot deploy clicks", 0);
                     int clawDeployClicks = command.getInt("claw deploy clicks", 0);
-                    Watcher deployPivot = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(pivotState), robot.driveTrain.rf, pivotDeployClicks);
-                    Watcher deployClaw = new DeployServoByDistance(batMobile.sideArm.claw, ToggleServo.stringToState(clawState), robot.driveTrain.rf, clawDeployClicks);
+                    DcMotor trackingMotor = robot.driveTrain.rb;
+                    Watcher deployPivot = new DeployServoByDistance(batMobile.sideArm.pivot, ToggleServo.stringToState(pivotState), trackingMotor, pivotDeployClicks);
+                    Watcher deployClaw = new DeployServoByDistance(batMobile.sideArm.claw, ToggleServo.stringToState(clawState), trackingMotor, clawDeployClicks);
                     conditions.add(deployClaw, deployPivot);
                 }
+
                 move.runSynchronized(conditions);
                 break;
             }
@@ -142,21 +151,25 @@ public class AutoRunner {
             }
 
             case "CLAW": {
-                BatMobile batMobile = BatMobile.getInstance();
                 String state = command.getString("state", "REST");
                 batMobile.sideArm.claw.set(ToggleServo.stringToState(state));
                 break;
             }
 
             case "PIVOT": {
-                BatMobile batMobile = BatMobile.getInstance();
                 String state = command.getString("state", "REST");
                 batMobile.sideArm.pivot.set(ToggleServo.stringToState(state));
                 break;
             }
 
+            case "ELEVATOR": {
+                double liftPower = command.getDouble("lift power", 0);
+                double extendPower = command.getDouble("extendPower", 0);
+                batMobile.elevator.setPowerLE(liftPower, extendPower);
+                break;
+            }
+
             case "TURN": {
-                BatMobile batMobile = BatMobile.getInstance();
                 boolean deployArm = command.getBoolean("deploy arm", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
                 int deployClicks = command.getInt("deploy clicks", 0);

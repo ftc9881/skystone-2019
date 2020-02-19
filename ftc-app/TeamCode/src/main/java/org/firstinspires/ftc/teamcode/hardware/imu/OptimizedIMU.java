@@ -26,14 +26,22 @@ public class OptimizedIMU {
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
 
-        List<LynxModule> modules = hardwareMap.getAll(LynxModule.class);
         delegates = new ArrayList<>();
+        List<LynxModule> modules = hardwareMap.getAll(LynxModule.class);
         for (LynxModule module : modules) {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
             BNO055IMU imu = new LynxEmbeddedIMU(OptimizedI2cDevice.createLynxI2cDeviceSynch(module, 0));
             imu.initialize(parameters);
             delegates.add(imu);
         }
+        // Simple way, but doesn't fix the LynxI2cDeviceSynch issues
+//        BNO055IMU imu1 = hardwareMap.get(BNO055IMU.class, "imu 1");
+//        BNO055IMU imu2 = hardwareMap.get(BNO055IMU.class, "imu 2");
+//        delegates.add(imu1);
+//        delegates.add(imu2);
+//        for (BNO055IMU delegate : delegates) {
+//            delegate.initialize(parameters);
+//        }
 
         headingIntegrator = new HeadingIntegrator(opMode);
         headingIntegrator.start();

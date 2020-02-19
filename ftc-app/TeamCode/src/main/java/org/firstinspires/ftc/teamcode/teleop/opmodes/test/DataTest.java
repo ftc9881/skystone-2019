@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -41,27 +42,31 @@ public class DataTest extends SnapshotTest {
 
     @Override
     void onClick() {
-        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", "sensor?", vuforia.getPose().y, odometryY.getPosition(), robot.driveTrain.getAverageClicks(), robot.driveTrain.lf.getCurrentPosition(), robot.driveTrain.rf.getCurrentPosition(), robot.driveTrain.lb.getCurrentPosition(), robot.driveTrain.rb.getCurrentPosition()));
+        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", frontSensor.getDistance(), vuforia.getPose().y, odometryY.getPosition(), robot.driveTrain.getAverageClicks(), robot.driveTrain.lf.getCurrentPosition(), robot.driveTrain.rf.getCurrentPosition(), robot.driveTrain.lb.getCurrentPosition(), robot.driveTrain.rb.getCurrentPosition()));
     }
 
     @Override
     protected void update() {
         super.update();
+        Pose pose = vuforia.getPose();
 
         telemetry.addData("sensor (in)", frontSensor.getDistance());
         telemetry.addData("sensor voltage", frontSensor.getDistance());
 
-        telemetry.addData("odometry y", odometryY.getPosition());
+        telemetry.addData("odometry y (clicks)", odometryY.getPosition());
+        telemetry.addData("odometry y (in)", odometryY.getInches());
+        telemetry.addData("odometry y (clicks/vuf.in)", pose.y != 0 ? odometryY.getPosition()/pose.y : "?");
+
+        telemetry.addData("X (in)", GeneralMath.round(pose.x, 3));
+        telemetry.addData("Y (in)", GeneralMath.round(pose.y, 3));
+        telemetry.addData("R (in)", GeneralMath.round(pose.r, 3));
+
         telemetry.addData("lf", robot.driveTrain.lf.getCurrentPosition());
         telemetry.addData("rf", robot.driveTrain.rf.getCurrentPosition());
         telemetry.addData("lb", robot.driveTrain.lb.getCurrentPosition());
         telemetry.addData("rb", robot.driveTrain.rb.getCurrentPosition());
 
-        Pose pose = vuforia.getPose();
-        telemetry.addData("Camera", vuforia.getCameraType().name());
-        telemetry.addData("X (in)", GeneralMath.round(pose.x, 3));
-        telemetry.addData("Y (in)", GeneralMath.round(pose.y, 3));
-        telemetry.addData("R (in)", GeneralMath.round(pose.r, 3));
+
         telemetry.update();
     }
 

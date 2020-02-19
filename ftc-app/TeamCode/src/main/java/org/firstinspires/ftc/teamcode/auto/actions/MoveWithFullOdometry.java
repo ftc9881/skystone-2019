@@ -7,8 +7,8 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.math.Pose;
 
-
-public class OdometryMove extends Action {
+@Deprecated
+public class MoveWithFullOdometry extends Action {
 
     private final double POSITION_THRESHOLD = 1;
     private final double ROTATION_THRESHOLD = 0.3;
@@ -19,7 +19,7 @@ public class OdometryMove extends Action {
     private Pose currentPose;
     private double powerFactor;
 
-    public OdometryMove (OdometrySystem odometrySystem, Pose targetPose, double power) {
+    public MoveWithFullOdometry(OdometrySystem odometrySystem, Pose targetPose, double power) {
         this.robot = Robot.getInstance();
         this.odometrySystem = odometrySystem;
         this.currentPose = robot.currentPose;

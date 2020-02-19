@@ -8,13 +8,20 @@ import com.qualcomm.robotcore.hardware.ServoController;
 public class CachingServo implements Servo {
     private Servo delegate;
     private double cachedPosition;
+    private String name;
 
     public CachingServo(HardwareMap hardwareMap, String name) {
-        this(hardwareMap.servo.get(name));
+        this.name = name;
+        this.delegate = hardwareMap.servo.get(name);
     }
 
     public CachingServo(Servo delegate) {
         this.delegate = delegate;
+        name = delegate.getDeviceName();
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

@@ -1,6 +1,6 @@
 {
 	"properties": {
-		"debug mode": "true",
+		"debug mode": "false",
 		"angle unit": "deg",
 
 		"move clicks error": "50",
@@ -23,174 +23,88 @@
 	},
 
 	"init": [
-		{ 
-			"command": "PIVOT",
-			"state": "CLOSED"
-		},
-		{ "command": "IDENTIFY SKYSTONE" }
+		{ "command": "skip IDENTIFY SKYSTONE" }
 	],
 
 
 	"commands": [
-		
-		{
-			"command": "MOVE DEBUG",
-			"target angle": "0",
-			"move angle": "0",
-			"clicks":"2000",
-			"timeout": "1500",
-			"power": "0.6"
-		},
-
-
-
-{
-"comment": "move to second skystone",
-			"command": "MOVE",
-			"use vuforia": "true",
-				"vuforia min look time": "2000",
-				"vuforia x": "6",
-				"vuforia x kp": "0.1",
-				"vuforia x close threshold": "0.4",
-				"vuforia x clicks until correct": "1500",
-				"vuforia y kp": "0.025",
-				"vuforia y kd": "0.00004",
-				"vuforia y stone l": "7.7",
-				"vuforia y stone c": "15",
-				"vuforia y stone r": "22",
-				"vuforia y stop when": "close",
-				"vuforia y close threshold": "0.1",
-			"deploy arm": "true",
-				"pivot state": "open",
-				"pivot deploy clicks": "3300",
-				"claw state": "open",
-				"claw deploy clicks": "3300",
-			"distance stone l": "100",
-			"distance stone c": "105",
-			"distance stone r": "110",
-			"ramp down": "2000",
-			"move angle": "-5",
-			"target angle": "0",
-			"base power": "0.08",
-			"power": "0.5",
-			"timeout": "10000"
-		},
-
-
 
 		{ 
 			"command": "PIVOT",
-			"state": "OPEN"
+			"state": "REST"
+		},
+		{ 
+			"command": "SLEEP",
+			"time": "1000"
+		},
+		{
+			"command": "ELEVATOR",
+			"lift power": "1"
+		},
+		{
+			"command": "SLEEP",
+			"time": "300"
+		},
+		{
+			"command": "ELEVATOR",
+			"lift power": "0.2"
+		},
+		{ "command": "BREAKPOINT" },
+		{
+			"command": "ELEVATOR",
+			"lift power": "-0.4"
+		},
+		{
+			"command": "SLEEP",
+			"time": "500"
+		},
+		{
+			"command": "ELEVATOR",
+			"lift power": "0"
 		},
 
+		{ "command": "STOP" },
+
+				{
+			"command": "START LIFT",
+			"lift clicks": "200",
+			"elevator kp": "0.1"
+		},
+		{
+			"command": "MOVE",
+			"use odometry": "true",
+			"target angle": "0",
+			"move angle": "0",
+			"inches": "5",
+			"timeout": "5000",
+			"power": "1.0"
+		},
+		{
+			"command": "STOP LIFT"
+		},
 
 
 		{
-"comment": "move to next to foundation",
 			"command": "MOVE",
-			"deploy arm": "true",
-				"pivot state": "open",
-				"pivot deploy clicks": "3200",
-				"claw state": "open",
-				"claw deploy clicks": "3400",
-			"ramp down": "1600",
-			"power": "1.0",
-			"distance": "74",
-			"distance stone l": "-80",
-			"distance stone c": "-85",
-			"distance stone r": "-70",
-			"move angle": "-170",
+			"use odometry": "true",
 			"target angle": "0",
-			"timeout": "5000"
-		},
-
-{
-"comment": "line up with desired skystone",
-			"command": "MOVE",
-			"target angle": "0",
-			"distance stone l": "6",
-			"distance stone c": "-2.2",
-			"distance stone r": "-6",
-			"use vuforia": "true",
-				"vuforia x": "0",
-				"vuforia x kp": "0.1",
-				"vuforia x kd": "0.0001",
-				"vuforia y kp": "0.02",
-				"vuforia y kd": "0.00004",
-				"vuforia y stone l": "5.2",
-				"vuforia y stone c": "36",
-				"vuforia y stone r": "44",
-				"vuforia stop when": "close",
-				"vuforia close threshold": "0.1",
-			"base power": "0.06",
+			"move angle": "-179",
+			"inches": "4",
 			"timeout": "5000",
 			"power": "1.0"
 		},
 
 
-
+	
 		{
-			"command": "MOVE",
-			"target angle": "0",
-			"move angle": "0",
-			"distance":"10",
-			"timeout": "1500",
-			"power": "0.3"
-		},
-{
-			"command": "MOVE",
-			"target angle": "0",
-			"move angle": "90",
-			"distance":"10",
-			"timeout": "1500",
-			"power": "0.3"
-		},
-{
-			"command": "MOVE",
+			"command": "MOVE DEBUG",
 			"target angle": "0",
 			"move angle": "180",
-			"distance":"10",
-			"timeout": "1500",
-			"power": "0.3"
-		},
-
-{
-			"command": "MOVE",
-			"target angle": "0",
-			"move angle": "-90",
-			"distance":"10",
-			"timeout": "1500",
-			"power": "0.3"
-		},
-
-
-
-
-
-
-{
-"comment": "line up with desired skystone",
-			"command": "MOVE",
-			"target angle": "0",
-			"distance stone l": "6",
-			"distance stone c": "-2.2",
-			"distance stone r": "-6",
-			"use vuforia": "true",
-				"vuforia x": "0",
-				"vuforia y kp": "0.014",
-				"vuforia y kd": "0.00004",
-				"vuforia y stone l": "28",
-				"vuforia y stone c": "36",
-				"vuforia y stone r": "44",
-				"vuforia stop when": "close",
-				"vuforia close threshold": "0.2",
-			"base power": "0.08",
+			"clicks":"2000",
 			"timeout": "10000",
-			"power": "0.5"
+			"power": "0.6"
 		},
 
-
-		
 		{ "command": "STOP" }
 	]
 }

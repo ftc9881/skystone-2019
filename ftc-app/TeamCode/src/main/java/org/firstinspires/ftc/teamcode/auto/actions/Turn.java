@@ -31,11 +31,11 @@ public class Turn extends Action {
 
     protected Robot robot;
     protected PIDController pidController;
-    protected double integratedDegrees;
     protected Angle turnAngle;
     protected double powerFactor;
     protected double basePower;
     protected Angle errorRange;
+    protected double currentDegrees;
 
     public Turn(Command command) {
         this.robot = Robot.getInstance();
@@ -48,25 +48,26 @@ public class Turn extends Action {
 
     @Override
     protected void onRun() {
-        integratedDegrees = robot.imu.getIntegratedHeading().getDegrees();
+        currentDegrees = robot.imu.getIntegratedHeading().getDegrees();
         AutoRunner.log("AngleToTurn", turnAngle.getDegrees());
-        AutoRunner.log("CurrentAngle", integratedDegrees);
     }
 
     @Override
     protected boolean runIsComplete() {
-        double error = Math.abs(robot.imu.getIntegratedHeading().getDegrees() - turnAngle.getDegrees());
+        double error = Math.abs(currentDegrees - turnAngle.getDegrees());
         return error < errorRange.getDegrees();
     }
 
     @Override
     protected void insideRun() {
+        currentDegrees = robot.imu.getIntegratedHeading().getDegrees();
+
         double pidCorrectedPower = pidController.getCorrectedOutput(robot.imu.getIntegratedHeading().getDegrees());
         double power = GeneralMath.clipPower(pidCorrectedPower, basePower) * powerFactor;
         robot.driveTrain.drive(new Pose(0, 0, power));
         AutoRunner.log("TurnPower", power);
         AutoRunner.log("PIDPower", pidCorrectedPower);
-        AutoRunner.log("IntegratedAngle", integratedDegrees);
+        AutoRunner.log("CurrentAngle", currentDegrees);
     }
 
     @Override

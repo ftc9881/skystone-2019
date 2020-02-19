@@ -36,7 +36,7 @@ public class SkystoneDetector extends OpenCVDetector {
 
     @Override
     public Mat process(Mat input) {
-//        Core.rotate(input, input, Core.ROTATE_180);
+        Core.rotate(input, input, Core.ROTATE_180);
         input.copyTo(rawImage);
         input.copyTo(workingMat);
         input.copyTo(displayMat);

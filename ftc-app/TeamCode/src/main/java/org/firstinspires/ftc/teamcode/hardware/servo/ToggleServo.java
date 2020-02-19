@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware.servo;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
@@ -14,6 +15,15 @@ public class ToggleServo {
     private double openPosition;
     private double closedPosition;
     private double restPosition;
+
+    public ToggleServo(CachingServo servo) {
+        this.servo = servo;
+        Configuration config = new Configuration("HardwareConstants");
+        String name = servo.getDeviceName();
+        openPosition = config.getDouble(name + " open", 0.0);
+        closedPosition = config.getDouble(name + " closed", 1.0);
+        restPosition = config.getDouble(name + " rest", closedPosition);
+    }
 
     public ToggleServo(HardwareMap hardwareMap, String name) {
         servo = new CachingServo(hardwareMap, name);

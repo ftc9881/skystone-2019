@@ -12,15 +12,14 @@ import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import org.opencv.core.Rect;
 
 @TeleOp(group="Test")
-//@Disabled
-public class OpenCVVumarkTest extends TeleOpBase {
+@Disabled
+public class OpenCVVumarkTest extends SnapshotTest {
 
     OpenCV openCV;
-    Button shutterButton = new Button();
 
     @Override
     protected void initialize() {
-        robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        super.initialize();
 
         openCV = new OpenCV(config, VisionSystem.CameraType.FRONT_WEBCAM);
         openCV.setConfig(config);
@@ -30,7 +29,7 @@ public class OpenCVVumarkTest extends TeleOpBase {
 
     @Override
     protected void update() {
-        updateShutter();
+        super.update();
 
         Rect rect = openCV.getFoundRect();
         telemetry.addData("Vumark", rect.area() > 0);
@@ -40,14 +39,12 @@ public class OpenCVVumarkTest extends TeleOpBase {
         telemetry.update();
     }
 
-    private void updateShutter() {
-        shutterButton.update(gamepad1.right_bumper || gamepad1.left_bumper);
-        if (shutterButton.is(Button.State.DOWN)) {
-            openCV.writeCurrentImage(OpenCVDetector.Stage.THRESHOLD);
-            openCV.writeCurrentImage(OpenCVDetector.Stage.DISPLAY);
-            openCV.writeCurrentImage(OpenCVDetector.Stage.DEBUG);
-            openCV.writeCurrentImage(OpenCVDetector.Stage.RAW_IMAGE);
-        }
+    @Override
+    void onClick() {
+        openCV.writeCurrentImage(OpenCVDetector.Stage.THRESHOLD);
+        openCV.writeCurrentImage(OpenCVDetector.Stage.DISPLAY);
+        openCV.writeCurrentImage(OpenCVDetector.Stage.DEBUG);
+        openCV.writeCurrentImage(OpenCVDetector.Stage.RAW_IMAGE);
     }
 
     @Override

@@ -10,7 +10,8 @@ import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
-public class MoveWithVuforia extends Move {
+@Deprecated
+public class MoveWithVuforia extends MoveWithClicks {
 
     private PIDController vuforiaXPidController;
     private PIDController vuforiaYPidController;
@@ -64,7 +65,7 @@ public class MoveWithVuforia extends Move {
 
     public MoveWithVuforia(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
-        clicks = command.getDouble("clicks " + skystonePosition.key, clicks);
+        targetDistance = command.getDouble("clicks " + skystonePosition.key, targetDistance);
         targetVY = command.getDouble("vuforia y " + skystonePosition.key, targetVY);
         vuforiaYPidController = new PIDController(command, "vuforia y", targetVY);
     }

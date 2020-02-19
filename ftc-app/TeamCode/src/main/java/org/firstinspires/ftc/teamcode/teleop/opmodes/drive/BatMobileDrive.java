@@ -1,12 +1,8 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
-import org.firstinspires.ftc.teamcode.math.GeneralMath;
-import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
@@ -19,11 +15,12 @@ public class BatMobileDrive extends BaseDrive {
     private BatMobile batMobile;
 
     private double deadZone;
+    private double slowLiftPowerZone;
+    private double slowLiftPowerFactor;
     private double liftPowerFactor;
     private double extendPowerFactor;
     private double turtleDrivePowerFactor;
     private double snailDrivePowerFactor;
-    private double slowLiftPowerFactor;
     private double outtakePowerFactor;
 
     private Button pivotButton = new Button();
@@ -32,33 +29,16 @@ public class BatMobileDrive extends BaseDrive {
     private Button capstoneButton = new Button();
     private Button depositLeftButton = new Button();
     private Button depositRightButton = new Button();
-    private Button toggleLiftButton = new Button();
-    private Button toggleExtendButton = new Button();
 
-    private int clicksPerLiftLevel;
-
-    private boolean holdingPosition = false;
-    private boolean runningToPosition = false;
-//    private boolean holdingWhileExtending = false;
-    private boolean coasting = true;
     private boolean wasInputtingFullDown = false;
 
     enum LiftState {
         RUN_TO_POSITION,
-        EXTEND,
+        HOLD,
         COAST,
         MANUAL
     }
-
-    private LiftState state;
-
-    private double coastDownZone;
-    private double minExtendPower;
-
-    private PIDController extendPid;
-
-    private int liftLevel;
-
+    private LiftState state = LiftState.COAST;
 
     @Override
     protected void initialize() {
@@ -71,12 +51,8 @@ public class BatMobileDrive extends BaseDrive {
         turtleDrivePowerFactor = config.getDouble("turtle drive power", 0.5);
         snailDrivePowerFactor = config.getDouble("snail drive power", 0.25);
         slowLiftPowerFactor = config.getDouble("slow lift power", 0.3);
+        slowLiftPowerZone = config.getDouble("slow lift zone", 0.7);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
-
-        coastDownZone = config.getDouble("coast zone", 0.4);
-        minExtendPower = config.getDouble("min extend pid power", 0.4);
-
-        clicksPerLiftLevel = config.getInt("clicks per lift level", 300);
 
         batMobile.sideArm.pivot.set(ToggleServo.State.CLOSED);
     }
@@ -111,73 +87,50 @@ public class BatMobileDrive extends BaseDrive {
         capstoneButton.update(gamepad2.y);
         depositLeftButton.update(gamepad2.left_bumper);
         depositRightButton.update(gamepad2.right_bumper);
-        toggleExtendButton.update(gamepad2.b);
-        toggleLiftButton.update(gamepad2.a);
     }
 
     private void updateElevator() {
-        if (toggleLiftButton.is(DOWN)) {
-            runningToPosition = true;
-            holdingPosition = false;
-            batMobile.elevator.setRunToRelativePosition(clicksPerLiftLevel * liftLevel, 0);
-        }
 
         double liftPower = getLiftInputPower();
-
         boolean isLifting = isInputting(liftPower);
         boolean isExtending = isInputting(getExtendInputPower());
         boolean isInputting = isLifting || isExtending;
-
         boolean inputtingFullDown = (int)liftPower == -1;
+
         if (wasInputtingFullDown && !inputtingFullDown) {
-            coasting = true;
+            state = LiftState.COAST;
+        } else if (!isInputting && state != LiftState.HOLD && state != LiftState.COAST) {
+            state = LiftState.HOLD;
+            batMobile.elevator.setRunToRelativePosition(0, 0);
+        } else if (isInputting) {
+            state = LiftState.MANUAL;
         }
+
         wasInputtingFullDown = inputtingFullDown;
 
-        if (isExtending || liftPower > 0) {
-            coasting = false;
+        switch (state) {
+            case HOLD:
+            case RUN_TO_POSITION:
+                batMobile.elevator.updateRunToRelativePosition();
+                break;
+            case COAST:
+                batMobile.elevator.left.setPower(0);
+                batMobile.elevator.right.setPower(0);
+                break;
+            case MANUAL:
+            default:
+                updateElevatorManual();
+                break;
         }
 
-        if (!isInputting && !holdingPosition && !runningToPosition && !coasting) {
-            holdingPosition = true;
-            batMobile.elevator.setRunToRelativePosition(0, 0);
-        }
-
-        if (isInputting) {
-            holdingPosition = false;
-            runningToPosition = false;
-        }
-
-//        if (!isExtending || (isLifting && isExtending)) {
-//            holdingWhileExtending = false;
-//        }
-
-//        if (isExtending && !isLifting && !holdingWhileExtending) {
-//            holdingWhileExtending = true;
-//
-//            extendPid = new PIDController(config, "extend", batMobile.elevator.getClicksDifference());
-//            int difference = batMobile.elevator.getClicksDifference();
-//            AutoRunner.log("Setpoint", difference);
-//        }
-
-        if (holdingPosition || runningToPosition) {
-            batMobile.elevator.updateRunToRelativePosition();
-        } else if (coasting) {
-            batMobile.elevator.left.setPower(0);
-            batMobile.elevator.right.setPower(0);
-        } else {
-            updateElevatorManual();
-        }
     }
 
     private double getLiftInputPower() {
         double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0) * liftPowerFactor;
-//        double liftPowerP2 = Math.pow(-gamepad2.left_stick_y, 3);
         double liftPowerP2 = Math.sqrt(Math.abs(gamepad2.left_stick_y)) * (-gamepad2.left_stick_y > 0 ? 1 : -1);
-        if (liftPowerP2 < 0 && liftPowerP2 > -0.5) {
+        if (liftPowerP2 < 0 && liftPowerP2 > -slowLiftPowerZone) {
             liftPowerP2 *= slowLiftPowerFactor;
         }
-//        double liftPowerP2 = -gamepad2.left_stick_y;
         return liftPowerP1 + liftPowerP2;
     }
 
@@ -247,18 +200,13 @@ public class BatMobileDrive extends BaseDrive {
 
 
     private void updateTelemetry() {
-        telemetry.addData("Lift Level", liftLevel);
-        telemetry.addData("Target Pos", batMobile.elevator.left.getTargetPosition());
-
-        telemetry.addData("Running to position", runningToPosition);
-        telemetry.addData("Holding position", holdingPosition);
-        telemetry.addData("Coasting", coasting);
+        telemetry.addData("Lift State", state.name());
 
         telemetry.addData("Left Lift Position", batMobile.elevator.left.getCurrentPosition());
         telemetry.addData("Right Lift Position", batMobile.elevator.right.getCurrentPosition());
-        telemetry.addData("Lift Position Difference", batMobile.elevator.getClicksDifference());
-        telemetry.addData("Left Lift Velocity", batMobile.elevator.left.getVelocity());
-        telemetry.addData("Right Lift Velocity", batMobile.elevator.left.getVelocity());
+//        telemetry.addData("Lift Position Difference", batMobile.elevator.getClicksDifference());
+//        telemetry.addData("Left Lift Velocity", batMobile.elevator.left.getVelocity());
+//        telemetry.addData("Right Lift Velocity", batMobile.elevator.left.getVelocity());
 
         telemetry.addData("Lift Power", getLiftInputPower());
         telemetry.addData("P2 Left Stick Y", gamepad2.left_stick_y);

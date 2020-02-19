@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.robot.BatMobile;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
 import org.firstinspires.ftc.teamcode.hardware.sensor.IDistanceSensor;
 import org.firstinspires.ftc.teamcode.hardware.sensor.MaxSonarAnalogSensor;
@@ -54,7 +55,7 @@ public class BatMobile extends Robot {
         leftFoundationServo = new ToggleServo(hardwareMap, "left foundation");
         rightFoundationServo = new ToggleServo(hardwareMap, "right foundation");
 
-        odometryY = new OdometryWheel(intake.left);
+        odometryY = new OdometryWheel(intake.right);
         frontSensor = new MaxSonarAnalogSensor(hardwareMap, "front sensor");
     }
 

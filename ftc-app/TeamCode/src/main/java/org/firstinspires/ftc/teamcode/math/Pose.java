@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.math;
 
+import android.support.annotation.NonNull;
+
 public class Pose {
 
     public double x;
@@ -40,13 +42,9 @@ public class Pose {
         return x == other.x && y == other.y && r == other.r;
     }
 
+    @NonNull
     public String toString() {
-        return (round(x, 3) + ", " + round(y, 3) + ", " + round(r, 3));
-    }
-
-    private double round(double number, int places) {
-        double scale = Math.pow(10, places);
-        return Math.round(number * scale) / scale;
+        return String.format("\t%s\t%s\t%s", GeneralMath.round(x, 3), GeneralMath.round(y, 3), GeneralMath.round(r, 3));
     }
 
 

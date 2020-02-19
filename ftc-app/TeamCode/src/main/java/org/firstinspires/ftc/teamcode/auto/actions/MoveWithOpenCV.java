@@ -10,7 +10,8 @@ import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
-public class MoveWithOpenCV extends Move {
+@Deprecated
+public class MoveWithOpenCV extends MoveWithClicks {
 
     private PIDController vumarkXPID;
     private PIDController vumarkYPID;
@@ -38,7 +39,7 @@ public class MoveWithOpenCV extends Move {
 
     public MoveWithOpenCV(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
-        clicks = command.getDouble("clicks " + skystonePosition.key, clicks);
+        targetDistance = command.getDouble("clicks " + skystonePosition.key, targetDistance);
         vumarkTargetY = command.getDouble("vumark y " + skystonePosition.key, vumarkTargetY);
         vumarkYPID = new PIDController(command, "vumark y", vumarkTargetY);
     }

@@ -58,8 +58,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="TestMaxSonarI2CXL", group="Test Sensors")  // @Autonomous(...) is the other common choice
-//@Disabled
+@Autonomous(group="Test")
+@Disabled
 public class TestMaxSonarI2CXL extends LinearOpMode {
 
     /* Declare OpMode members. */

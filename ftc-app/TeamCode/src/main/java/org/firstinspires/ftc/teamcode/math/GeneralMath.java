@@ -9,6 +9,7 @@ import java.util.List;
 
 public class GeneralMath {
 
+
     public enum Conditional {
         GREATER, LESS, CLOSE;
 

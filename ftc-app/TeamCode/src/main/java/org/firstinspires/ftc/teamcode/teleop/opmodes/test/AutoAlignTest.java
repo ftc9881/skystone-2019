@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp(group="Test")
+//@Disabled
 public class AutoAlignTest extends BaseDrive {
 
     private SharpSensorPair foundationSensorPair;
@@ -22,8 +23,8 @@ public class AutoAlignTest extends BaseDrive {
     private PIDController yPid;
     private PIDController rPid;
 
-    boolean isAutoMode = false;
-    double deadZone;
+    private boolean isAutoMode = false;
+    private double deadZone;
 
     @Override
     protected void initialize() {
@@ -32,11 +33,11 @@ public class AutoAlignTest extends BaseDrive {
         foundationSensorPair = new SharpSensorPair(hardwareMap, "left foundation sensor", "right foundation sensor");
         blockSensorPair = new SharpSensorPair(hardwareMap, "left block sensor", "right block sensor");
 
-        double idealXPosition = config.getDouble("sensor x target", 0);
-        double idealYPosition = config.getDouble("sensor y target", 0);
-        xPid = new PIDController(config, "sensor x", idealXPosition);
-        yPid = new PIDController(config, "sensor y", idealYPosition);
-        rPid = new PIDController(config, "sensor r", 0);
+        double idealXPosition = config.getDouble("align x target", 0);
+        double idealYPosition = config.getDouble("align y target", 0);
+        xPid = new PIDController(config, "align x", idealXPosition);
+        yPid = new PIDController(config, "align y", idealYPosition);
+        rPid = new PIDController(config, "align r", 0);
     }
 
     @Override

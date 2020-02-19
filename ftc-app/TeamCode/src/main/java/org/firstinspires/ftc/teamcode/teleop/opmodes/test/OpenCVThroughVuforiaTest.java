@@ -17,15 +17,14 @@ import static org.firstinspires.ftc.teamcode.auto.vision.VisionSystem.CameraType
 
 @TeleOp(group="Test")
 //@Disabled
-public class OpenCVThroughVuforiaTest extends TeleOpBase {
+public class OpenCVThroughVuforiaTest extends SnapshotTest {
 
     Vuforia vuforia;
     OpenCVThroughVuforia openCV;
-    Button shutterButton = new Button();
 
     @Override
     protected void initialize() {
-        robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        super.initialize();
 
         Configuration config = new Configuration("OpenCVThroughVuforia");
         openCV = OpenCVThroughVuforia.createInstance(config, FRONT_WEBCAM);
@@ -37,7 +36,7 @@ public class OpenCVThroughVuforiaTest extends TeleOpBase {
 
     @Override
     protected void update() {
-        updateShutter();
+        super.update();
 
         Rect rect = openCV.getFoundRect();
         telemetry.addData("Rect", rect.toString());
@@ -52,10 +51,9 @@ public class OpenCVThroughVuforiaTest extends TeleOpBase {
         telemetry.update();
     }
 
-    private void updateShutter() {
-        shutterButton.update(gamepad1.right_bumper || gamepad1.left_bumper);
-        if (shutterButton.is(Button.State.DOWN)) {
-            openCV.writeCurrentImage();
-        }
+    @Override
+    void onClick() {
+        openCV.writeCurrentImage();
     }
+
 }

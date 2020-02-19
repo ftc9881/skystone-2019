@@ -16,63 +16,60 @@ import org.firstinspires.ftc.teamcode.math.PIDController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Move extends Action {
-
-//    protected static final double CLICKS_PER_INCH = 50.0;
+public class MoveWithClicks extends Action {
 
     protected PIDController anglePidController;
 
     protected Robot robot;
     protected AutoOpConfiguration config;
-    protected int clicksError;
-    protected int averageClicks;
-    protected int decelerateClicks;
-    protected int accelerateClicks;
     protected double basePower;
-    protected double targetClicks;
-    protected double clicks;
     protected Angle moveAngle;
     protected Angle targetAngle;
     protected double powerFactor;
     protected Pose drivePose;
     protected Pose correctedDrivePose;
-
     protected boolean useTargetAngle;
+    protected int currentClicks;
 
-    public Move(Command command) {
+    protected int clicksError;
+    protected int decelerateDistance;
+    protected int accelerateDistance;
+    protected double targetDistance;
+
+    public MoveWithClicks(Command command) {
         tag = "RelativeMove";
         robot = Robot.getInstance();
         moveAngle = command.getAngle("move angle", 0);
         targetAngle = command.getAngle("target angle", 0);
-        clicks = command.getDouble("clicks", 5.0);
+        targetDistance = command.getDouble("clicks", 5.0);
         powerFactor = command.getDouble("power", 0.5);
-        accelerateClicks = command.getInt("ramp up", 0);
-        decelerateClicks = command.getInt("ramp down", 0);
+        accelerateDistance = command.getInt("ramp up", 0);
+        decelerateDistance = command.getInt("ramp down", 0);
         useTargetAngle = command.getBoolean("use target angle", true);
 
         config = AutoOpConfiguration.getInstance();
         anglePidController = new PIDController(config.properties, "move angle", targetAngle.getRadians());
         clicksError = config.properties.getInt("move clicks error", 100);
-        basePower = config.properties.getDouble("move base power", 0.3);
+        basePower = config.properties.getDouble("base power", 0.3);
     }
 
-    public Move(Command command, VisionSystem.SkystonePosition skystonePosition) {
+    public MoveWithClicks(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
-        clicks = command.getDouble("clicks " + skystonePosition.key, clicks);
+        targetDistance = command.getDouble("clicks " + skystonePosition.key, targetDistance);
     }
 
     @Override
     protected void onRun() {
         robot.driveTrain.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.driveTrain.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        targetClicks = Math.abs(clicks);
+        targetDistance = Math.abs(targetDistance);
 
         drivePose = new Pose(0, 0, 0);
         drivePose.x = Math.sin(moveAngle.getRadians());
         drivePose.y = Math.cos(moveAngle.getRadians());
         correctedDrivePose = new Pose(drivePose);
 
-        AutoRunner.log("TargetClicks", targetClicks);
+        AutoRunner.log("TargetClicks", targetDistance);
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
     }
@@ -83,8 +80,9 @@ public class Move extends Action {
     }
 
     protected boolean reachedTargetClicks() {
-        averageClicks = (int) robot.driveTrain.getAverageClicks();
-        return Math.abs(averageClicks - targetClicks) < clicksError;
+//        currentClicks = Math.abs((int) robot.driveTrain.getAverageClicks());
+        currentClicks = Math.abs(robot.driveTrain.rb.getCurrentPosition());
+        return Math.abs(currentClicks - targetDistance) < clicksError;
     }
 
     @Override
@@ -111,10 +109,10 @@ public class Move extends Action {
 
     protected double calculateRampFactor() {
         double rampValue = 1.0;
-        if (averageClicks > (targetClicks - decelerateClicks)) {
-            rampValue = 1.0 - (averageClicks - (targetClicks-decelerateClicks)) / (double) decelerateClicks;
-        } else if (averageClicks < accelerateClicks) {
-            rampValue = Math.max(Math.sqrt(averageClicks /(double)accelerateClicks), 0.1);
+        if (decelerateDistance > 0 && currentClicks > (targetDistance - decelerateDistance)) {
+            rampValue = 1.0 - (currentClicks - (targetDistance - decelerateDistance)) / (double) decelerateDistance;
+        } else if (accelerateDistance > 0 && currentClicks < accelerateDistance) {
+            rampValue = Math.max(Math.sqrt(currentClicks /(double) accelerateDistance), 0.1);
         }
         return Range.clip(rampValue, basePower, 1.0);
     }

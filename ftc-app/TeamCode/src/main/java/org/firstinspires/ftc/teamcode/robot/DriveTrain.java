@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
+import org.apache.commons.math3.stat.descriptive.moment.GeometricMean;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.Pose;
@@ -77,10 +78,10 @@ public class DriveTrain {
     }
     public void drive(Pose pose, double powerFactor) {
         // Calculate power for mecanum drive
-        double lfp = Range.clip(pose.y + pose.r + pose.x, -1.0, 1.0);
-        double rfp = Range.clip(pose.y - pose.r - pose.x, -1.0, 1.0);
-        double lbp = Range.clip(pose.y + pose.r - pose.x, -1.0, 1.0);
-        double rbp = Range.clip(pose.y - pose.r + pose.x, -1.0, 1.0);
+        double lfp = GeneralMath.clipPower(pose.y + pose.r + pose.x);
+        double rfp = GeneralMath.clipPower(pose.y - pose.r - pose.x);
+        double lbp = GeneralMath.clipPower(pose.y + pose.r - pose.x);
+        double rbp = GeneralMath.clipPower(pose.y - pose.r + pose.x);
 
         lf.setPower(lfp * powerFactor);
         rf.setPower(rfp * powerFactor);
