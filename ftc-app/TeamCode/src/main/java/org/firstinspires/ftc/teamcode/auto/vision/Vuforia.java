@@ -72,7 +72,7 @@ public class Vuforia implements VisionSystem {
         this.cameraType = cameraType;
         this.hardwareMap = Robot.getInstance().getHardwareMap();
         config = new Configuration("HardwareConstants");
-        cameraOffset = config.getPose(cameraType.name.toLowerCase(), 0);
+        cameraOffset = config.getPose(cameraType.name.toLowerCase());
 
         initialize();
     }
@@ -113,7 +113,7 @@ public class Vuforia implements VisionSystem {
             lookAction.resetLastLocation();
         }
         lastPose = new Pose();
-        cameraOffset = config.getPose(cameraType.name.toLowerCase(), 0);
+        cameraOffset = config.getPose(cameraType.name.toLowerCase());
 //        if (switchableCamera != null) {
 //            this.cameraType = cameraType;
 //            switchableCamera.setActiveCamera(hardwareMap.get(WebcamName.class, cameraType.name));
@@ -179,8 +179,8 @@ public class Vuforia implements VisionSystem {
     }
 
     private OpenGLMatrix getPositionMatrix(CameraType cameraType) {
-        Pose displacement = config.getPose(cameraType.name.toLowerCase() + " d", 0);
-        Pose rotation = config.getPose(cameraType.name.toLowerCase() + " r", 0);
+        Pose displacement = config.getPose(cameraType.name.toLowerCase() + " d");
+        Pose rotation = config.getPose(cameraType.name.toLowerCase() + " r");
         return OpenGLMatrix
             .translation((float)displacement.y, (float)displacement.x, (float)displacement.r)
             .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, (float)rotation.y, (float)rotation.r, (float)rotation.x));
