@@ -10,13 +10,13 @@ import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOUBLE_
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 
 @TeleOp(group="Drive")
-public class BatMobileDrive extends BaseDrive {
+public class BatMobileDriveTest extends BaseDrive {
 
     private BatMobile batMobile;
 
     private double deadZone;
     private double slowLiftPowerZone;
-    private double slowLiftPowerFactor;
+    private double slowLiftPower;
     private double liftPowerFactor;
     private double extendPowerFactor;
     private double turtleDrivePowerFactor;
@@ -50,7 +50,7 @@ public class BatMobileDrive extends BaseDrive {
         extendPowerFactor = config.getDouble("extend power", 1.0);
         turtleDrivePowerFactor = config.getDouble("turtle drive power", 0.5);
         snailDrivePowerFactor = config.getDouble("snail drive power", 0.25);
-        slowLiftPowerFactor = config.getDouble("slow lift power", 0.3);
+        slowLiftPower = config.getDouble("slow lift power", 0.3);
         slowLiftPowerZone = config.getDouble("slow lift zone", 0.7);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
 
@@ -129,21 +129,20 @@ public class BatMobileDrive extends BaseDrive {
         double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0) * liftPowerFactor;
         double liftPowerP2 = Math.sqrt(Math.abs(gamepad2.left_stick_y)) * (-gamepad2.left_stick_y > 0 ? 1 : -1);
         if (liftPowerP2 < 0 && liftPowerP2 > -slowLiftPowerZone) {
-            liftPowerP2 *= slowLiftPowerFactor;
+            liftPowerP2 = slowLiftPower;
         }
         return liftPowerP1 + liftPowerP2;
     }
 
     private double getExtendInputPower() {
         double extendPowerP1 = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0) * extendPowerFactor;
-//        double extendPowerP2 = Math.pow(gamepad2.right_stick_x, 3);
         double extendPowerP2 = gamepad2.right_stick_x;
         return extendPowerP1 + extendPowerP2;
     }
 
     private void updateElevatorManual() {
-        double powerFactor = isInputting(gamepad2.right_trigger) ? slowLiftPowerFactor : 1.0;
-        batMobile.elevator.setPowerLE(getLiftInputPower(), getExtendInputPower(), powerFactor);
+//        double powerFactor = isInputting(gamepad2.right_trigger) ? slowLiftPower : 1.0;
+        batMobile.elevator.setPowerLE(getLiftInputPower(), getExtendInputPower());
     }
 
     private boolean isInputting(double input) {
@@ -201,8 +200,19 @@ public class BatMobileDrive extends BaseDrive {
 
     private void updateTelemetry() {
         telemetry.addData("Lift State", state.name());
+
+        telemetry.addData("Left Lift Position", batMobile.elevator.left.getCurrentPosition());
+        telemetry.addData("Right Lift Position", batMobile.elevator.right.getCurrentPosition());
+//        telemetry.addData("Lift Position Difference", batMobile.elevator.getClicksDifference());
+//        telemetry.addData("Left Lift Velocity", batMobile.elevator.left.getVelocity());
+//        telemetry.addData("Right Lift Velocity", batMobile.elevator.left.getVelocity());
+
         telemetry.addData("Lift Power", getLiftInputPower());
+        telemetry.addData("P2 Left Stick Y", gamepad2.left_stick_y);
+
         telemetry.addData("Drive Power Factor", drivePowerFactor);
+        telemetry.addData("Lift Power Factor", liftPowerFactor);
+        telemetry.addData("Intake Power Factor", outtakePowerFactor);
         telemetry.update();
     }
 

@@ -31,7 +31,7 @@ public class Vuforia implements VisionSystem {
         SKYSTONE,
         BLUE_REAR_BRIDGE, RED_REAR_BRIDGE, RED_FRONT_BRIDGE, BLUE_FRONT_BRIDGE,
         RED_PERIMETER_1, RED_PERIMETER_2, FRONT_PERIMETER_1, FRONT_PERIMETER_2,
-        BLUE_PERIMETER_1, BLUE_PERIMETER_2, REAR_PERIMETER_1, REAR_PERIMETER_2;
+        BLUE_PERIMETER_1, BLUE_PERIMETER_2, REAR_PERIMETER_1, REAR_PERIMETER_2
     }
 
     // Our Vuforia API key from https://developer.vuforia.com/license-manager

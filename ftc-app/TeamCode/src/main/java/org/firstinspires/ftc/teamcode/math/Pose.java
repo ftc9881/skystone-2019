@@ -27,11 +27,15 @@ public class Pose {
     }
 
     public Pose add(Pose other) {
-        return new Pose(x + other.x, y + other.y, y + other.r);
+        return new Pose(x + other.x, y + other.y, r + other.r);
     }
 
     public Pose subtract(Pose other) {
-        return new Pose(x - other.x, y - other.y, y - other.r);
+        return new Pose(x - other.x, y - other.y, r - other.r);
+    }
+
+    public Pose multiply(double factor) {
+        return new Pose(x * factor, y * factor, r * factor);
     }
 
     public double distanceTo(Pose b) {
@@ -40,6 +44,10 @@ public class Pose {
 
     public boolean sameAs(Pose other) {
         return x == other.x && y == other.y && r == other.r;
+    }
+
+    public boolean isWithin(Pose delta, Pose other) {
+        return GeneralMath.isWithin(x, delta.x, other.x) && GeneralMath.isWithin(y, delta.y, other.y) && GeneralMath.isWithin(r, delta.r, other.r);
     }
 
     @NonNull

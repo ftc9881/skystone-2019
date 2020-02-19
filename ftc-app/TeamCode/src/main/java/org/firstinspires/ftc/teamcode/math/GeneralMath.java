@@ -84,4 +84,8 @@ public class GeneralMath {
         return maxDeviation < Math.abs(value - mean) / standardDeviation(numbers, mean);
     }
 
+    public static boolean isWithin(double a, double range, double b) {
+        return a >= (b - range) && a <= (b + range);
+    }
+
 }
