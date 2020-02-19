@@ -19,14 +19,14 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import com.orsoncharts.*;
 
-public class Main extends JFrame {
+public class SimpleRegressionTest extends JFrame {
 	
 	private static SimpleRegression regression;
 	private static List<Double> vuforiaReadings;
 	private static List<Double> encoderReadings;
 	private static int dataPoints = 35;
 	
-	public Main(String title) {
+	public SimpleRegressionTest(String title) {
 	    super(title);
 	    
 	    XYDataset dataset = createDataset();
@@ -80,7 +80,7 @@ public class Main extends JFrame {
 	
 	private static void openChart() {
 		SwingUtilities.invokeLater(() -> {
-	      Main example = new Main("Regression Test");
+	      SimpleRegressionTest example = new SimpleRegressionTest("Regression Test");
 	      example.setSize(800, 400);
 	      example.setLocationRelativeTo(null);
 	      example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
