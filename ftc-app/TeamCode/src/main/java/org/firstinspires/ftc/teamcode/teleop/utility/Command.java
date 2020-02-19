@@ -93,11 +93,19 @@ public class Command {
         return new Angle(value, unit);
     }
 
-    public Pose getPose(String key, double defaultValue) {
+    public Pose getPose(String key, Pose defaultValue) {
         Pose pose = new Pose();
-        pose.x = getDouble(key + " x", defaultValue);
-        pose.y = getDouble(key + " y", defaultValue);
-        pose.r = getDouble(key + " r", defaultValue);
+        pose.x = getDouble(key + " x", defaultValue.x);
+        pose.y = getDouble(key + " y", defaultValue.y);
+        pose.r = getDouble(key + " r", defaultValue.r);
+        return pose;
+    }
+
+    public Pose getPose(String key) {
+        Pose pose = new Pose();
+        pose.x = getDouble(key + " x", 0);
+        pose.y = getDouble(key + " y", 0);
+        pose.r = getDouble(key + " r", 0);
         return pose;
     }
 

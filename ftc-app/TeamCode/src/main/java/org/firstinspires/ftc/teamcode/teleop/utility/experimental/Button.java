@@ -41,9 +41,9 @@ public class Button implements IInput {
     State update() {
         if (isPressed()) {
             if (state == State.OFF || state == State.UP || state == State.NOT_INITIALIZED)
-                state = state.DOWN;
+                state = State.DOWN;
             else
-                state = state.HELD;
+                state = State.HELD;
         }
         else {
             if (state == State.HELD || state == State.DOWN)

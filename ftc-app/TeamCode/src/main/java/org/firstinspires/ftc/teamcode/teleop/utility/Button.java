@@ -43,11 +43,11 @@ public class Button {
                     state = State.DOUBLE_TAP;
                 } else {
                     lastTapped = System.currentTimeMillis();
-                    state = state.DOWN;
+                    state = State.DOWN;
                 }
             }
             else {
-                state = state.HELD;
+                state = State.HELD;
             }
         }
         else {
