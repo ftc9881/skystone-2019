@@ -8,12 +8,18 @@
 	"x kp": "0.08",
 	"x ki": "0",
 	"x kd": "0.0001",
+	"y predictor size": "2",
+	"y predictor near delta": "3",
+	"y predictor delta per second": "5",
+
+
+
 
 	"double tap": "300",
 
 	"dead zone": "0.05",
 	"slow lift zone": "0.8",
-	"slow lift power": "0.05",
+	"slow lift power": "0.02",
 	"turtle drive power": "0.5",
 	"snail drive power": "0.25",
 	"outtake power": "1.0",

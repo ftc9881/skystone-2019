@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
@@ -16,8 +17,6 @@ public class BatMobileDriveTest extends BaseDrive {
 
     private double deadZone;
     private double slowLiftPowerZone;
-    private double slowLiftPower;
-    private double liftPowerFactor;
     private double extendPowerFactor;
     private double turtleDrivePowerFactor;
     private double snailDrivePowerFactor;
@@ -44,13 +43,13 @@ public class BatMobileDriveTest extends BaseDrive {
     protected void initialize() {
         super.initialize();
         batMobile = BatMobile.createInstance();
+        batMobile.elevator.left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        batMobile.elevator.right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         deadZone = config.getDouble("dead zone", 0.1);
-        liftPowerFactor = config.getDouble("lift power", 1.0);
         extendPowerFactor = config.getDouble("extend power", 1.0);
         turtleDrivePowerFactor = config.getDouble("turtle drive power", 0.5);
         snailDrivePowerFactor = config.getDouble("snail drive power", 0.25);
-        slowLiftPower = config.getDouble("slow lift power", 0.3);
         slowLiftPowerZone = config.getDouble("slow lift zone", 0.7);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
 
@@ -91,7 +90,7 @@ public class BatMobileDriveTest extends BaseDrive {
 
     private void updateElevator() {
 
-        double liftPower = getLiftInputPower();
+        double liftPower = getLiftInput();
         boolean isLifting = isInputting(liftPower);
         boolean isExtending = isInputting(getExtendInputPower());
         boolean isInputting = isLifting || isExtending;
@@ -125,11 +124,17 @@ public class BatMobileDriveTest extends BaseDrive {
 
     }
 
+    private double getLiftInput() {
+        double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0);
+        double liftPowerP2 = Math.sqrt(Math.abs(gamepad2.left_stick_y)) * (-gamepad2.left_stick_y > 0 ? 1 : -1);
+        return liftPowerP1 + liftPowerP2;
+    }
+
     private double getLiftInputPower() {
-        double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0) * liftPowerFactor;
+        double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0);
         double liftPowerP2 = Math.sqrt(Math.abs(gamepad2.left_stick_y)) * (-gamepad2.left_stick_y > 0 ? 1 : -1);
         if (liftPowerP2 < 0 && liftPowerP2 > -slowLiftPowerZone) {
-            liftPowerP2 = slowLiftPower;
+            liftPowerP2 = 0;
         }
         return liftPowerP1 + liftPowerP2;
     }
@@ -211,7 +216,6 @@ public class BatMobileDriveTest extends BaseDrive {
         telemetry.addData("P2 Left Stick Y", gamepad2.left_stick_y);
 
         telemetry.addData("Drive Power Factor", drivePowerFactor);
-        telemetry.addData("Lift Power Factor", liftPowerFactor);
         telemetry.addData("Intake Power Factor", outtakePowerFactor);
         telemetry.update();
     }

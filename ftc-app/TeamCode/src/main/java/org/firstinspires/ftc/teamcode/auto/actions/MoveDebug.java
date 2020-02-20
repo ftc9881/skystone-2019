@@ -34,13 +34,14 @@ public class MoveDebug extends MoveWithClicks {
     protected void onRun() {
         super.onRun();
         robot.driveTrain.drive(drivePose);
-        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", "SensorY", "VuforiaY", "OdomY", "AverageDriveClicks", "LF", "RF", "RB", "LB"));
+//        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", "SensorY", "VuforiaY", "OdomY", "AverageDriveClicks", "LF", "RF", "RB", "LB"));
     }
 
     @Override
     protected void insideRun() {
-        List<Integer> clicksArray = getClicksArray();
-        currentClicks = (int) robot.driveTrain.getAverageClicks();
-        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", sensor.getDistance(), vuforia.getPose().y, odometryY.getPosition() , currentClicks, clicksArray.get(0), clicksArray.get(1), clicksArray.get(2), clicksArray.get(3)));
+//        List<Integer> clicksArray = getClicksArray();
+//        currentClicks = (int) robot.driveTrain.getAverageClicks();
+//        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", sensor.getDistance(), vuforia.getPose().y, odometryY.getPosition() , currentClicks, clicksArray.get(0), clicksArray.get(1), clicksArray.get(2), clicksArray.get(3)));
+        AutoRunner.log("VuforiaPoseDataOdometryY", vuforia.getPose().toString("\t") + "\t" + odometryY.getInches());
     }
 }

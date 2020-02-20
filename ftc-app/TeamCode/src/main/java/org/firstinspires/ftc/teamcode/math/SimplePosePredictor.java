@@ -31,12 +31,15 @@ public class SimplePosePredictor {
     }
 
     public boolean canMakePrediction() {
-        return poses.size() > 1;
+        return poses.size() > 1 && times.size() > 1;
     }
 
     public boolean predictionIsNearActual(Pose actualPose) {
-        Pose deltaRange = maxDelta.add( additionalDeltaPerSecond.multiply(getElapsedTimeSinceFirst()) );
-        return getPredictedPose().isWithin(deltaRange, actualPose);
+        if (canMakePrediction()) {
+            Pose deltaRange = maxDelta.add( additionalDeltaPerSecond.multiply(getElapsedTimeSinceFirst()) );
+            return getPredictedPose().isWithin(deltaRange, actualPose);
+        }
+        return false;
     }
 
     public Pose getPredictedPose() {
@@ -48,7 +51,7 @@ public class SimplePosePredictor {
             return poses.getFirst();
         }
         Pose newestPose = poses.getFirst();
-        Pose deltaPerMs = getDeltaPose().multiply(1/getDeltaTime());
+        Pose deltaPerMs = getDeltaPose().multiply(1.0/getDeltaTime());
         return newestPose.add( deltaPerMs.multiply(getElapsedTimeSinceFirst()) );
     }
 

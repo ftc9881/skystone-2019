@@ -55,5 +55,9 @@ public class Pose {
         return String.format("\t%s\t%s\t%s", GeneralMath.round(x, 3), GeneralMath.round(y, 3), GeneralMath.round(r, 3));
     }
 
+    public String toString(String separator) {
+        return GeneralMath.round(x, 3) + separator + GeneralMath.round(y, 3) + separator + GeneralMath.round(r, 3);
+    }
+
 
 }

@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "TestAuto", group = "TeamCode")
+@Autonomous
 //@Disabled
 public class RoadrunnerTestAutoOp extends LinearOpMode {
 
@@ -74,6 +74,7 @@ public class RoadrunnerTestAutoOp extends LinearOpMode {
             drive.setDriveSignal(signal);
             drive.updatePoseEstimate();
         }
+        robot.driveTrain.stop();
 
     }
 

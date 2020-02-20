@@ -1,16 +1,16 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.MovingStatistics;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
-import org.firstinspires.ftc.teamcode.math.MovingAverage;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
-import org.firstinspires.ftc.teamcode.math.SimplePosePredictor;
+import org.firstinspires.ftc.teamcode.math.SimpleValuePredictor;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 @TeleOp(group="Test")
 //@Disabled
 public class MoveCombinedSmoothDebugTest extends BaseDrive {
+
 
     private Vuforia vuforia;
 
@@ -35,16 +36,22 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
     private Pose newVuforiaPose = new Pose();
     private Pose lastVuforiaPose = new Pose();
     private Pose bestGuessPose = new Pose();
+    private Pose lastGuessPose = new Pose();
 
-    private SimplePosePredictor vuforiaPosePredictor;
-    private MovingAverage movingAverageY;
+    private SimpleValuePredictor yPredictor;
+    private MovingStatistics movingAverageY;
 
     private OdometryWheel odometryWheel;
     private double initialInchesGuess;
     private double odometryInitialInches;
     private double odometryInchesAtSetpoint = 0;
     private double vuforiaYAtSetpoint = 0;
+
+    private double xRejectThreshold;
+    private MovingStatistics movingStatisticsX;
+
     private int inchesUntilCorrectX;
+    private int movingStatsSizeX;
 
     private Pose drivePose = new Pose(0, 1, 0);
 
@@ -68,11 +75,11 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
         inchesUntilCorrectX = command.getInt("inches until correct x", 40);
         initialInchesGuess = command.getInt("initial inches guess", 80);
 
-        closeX = command.getDouble("close threshold x", 2);
+        closeX = command.getDouble("x close threshold", 2);
         conditionalX = GeneralMath.Conditional.CLOSE;
 
-        closeY = command.getDouble("close threshold y", 1);
-        String conditionalString = command.getString("stop when y", "close");
+        closeY = command.getDouble("y close threshold", 1);
+        String conditionalString = command.getString("y stop when", "close");
         conditionalY = GeneralMath.Conditional.convertString(conditionalString);
 
         targetX = command.getDouble("target x", 0);
@@ -80,10 +87,14 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
         targetY = command.getDouble("target y", 0);
         pidY = new PIDController(command, "y", targetY);
 
-        vuforiaPosePredictor = new SimplePosePredictor(command, "vuforia");
+        movingStatsSizeX = command.getInt("x moving stats size", 10);
+        movingStatisticsX = new MovingStatistics(movingStatsSizeX);
+        xRejectThreshold = command.getDouble("x reject threshold", 7.16);
 
-        int movingAverageSize = command.getInt("moving average size", 3);
-        movingAverageY = new MovingAverage(movingAverageSize);
+        int movingAverageSizeY = command.getInt("y moving stats size", 3);
+        movingAverageY = new MovingStatistics(movingAverageSizeY);
+        yPredictor = new SimpleValuePredictor(command, "y");
+
     }
 
     @Override
@@ -94,21 +105,30 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
         currentVuforiaPose = vuforia.getPose();
         newVuforiaPose = currentVuforiaPose.sameAs(lastVuforiaPose) ? new Pose() : currentVuforiaPose;
         lastVuforiaPose = currentVuforiaPose;
+        lastGuessPose = bestGuessPose;
 
-        bestGuessPose.r = robot.imu.getHeading().getRadians();
-//        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
-        bestGuessPose.y = getBestGuessYSmooth();
-        correctedDrivePose.y = -pidY.getCorrectedOutput(bestGuessPose.y);
         bestGuessPose.x = getBestGuessX();
+        bestGuessPose.y = getBestGuessYSmooth();
+        bestGuessPose.r = robot.imu.getHeading().getRadians();
+
+        yPredictor.add(bestGuessPose.y);
+
         if (bestGuessPose.y < inchesUntilCorrectX) {
             correctedDrivePose.x += pidX.getCorrectedOutput(bestGuessPose.x);
         }
+        correctedDrivePose.y = GeneralMath.clipPower(-pidY.getCorrectedOutput(bestGuessPose.y));
+//        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
 
 //        robot.driveTrain.drive(correctedDrivePose);
 
-        telemetry.addData("BestGuessPose", bestGuessPose);
-        telemetry.addData("VuforiaPose", currentVuforiaPose);
-        telemetry.addData("DrivePose", correctedDrivePose);
+        telemetry.addData("BestGuessPose", bestGuessPose.toString(",\t"));
+        telemetry.addData("VuforiaPose", currentVuforiaPose.toString(",\t"));
+        telemetry.addData("DrivePose", correctedDrivePose.toString(",\t"));
+        telemetry.addData("==","==");
+        telemetry.addData("PredictedY", yPredictor.getPredictedDouble());
+        telemetry.addData("NearPrediction?", yPredictor.isNear(currentVuforiaPose.y));
+        telemetry.addData("DeviationX", getDeltaRangeX());
+        telemetry.addData("WithinExpected?", xIsWithin(getDeltaRangeX()));
         telemetry.addData("==","==");
         telemetry.addData("Odometry (clicks/vuf.in)", currentVuforiaPose.y != 0 ? odometryWheel.getPosition()/currentVuforiaPose.y : "?");
         telemetry.addData("Odometry(in)", odometryWheel.getInches());
@@ -123,18 +143,33 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
         AutoRunner.log("DrivePose", correctedDrivePose);
     }
 
+
     private double getBestGuessX() {
-        if (!currentVuforiaPose.isAllZero() && (vuforiaNearPredicted() || cantMakePredictionYet())) {
+        if (xIsWithin(getDeltaRangeX())) {
             return currentVuforiaPose.x;
         }
         return targetX;
     }
 
+    private boolean xIsWithin(double deltaRange) {
+        return (Math.abs(lastGuessPose.x - currentVuforiaPose.x) < deltaRange && !currentVuforiaPose.isAllZero());
+    }
+
+    private double getDeltaRangeX() {
+//        if (!newVuforiaPose.isAllZero() && xIsWithin(xRejectThreshold)) {
+        if (!newVuforiaPose.isAllZero() && xIsWithin(xRejectThreshold)) {
+            movingStatisticsX.add(currentVuforiaPose.x);
+        }
+        if (movingStatisticsX.getCount() >= movingStatsSizeX) {
+            return movingStatisticsX.getStandardDeviation() * 2;
+        }
+        return xRejectThreshold;
+    }
+
     private double getBestGuessY() {
-        if (!newVuforiaPose.isAllZero() && (vuforiaNearPredicted() || cantMakePredictionYet())) {
+        if (!newVuforiaPose.isAllZero() && (yPredictor.isNear(newVuforiaPose.y) || cantMakePredictionYet())) {
             odometryInchesAtSetpoint = odometryWheel.getInches();
             vuforiaYAtSetpoint = newVuforiaPose.y;
-            vuforiaPosePredictor.add(newVuforiaPose);
             return newVuforiaPose.y;
         } else if (vuforiaYAtSetpoint != 0){
             return vuforiaYAtSetpoint - (odometryWheel.getInches() - odometryInchesAtSetpoint);
@@ -145,15 +180,11 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
 
     private double getBestGuessYSmooth() {
         movingAverageY.add(getBestGuessY());
-        return movingAverageY.getAverage();
-    }
-
-    private boolean vuforiaNearPredicted() {
-        return vuforiaPosePredictor.predictionIsNearActual(currentVuforiaPose);
+        return movingAverageY.getMean();
     }
 
     private boolean cantMakePredictionYet() {
-        return !vuforiaPosePredictor.canMakePrediction();
+        return !yPredictor.canMakePrediction();
     }
 
     @Override

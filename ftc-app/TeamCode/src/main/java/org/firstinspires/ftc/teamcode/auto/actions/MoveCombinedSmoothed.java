@@ -8,10 +8,9 @@ import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.GeneralMath.Conditional;
-import org.firstinspires.ftc.teamcode.math.MovingAverage;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
-import org.firstinspires.ftc.teamcode.math.SimplePosePredictor;
+import org.firstinspires.ftc.teamcode.math.SimpleValuePredictor;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
@@ -33,17 +32,22 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
     private Pose newVuforiaPose = new Pose();
     private Pose lastVuforiaPose = new Pose();
     private Pose bestGuessPose = new Pose();
+    private Pose lastGuessPose = new Pose();
 
-    private SimplePosePredictor vuforiaPosePredictor;
-    private MovingAverage movingAverageY;
+    private SimpleValuePredictor yPredictor;
+    private MovingStatistics movingAverageY;
 
     private OdometryWheel odometryWheel;
     private double initialInchesGuess;
     private double odometryInitialInches;
     private double odometryInchesAtSetpoint = 0;
     private double vuforiaYAtSetpoint = 0;
-    private int inchesUntilCorrectX;
 
+    private double xRejectThreshold;
+    private MovingStatistics movingStatisticsX;
+
+    private int inchesUntilCorrectX;
+    private int movingStatsSizeX;
 
     public MoveCombinedSmoothed(Command command) {
         super(command);
@@ -73,10 +77,13 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
         targetY = command.getDouble("target y", 0);
         pidY = new PIDController(command, "y", targetY);
 
-        vuforiaPosePredictor = new SimplePosePredictor(command, "vuforia");
+        movingStatsSizeX = command.getInt("x moving stats size", 10);
+        movingStatisticsX = new MovingStatistics(movingStatsSizeX);
+        xRejectThreshold = command.getDouble("x reject threshold", 7.16);
 
-        int movingAverageSize = command.getInt("moving average size", 3);
-        movingAverageY = new MovingAverage(movingAverageSize);
+        int movingAverageSizeY = command.getInt("y moving stats size", 3);
+        movingAverageY = new MovingStatistics(movingAverageSizeY);
+        yPredictor = new SimpleValuePredictor(command, "y");
     }
 
     public MoveCombinedSmoothed(Command command, VisionSystem.SkystonePosition skystonePosition) {
@@ -103,15 +110,17 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
         newVuforiaPose = currentVuforiaPose.sameAs(lastVuforiaPose) ? new Pose() : currentVuforiaPose;
         lastVuforiaPose = currentVuforiaPose;
 
-        bestGuessPose.r = robot.imu.getHeading().getRadians();
-        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
-
-        bestGuessPose.y = getBestGuessYSmooth();
-        correctedDrivePose.y = GeneralMath.clipPower(-pidY.getCorrectedOutput(bestGuessPose.y), basePower);
         bestGuessPose.x = getBestGuessX();
+        bestGuessPose.y = getBestGuessYSmooth();
+        bestGuessPose.r = robot.imu.getHeading().getRadians();
+
+        yPredictor.add(bestGuessPose.y);
+
         if (bestGuessPose.y < inchesUntilCorrectX) {
             correctedDrivePose.x += pidX.getCorrectedOutput(bestGuessPose.x);
         }
+        correctedDrivePose.y = GeneralMath.clipPower(-pidY.getCorrectedOutput(bestGuessPose.y), basePower);
+        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
 
         robot.driveTrain.drive(correctedDrivePose, powerFactor);
 
@@ -121,17 +130,30 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
     }
 
     private double getBestGuessX() {
-        if (!currentVuforiaPose.isAllZero() && (vuforiaNearPredicted() || cantMakePredictionYet())) {
+        if (xIsWithin(getDeltaRangeX())) {
             return currentVuforiaPose.x;
         }
         return targetX;
     }
 
+    private boolean xIsWithin(double deltaRange) {
+        return (Math.abs(targetX - currentVuforiaPose.x) < deltaRange && !currentVuforiaPose.isAllZero());
+    }
+
+    private double getDeltaRangeX() {
+        if (!newVuforiaPose.isAllZero() && xIsWithin(xRejectThreshold)) {
+            movingStatisticsX.add(currentVuforiaPose.x);
+        }
+        if (movingStatisticsX.getCount() >= movingStatsSizeX) {
+            return movingStatisticsX.getStandardDeviation() * 2;
+        }
+        return xRejectThreshold;
+    }
+
     private double getBestGuessY() {
-        if (!newVuforiaPose.isAllZero() && (vuforiaNearPredicted() || cantMakePredictionYet())) {
+        if (!newVuforiaPose.isAllZero() && (yPredictor.isNear(newVuforiaPose.y) || cantMakePredictionYet())) {
             odometryInchesAtSetpoint = odometryWheel.getInches();
             vuforiaYAtSetpoint = newVuforiaPose.y;
-            vuforiaPosePredictor.add(newVuforiaPose);
             return newVuforiaPose.y;
         } else if (vuforiaYAtSetpoint != 0){
             return vuforiaYAtSetpoint - (odometryWheel.getInches() - odometryInchesAtSetpoint);
@@ -142,16 +164,14 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
 
     private double getBestGuessYSmooth() {
         movingAverageY.add(getBestGuessY());
-        return movingAverageY.getAverage();
-    }
-
-    private boolean vuforiaNearPredicted() {
-        return vuforiaPosePredictor.predictionIsNearActual(currentVuforiaPose);
+        return movingAverageY.getMean();
     }
 
     private boolean cantMakePredictionYet() {
-        return !vuforiaPosePredictor.canMakePrediction();
+        return !yPredictor.canMakePrediction();
     }
+
+
 
     @Override
     protected void onEndRun() {

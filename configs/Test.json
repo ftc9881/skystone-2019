@@ -23,88 +23,21 @@
 	},
 
 	"init": [
-		{ "command": "skip IDENTIFY SKYSTONE" }
+		{ "command": "IDENTIFY SKYSTONE" }
 	],
 
 
 	"commands": [
-
-		{ 
-			"command": "PIVOT",
-			"state": "REST"
-		},
-		{ 
-			"command": "SLEEP",
-			"time": "1000"
-		},
 		{
-			"command": "ELEVATOR",
-			"lift power": "1"
-		},
-		{
-			"command": "SLEEP",
-			"time": "300"
-		},
-		{
-			"command": "ELEVATOR",
-			"lift power": "0.2"
-		},
-		{ "command": "BREAKPOINT" },
-		{
-			"command": "ELEVATOR",
-			"lift power": "-0.4"
-		},
-		{
-			"command": "SLEEP",
-			"time": "500"
-		},
-		{
-			"command": "ELEVATOR",
-			"lift power": "0"
-		},
-
-		{ "command": "STOP" },
-
-				{
-			"command": "START LIFT",
-			"lift clicks": "200",
-			"elevator kp": "0.1"
-		},
-		{
-			"command": "MOVE",
-			"use odometry": "true",
-			"target angle": "0",
-			"move angle": "0",
-			"inches": "5",
-			"timeout": "5000",
-			"power": "1.0"
-		},
-		{
-			"command": "STOP LIFT"
-		},
-
-
-		{
-			"command": "MOVE",
-			"use odometry": "true",
-			"target angle": "0",
-			"move angle": "-179",
-			"inches": "4",
-			"timeout": "5000",
-			"power": "1.0"
-		},
-
-
-	
-		{
+	"comment": "Moves forwards",
 			"command": "MOVE DEBUG",
+			"power": "1.0",
+			"clicks": "3000",
+			"move angle": "0",
 			"target angle": "0",
-			"move angle": "180",
-			"clicks":"2000",
-			"timeout": "10000",
-			"power": "0.6"
-		},
+			"timeout": "5000"
+		}
 
-		{ "command": "STOP" }
+		
 	]
 }
