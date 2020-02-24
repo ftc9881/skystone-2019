@@ -1,27 +1,36 @@
 {
-	"phone r y": "-90",
-	"phone r x": "90",
-	"webcam 1 r": "90",
 
-	"odometry clicks per inch": "210",
+	"debug servo": "red pivot",
 
-	"left foundation open": "0.25",
-	"left foundation closed": "0.85",
+	"left foundation open": "1.0",
+	"left foundation closed": "0.54",
 
-	"right foundation open": "0.72",
-	"right foundation closed": "0.12",
+	"right foundation open": "0.46",
+	"right foundation closed": "0.93",
 
 	"deposit open": "0.67",
 	"deposit closed": "0.25",
 	"deposit rest": "1.00",
 
-	"pivot open": "0.61",
-	"pivot closed": "0.3",
-	"pivot rest": "0.56",
+	"blue pivot open": "0.04",
+	"blue pivot closed": "0.37",
+	"blue pivot rest": "0.11",
+	"blue pivot inside": "0.36",
+	"blue pivot deploy": "0.34",
 
-	"claw open": "0.35",
-	"claw closed": "0.65",
-	"claw rest": "0.5",
+	"blue claw open": "0.3",
+	"blue claw closed": "0",
+	"blue claw rest": "0",
+
+	"red pivot open": "0.56",
+	"red pivot closed": "0.24",
+	"red pivot rest": "0.51",
+	"red pivot inside": "0.26",
+	"red pivot deploy": "0.29",
+
+	"red claw open": "0.35",
+	"red claw closed": "0.65",
+	"red claw rest": "0.6",
 
 	"elevator kp": "0.001",
 	"elevator ki": "0",
@@ -39,5 +48,11 @@
 	"left foundation sensor c": "0.404581",
 	"right foundation sensor a": "0.422507",
 	"right foundation sensor b": "-0.0545958",
-	"right foundation sensor c": "0.461312"
+	"right foundation sensor c": "0.461312",
+
+	"phone r y": "-90",
+	"phone r x": "90",
+	"webcam 1 r": "90",
+
+	"odometry clicks per inch": "210"
 }

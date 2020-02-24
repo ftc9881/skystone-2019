@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
@@ -30,7 +29,8 @@ public class BatMobile extends Robot {
     }
 
     public Intake intake;
-    public SideArm sideArm;
+    public SideArm redSideArm;
+    public SideArm blueSideArm;
     public DifferentialElevator elevator;
 
     public ToggleServo depositServo;
@@ -47,7 +47,8 @@ public class BatMobile extends Robot {
 
         HardwareMap hardwareMap = robot.getHardwareMap();
 
-        sideArm = new SideArm(hardwareMap);
+        redSideArm = new SideArm(AutoRunner.Side.RED, hardwareMap);
+        blueSideArm = new SideArm(AutoRunner.Side.BLUE, hardwareMap);
         elevator = new DifferentialElevator(hardwareMap);
         intake = new Intake(hardwareMap);
 
@@ -59,4 +60,12 @@ public class BatMobile extends Robot {
         frontSensor = new MaxSonarAnalogSensor(hardwareMap, "front sensor");
     }
 
+    public SideArm getSideArm() {
+        AutoRunner.Side side = AutoRunner.getSide();
+        return side == AutoRunner.Side.RED ? redSideArm : blueSideArm;
+    }
+    public SideArm getOtherSideArm() {
+        AutoRunner.Side side = AutoRunner.getSide();
+        return side == AutoRunner.Side.BLUE ? redSideArm : blueSideArm;
+    }
 }

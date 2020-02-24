@@ -21,7 +21,7 @@ public abstract class Action implements Runnable {
 
     protected abstract void onRun();
     protected abstract void insideRun() throws SomethingBadHappened;
-    protected abstract void onEndRun();
+    protected abstract void onEndRun() throws SomethingBadHappened;
     protected abstract boolean runIsComplete();
 
     public void start() {
@@ -68,7 +68,11 @@ public abstract class Action implements Runnable {
 
     private void internalStop() {
         running.set(false);
-        onEndRun();
+        try {
+            onEndRun();
+        } catch (SomethingBadHappened x) {
+            opMode.requestOpModeStop();
+        }
     }
 
     public boolean isRunning() {
@@ -95,7 +99,11 @@ public abstract class Action implements Runnable {
             }
         }
         condition.stop();
-        onEndRun();
+        try {
+            onEndRun();
+        } catch (SomethingBadHappened x) {
+            opMode.requestOpModeStop();
+        }
         AutoRunner.log(tag, "FINISH");
     }
 

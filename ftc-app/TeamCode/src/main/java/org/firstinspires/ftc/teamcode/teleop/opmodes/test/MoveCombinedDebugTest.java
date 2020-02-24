@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
@@ -99,7 +98,7 @@ public class MoveCombinedDebugTest extends BaseDrive {
         telemetry.addData("VuforiaPose", currentVuforiaPose);
         telemetry.addData("DrivePose", correctedDrivePose);
         telemetry.addData("==","==");
-        telemetry.addData("Odometry (clicks/vuf.in)", currentVuforiaPose.y != 0 ? odometryWheel.getPosition()/currentVuforiaPose.y : "?");
+        telemetry.addData("Odometry (clicks/vuf.in)", currentVuforiaPose.y != 0 ? odometryWheel.getClicks()/currentVuforiaPose.y : "?");
         telemetry.addData("Odometry(in)", odometryWheel.getInches());
         telemetry.addData("OdometrySetpoint", odometryInchesAtSetpoint);
         telemetry.addData("OdometryDirection", odometryWheel.getDirection());

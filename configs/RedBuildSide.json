@@ -1,78 +1,82 @@
 {
 	"properties": {
 		"angle unit": "deg",
-		"init vuforia": "false",
-		"turn error": "15",
-		"turn kp": "1",
-		"turn ki": "0.3",
-		"turn kd": "0.1",
+		"debug mode": "false",
 
-		"move kp": "1",
-		"move ki": "0.8",
-		"move kd": "0.2"
+		"move clicks error": "50",
+		"move angle kp": "3.6",
+		"move angle ki": "0.0",
+		"move angle kd": "0.1"
 	},
+
+	"init": [
+		{ 
+			"command": "PIVOTS INSIDE"
+		},
+		{ 
+			"command": "CLAW",
+			"state": "REST"
+		}
+	],
+
 	"commands": [
-		{
-			"command": "MOVE",
-			"power": "1.0",
-			"distance": "20",
-			"angle": "180",
-			"timeout": "3000"
+		{ 
+			"command": "PIVOTS DEPLOY"
 		},
 		{
-			"command": "MOVE",
-			"power": "0.3",
-			"distance": "10",
-			"angle": "180",
-			"timeout": "3000"
-		},
-		{
-			"command": "MOVE ARM",
-			"state": "up and out"
-		},
-		{
-			"command": "GRAB FOUNDATION"
+			"command": "ELEVATOR",
+			"lift power": "1"
 		},
 		{
 			"command": "SLEEP",
-			"time": "2000"
+			"time": "200"
+		},
+		{
+			"command": "ELEVATOR",
+			"lift power": "0.2"
 		},
 		{
 			"command": "MOVE",
-			"power": "1.0",
-			"distance": "35",
-			"angle": "35",
-			"timeout": "3000"
+			"use odometry": "true",
+			"target angle": "0",
+			"move angle": "0",
+			"inches": "8",
+			"timeout": "5000",
+			"power": "1.0"
 		},
 		{
-			"command": "TURN",
-			"power": "1.0",
-			"angle": "-90"
+			"command": "SLEEP",
+			"time": "350"
+		},
+		{
+			"command": "ELEVATOR",
+			"lift power": "-1.0"
+		},
+		{ 
+			"command": "CLAW",
+			"state": "REST"
+		},
+			"command": "SLEEP",
+			"time": "350"
+		},
+		{
+			"command": "ELEVATOR",
+			"lift power": "0"
+		},
+		{ 
+			"command": "PIVOTS INSIDE"
 		},
 		{
 			"command": "MOVE",
-			"power": "0.5",
-			"distance": "20",
-			"angle": "180",
-			"timeout": "3000"
+			"use odometry": "true",
+			"target angle": "0",
+			"move angle": "180",
+			"inches": "20",
+			"timeout": "5000",
+			"ramp down": "12",
+			"power": "1"
 		},
-		{
-			"command": "RELEASE FOUNDATION"
-		},
-		{
-			"command": "TURN",
-			"power": "1.0",
-			"angle": "-90"
-		},
-		{
-			"command": "MOVE",
-			"power": "0.5",
-			"distance": "55",
-			"angle": "-45",
-			"timeout": "3000"
-		},
-
-	{ "command": "STOP" },
 		{ "command": "STOP" }
 	]
 }
+

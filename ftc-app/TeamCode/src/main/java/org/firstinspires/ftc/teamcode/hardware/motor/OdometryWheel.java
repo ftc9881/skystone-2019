@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware.motor;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
@@ -18,12 +17,16 @@ public class OdometryWheel {
         clicksToInches = config.getDouble("odometry clicks per inch", 250);
     }
 
-    public int getPosition() {
+    public double getClicksToInches() {
+        return clicksToInches;
+    }
+
+    public int getClicks() {
         return motor.getCurrentPosition();
     }
 
     public double getInches() {
-        return getPosition() / clicksToInches;
+        return getClicks() / clicksToInches;
     }
 
     public DcMotor.Direction getDirection() {

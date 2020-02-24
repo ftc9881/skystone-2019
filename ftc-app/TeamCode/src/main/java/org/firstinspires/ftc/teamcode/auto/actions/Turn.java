@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.auto.actions;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
+import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.PIDController;
@@ -71,7 +72,10 @@ public class Turn extends Action {
     }
 
     @Override
-    protected void onEndRun() {
+    protected void onEndRun() throws SomethingBadHappened {
         robot.driveTrain.stop();
+        if (Math.abs(currentDegrees - turnAngle.getDegrees()) > 10) {
+            throw new SomethingBadHappened("IMU probably died");
+        }
     }
 }

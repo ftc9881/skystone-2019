@@ -49,8 +49,8 @@ public class MoveWithClicks extends Action {
 
         config = AutoOpConfiguration.getInstance();
         anglePidController = new PIDController(config.properties, "move angle", targetAngle.getRadians());
-        clicksError = config.properties.getInt("move clicks error", 100);
-        basePower = config.properties.getDouble("base power", 0.3);
+        clicksError = command.getInt("move clicks error", 100);
+        basePower = command.getDouble("base power", 0.3);
     }
 
     public MoveWithClicks(Command command, VisionSystem.SkystonePosition skystonePosition) {

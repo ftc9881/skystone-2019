@@ -39,17 +39,7 @@ public class ToggleServo {
 
     public void set(State state) {
         currentState = state;
-        switch (state) {
-            case OPEN:
-                servo.setPosition(openPosition);
-                break;
-            case CLOSED:
-                servo.setPosition(closedPosition);
-                break;
-            case REST:
-                servo.setPosition(restPosition);
-                break;
-        }
+        servo.setPosition(getPosition());
     }
 
     public void toggle() {
@@ -73,6 +63,19 @@ public class ToggleServo {
                 break;
         }
         return state;
+    }
+
+    public double getPosition() {
+        switch (currentState) {
+            case OPEN:
+                return openPosition;
+            case CLOSED:
+                return closedPosition;
+            case REST:
+                return restPosition;
+            default:
+                return 0;
+        }
     }
 
 }

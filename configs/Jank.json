@@ -27,15 +27,13 @@
 		{
 "comment": "Moves forwards",
 			"command": "MOVE",
-			"clicks": "500",
-			"move clicks error": "0",
-			"power": "1.0",
-			"-ramp up": "100",
-			"-ramp down": "400",
+			"power": "0.7",
+			"use odometry": "true",
+			"inches": "18",
+			"ramp down": "8",
 			"move angle": "0",
 			"target angle": "0",
-			"timeout": "10000"
-		},
-		{"command": "BREAKPOINT"}
+			"timeout": "5000"
+		}
 	]
 }

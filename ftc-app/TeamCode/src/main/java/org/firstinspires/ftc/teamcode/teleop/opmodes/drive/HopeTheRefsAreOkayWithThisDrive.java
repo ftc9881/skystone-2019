@@ -11,11 +11,12 @@ import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOUBLE_
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 
 @TeleOp(group="Drive")
-public class BatMobileDriveTest extends BaseDrive {
+public class HopeTheRefsAreOkayWithThisDrive extends BaseDrive {
 
     private BatMobile batMobile;
 
     private double deadZone;
+    private double liftPowerFactor;
     private double slowLiftPowerZone;
     private double extendPowerFactor;
     private double turtleDrivePowerFactor;
@@ -29,7 +30,7 @@ public class BatMobileDriveTest extends BaseDrive {
     private Button depositLeftButton = new Button();
     private Button depositRightButton = new Button();
 
-    private boolean wasInputtingFullDown = false;
+    private long timeAtFullDown = 0;
 
     enum LiftState {
         RUN_TO_POSITION,
@@ -38,6 +39,7 @@ public class BatMobileDriveTest extends BaseDrive {
         MANUAL
     }
     private LiftState state = LiftState.COAST;
+    private double defaultDrivePowerFactor;
 
     @Override
     protected void initialize() {
@@ -50,10 +52,13 @@ public class BatMobileDriveTest extends BaseDrive {
         extendPowerFactor = config.getDouble("extend power", 1.0);
         turtleDrivePowerFactor = config.getDouble("turtle drive power", 0.5);
         snailDrivePowerFactor = config.getDouble("snail drive power", 0.25);
+        defaultDrivePowerFactor = config.getDouble("default drive power", 0.75);
         slowLiftPowerZone = config.getDouble("slow lift zone", 0.7);
+        liftPowerFactor = config.getDouble("trigger lift power", 0.3);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
 
-        batMobile.sideArm.pivot.set(ToggleServo.State.CLOSED);
+        batMobile.redSideArm.setPivotToInsideRestingPosition();
+        batMobile.blueSideArm.setPivotToInsideRestingPosition();
     }
 
     @Override
@@ -75,7 +80,7 @@ public class BatMobileDriveTest extends BaseDrive {
         } else if (gamepad1.left_bumper) {
             drivePowerFactor = turtleDrivePowerFactor;
         } else {
-            drivePowerFactor = 1;
+            drivePowerFactor = defaultDrivePowerFactor;
         }
     }
 
@@ -94,18 +99,20 @@ public class BatMobileDriveTest extends BaseDrive {
         boolean isLifting = isInputting(liftPower);
         boolean isExtending = isInputting(getExtendInputPower());
         boolean isInputting = isLifting || isExtending;
-        boolean inputtingFullDown = (int)liftPower == -1;
+        boolean inputtingFullDown = liftPower < -0.97;
+        if (inputtingFullDown) {
+            timeAtFullDown = System.currentTimeMillis();
+        }
+        long msSinceFullDown = System.currentTimeMillis() - timeAtFullDown;
 
-        if (wasInputtingFullDown && !inputtingFullDown) {
+        if (isInputting) {
+            state = LiftState.MANUAL;
+        } else if (msSinceFullDown < 300 && !inputtingFullDown) {
             state = LiftState.COAST;
-        } else if (!isInputting && state != LiftState.HOLD && state != LiftState.COAST) {
+        } else if (state != LiftState.HOLD && state != LiftState.COAST) {
             state = LiftState.HOLD;
             batMobile.elevator.setRunToRelativePosition(0, 0);
-        } else if (isInputting) {
-            state = LiftState.MANUAL;
         }
-
-        wasInputtingFullDown = inputtingFullDown;
 
         switch (state) {
             case HOLD:
@@ -126,7 +133,7 @@ public class BatMobileDriveTest extends BaseDrive {
 
     private double getLiftInput() {
         double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0);
-        double liftPowerP2 = Math.sqrt(Math.abs(gamepad2.left_stick_y)) * (-gamepad2.left_stick_y > 0 ? 1 : -1);
+        double liftPowerP2 = -gamepad2.left_stick_y;
         return liftPowerP1 + liftPowerP2;
     }
 
@@ -147,7 +154,8 @@ public class BatMobileDriveTest extends BaseDrive {
 
     private void updateElevatorManual() {
 //        double powerFactor = isInputting(gamepad2.right_trigger) ? slowLiftPower : 1.0;
-        batMobile.elevator.setPowerLE(getLiftInputPower(), getExtendInputPower());
+        double powerFactor = isInputting(gamepad2.right_trigger) || isInputting(gamepad2.left_trigger) ? liftPowerFactor : 1.0;
+        batMobile.elevator.setPowerLE(getLiftInputPower(), getExtendInputPower(), powerFactor);
     }
 
     private boolean isInputting(double input) {
@@ -160,8 +168,10 @@ public class BatMobileDriveTest extends BaseDrive {
     }
 
     private void updateServos() {
-        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.REST, pivotButton, batMobile.sideArm.pivot);
-        updateToggle(clawButton, batMobile.sideArm.claw);
+        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.REST, pivotButton, batMobile.redSideArm.pivot);
+        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.REST, pivotButton, batMobile.blueSideArm.pivot);
+        updateToggle(ToggleServo.State.OPEN, ToggleServo.State.REST, clawButton, batMobile.redSideArm.claw);
+        updateToggle(ToggleServo.State.OPEN, ToggleServo.State.REST, clawButton, batMobile.blueSideArm.claw);
         updateCapstone();
         updateFoundationServos();
         updateDeposit();

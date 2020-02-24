@@ -26,7 +26,6 @@ public class OpenCVThroughVuforiaTest extends SnapshotTest {
     protected void initialize() {
         super.initialize();
 
-        Configuration config = new Configuration("OpenCVThroughVuforia");
         openCV = OpenCVThroughVuforia.createInstance(config, FRONT_WEBCAM);
         openCV.startLook(VisionSystem.TargetType.SKYSTONE);
 

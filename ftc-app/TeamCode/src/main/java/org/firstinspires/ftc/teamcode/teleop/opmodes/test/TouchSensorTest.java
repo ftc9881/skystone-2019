@@ -1,14 +1,16 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 
 @TeleOp(group="Test")
+@Disabled
 public class TouchSensorTest extends BaseDrive {
 
-    TouchSensor touchSensor;
+    private TouchSensor touchSensor;
 
     @Override
     protected void initialize() {

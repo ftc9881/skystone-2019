@@ -12,7 +12,7 @@ public class BlueStoneSideAutoOp extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        AutoRunner auto = new AutoRunner("BlueStoneSide", this);
+        AutoRunner auto = new AutoRunner(AutoRunner.Side.BLUE, "BlueStoneSide", this);
         waitForStart();
         auto.run();
     }

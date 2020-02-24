@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 @TeleOp(group="Test")
-//@Disabled
+@Disabled
 public class AutoAlignTest extends BaseDrive {
 
     private SharpSensorPair foundationSensorPair;

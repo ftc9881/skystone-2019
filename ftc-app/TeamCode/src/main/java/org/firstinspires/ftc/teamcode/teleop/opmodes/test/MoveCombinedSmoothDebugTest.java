@@ -49,9 +49,11 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
 
     private double xRejectThreshold;
     private MovingStatistics movingStatisticsX;
+    private double maxR;
 
     private int inchesUntilCorrectX;
     private int movingStatsSizeX;
+    private double stdDevsRangeX;
 
     private Pose drivePose = new Pose(0, 1, 0);
 
@@ -90,11 +92,16 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
         movingStatsSizeX = command.getInt("x moving stats size", 10);
         movingStatisticsX = new MovingStatistics(movingStatsSizeX);
         xRejectThreshold = command.getDouble("x reject threshold", 7.16);
+        stdDevsRangeX = command.getDouble("x std devs", 2);
 
         int movingAverageSizeY = command.getInt("y moving stats size", 3);
         movingAverageY = new MovingStatistics(movingAverageSizeY);
         yPredictor = new SimpleValuePredictor(command, "y");
 
+        maxR = command.getDouble("r max", 8);
+
+        yPredictor.add(initialInchesGuess);
+        yPredictor.add(initialInchesGuess);
     }
 
     @Override
@@ -128,9 +135,9 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
         telemetry.addData("PredictedY", yPredictor.getPredictedDouble());
         telemetry.addData("NearPrediction?", yPredictor.isNear(currentVuforiaPose.y));
         telemetry.addData("DeviationX", getDeltaRangeX());
-        telemetry.addData("WithinExpected?", xIsWithin(getDeltaRangeX()));
+        telemetry.addData("WithinExpected?", xIsWithinLast(getDeltaRangeX()));
         telemetry.addData("==","==");
-        telemetry.addData("Odometry (clicks/vuf.in)", currentVuforiaPose.y != 0 ? odometryWheel.getPosition()/currentVuforiaPose.y : "?");
+        telemetry.addData("Odometry (clicks/vuf.in)", currentVuforiaPose.y != 0 ? odometryWheel.getClicks()/currentVuforiaPose.y : "?");
         telemetry.addData("Odometry(in)", odometryWheel.getInches());
         telemetry.addData("OdometrySetpoint", odometryInchesAtSetpoint);
         telemetry.addData("OdometryDirection", odometryWheel.getDirection());
@@ -145,23 +152,23 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
 
 
     private double getBestGuessX() {
-        if (xIsWithin(getDeltaRangeX())) {
+        if (xIsWithinLast(getDeltaRangeX()) && Math.abs(currentVuforiaPose.r) < 6) {
             return currentVuforiaPose.x;
         }
         return targetX;
     }
 
-    private boolean xIsWithin(double deltaRange) {
+    private boolean xIsWithinLast(double deltaRange) {
         return (Math.abs(lastGuessPose.x - currentVuforiaPose.x) < deltaRange && !currentVuforiaPose.isAllZero());
     }
 
     private double getDeltaRangeX() {
-//        if (!newVuforiaPose.isAllZero() && xIsWithin(xRejectThreshold)) {
-        if (!newVuforiaPose.isAllZero() && xIsWithin(xRejectThreshold)) {
+        boolean xIsWithinTarget = (Math.abs(targetX - currentVuforiaPose.x) < xRejectThreshold && !currentVuforiaPose.isAllZero());
+        if (!newVuforiaPose.isAllZero() && xIsWithinTarget) {
             movingStatisticsX.add(currentVuforiaPose.x);
         }
         if (movingStatisticsX.getCount() >= movingStatsSizeX) {
-            return movingStatisticsX.getStandardDeviation() * 2;
+            return movingStatisticsX.getStandardDeviation() * stdDevsRangeX;
         }
         return xRejectThreshold;
     }
@@ -190,6 +197,7 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
     @Override
     protected void onStop() {
         super.onStop();
+        AutoRunner.log("END ODOM INCHES", odometryWheel.getInches());
         vuforia.stopLook();
     }
 

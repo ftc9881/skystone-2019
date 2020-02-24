@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOUBLE_TAP;
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
-import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.HELD;
 
 @TeleOp(group="Drive")
 public class BatMobileDriveVanilla extends BaseDrive {
@@ -53,7 +52,7 @@ public class BatMobileDriveVanilla extends BaseDrive {
         slowLiftPowerFactor = config.getDouble("slow lift power", 0.3);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
 
-        batMobile.sideArm.pivot.set(ToggleServo.State.CLOSED);
+        batMobile.redSideArm.pivot.set(ToggleServo.State.CLOSED);
     }
 
     @Override
@@ -128,8 +127,8 @@ public class BatMobileDriveVanilla extends BaseDrive {
     }
 
     private void updateServos() {
-        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.REST, pivotButton, batMobile.sideArm.pivot);
-        updateToggle(clawButton, batMobile.sideArm.claw);
+        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.REST, pivotButton, batMobile.redSideArm.pivot);
+        updateToggle(clawButton, batMobile.redSideArm.claw);
         updateCapstone();
         updateDeposit();
         updateFoundationServos();

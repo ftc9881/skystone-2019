@@ -12,6 +12,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryGenerator;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.robot.Robot;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous
-//@Disabled
+@Disabled
 public class RoadrunnerTestAutoOp extends LinearOpMode {
 
     @Override

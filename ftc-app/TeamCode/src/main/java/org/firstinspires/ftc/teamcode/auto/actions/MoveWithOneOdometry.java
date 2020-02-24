@@ -26,7 +26,7 @@ public class MoveWithOneOdometry extends Action {
     private Pose drivePose;
     private Pose correctedDrivePose;
     private boolean useTargetAngle;
-    private double travelledInches;
+    private double travelledInches = 0;
     private double initialInches;
 
     private int decelerateDistance;
@@ -115,6 +115,8 @@ public class MoveWithOneOdometry extends Action {
     @Override
     protected void onEndRun() {
         robot.driveTrain.stop();
+
+        AutoRunner.log("TravelledInchesEND", travelledInches);
     }
 
 }

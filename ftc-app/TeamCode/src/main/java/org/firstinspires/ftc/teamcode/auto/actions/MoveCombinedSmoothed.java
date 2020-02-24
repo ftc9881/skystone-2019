@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
+import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.GeneralMath.Conditional;
 import org.firstinspires.ftc.teamcode.math.PIDController;
@@ -48,6 +49,13 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
 
     private int inchesUntilCorrectX;
     private int movingStatsSizeX;
+    private double stdDevsRangeX;
+
+    private double minDrivePower;
+
+    private MovingStatistics odometryReadings;
+
+    private double expectedWindowR;
 
     public MoveCombinedSmoothed(Command command) {
         super(command);
@@ -65,6 +73,8 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
         inchesUntilCorrectX = command.getInt("inches until correct x", 40);
         initialInchesGuess = command.getInt("initial inches guess", 80);
 
+        minDrivePower = command.getDouble("min power", 0.06);
+
         closeX = command.getDouble("x close threshold", 2);
         conditionalX = Conditional.CLOSE;
 
@@ -80,10 +90,17 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
         movingStatsSizeX = command.getInt("x moving stats size", 10);
         movingStatisticsX = new MovingStatistics(movingStatsSizeX);
         xRejectThreshold = command.getDouble("x reject threshold", 7.16);
+        stdDevsRangeX = command.getDouble("x std devs", 2);
 
         int movingAverageSizeY = command.getInt("y moving stats size", 3);
         movingAverageY = new MovingStatistics(movingAverageSizeY);
         yPredictor = new SimpleValuePredictor(command, "y");
+
+        expectedWindowR = command.getDouble("r window", 10);
+
+        int odometryStuckDetectSize = command.getInt("odom stuck detect size", 4);
+        odometryReadings = new MovingStatistics(odometryStuckDetectSize);
+
     }
 
     public MoveCombinedSmoothed(Command command, VisionSystem.SkystonePosition skystonePosition) {
@@ -95,12 +112,18 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
     @Override
     protected void onRun() {
         super.onRun();
+
+        AutoRunner.log("START ODOM INCHES", odometryWheel.getInches());
+
         AutoRunner.log("TargetY", targetY);
     }
 
     @Override
     protected boolean runIsComplete() {
-        return conditionalY.evaluate(bestGuessPose.y, targetY, closeY) && conditionalX.evaluate(bestGuessPose.x, targetX, closeX);
+        boolean odometryWheelStuck = odometryReadings.getCount() > 0 && Math.abs(odometryReadings.getMean() - odometryWheel.getClicks()) < 1;
+        boolean yIsClose = Math.abs(correctedDrivePose.y) < minDrivePower || conditionalY.evaluate(bestGuessPose.y, targetY, closeY);
+        boolean xIsClose = conditionalX.evaluate(bestGuessPose.x, targetX, closeX);
+        return (yIsClose && xIsClose) || odometryWheelStuck;
     }
 
     @Override
@@ -109,10 +132,11 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
         currentVuforiaPose = vuforia.getPose();
         newVuforiaPose = currentVuforiaPose.sameAs(lastVuforiaPose) ? new Pose() : currentVuforiaPose;
         lastVuforiaPose = currentVuforiaPose;
+        odometryReadings.add(odometryWheel.getClicks());
 
         bestGuessPose.x = getBestGuessX();
         bestGuessPose.y = getBestGuessYSmooth();
-        bestGuessPose.r = robot.imu.getHeading().getRadians();
+        bestGuessPose.r = getBestGuessR();
 
         yPredictor.add(bestGuessPose.y);
 
@@ -124,34 +148,40 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
 
         robot.driveTrain.drive(correctedDrivePose, powerFactor);
 
-        AutoRunner.log("BestGuessPose", bestGuessPose);
+        AutoRunner.log("GuessPose--", bestGuessPose);
         AutoRunner.log("VuforiaPose", currentVuforiaPose);
-        AutoRunner.log("DrivePose", correctedDrivePose);
+        AutoRunner.log("DrivePose--", correctedDrivePose);
+    }
+
+
+    private boolean vuforiaRIsReasonable() {
+        return Math.abs(currentVuforiaPose.r) < expectedWindowR;
     }
 
     private double getBestGuessX() {
-        if (xIsWithin(getDeltaRangeX())) {
+        if (xIsWithinLast(getDeltaRangeX()) && vuforiaRIsReasonable()) {
             return currentVuforiaPose.x;
         }
         return targetX;
     }
 
-    private boolean xIsWithin(double deltaRange) {
-        return (Math.abs(targetX - currentVuforiaPose.x) < deltaRange && !currentVuforiaPose.isAllZero());
+    private boolean xIsWithinLast(double deltaRange) {
+        return (Math.abs(lastGuessPose.x - currentVuforiaPose.x) < deltaRange && !currentVuforiaPose.isAllZero());
     }
 
     private double getDeltaRangeX() {
-        if (!newVuforiaPose.isAllZero() && xIsWithin(xRejectThreshold)) {
+        boolean xIsWithinTarget = (Math.abs(targetX - currentVuforiaPose.x) < xRejectThreshold && !currentVuforiaPose.isAllZero());
+        if (!newVuforiaPose.isAllZero() && xIsWithinTarget) {
             movingStatisticsX.add(currentVuforiaPose.x);
         }
         if (movingStatisticsX.getCount() >= movingStatsSizeX) {
-            return movingStatisticsX.getStandardDeviation() * 2;
+            return movingStatisticsX.getStandardDeviation() * stdDevsRangeX;
         }
         return xRejectThreshold;
     }
 
     private double getBestGuessY() {
-        if (!newVuforiaPose.isAllZero() && (yPredictor.isNear(newVuforiaPose.y) || cantMakePredictionYet())) {
+        if (!newVuforiaPose.isAllZero() && vuforiaRIsReasonable() && (yPredictor.isNear(currentVuforiaPose.y) || cantMakePredictionYet())) {
             odometryInchesAtSetpoint = odometryWheel.getInches();
             vuforiaYAtSetpoint = newVuforiaPose.y;
             return newVuforiaPose.y;
@@ -171,11 +201,23 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
         return !yPredictor.canMakePrediction();
     }
 
-
+    private double getBestGuessR() {
+        Angle heading = robot.imu.getHeading();
+        if (Math.abs(heading.getDegrees() - targetAngle.getDegrees()) < expectedWindowR) {
+            return heading.getRadians();
+        }
+        return targetAngle.getRadians();
+    }
 
     @Override
     protected void onEndRun() {
         robot.driveTrain.stop();
+
+        AutoRunner.log("END ODOM INCHES", odometryWheel.getInches());
+
+        AutoRunner.log("GuessPose--", "==========");
+        AutoRunner.log("VuforiaPose", "==========");
+        AutoRunner.log("DrivePose--", "==========");
     }
 
 }

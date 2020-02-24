@@ -9,7 +9,7 @@ public class SimpleValuePredictor {
     private LinkedList<Double> values = new LinkedList<>();
     private LinkedList<Long> times = new LinkedList<>();
     private double maxDelta = 0.0;
-    private double additionalDeltaPerSecond = 0.0;
+    private double additionalDeltaPerMs = 0.0;
 
     public SimpleValuePredictor(int size) {
         this.size = Math.max(2, size);
@@ -18,7 +18,7 @@ public class SimpleValuePredictor {
     public SimpleValuePredictor(Command config, String key) {
         this.size = config.getInt(key + " predictor size", 2);
         this.maxDelta = config.getDouble(key + " predictor near delta", 0.0);
-        this.additionalDeltaPerSecond = config.getDouble(key + " predictor delta per second", 0.0);
+        this.additionalDeltaPerMs = config.getDouble(key + " predictor delta per second", 0.0) / 1000.0;
     }
 
     public void add(Double d) {
@@ -36,9 +36,9 @@ public class SimpleValuePredictor {
 
     public boolean isNear(double actual) {
         if (canMakePrediction()) {
-            double deltaThreshold = maxDelta + additionalDeltaPerSecond * getElapsedTimeSinceFirst();
+            double deltaThreshold = maxDelta + additionalDeltaPerMs * getElapsedTimeSinceFirst();
             double predicted = getPredictedDouble();
-            return ( actual > predicted - deltaThreshold ) && ( actual < predicted + deltaThreshold );
+            return Math.abs(actual - predicted) < deltaThreshold;
         }
         return false;
     }

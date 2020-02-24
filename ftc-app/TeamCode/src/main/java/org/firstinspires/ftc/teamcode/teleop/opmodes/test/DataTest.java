@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -8,13 +7,10 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.auto.vision.Vuforia;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
-import org.firstinspires.ftc.teamcode.hardware.sensor.IDistanceSensor;
 import org.firstinspires.ftc.teamcode.hardware.sensor.MaxSonarAnalogSensor;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
-import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
-import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp(group="Test")
 //@Disabled
@@ -42,7 +38,7 @@ public class DataTest extends SnapshotTest {
 
     @Override
     void onClick() {
-        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", frontSensor.getDistance(), vuforia.getPose().y, odometryY.getPosition(), robot.driveTrain.getAverageClicks(), robot.driveTrain.lf.getCurrentPosition(), robot.driveTrain.rf.getCurrentPosition(), robot.driveTrain.lb.getCurrentPosition(), robot.driveTrain.rb.getCurrentPosition()));
+        AutoRunner.log("EncoderTestData", String.format("\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", frontSensor.getDistance(), vuforia.getPose().y, odometryY.getClicks(), robot.driveTrain.getAverageClicks(), robot.driveTrain.lf.getCurrentPosition(), robot.driveTrain.rf.getCurrentPosition(), robot.driveTrain.lb.getCurrentPosition(), robot.driveTrain.rb.getCurrentPosition()));
     }
 
     @Override
@@ -53,9 +49,9 @@ public class DataTest extends SnapshotTest {
         telemetry.addData("sensor (in)", frontSensor.getDistance());
         telemetry.addData("sensor voltage", frontSensor.getDistance());
 
-        telemetry.addData("odometry y (clicks)", odometryY.getPosition());
+        telemetry.addData("odometry y (clicks)", odometryY.getClicks());
         telemetry.addData("odometry y (in)", odometryY.getInches());
-        telemetry.addData("odometry y (clicks/vuf.in)", pose.y != 0 ? odometryY.getPosition()/pose.y : "?");
+        telemetry.addData("odometry y (clicks/vuf.in)", pose.y != 0 ? odometryY.getClicks()/pose.y : "?");
 
         telemetry.addData("X (in)", GeneralMath.round(pose.x, 3));
         telemetry.addData("Y (in)", GeneralMath.round(pose.y, 3));

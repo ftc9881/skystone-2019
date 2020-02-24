@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
+import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp(group="Test")
@@ -29,6 +31,7 @@ public class ServoTest extends TeleOpBase {
     @Override
     protected void initialize() {
         robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Configuration config = new Configuration("HardwareConstants");
         servoName = config.getString("debug servo", "NONE");
         if (!servoName.equals("NONE")) {
             servo = hardwareMap.servo.get(servoName);
