@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.teleop.utility;
 
+
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
@@ -107,6 +110,14 @@ public class Command {
         pose.y = getDouble(key + " y", 0);
         pose.r = getDouble(key + " r", 0);
         return pose;
+    }
+
+    public PIDCoefficients getKPID(String key) {
+        PIDCoefficients kpid = new PIDCoefficients();
+        kpid.p = getDouble(key + " kp", 0);
+        kpid.i = getDouble(key + " ki", 0);
+        kpid.d = getDouble(key + " kd", 0);
+        return kpid;
     }
 
 

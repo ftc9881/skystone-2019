@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.math;
 
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
 public class PIDController {
@@ -9,13 +11,14 @@ public class PIDController {
     private double kP, kI, kD, targetValue;
     private double previousOutput;
 
-    public PIDController (double kP, double kI, double kD, double targetValue) {
-        this.kP = kP;
-        this.kI = kI;
-        this.kD = kD;
+    public PIDController (PIDCoefficients kPID, double targetValue) {
+        this.kP = kPID.p;
+        this.kI = kPID.i;
+        this.kD = kPID.d;
         this.targetValue = targetValue;
         this.currentTime = getTimeSeconds();
     }
+
 
     public PIDController (Command config, double targetValue) {
         this.kP = config.getDouble("kp", 0);

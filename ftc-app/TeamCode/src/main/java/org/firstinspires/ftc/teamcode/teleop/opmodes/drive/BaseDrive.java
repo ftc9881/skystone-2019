@@ -12,14 +12,11 @@ import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 @Disabled
 public class BaseDrive extends TeleOpBase {
 
-    protected double drivePowerFactor;
-    private Pose drivePose;
+    protected double drivePowerFactor = 1.0;
+    protected Pose drivePose = new Pose();
 
     @Override
-    protected void initialize() {
-        drivePose = new Pose(0, 0, 0);
-        drivePowerFactor = 1.0;
-    }
+    protected void initialize() { }
 
     @Override
     protected void update() {
@@ -28,7 +25,6 @@ public class BaseDrive extends TeleOpBase {
 
     protected void updateDrive() {
         // up on the gamepad stick is negative
-        if (drivePose == null) drivePose = new Pose(0, 0, 0);
         drivePose.x = Math.pow(gamepad1.left_stick_x, 3);
         drivePose.y = -Math.pow(gamepad1.left_stick_y, 3);
         drivePose.r = Math.pow(gamepad1.right_stick_x, 3);

@@ -5,13 +5,16 @@ import com.qualcomm.hardware.lynx.LynxEmbeddedIMU;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +26,16 @@ public class OptimizedIMU {
     public OptimizedIMU(HardwareMap hardwareMap, LinearOpMode opMode) {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
+//        parameters.loggingEnabled = true;
+//        parameters.loggingTag = "IMU";
 
         delegates = new ArrayList<>();
         List<LynxModule> modules = hardwareMap.getAll(LynxModule.class);
-        for (LynxModule module : modules) {
+        for (int i = 0; i < modules.size(); i++) {
+            LynxModule module = modules.get(i);
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
             BNO055IMU imu = new LynxEmbeddedIMU(OptimizedI2cDevice.createLynxI2cDeviceSynch(module, 0));
+//            parameters.calibrationDataFile = "BNO055IMUCalibration" + i + ".json";
             imu.initialize(parameters);
             delegates.add(imu);
         }
@@ -54,6 +59,19 @@ public class OptimizedIMU {
     public Angle getIntegratedHeading() {
         // Reverse because we want positive to be right
         return new Angle(-headingIntegrator.getDegrees(), AngleUnit.DEGREES);
+    }
+
+    public void calibrate() {
+        for (int i = 0; i < delegates.size(); i++) {
+            BNO055IMU imu = delegates.get(i);
+            if (imu.isGyroCalibrated()) {
+                BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
+                String filename = "BNO055IMUCalibration" + i + ".json";
+                File file = AppUtil.getInstance().getSettingsFile(filename);
+                ReadWriteFile.writeFile(file, calibrationData.serialize());
+                AutoRunner.log("OptimizedIMU:CalibrationFile" + i, filename);
+            }
+        }
     }
 
     class HeadingIntegrator extends Action {
