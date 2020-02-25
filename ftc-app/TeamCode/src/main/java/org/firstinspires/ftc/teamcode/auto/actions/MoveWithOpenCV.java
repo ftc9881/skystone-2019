@@ -60,7 +60,7 @@ public class MoveWithOpenCV extends MoveWithClicks {
         Angle actualHeading = robot.imu.getHeading();
         vumarkPose = openCV.getPose();
 
-        correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
+        correctedDrivePose.r = rPid.getCorrectedOutput(actualHeading.getRadians());
         if (shouldUseVumark()) {
             correctedDrivePose.x += vumarkXPID.getCorrectedOutput(vumarkPose.x);
             correctedDrivePose.y = GeneralMath.clipPower(-vumarkYPID.getCorrectedOutput(vumarkPose.y), basePower);
