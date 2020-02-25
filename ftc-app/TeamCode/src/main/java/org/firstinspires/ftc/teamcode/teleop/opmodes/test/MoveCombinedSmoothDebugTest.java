@@ -124,7 +124,7 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
             correctedDrivePose.x += pidX.getCorrectedOutput(bestGuessPose.x);
         }
         correctedDrivePose.y = GeneralMath.clipPower(-pidY.getCorrectedOutput(bestGuessPose.y));
-//        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
+//        correctedDrivePose.r = rPid.getCorrectedOutput(bestGuessPose.r);
 
 //        robot.driveTrain.drive(correctedDrivePose);
 

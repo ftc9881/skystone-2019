@@ -94,7 +94,7 @@ public class MoveWithVuforia extends MoveWithClicks {
         lastPose = pose;
         pose = vuforia.getPose();
 
-        correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
+        correctedDrivePose.r = rPid.getCorrectedOutput(actualHeading.getRadians());
         if (vuforiaFoundSomething()) {
             if (vuforiaIsReasonable()) {
                 if (getTrackingClicks() > clicksUntilCorrectX) {

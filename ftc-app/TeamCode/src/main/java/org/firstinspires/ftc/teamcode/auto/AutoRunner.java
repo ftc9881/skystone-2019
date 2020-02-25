@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.actions.MoveCombinedSmoothed;
+import org.firstinspires.ftc.teamcode.auto.actions.MoveWithVuforiaAndOdometry;
 import org.firstinspires.ftc.teamcode.auto.actions.MoveWithClicks;
 import org.firstinspires.ftc.teamcode.auto.actions.MoveDebug;
 import org.firstinspires.ftc.teamcode.auto.actions.MoveWithOneOdometry;
@@ -167,7 +167,7 @@ public class AutoRunner {
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
 
                 Action moveNoVuforia = useOdometry ? new MoveWithOneOdometry(command, getSkystonePosition()) : new MoveWithClicks(command, getSkystonePosition());
-                Action move = useVuforia ? new MoveCombinedSmoothed(command, getSkystonePosition()) : moveNoVuforia;
+                Action move = useVuforia ? new MoveWithVuforiaAndOdometry(command, getSkystonePosition()) : moveNoVuforia;
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition);
 

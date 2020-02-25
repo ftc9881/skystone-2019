@@ -15,7 +15,8 @@ import org.firstinspires.ftc.teamcode.math.SimpleValuePredictor;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
-public class MoveCombinedSmoothed extends MoveWithClicks {
+@Deprecated
+public class MoveWithVuforiaAndOdometry extends MoveWithClicks {
 
     private Vuforia vuforia;
 
@@ -57,7 +58,7 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
 
     private double expectedWindowR;
 
-    public MoveCombinedSmoothed(Command command) {
+    public MoveWithVuforiaAndOdometry(Command command) {
         super(command);
         tag = "MoveCombinedSmooth";
 
@@ -103,7 +104,7 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
 
     }
 
-    public MoveCombinedSmoothed(Command command, VisionSystem.SkystonePosition skystonePosition) {
+    public MoveWithVuforiaAndOdometry(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
         targetY = command.getDouble("target y " + skystonePosition.key, targetY);
         pidY = new PIDController(command, "y", targetY);
@@ -144,7 +145,7 @@ public class MoveCombinedSmoothed extends MoveWithClicks {
             correctedDrivePose.x += pidX.getCorrectedOutput(bestGuessPose.x);
         }
         correctedDrivePose.y = GeneralMath.clipPower(-pidY.getCorrectedOutput(bestGuessPose.y), basePower);
-        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
+        correctedDrivePose.r = rPid.getCorrectedOutput(bestGuessPose.r);
 
         robot.driveTrain.drive(correctedDrivePose, powerFactor);
 

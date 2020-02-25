@@ -18,7 +18,7 @@ import java.util.List;
 
 public class MoveWithClicks extends Action {
 
-    protected PIDController anglePidController;
+    protected PIDController rPid;
 
     protected Robot robot;
     protected AutoOpConfiguration config;
@@ -48,7 +48,7 @@ public class MoveWithClicks extends Action {
         useTargetAngle = command.getBoolean("use target angle", true);
 
         config = AutoOpConfiguration.getInstance();
-        anglePidController = new PIDController(config.properties, "move angle", targetAngle.getRadians());
+        rPid = new PIDController(config.properties, "move angle", targetAngle.getRadians());
         clicksError = command.getInt("move clicks error", 100);
         basePower = command.getDouble("base power", 0.3);
     }
@@ -91,7 +91,7 @@ public class MoveWithClicks extends Action {
 
         Angle actualHeading = robot.imu.getHeading();
         if (useTargetAngle) {
-            correctedDrivePose.r = anglePidController.getCorrectedOutput(actualHeading.getRadians());
+            correctedDrivePose.r = rPid.getCorrectedOutput(actualHeading.getRadians());
         }
 
         double rampFactor = calculateRampFactor();

@@ -84,7 +84,7 @@ public class MoveCombinedDebugTest extends BaseDrive {
         lastVuforiaPose = currentVuforiaPose;
 
         bestGuessPose.r = robot.imu.getHeading().getRadians();
-//        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
+//        correctedDrivePose.r = rPid.getCorrectedOutput(bestGuessPose.r);
         bestGuessPose.y = getBestGuessY();
         correctedDrivePose.y = -pidY.getCorrectedOutput(bestGuessPose.y);
         bestGuessPose.x = getBestGuessX();
