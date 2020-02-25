@@ -88,4 +88,8 @@ public class GeneralMath {
         return a >= (b - range) && a <= (b + range);
     }
 
+    public static int roundNearestMultiple(double value, int multiple) {
+        return (int) (multiple * (Math.round(value/multiple)));
+    }
+
 }

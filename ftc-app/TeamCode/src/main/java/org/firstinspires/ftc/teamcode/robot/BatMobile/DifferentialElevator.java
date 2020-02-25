@@ -1,16 +1,12 @@
 package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
-import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotorEx;
-import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
@@ -39,15 +35,8 @@ public class DifferentialElevator {
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        pidConfig = new Configuration("HardwareConstants");
+        pidConfig = new Configuration("TeleOp");
         minPower = pidConfig.getDouble("elevator min power", 0.25);
-//        AutoRunner.log("elevatorDefaultVelocityPidf", left.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-//
-//        left.setVelocityPIDFCoefficients(pidConfig, "elevator");
-//        right.setVelocityPIDFCoefficients(pidConfig, "elevator");
-//
-//        AutoRunner.log("elevatorOurVelocityPidf", left.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-
     }
 
     public void setPidConfig(Command pidConfig) {
@@ -61,37 +50,25 @@ public class DifferentialElevator {
 
     public void setRunToRelativePosition(int liftClicks, int extendClicks) {
         int leftClicks = left.getCurrentPosition() + extendClicks + liftClicks;
-        int rightClicks = right.getCurrentPosition() + extendClicks - liftClicks;
+//        int rightClicks = right.getCurrentPosition() + extendClicks - liftClicks;
         AutoRunner.log("LeftTargetPosition", leftClicks);
-        AutoRunner.log("RightTargetPosition", rightClicks);
+//        AutoRunner.log("RightTargetPosition", rightClicks);
         leftRunToPositionAction = new RunToPosition(left, leftClicks);
-        rightRunToPositionAction = new RunToPosition(right, rightClicks);
-    }
-
-    public void startRunToRelativePosition() {
-        if (leftRunToPositionAction != null) {
-            leftRunToPositionAction.start();
-        }
-        if (rightRunToPositionAction!= null) {
-            rightRunToPositionAction.start();
-        }
-    }
-
-    public void stopRunToRelativePosition() {
-        if (leftRunToPositionAction != null) {
-            leftRunToPositionAction.stop();
-        }
-        if (rightRunToPositionAction!= null) {
-            rightRunToPositionAction.stop();
-        }
+//        rightRunToPositionAction = new RunToPosition(right, rightClicks);
     }
 
     public void updateRunToRelativePosition() {
+//        if (leftRunToPositionAction != null) {
+//            leftRunToPositionAction.insideRun();
+//        }
+//        if (rightRunToPositionAction != null) {
+//            double power = rightRunToPositionAction.getCorrectedPower();
+//            setPowerLR(power, power);
+//        }
         if (leftRunToPositionAction != null) {
-            leftRunToPositionAction.insideRun();
-        }
-        if (rightRunToPositionAction!= null) {
-            rightRunToPositionAction.insideRun();
+            double power = leftRunToPositionAction.getCorrectedPower();
+            setPowerLR(power, power);
+            AutoRunner.log("LiftPIDPower", power);
         }
     }
 
@@ -161,9 +138,12 @@ public class DifferentialElevator {
 
         @Override
         protected void insideRun() {
+            motor.setPower(getCorrectedPower());
+        }
+
+        public double getCorrectedPower() {
             int currentPosition = motor.getCurrentPosition();
-            double correctedPower = Range.clip(pid.getCorrectedOutput(currentPosition), minPower, 1);
-            motor.setPower(correctedPower);
+            return Range.clip(pid.getCorrectedOutput(currentPosition), minPower, 1);
         }
 
         @Override

@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.hardware.imu.OptimizedIMU;
-
-import java.util.List;
 
 public class Robot {
 
@@ -40,10 +37,10 @@ public class Robot {
     protected Robot(LinearOpMode opMode) {
         this.opMode = opMode;
         driveTrain = new DriveTrain(getHardwareMap());
-        initialize();
+        initializeOpMode();
     }
 
-    private void initialize() {
+    private void initializeOpMode() {
         opMode.msStuckDetectInit = 3000;
         opMode.msStuckDetectInitLoop = 3000;
     }
@@ -54,6 +51,10 @@ public class Robot {
 
     public void initializeIMU() {
         imu = new OptimizedIMU(opMode.hardwareMap, opMode);
+    }
+
+    public boolean imuIsInitialized() {
+        return imu != null;
     }
 
 }
