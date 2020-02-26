@@ -8,15 +8,17 @@
 
 	"lb drive power": "0.3",
 	"rb drive power": "1.0",
-	"default drive power": "0.7",
+	"default drive power": "0.73",
 
-	"angle kp": "0.08",
+	"outtake power": "0.3",
+	"outtake time": "350",
+
+	"angle kp": "0.015",
 	"angle ki": "0",
 	"angle kd": "0.0001",
 
-	"outtake power": "0.25",
-	"trigger lift power": "0.5",
 
+	"trigger lift power": "0.5",
 	"slow lift power": "0.02",
 
 	"clicks per level": "100",

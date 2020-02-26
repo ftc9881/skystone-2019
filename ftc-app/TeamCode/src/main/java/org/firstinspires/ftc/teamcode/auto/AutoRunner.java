@@ -6,10 +6,8 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.actions.MoveWithVuforiaAndOdometry;
-import org.firstinspires.ftc.teamcode.auto.actions.MoveWithClicks;
+import org.firstinspires.ftc.teamcode.auto.actions.MoveWithSensorAndOdometry;
 import org.firstinspires.ftc.teamcode.auto.actions.MoveDebug;
-import org.firstinspires.ftc.teamcode.auto.actions.MoveWithOneOdometry;
 import org.firstinspires.ftc.teamcode.auto.actions.Turn;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
@@ -162,12 +160,9 @@ public class AutoRunner {
 
             case "MOVE": {
                 boolean deployArm = command.getBoolean("deploy arm", false);
-                boolean useVuforia = command.getBoolean("use vuforia", false);
-                boolean useOdometry = command.getBoolean("use odometry", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
 
-                Action moveNoVuforia = useOdometry ? new MoveWithOneOdometry(command, getSkystonePosition()) : new MoveWithClicks(command, getSkystonePosition());
-                Action move = useVuforia ? new MoveWithVuforiaAndOdometry(command, getSkystonePosition()) : moveNoVuforia;
+                Action move = new MoveWithSensorAndOdometry(command, getSkystonePosition());
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition);
 
@@ -193,6 +188,17 @@ public class AutoRunner {
                 }
 
                 move.runSynchronized(conditions);
+                break;
+            }
+
+            case "RESET CLICKS": {
+                batMobile.odometryY.resetEncoder();
+                break;
+            }
+
+            case "LOG": {
+                logAndTelemetry("Odometry:Clicks", batMobile.odometryY.getClicks());
+                logAndTelemetry("Odometry:Inches", batMobile.odometryY.getInches());
                 break;
             }
 

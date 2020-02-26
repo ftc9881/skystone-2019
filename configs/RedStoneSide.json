@@ -32,16 +32,19 @@
 	],
 
 	"commands": [
+
 		{
-"comment": "Moves forwards",
+	"comment": "Moves forwards",
 			"command": "MOVE",
 			"power": "1.0",
-			"use odometry": "true",
-			"inches": "7.4",
 			"move angle": "0",
-			"target angle": "0",
+			"target y": "7",
+			"y kp": "1",
+			"y stop when": "greater",
+			"target r": "0",
 			"timeout": "5000"
 		},
+
 		{
 "comment": "turn so side arm faces stones",
 			"command": "TURN",
@@ -52,48 +55,45 @@
 			"kp": "0.02",
 			"ki": "0",
 			"kd": "0.001",
-			"timeout": "1000"
+			"timeout": "2000"
 		},
+
+
+		{ "command": "BREAKPOINT" },
 
 		{
 "comment": "first skystone (near wall)",
 			"command": "MOVE",
-			"target angle": "-90",
+			"power": "1.0",
+			"base power": "0.05",
+
 			"deploy arm": "true",
 				"track odometry": "true",
 				"pivot state": "open",
 				"pivot deploy inches": "1",
 				"claw state": "open",
 				"claw deploy inches": "1",
-			"use vuforia": "true",
-				"inches until correct x": "40",
-				"initial inches guess": "36",
-				"target y stone l": "2.6",
-				"target y stone c": "10.5",
-				"target y stone r": "18",
-				"y kp": "0.025",
-				"y ki": "0.0001",
-				"y kd": "0.001",
-				"y stop when": "close",
-				"y close threshold": "0.3",
-				"target x": "-4.3",
-				"x kp": "0.06",
-				"x ki": "0",
-				"x kd": "0.001",
-				"x close threshold": "2",
 
-				"x std devs": "1.4",
-				"x moving stats size": "20",
-				"x reject threshold": "7.16",
-				"y moving stats size": "2",
-				"y predictor size": "3",
-				"y predictor near delta": "10",
-				"y predictor delta per second": "5",
-
-			"base power": "0.08",
-			"timeout": "3000",
-			"power": "1.0"
+			"move angle": "0",
+			"target x": "0",
+			"x kp": "0.0",
+			"x ki": "0",
+			"x kd": "0.000",
+			"target y stone l": "2.6",
+			"target y stone c": "10.5",
+			"target y stone r": "18",
+			"y kp": "1",
+			"y ki": "0",
+			"y kd": "0",
+			"y stop when": "greater",
+			"target r": "-90",
+			"r kp": "0.05",
+			"r ki": "0",
+			"r kd": "0.002",
+			"timeout": "5000"
 		},
+
+		{ "command": "BREAKPOINT" },
 
 		{ 
 			"command": "CLAW",
@@ -112,23 +112,40 @@
 			"max wait": "800"
 		},
 
+		{ "command": "LOG" },
+
+
+
 		{
 "comment": "first to foundation",
 			"command": "MOVE",
-			"use odometry": "true",
+			"power": "1.0",
+			"base power": "0.05",
+
 			"deploy arm": "true",
 				"track odometry": "true",
 				"pivot state": "open",
 				"pivot deploy inches": "90",
-			"power": "1.0",
-			"inches stone l": "100",
-			"inches stone c": "83",
-			"inches stone r": "79",
-			"ramp down": "20",
+
 			"move angle": "-177",
-			"target angle": "-90",
+			"target x": "0",
+			"x kp": "0.0",
+			"x ki": "0",
+			"x kd": "0.000",
+			"target y stone l": "2.6",
+			"target y stone c": "10.5",
+			"target y stone r": "18",
+			"y kp": "1",
+			"y ki": "0",
+			"y kd": "0",
+			"y stop when": "greater",
+			"target r": "-90",
+			"r kp": "0.05",
+			"r ki": "0",
+			"r kd": "0.002",
 			"timeout": "5000"
 		},
+
 		{
 			"command": "CLAW",
 			"state": "open"
@@ -147,10 +164,10 @@
 		},
 		{ 
 			"command": "PIVOT WAIT",
-			"touch": "true",
-			"max wait": "1200",
-			"--max wait": "800"
+			"touch": "true"
 		},
+
+		{ "command": "BREAKPOINT" },
 
 		{
 "comment": "second skystone",
@@ -349,7 +366,7 @@
 
 
 
-		{ "command": "SKIP BREAKPOINT" },
+		{ "command": "BREAKPOINT" },
 
 		{
 "comment": "drag foundation towards wall",

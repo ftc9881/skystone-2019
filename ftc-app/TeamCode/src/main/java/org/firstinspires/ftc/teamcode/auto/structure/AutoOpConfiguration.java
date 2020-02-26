@@ -7,7 +7,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static android.os.SystemClock.sleep;
 
 /**
  * Instantiating Configuration will read a file and return a list of commands and properties.
@@ -32,20 +35,32 @@ public class AutoOpConfiguration {
     public ArrayList<Command> commands;
     public ArrayList<Command> initCommands;
     public Command properties;
+    private String fileName;
 
     private AutoOpConfiguration(String fileName) {
+        this.fileName = fileName;
 
+        tryReadFromFile();
+
+    }
+
+    private void tryReadFromFile() {
         try {
-            String fileContents = Configuration.readFile(fileName);
-            JSONObject config = new JSONObject(fileContents);
-
-            commands = getCommandList(config, "commands");
-            initCommands = getCommandList(config, "init");
-            properties = new Command("PROPERTIES", config.getJSONObject("properties"));
-
-        } catch (Exception ex) {
-            throw new RuntimeException("Configuration", ex);
+            readFromFile();
+        } catch (IOException | JSONException ex) {
+//            throw new RuntimeException("Configuration", ex);
+            sleep(500);
+            tryReadFromFile();
         }
+    }
+
+    private void readFromFile() throws IOException, JSONException {
+        String fileContents = Configuration.readFile(fileName);
+        JSONObject config = new JSONObject(fileContents);
+
+        commands = getCommandList(config, "commands");
+        initCommands = getCommandList(config, "init");
+        properties = new Command("PROPERTIES", config.getJSONObject("properties"));
     }
 
     private ArrayList<Command> getCommandList(JSONObject config, String name) throws JSONException {

@@ -6,17 +6,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotor;
+import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotorEx;
 
 public class Intake {
 
-    public CachingMotor left;
-    public CachingMotor right;
+    public CachingMotorEx left;
+    public CachingMotorEx right;
 
     public Intake(HardwareMap hardwareMap) {
         AutoRunner.log("Create Intake");
 
-        left = new CachingMotor(hardwareMap, "left intake");
-        right = new CachingMotor(hardwareMap, "right intake");
+        left = new CachingMotorEx(hardwareMap, "left intake");
+        right = new CachingMotorEx(hardwareMap, "right intake");
         left.setDirection(DcMotor.Direction.FORWARD);
         right.setDirection(DcMotor.Direction.FORWARD);
         left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

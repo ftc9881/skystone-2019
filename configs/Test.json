@@ -1,13 +1,10 @@
 {
 	"properties": {
-		"debug mode": "false",
+		"debug mode": "true",
 		"angle unit": "deg",
 
 		"move clicks error": "50",
 		"move base power": "0.05",
-		"move angle kp": "3.2",
-		"move angle ki": "0.0",
-		"move angle kd": "0.1",
 
 		"crop x": "120",
 		"crop y": "140",
@@ -30,169 +27,55 @@
 
 	"commands": [
 
-
 		{
-"comment": "strafe towards foundation",
+	"comment": "Move forwards",
 			"command": "MOVE",
-			"deploy arm": "true",
-				"pivot state": "rest",
-				"pivot deploy clicks": "550",
-				"claw state": "open",
-				"claw deploy clicks": "550",
-			"target angle": "0",
-			"move angle": "90",
-			"power": "1",
-			"base power": "0.3",
-			"clicks": "600",
-			"ramp down": "500",
-			"timeout": "3000"
-		},
-
-		{ "command": "BREAKPOINT" },
-
-		{
-			"command": "CLAW",
-			"state": "REST"
-		},
-
-		{
-"comment": "drag foundation towards wall",
-			"command": "MOVE",
-			"target angle": "0",
-			"move angle": "-90",
 			"power": "1.0",
-"TODO":"good distance",
-			"clicks": "2800",
+			"base power": "0.00",
+			"move angle": "0",
+			"target x": "0",
+			"x kp": "0.0",
+			"x ki": "0",
+			"x kd": "0.000",
+			"target y": "60",
+			"y kp": "0.032",
+			"y ki": "0",
+			"y kd": "0.002",
+			"y close threshold": "0.1",
+			"target r": "0",
+			"r kp": "0.05",
+			"r ki": "0",
+			"r kd": "0.002",
 			"timeout": "10000"
 		},
 
+		{ "command": "LOG" },
 
-		{ "command": "BREAKPOINT" },
-		
 		{
-"comment": "Moves forwards with foundation",
+	"comment": "Move back",
 			"command": "MOVE",
 			"power": "1.0",
-			"use odometry": "true",
-			"inches": "8",
+			"base power": "0",
 			"move angle": "0",
-			"target angle": "0",
-			"timeout": "5000"
+			"target x": "0",
+			"x kp": "0.0",
+			"x ki": "0",
+			"x kd": "0.000",
+			"target y": "0",
+			"y kp": "0.032",
+			"y ki": "0",
+			"y kd": "0.002",
+			"y close threshold": "0.1",
+			"target r": "0",
+			"r kp": "0.05",
+			"r ki": "0",
+			"r kd": "0.002",
+			"timeout": "10000"
 		},
 
-		{
-"comment": "turn so foundation in build site",
-			"command": "TURN",
-			"power": "1.0",
-			"kp": "0.03",
-			"ki": "0",
-			"kd": "0.001",
-			"angle": "90",
-			"error": "0.4",
-			"base power": "0.2",
-			"timeout": "3000"
-		},
-		{
-			"command": "PIVOT",
-			"state": "closed"
-		},
-		{
-			"command": "PIVOT WAIT",
-			"touch": "true",
-			"min wait": "200",
-			"max wait": "600"
-		},
+		{ "command": "LOG" },
 
 
-		{ "command": "BREAKPOINT" },
-
-		{
-"comment": "turn so facing bridge",
-			"command": "TURN",
-			"power": "1.0",
-			"kp": "0.02",
-			"ki": "0",
-			"kd": "0.001",
-			"angle": "0",
-			"error": "0.4",
-			"base power": "0.2",
-			"timeout": "3000"
-		},
-
-		{ "command": "STOP" },
-
-
-
-
-
-
-
-
-
-		{ 
-			"command": "PIVOT",
-			"state": "closed"
-		},
-		{ 
-			"command": "PIVOT WAIT",
-			"touch": "true",
-			"min wait": "200"
-		},
-
-		{ "command": "STOP" },
-
-
-		{
-"comment": "first skystone (near wall)",
-			"command": "MOVE",
-			"target angle": "0",
-			"deploy arm": "true",
-				"pivot state": "open",
-				"pivot deploy clicks": "200",
-				"claw state": "open",
-				"claw deploy clicks": "100",
-			"use vuforia": "true",
-				"inches until correct x": "40",
-				"initial inches guess": "30",
-				"target y stone l": "2.4",
-				"target y stone c": "10",
-				"target y stone r": "18",
-				"y kp": "0.03",
-				"y ki": "0.0",
-				"y kd": "0.005",
-				"y stop when": "close",
-				"y close threshold": "0.3",
-				"target x": "3",
-				"x kp": "0.08",
-				"x ki": "0",
-				"x kd": "0.001",
-				"x close threshold": "2",
-
-				"x std devs": "2",
-				"x moving stats size": "10",
-				"x reject threshold": "7.16",
-				"y predictor size": "2",
-				"y predictor near delta": "3",
-				"y predictor delta per second": "5",
-
-			"base power": "0.08",
-			"timeout": "5000",
-			"power": "1.0"
-		},
-
-		{ "command": "STOP" },
-
-
-		{
-	"comment": "Moves forwards",
-			"command": "MOVE DEBUG",
-			"power": "1.0",
-			"clicks": "3000",
-			"move angle": "0",
-			"target angle": "0",
-			"timeout": "5000"
-		}
-
-		
+		{ "command": "STOP" }
 	]
 }

@@ -39,6 +39,8 @@ public class BatMobile extends Robot {
 
     public OdometryWheel odometryY;
     public IDistanceSensor frontSensor;
+    public IDistanceSensor leftSensor;
+    public IDistanceSensor rightSensor;
 
     private BatMobile(Robot robot) {
         this.opMode = robot.opMode;
@@ -58,6 +60,9 @@ public class BatMobile extends Robot {
 
         odometryY = new OdometryWheel(intake.right);
         frontSensor = new MaxSonarAnalogSensor(hardwareMap, "front sensor");
+        // TODO: Sensors
+//        leftSensor = new MaxSonarAnalogSensor(hardwareMap, "left sensor");
+//        rightSensor = new MaxSonarAnalogSensor(hardwareMap, "right sensor");
     }
 
     public SideArm getSideArm() {
@@ -67,5 +72,9 @@ public class BatMobile extends Robot {
     public SideArm getOtherSideArm() {
         AutoRunner.Side side = AutoRunner.getSide();
         return side == AutoRunner.Side.BLUE ? redSideArm : blueSideArm;
+    }
+
+    public IDistanceSensor getSideSensor() {
+        return AutoRunner.getSide() == AutoRunner.Side.RED ? rightSensor : leftSensor;
     }
 }
