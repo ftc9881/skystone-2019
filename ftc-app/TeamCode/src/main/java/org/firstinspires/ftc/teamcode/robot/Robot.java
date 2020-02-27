@@ -2,9 +2,12 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.hardware.imu.OptimizedIMU;
+
+import java.util.List;
 
 public class Robot {
 
@@ -55,6 +58,15 @@ public class Robot {
 
     public boolean imuIsInitialized() {
         return imu != null;
+    }
+
+    public double getBatteryVoltage() {
+        List<VoltageSensor> voltageSensors = getHardwareMap().getAll(VoltageSensor.class);
+        double voltage = 0;
+        for (VoltageSensor sensor : voltageSensors) {
+            voltage = Math.max(sensor.getVoltage(), voltage);
+        }
+        return voltage;
     }
 
 }

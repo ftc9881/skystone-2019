@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
@@ -78,10 +79,16 @@ public class BatMobileDrive extends BaseDrive {
         batMobile = BatMobile.createInstance();
 
         deadZone = config.getDouble("dead zone", 0.1);
+
         lbDrivePower = config.getDouble("lb drive power", 0.5);
         rbDrivePower = config.getDouble("rb drive power", 0.25);
         liftIsUpDrivePower = config.getDouble("lift up drive power", Math.min(lbDrivePower, rbDrivePower));
-        defaultDrivePower = config.getDouble("default drive power", 0.25);
+
+        double m = config.getDouble("m battery drive power", 0.05);
+        double b = config.getDouble("b battery drive power", 1.4);
+        double batteryBasedDrivePower = -m * robot.getBatteryVoltage() + b;
+        defaultDrivePower = config.getDouble("default drive power", batteryBasedDrivePower);
+
         slowLiftPowerFactor = config.getDouble("slow lift power", 0.3);
         slowLiftPowerZone = config.getDouble("slow lift zone", 0.7);
         outtakePowerFactor = config.getDouble("outtake power", 1.0);
