@@ -6,10 +6,10 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 public class OdometryWheel {
 
-    private DcMotor motor;
+    private CachingMotorEx motor;
     private double clicksToInches;
 
-    public OdometryWheel(DcMotor motor) {
+    public OdometryWheel(CachingMotorEx motor) {
         this.motor = motor;
         motor.setDirection(DcMotor.Direction.FORWARD);
         resetEncoder();
@@ -33,7 +33,7 @@ public class OdometryWheel {
         return motor.getDirection();
     }
 
-    public DcMotor getMotor() {
+    public CachingMotorEx getMotor() {
         return motor;
     }
 

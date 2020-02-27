@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.MovingStatistics;
 
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
 @TeleOp(group="Test")
-//@Disabled
+@Disabled
 public class MoveCombinedSmoothDebugTest extends BaseDrive {
 
 
@@ -124,7 +125,7 @@ public class MoveCombinedSmoothDebugTest extends BaseDrive {
             correctedDrivePose.x += pidX.getCorrectedOutput(bestGuessPose.x);
         }
         correctedDrivePose.y = GeneralMath.clipPower(-pidY.getCorrectedOutput(bestGuessPose.y));
-//        correctedDrivePose.r = anglePidController.getCorrectedOutput(bestGuessPose.r);
+//        correctedDrivePose.r = rPid.getCorrectedOutput(bestGuessPose.r);
 
 //        robot.driveTrain.drive(correctedDrivePose);
 

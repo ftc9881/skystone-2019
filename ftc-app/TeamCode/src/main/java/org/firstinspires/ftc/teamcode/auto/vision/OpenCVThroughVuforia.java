@@ -33,7 +33,7 @@ public class OpenCVThroughVuforia extends OpenCV {
     }
 
     private OpenCVThroughVuforia(Command config, CameraType cameraType) {
-        this.config = config;
+        super(config, cameraType);
         vuforia = Vuforia.createInstance(cameraType);
     }
 

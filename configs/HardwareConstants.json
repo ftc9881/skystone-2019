@@ -1,12 +1,12 @@
 {
 
-	"debug servo": "red pivot",
+	"debug servo": "left foundation",
 
-	"left foundation open": "1.0",
-	"left foundation closed": "0.54",
+	"left foundation open": "0.93",
+	"left foundation closed": "0.45",
 
-	"right foundation open": "0.46",
-	"right foundation closed": "0.93",
+	"right foundation open": "0.31",
+	"right foundation closed": "0.8",
 
 	"deposit open": "0.67",
 	"deposit closed": "0.25",
@@ -15,7 +15,7 @@
 	"blue pivot open": "0.04",
 	"blue pivot closed": "0.37",
 	"blue pivot rest": "0.11",
-	"blue pivot inside": "0.36",
+	"blue pivot inside": "0.37",
 	"blue pivot deploy": "0.34",
 
 	"blue claw open": "0.3",
@@ -25,7 +25,7 @@
 	"red pivot open": "0.56",
 	"red pivot closed": "0.24",
 	"red pivot rest": "0.51",
-	"red pivot inside": "0.26",
+	"red pivot inside": "0.24",
 	"red pivot deploy": "0.29",
 
 	"red claw open": "0.35",

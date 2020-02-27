@@ -34,8 +34,7 @@ public abstract class Action implements Runnable {
     public synchronized void run() {
         onRun();
 
-        while (opModeIsActive() && isRunning() && !runIsComplete()) {
-
+        do {
             try {
                 insideRun();
             } catch (SomethingBadHappened x) {
@@ -49,8 +48,7 @@ public abstract class Action implements Runnable {
                 AutoRunner.log(tag, "Action thread was interrupted");
                 break;
             }
-
-        }
+        } while (opModeIsActive() && isRunning() && !runIsComplete());
 
         internalStop();
 //        notify();

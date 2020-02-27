@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -16,7 +17,7 @@ import org.opencv.core.Rect;
 import static org.firstinspires.ftc.teamcode.auto.vision.VisionSystem.CameraType.FRONT_WEBCAM;
 
 @TeleOp(group="Test")
-//@Disabled
+@Disabled
 public class OpenCVThroughVuforiaTest extends SnapshotTest {
 
     Vuforia vuforia;

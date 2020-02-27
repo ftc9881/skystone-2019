@@ -6,17 +6,14 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.auto.actions.MoveCombinedSmoothed;
-import org.firstinspires.ftc.teamcode.auto.actions.MoveWithClicks;
-import org.firstinspires.ftc.teamcode.auto.actions.MoveDebug;
-import org.firstinspires.ftc.teamcode.auto.actions.MoveWithOneOdometry;
+import org.firstinspires.ftc.teamcode.auto.actions.MoveWithSensorAndOdometry;
 import org.firstinspires.ftc.teamcode.auto.actions.Turn;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
-import org.firstinspires.ftc.teamcode.auto.vision.OpenCVThroughVuforia;
+import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
@@ -51,6 +48,7 @@ public class AutoRunner {
     }
 
     private static Side side = Side.RED;
+    private static VisionSystem.SkystonePosition skystonePosition = VisionSystem.SkystonePosition.NONE;
 
     private static final String TAG_PREFIX = "TeamCode@";
     private static final String TAG = "AutoRunner";
@@ -154,20 +152,17 @@ public class AutoRunner {
             }
 
             case "IDENTIFY SKYSTONE": {
-                OpenCVThroughVuforia vision = OpenCVThroughVuforia.createInstance(config.properties, VisionSystem.CameraType.FRONT_WEBCAM);
+                OpenCV vision = new OpenCV(config.properties, VisionSystem.CameraType.FRONT_WEBCAM);
                 vision.startLook(VisionSystem.TargetType.SKYSTONE);
-                vision.startIdentifyingSkystonePosition();
+                vision.startIdentifyingSkystonePosition(opMode);
                 break;
             }
 
             case "MOVE": {
                 boolean deployArm = command.getBoolean("deploy arm", false);
-                boolean useVuforia = command.getBoolean("use vuforia", false);
-                boolean useOdometry = command.getBoolean("use odometry", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
 
-                Action moveNoVuforia = useOdometry ? new MoveWithOneOdometry(command, getSkystonePosition()) : new MoveWithClicks(command, getSkystonePosition());
-                Action move = useVuforia ? new MoveCombinedSmoothed(command, getSkystonePosition()) : moveNoVuforia;
+                Action move = new MoveWithSensorAndOdometry(command, skystonePosition);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition);
 
@@ -196,9 +191,14 @@ public class AutoRunner {
                 break;
             }
 
-            case "MOVE DEBUG": {
-                Action move = new MoveDebug(command);
-                runActionWithTimeout(move, command);
+            case "RESET CLICKS": {
+                batMobile.odometryY.resetEncoder();
+                break;
+            }
+
+            case "LOG": {
+                logAndTelemetry("Odometry:Clicks", batMobile.odometryY.getClicks());
+                logAndTelemetry("Odometry:Inches", batMobile.odometryY.getInches());
                 break;
             }
 
@@ -220,15 +220,14 @@ public class AutoRunner {
                 int maxWait = command.getInt("max wait", 1000);
                 sleep(minWait);
                 long start = System.currentTimeMillis();
-                AutoRunner.log("before:Feedback?", batMobile.getSideArm().feedbackIsPressed());
+
                 while (batMobile.getSideArm().feedbackIsPressed() != feedbackState && System.currentTimeMillis() - start < maxWait) {
                     sleep(20);
                 }
-                AutoRunner.log("after:Feedback?", batMobile.getSideArm().feedbackIsPressed());
-                if (feedbackState) {
-                    // after touching, set so servo not stalling
-                    batMobile.getSideArm().setPivotToInsideRestingPosition();
-                }
+//                if (feedbackState) {
+//                    // after touching, set so servo not stalling
+//                    batMobile.getSideArm().setPivotToInsideRestingPosition();
+//                }
                 break;
             }
 
@@ -280,12 +279,6 @@ public class AutoRunner {
         }
     }
 
-    private VisionSystem.SkystonePosition getSkystonePosition() {
-        OpenCVThroughVuforia vision = OpenCVThroughVuforia.getInstance();
-        VisionSystem.SkystonePosition position = vision != null ? vision.getSkystonePosition() : VisionSystem.SkystonePosition.NONE;
-        return position;
-    }
-
     private void runActionWithTimeout(Action action, Command command) {
         double timeoutMs = command.getDouble("timeout", 5 * 1000);
         IEndCondition timeoutCondition = new Timeout(timeoutMs);
@@ -326,8 +319,13 @@ public class AutoRunner {
         opMode.telemetry.addData(TAG_PREFIX + tag, message);
         opMode.telemetry.update();
     }
+
     public void logAndTelemetry(Object message) {
         logAndTelemetry("Somewhere", message);
+    }
+
+    public static void setSkystonePosition(VisionSystem.SkystonePosition position) {
+        AutoRunner.skystonePosition = position;
     }
 
 

@@ -10,9 +10,10 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.auto.endconditions.IWatchableDistance;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
-public class CachingMotorEx implements DcMotorEx {
+public class CachingMotorEx implements DcMotorEx, IWatchableDistance {
     private DcMotorEx delegate;
     private double cachedPower;
     private double cachedVelocity;
@@ -29,6 +30,11 @@ public class CachingMotorEx implements DcMotorEx {
         if (getMode() != mode) {
             setMode(mode);
         }
+    }
+
+    @Override
+    public double getDistance() {
+        return getCurrentPosition();
     }
 
     @Override

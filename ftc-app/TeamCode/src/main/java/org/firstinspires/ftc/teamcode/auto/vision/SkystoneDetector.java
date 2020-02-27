@@ -4,7 +4,6 @@ import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
 import com.disnodeteam.dogecv.filters.GrayscaleFilter;
 import com.disnodeteam.dogecv.filters.LeviColorFilter;
 
-import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.opencv.core.Core;
@@ -58,12 +57,9 @@ public class SkystoneDetector extends OpenCVDetector {
         Rect yellowBoundingRect = chooseBestYellow(listOfYellowBlobs);
 
         List<MatOfPoint> contoursBlack = findContours(blackFilter, blackMask);
-        AutoRunner.log("ContoursBlackSize", contoursBlack.size());
         List<Rect> rectsBlack = contoursToRects(contoursBlack);
-        AutoRunner.log("NumRectsBlack", rectsBlack.size());
         List<Rect> rectsBlackInYellow = filterByBound(rectsBlack, yellowBoundingRect);
         List<List<Rect>> listOfBlackBlobs = groupIntoBlobs(rectsBlackInYellow, blackBlobbingThreshold);
-        AutoRunner.log("listOfBlackBlobs", listOfBlackBlobs.size());
         Rect bestSkystoneRect = chooseBestBlack(listOfBlackBlobs);
 
         draw(contoursYellow, new Scalar(255, 150, 0));
@@ -146,7 +142,6 @@ public class SkystoneDetector extends OpenCVDetector {
            draw(blobBound, new Scalar(0, 150, 0));
 //           if (blobBound.y > bestBlackRect.y && blobBound.area() > minimumArea) {
            if (blobBound.area() > bestBlackRect.area()) {
-               AutoRunner.log("chose best black rect");
                bestBlackRect = blobBound;
            }
        }

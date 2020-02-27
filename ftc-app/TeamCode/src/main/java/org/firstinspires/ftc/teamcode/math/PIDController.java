@@ -58,14 +58,18 @@ public class PIDController {
 
         return previousOutput;
     }
-    public void reset()
-    {
+
+    public void reset() {
         currentTime = getTimeSeconds();
         previousError = currentTime;
         deltaTime = 0;
         previousError = currentError;
         deltaTime = derivative = 0;
         integral = 0;
+    }
+
+    public double getTargetValue() {
+        return targetValue;
     }
 
     private double getTimeSeconds() {

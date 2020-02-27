@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.auto.actions;
 
-import com.qualcomm.robotcore.util.Range;
-
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
+import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
@@ -14,13 +13,13 @@ import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 
+@Deprecated
 public class MoveWithOneOdometry extends Action {
 
     private PIDController anglePidController;
 
     private Robot robot;
     private OdometryWheel odometryWheel;
-    private double basePower;
     private Angle moveAngle;
     private double powerFactor;
     private Pose drivePose;
@@ -28,10 +27,12 @@ public class MoveWithOneOdometry extends Action {
     private boolean useTargetAngle;
     private double travelledInches = 0;
     private double initialInches;
+    private double basePower;
 
-    private int decelerateDistance;
-    private int accelerateDistance;
-    private double targetDistance;
+    private PIDController pidY;
+    private GeneralMath.Conditional conditionalY;
+    private double targetY;
+    private double closeY;
 
     public MoveWithOneOdometry(Command command) {
         tag = "MoveWithOneOdometry";
@@ -39,22 +40,27 @@ public class MoveWithOneOdometry extends Action {
         odometryWheel = BatMobile.getInstance().odometryY;
         initialInches = odometryWheel.getInches();
 
-        moveAngle = command.getAngle("move angle", 0);
-        targetDistance = command.getDouble("inches", 5.0);
-        powerFactor = command.getDouble("power", 0.5);
-        accelerateDistance = command.getInt("ramp up", 0);
-        decelerateDistance = command.getInt("ramp down", 0);
-        useTargetAngle = command.getBoolean("use target angle", true);
         basePower = command.getDouble("base power", 0.3);
+        moveAngle = command.getAngle("move angle", 0);
+        targetY = command.getDouble("inches", 5.0);
+        powerFactor = command.getDouble("power", 0.5);
+        useTargetAngle = command.getBoolean("use target angle", true);
 
         Angle targetAngle = command.getAngle("target angle", 0);
         AutoOpConfiguration config = AutoOpConfiguration.getInstance();
         anglePidController = new PIDController(config.properties, "move angle", targetAngle.getRadians());
+
+        closeY = command.getDouble("y close threshold", 1);
+        String conditionalString = command.getString("y stop when", "close");
+        conditionalY = GeneralMath.Conditional.convertString(conditionalString);
+        targetY = command.getDouble("target y", 0);
+        pidY = new PIDController(command, "y", targetY);
     }
 
     public MoveWithOneOdometry(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
-        targetDistance = command.getDouble("inches " + skystonePosition.key, targetDistance);
+        targetY = command.getDouble("inches " + skystonePosition.key, targetY);
+        pidY = new PIDController(command, "y", targetY);
     }
 
     @Override
@@ -64,53 +70,37 @@ public class MoveWithOneOdometry extends Action {
         drivePose.y = Math.cos(moveAngle.getRadians());
         correctedDrivePose = new Pose(drivePose);
 
-        AutoRunner.log("TargetDistance", targetDistance);
+        AutoRunner.log("TargetDistance", targetY);
         AutoRunner.log("DrivePowerX", drivePose.x);
         AutoRunner.log("DrivePowerY", drivePose.y);
     }
 
     @Override
     protected boolean runIsComplete() {
-        return reachedTargetClicks();
-    }
-
-    protected boolean reachedTargetClicks() {
-        return Math.abs(travelledInches) >= targetDistance;
+        return conditionalY.evaluate(travelledInches, targetY, closeY);
     }
 
     @Override
     protected void insideRun() {
         correctedDrivePose = new Pose(drivePose);
-        travelledInches = odometryWheel.getInches() - initialInches;
+        travelledInches = Math.abs(odometryWheel.getInches() - initialInches);
 
         Angle heading = robot.imu.getHeading();
         if (useTargetAngle) {
             correctedDrivePose.r = anglePidController.getCorrectedOutput(heading.getRadians());
         }
 
-        double rampFactor = calculateRampFactor();
-        correctedDrivePose.x *= rampFactor;
-        correctedDrivePose.y *= rampFactor;
+        correctedDrivePose.y = GeneralMath.clipPower(-pidY.getCorrectedOutput(travelledInches), basePower);
 
         robot.driveTrain.drive(correctedDrivePose, powerFactor);
 
         AutoRunner.log("DriveX", correctedDrivePose.x);
         AutoRunner.log("DriveY", correctedDrivePose.y);
         AutoRunner.log("DriveR", correctedDrivePose.r);
-        AutoRunner.log("Ramp", rampFactor);
         AutoRunner.log("Heading", heading.getDegrees());
         AutoRunner.log("TravelledInches", travelledInches);
     }
 
-    protected double calculateRampFactor() {
-        double rampValue = 1.0;
-        if (decelerateDistance > 0 && travelledInches > (targetDistance - decelerateDistance)) {
-            rampValue = 1.0 - (travelledInches - (targetDistance - decelerateDistance)) / (double) decelerateDistance;
-        } else if (accelerateDistance > 0 && travelledInches < accelerateDistance) {
-            rampValue = Math.max(Math.sqrt(travelledInches /(double) accelerateDistance), 0.1);
-        }
-        return Range.clip(rampValue, basePower, 1.0);
-    }
 
     @Override
     protected void onEndRun() {

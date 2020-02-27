@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.auto.vision;
 import android.content.Context;
 import android.os.Environment;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -47,10 +48,6 @@ public class OpenCV implements VisionSystem {
 
     public Pose getPose() {
         return detector.getPose();
-    }
-
-    protected OpenCV() {
-
     }
 
     public OpenCV(Command config, CameraType cameraType) {
@@ -112,8 +109,8 @@ public class OpenCV implements VisionSystem {
         openCvCamera.startStreaming(CAMERA_RECT.width, CAMERA_RECT.height, OpenCvCameraRotation.UPRIGHT);
     }
 
-    public void startIdentifyingSkystonePosition() {
-        positionDeterminer = new SkystonePositionIdentifierAction();
+    public void startIdentifyingSkystonePosition(LinearOpMode opMode) {
+        positionDeterminer = new SkystonePositionIdentifierAction(opMode);
         positionDeterminer.start();
     }
 
@@ -155,6 +152,10 @@ public class OpenCV implements VisionSystem {
         int listSize;
         int centerX;
         List<Number> foundPositions;
+
+        public SkystonePositionIdentifierAction(LinearOpMode opMode) {
+            this.opMode = opMode;
+        }
 
         public SkystonePosition getPosition() {
             return position;
@@ -200,6 +201,7 @@ public class OpenCV implements VisionSystem {
         @Override
         protected void onEndRun() {
             writeCurrentImage();
+            AutoRunner.setSkystonePosition(position);
         }
 
     }

@@ -11,11 +11,10 @@ import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import org.opencv.core.Rect;
 
 @TeleOp(group="Test")
-@Disabled
+//@Disabled
 public class OpenCVSkystoneTest extends SnapshotTest {
 
-    OpenCV openCV;
-    Button shutterButton = new Button();
+    private OpenCV openCV;
 
     @Override
     protected void initialize() {

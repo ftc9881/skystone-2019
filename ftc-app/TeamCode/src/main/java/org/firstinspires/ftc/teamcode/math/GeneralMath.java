@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.math;
 
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 
@@ -86,6 +87,10 @@ public class GeneralMath {
 
     public static boolean isWithin(double a, double range, double b) {
         return a >= (b - range) && a <= (b + range);
+    }
+
+    public static int roundNearestMultiple(double value, int multiple) {
+        return (int) (multiple * (Math.round(value/multiple)));
     }
 
 }

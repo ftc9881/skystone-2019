@@ -16,6 +16,9 @@
 		{ 
 			"command": "CLAW",
 			"state": "REST"
+		},
+		{ 
+			"command": "RESET CLICKS"
 		}
 	],
 
@@ -37,10 +40,11 @@
 		},
 		{
 			"command": "MOVE",
-			"use odometry": "true",
 			"target angle": "0",
 			"move angle": "0",
-			"inches": "8",
+			"target y": "8",
+			"y kp": "1",
+			"y stop when": "greater",
 			"timeout": "5000",
 			"power": "1.0"
 		},
@@ -48,7 +52,9 @@
 			"command": "MOVE",
 			"use odometry": "true",
 			"target angle": "0",
-			"move angle": "180",
+			"target y": "4",
+			"y kp": "1",
+			"y stop when": "greater",
 			"inches": "4",
 			"timeout": "5000",
 			"power": "1"

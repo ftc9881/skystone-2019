@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.robot;
 
-import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.hardware.imu.OptimizedIMU;
@@ -40,10 +40,10 @@ public class Robot {
     protected Robot(LinearOpMode opMode) {
         this.opMode = opMode;
         driveTrain = new DriveTrain(getHardwareMap());
-        initialize();
+        initializeOpMode();
     }
 
-    private void initialize() {
+    private void initializeOpMode() {
         opMode.msStuckDetectInit = 3000;
         opMode.msStuckDetectInitLoop = 3000;
     }
@@ -54,6 +54,19 @@ public class Robot {
 
     public void initializeIMU() {
         imu = new OptimizedIMU(opMode.hardwareMap, opMode);
+    }
+
+    public boolean imuIsInitialized() {
+        return imu != null;
+    }
+
+    public double getBatteryVoltage() {
+        List<VoltageSensor> voltageSensors = getHardwareMap().getAll(VoltageSensor.class);
+        double voltage = 0;
+        for (VoltageSensor sensor : voltageSensors) {
+            voltage = Math.max(sensor.getVoltage(), voltage);
+        }
+        return voltage;
     }
 
 }

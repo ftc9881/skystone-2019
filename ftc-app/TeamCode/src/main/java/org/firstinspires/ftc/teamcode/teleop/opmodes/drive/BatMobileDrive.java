@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.teamcode.auto.structure.Action;
+import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
+import org.firstinspires.ftc.teamcode.math.GeneralMath;
+import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 
@@ -13,50 +18,97 @@ import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 @TeleOp(group="Drive")
 public class BatMobileDrive extends BaseDrive {
 
+    enum LiftState {
+        RUN_TO_POSITION,
+        HOLD,
+        COAST,
+        MANUAL,
+        MANUAL_EXTENDING
+    }
+    private LiftState state = LiftState.COAST;
+
     private BatMobile batMobile;
 
     private double deadZone;
-    private double liftPowerFactor;
     private double slowLiftPowerZone;
-    private double extendPowerFactor;
-    private double turtleDrivePowerFactor;
-    private double snailDrivePowerFactor;
+    private double slowLiftPowerFactor;
+    private double lbDrivePower;
+    private double rbDrivePower;
+    private double liftIsUpDrivePower;
+    private double defaultDrivePower;
     private double outtakePowerFactor;
+    private int outtakeMs;
 
     private Button pivotButton = new Button();
     private Button clawButton = new Button();
     private Button foundationButton = new Button();
     private Button capstoneButton = new Button();
-    private Button depositLeftButton = new Button();
-    private Button depositRightButton = new Button();
+    private Button depositButton = new Button();
+    private Button toggleAnglePIDButton = new Button();
+    private Button toggleToAngleWhenLiftUpButton = new Button();
+    private Button toggleDepositUpWhenIntakeButton = new Button();
+    private Button setAngleSetpointButton = new Button();
+    private Button goToLiftLevelButton = new Button();
+    private Button increaseLiftLevelButton = new Button();
+    private Button decreaseLiftLevelButton = new Button();
+
+    private int liftLevel = 0;
+    private int clicksPerLevel;
 
     private long timeAtFullDown = 0;
+    private double maxStickWindow;
+    private double fullDownTimeWindow;
+    private boolean liftIsUp = false;
+    private boolean liftWasUp = false;
 
-    enum LiftState {
-        RUN_TO_POSITION,
-        HOLD,
-        COAST,
-        MANUAL
-    }
-    private LiftState state = LiftState.COAST;
+
+    private long timeAtLastIntake = 0;
+
+    private InitIMUOnThread initIMUAction;
+    private PIDController anglePID;
+    private PIDCoefficients anglePIDCoefficients;
+    private double degreesSetpoint = 0;
+    private boolean goToAngleWhenLiftUp = true;
+    private boolean keepAngleWhenDriving = true;
+    private boolean goingToAngle = false;
+    private boolean cancelledGoToAngleWhenLiftUp = false;
+    private boolean toggleDepositUpWhenIntake = true;
+
 
     @Override
     protected void initialize() {
         super.initialize();
         batMobile = BatMobile.createInstance();
-        batMobile.elevator.left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        batMobile.elevator.right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         deadZone = config.getDouble("dead zone", 0.1);
-        extendPowerFactor = config.getDouble("extend power", 1.0);
-        turtleDrivePowerFactor = config.getDouble("turtle drive power", 0.5);
-        snailDrivePowerFactor = config.getDouble("snail drive power", 0.25);
-        slowLiftPowerZone = config.getDouble("slow lift zone", 0.7);
-        liftPowerFactor = config.getDouble("trigger lift power", 0.3);
-        outtakePowerFactor = config.getDouble("outtake power", 1.0);
 
-        batMobile.redSideArm.setPivotToInsideRestingPosition();
-        batMobile.blueSideArm.setPivotToInsideRestingPosition();
+        lbDrivePower = config.getDouble("lb drive power", 0.5);
+        rbDrivePower = config.getDouble("rb drive power", 0.25);
+        liftIsUpDrivePower = config.getDouble("lift up drive power", Math.min(lbDrivePower, rbDrivePower));
+
+        double m = config.getDouble("m battery drive power", 0.05);
+        double b = config.getDouble("b battery drive power", 1.4);
+        double batteryBasedDrivePower = -m * robot.getBatteryVoltage() + b;
+        defaultDrivePower = config.getDouble("default drive power", batteryBasedDrivePower);
+
+        slowLiftPowerFactor = config.getDouble("slow lift power", 0.3);
+        slowLiftPowerZone = config.getDouble("slow lift zone", 0.7);
+        outtakePowerFactor = config.getDouble("outtake power", 1.0);
+        outtakeMs = config.getInt("outtake time", 500);
+        anglePIDCoefficients = config.getKPID("angle");
+
+        clicksPerLevel = config.getInt("clicks per level", 300);
+
+        maxStickWindow = config.getDouble("max stick window", 0.97);
+        fullDownTimeWindow = config.getDouble("full down time window", 300);
+
+//        batMobile.redSideArm.setPivotToInsideRestingPosition();
+//        batMobile.blueSideArm.setPivotToInsideRestingPosition();
+        batMobile.redSideArm.pivot.set(ToggleServo.State.CLOSED);
+        batMobile.blueSideArm.pivot.set(ToggleServo.State.CLOSED);
+
+        initIMUAction = new InitIMUOnThread();
+        initIMUAction.start();
     }
 
     @Override
@@ -65,30 +117,47 @@ public class BatMobileDrive extends BaseDrive {
         updateDrive();
 
         updateButtons();
+        updateLiftLevels();
         updateElevator();
         updateIntake();
         updateServos();
+        updatePID();
 
         updateTelemetry();
     }
 
     private void updateDrivePower() {
-        if (gamepad1.right_bumper) {
-            drivePowerFactor = snailDrivePowerFactor;
-        } else if (gamepad1.left_bumper) {
-            drivePowerFactor = turtleDrivePowerFactor;
+        if (gamepad1.left_bumper) {
+            drivePowerFactor = lbDrivePower;
+        } else if (gamepad1.right_bumper) {
+            drivePowerFactor = liftIsUp ? defaultDrivePower : rbDrivePower;
         } else {
-            drivePowerFactor = 1;
+            drivePowerFactor = liftIsUp ? liftIsUpDrivePower : defaultDrivePower;
         }
     }
 
     private void updateButtons() {
+        toggleAnglePIDButton.update(gamepad1.dpad_up);
+        toggleToAngleWhenLiftUpButton.update(gamepad1.dpad_down);
+        toggleDepositUpWhenIntakeButton.update(gamepad1.dpad_right);
+        setAngleSetpointButton.update(gamepad1.dpad_left);
         pivotButton.update(gamepad1.y);
         clawButton.update(gamepad1.x);
         foundationButton.update(gamepad1.b);
         capstoneButton.update(gamepad2.y);
-        depositLeftButton.update(gamepad2.left_bumper);
-        depositRightButton.update(gamepad2.right_bumper);
+        goToLiftLevelButton.update(gamepad2.x);
+        depositButton.update(gamepad2.right_bumper);
+        increaseLiftLevelButton.update(gamepad2.dpad_up);
+        decreaseLiftLevelButton.update(gamepad2.dpad_down);
+    }
+
+    private void updateLiftLevels() {
+        if (increaseLiftLevelButton.is(DOWN)) {
+            liftLevel += 1;
+        }
+        if (decreaseLiftLevelButton.is(DOWN)) {
+            liftLevel -= 1;
+        }
     }
 
     private void updateElevator() {
@@ -96,18 +165,28 @@ public class BatMobileDrive extends BaseDrive {
         double liftPower = getLiftInput();
         boolean isLifting = isInputting(liftPower);
         boolean isExtending = isInputting(getExtendInputPower());
-        boolean isInputting = isLifting || isExtending;
-        boolean inputtingFullDown = liftPower < -0.97;
+        boolean inputtingFullDown = liftPower < -maxStickWindow;
+        liftWasUp = liftIsUp;
+
         if (inputtingFullDown) {
+            liftIsUp = false;
             timeAtFullDown = System.currentTimeMillis();
+        } else if (liftPower > maxStickWindow) {
+            liftIsUp = true;
         }
         long msSinceFullDown = System.currentTimeMillis() - timeAtFullDown;
 
-        if (isInputting) {
+        if (isExtending && !isLifting) {
+            state = LiftState.MANUAL_EXTENDING;
+        } else if (isExtending || isLifting) {
             state = LiftState.MANUAL;
-        } else if (msSinceFullDown < 300 && !inputtingFullDown) {
+        } else if (msSinceFullDown < fullDownTimeWindow && !inputtingFullDown || (state == LiftState.MANUAL_EXTENDING && !liftIsUp)) {
             state = LiftState.COAST;
-        } else if (state != LiftState.HOLD && state != LiftState.COAST) {
+        } else if (goToLiftLevelButton.is(DOWN)) {
+            liftLevel += 1;
+            state = LiftState.RUN_TO_POSITION;
+            batMobile.elevator.setRunToRelativePosition(liftLevel * clicksPerLevel, 0);
+        } else if (state != LiftState.HOLD && state != LiftState.COAST && state != LiftState.RUN_TO_POSITION) {
             state = LiftState.HOLD;
             batMobile.elevator.setRunToRelativePosition(0, 0);
         }
@@ -122,37 +201,31 @@ public class BatMobileDrive extends BaseDrive {
                 batMobile.elevator.right.setPower(0);
                 break;
             case MANUAL:
+            case MANUAL_EXTENDING:
             default:
                 updateElevatorManual();
                 break;
         }
-
     }
 
     private double getLiftInput() {
-        double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0);
-        double liftPowerP2 = -gamepad2.left_stick_y;
-        return liftPowerP1 + liftPowerP2;
+        return -gamepad2.left_stick_y;
     }
 
     private double getLiftInputPower() {
-        double liftPowerP1 = (gamepad1.dpad_up ? 1 : 0) - (gamepad1.dpad_down ? 1 : 0);
-        double liftPowerP2 = Math.sqrt(Math.abs(gamepad2.left_stick_y)) * (-gamepad2.left_stick_y > 0 ? 1 : -1);
-        if (liftPowerP2 < 0 && liftPowerP2 > -slowLiftPowerZone) {
-            liftPowerP2 = 0;
+        double liftPower = Math.sqrt(Math.abs(gamepad2.left_stick_y)) * (-gamepad2.left_stick_y > 0 ? 1 : -1);
+        if (liftPower < 0 && liftPower > -slowLiftPowerZone) {
+            liftPower = 0;
         }
-        return liftPowerP1 + liftPowerP2;
+        return liftPower;
     }
 
     private double getExtendInputPower() {
-        double extendPowerP1 = (gamepad1.dpad_right ? 1 : 0) - (gamepad1.dpad_left ? 1 : 0) * extendPowerFactor;
-        double extendPowerP2 = gamepad2.right_stick_x;
-        return extendPowerP1 + extendPowerP2;
+        return gamepad2.right_stick_x + gamepad2.right_stick_y;
     }
 
     private void updateElevatorManual() {
-//        double powerFactor = isInputting(gamepad2.right_trigger) ? slowLiftPower : 1.0;
-        double powerFactor = isInputting(gamepad2.right_trigger) || isInputting(gamepad2.left_trigger) ? liftPowerFactor : 1.0;
+        double powerFactor = gamepad2.left_bumper ? slowLiftPowerFactor : 1.0;
         batMobile.elevator.setPowerLE(getLiftInputPower(), getExtendInputPower(), powerFactor);
     }
 
@@ -161,8 +234,22 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateIntake() {
-        double intakePower = (gamepad1.right_trigger - gamepad1.left_trigger) * outtakePowerFactor;
-        batMobile.intake.setPower(intakePower);
+        if (toggleDepositUpWhenIntakeButton.is(DOWN)) {
+            toggleDepositUpWhenIntake = !toggleDepositUpWhenIntake;
+        }
+
+        double intakePower = (gamepad1.right_trigger - gamepad1.left_trigger);
+        if (intakePower > 0) {
+            if (toggleDepositUpWhenIntake) {
+                batMobile.depositServo.set(ToggleServo.State.OPEN);
+            }
+            timeAtLastIntake = System.currentTimeMillis();
+        }
+        if (!isInputting(intakePower) && System.currentTimeMillis() - timeAtLastIntake < outtakeMs) {
+            batMobile.intake.setPower(-outtakePowerFactor);
+        } else {
+            batMobile.intake.setPower(intakePower * (intakePower < 0 ? outtakePowerFactor : 1));
+        }
     }
 
     private void updateServos() {
@@ -170,9 +257,9 @@ public class BatMobileDrive extends BaseDrive {
         updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.REST, pivotButton, batMobile.blueSideArm.pivot);
         updateToggle(ToggleServo.State.OPEN, ToggleServo.State.REST, clawButton, batMobile.redSideArm.claw);
         updateToggle(ToggleServo.State.OPEN, ToggleServo.State.REST, clawButton, batMobile.blueSideArm.claw);
+        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.OPEN, depositButton, batMobile.depositServo);
         updateCapstone();
         updateFoundationServos();
-        updateDeposit();
     }
 
     private void updateToggle(Button button, ToggleServo ... servos) {
@@ -184,15 +271,6 @@ public class BatMobileDrive extends BaseDrive {
             for (ToggleServo servo : servos) {
                 servo.toggle(stateA, stateB);
             }
-        }
-    }
-
-    private void updateDeposit() {
-        if (depositLeftButton.is(DOWN)) {
-            batMobile.depositServo.set(ToggleServo.State.OPEN);
-        }
-        if (depositRightButton.is(DOWN)) {
-            batMobile.depositServo.set(ToggleServo.State.CLOSED);
         }
     }
 
@@ -210,22 +288,100 @@ public class BatMobileDrive extends BaseDrive {
         }
     }
 
+    private void updatePID() {
+        if (!imuInitialized()) {
+            return;
+        }
+
+        if (toggleAnglePIDButton.is(DOWN)) {
+            goToAngleWhenLiftUp = !goToAngleWhenLiftUp;
+        }
+
+        if (setAngleSetpointButton.is(DOWN)) {
+            degreesSetpoint = robot.imu.getHeading().getDegrees();
+        }
+
+        if (liftIsUp && isInputting(gamepad1.right_stick_x)) {
+            cancelledGoToAngleWhenLiftUp = true;
+        } else if (!liftIsUp) {
+            cancelledGoToAngleWhenLiftUp = false;
+        }
+
+        if (toggleToAngleWhenLiftUpButton.is(DOWN) || (liftIsUp && goToAngleWhenLiftUp && !cancelledGoToAngleWhenLiftUp)) {
+            double fullRotationOffset = GeneralMath.roundNearestMultiple(robot.imu.getIntegratedHeading().getDegrees(), 360);
+            anglePID = new PIDController(anglePIDCoefficients,  fullRotationOffset + degreesSetpoint);
+            goingToAngle = true;
+        }
+
+        if (keepAngleWhenDriving && !goingToAngle) {
+            anglePID = new PIDController(anglePIDCoefficients,  robot.imu.getIntegratedHeading().getDegrees());
+            goingToAngle = true;
+        }
+
+        if ((liftIsUp && drivePowerFactor != lbDrivePower) || (liftWasUp && !liftIsUp) || (isInputting(gamepad1.right_stick_x))) {
+            goingToAngle = false;
+        }
+
+    }
+
+    private double getAnglePIDPower() {
+        return anglePID.getCorrectedOutput(robot.imu.getIntegratedHeading().getDegrees());
+    }
+
+    @Override
+    protected void updateDrive() {
+        // up on the gamepad stick is negative
+        drivePose.x = Math.pow(gamepad1.left_stick_x, 3) * drivePowerFactor;
+        drivePose.y = -Math.pow(gamepad1.left_stick_y, 3) * drivePowerFactor;
+        drivePose.r = Math.pow(gamepad1.right_stick_x, 3) * drivePowerFactor;
+        if (imuInitialized() && !isInputting(drivePose.r) && goingToAngle) {
+            drivePose.r = GeneralMath.round(getAnglePIDPower(), 2);
+        }
+        robot.driveTrain.drive(drivePose);
+    }
+
+    private boolean imuInitialized() {
+        return robot.imu != null;
+    }
+
 
     private void updateTelemetry() {
+        telemetry.addData("===P1","===");
+        telemetry.addData("Drive Power", drivePowerFactor);
+        telemetry.addData("Go To Angle when Lift Raised?", goToAngleWhenLiftUp);
+        telemetry.addData("Deposit up when intake?", toggleDepositUpWhenIntake);
+        telemetry.addData("Angle PID Setpoint", anglePID != null ? degreesSetpoint : "?");
+        telemetry.addData("IMU", initIMUAction.runIsComplete() ? robot.imu.getHeading().getDegrees() : "Initializing...");
+        telemetry.addData("DriveR", drivePose.r);
+        telemetry.addData("===P2","===");
         telemetry.addData("Lift State", state.name());
-
-        telemetry.addData("Left Lift Position", batMobile.elevator.left.getCurrentPosition());
-        telemetry.addData("Right Lift Position", batMobile.elevator.right.getCurrentPosition());
-//        telemetry.addData("Lift Position Difference", batMobile.elevator.getClicksDifference());
-//        telemetry.addData("Left Lift Velocity", batMobile.elevator.left.getVelocity());
-//        telemetry.addData("Right Lift Velocity", batMobile.elevator.left.getVelocity());
-
         telemetry.addData("Lift Power", getLiftInputPower());
-        telemetry.addData("P2 Left Stick Y", gamepad2.left_stick_y);
-
-        telemetry.addData("Drive Power Factor", drivePowerFactor);
-        telemetry.addData("Intake Power Factor", outtakePowerFactor);
+        telemetry.addData("Lift Level", liftLevel);
+        telemetry.addData("===DEBUG","===");
+//        telemetry.addData("LeftClicks ", batMobile.elevator.left.getCurrentPosition());
+//        telemetry.addData("RightClicks", batMobile.elevator.right.getCurrentPosition());
+        telemetry.addData("Battery", robot.getBatteryVoltage());
         telemetry.update();
     }
+
+
+    class InitIMUOnThread extends Action {
+        @Override
+        protected void onRun() {
+            robot.initializeIMU();
+        }
+
+        @Override
+        protected boolean runIsComplete() {
+            return robot.imuIsInitialized();
+        }
+
+        @Override
+        protected void insideRun() throws SomethingBadHappened { }
+
+        @Override
+        protected void onEndRun() throws SomethingBadHappened { }
+    }
+
 
 }
