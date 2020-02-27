@@ -345,8 +345,9 @@ public class BatMobileDrive extends BaseDrive {
         telemetry.addData("Lift Power", getLiftInputPower());
         telemetry.addData("Lift Level", liftLevel);
         telemetry.addData("===DEBUG","===");
-        telemetry.addData("LeftClicks ", batMobile.elevator.left.getCurrentPosition());
-        telemetry.addData("RightClicks", batMobile.elevator.right.getCurrentPosition());
+//        telemetry.addData("LeftClicks ", batMobile.elevator.left.getCurrentPosition());
+//        telemetry.addData("RightClicks", batMobile.elevator.right.getCurrentPosition());
+        telemetry.addData("Battery", robot.getBatteryVoltage());
         telemetry.update();
     }
 
