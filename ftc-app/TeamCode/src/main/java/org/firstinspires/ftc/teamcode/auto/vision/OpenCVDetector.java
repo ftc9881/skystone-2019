@@ -39,7 +39,7 @@ public abstract class OpenCVDetector extends OpenCvPipeline {
     public abstract Pose getPose();
 
     protected boolean found = false;
-    protected boolean flipImage = false;
+    protected boolean flipImage = true;
     protected Rect foundRect = new Rect();
 
     protected Mat rawImage = new Mat();
@@ -73,6 +73,10 @@ public abstract class OpenCVDetector extends OpenCvPipeline {
             case DISPLAY:
                 return displayMat;
         }
+    }
+
+    public boolean isGettingImages() {
+        return !displayMat.empty();
     }
 
     @Override

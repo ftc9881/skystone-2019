@@ -173,20 +173,25 @@ public class OpenCV implements VisionSystem {
 
         @Override
         protected void insideRun() {
-            Rect foundRect = detector.getFoundRect();
-            centerX = foundRect.x + foundRect.width / 2;
-            if (foundPositions.size() >= listSize) {
-                foundPositions.remove(0);
-            }
-            foundPositions.add(centerX);
 
-            int averageCenterX = (int) GeneralMath.mean(foundPositions);
-            if (averageCenterX < skystoneLeftBound) {
-                position = VisionSystem.SkystonePosition.LEFT;
-            } else if (averageCenterX > skystoneRightBound) {
-                position = VisionSystem.SkystonePosition.RIGHT;
+            if (detector.isGettingImages()) {
+                Rect foundRect = detector.getFoundRect();
+                centerX = foundRect.x + foundRect.width / 2;
+                if (foundPositions.size() >= listSize) {
+                    foundPositions.remove(0);
+                }
+                foundPositions.add(centerX);
+
+                int averageCenterX = (int) GeneralMath.mean(foundPositions);
+                if (averageCenterX < skystoneLeftBound) {
+                    position = SkystonePosition.LEFT;
+                } else if (averageCenterX > skystoneRightBound) {
+                    position = SkystonePosition.RIGHT;
+                } else {
+                    position = SkystonePosition.CENTER;
+                }
             } else {
-                position = VisionSystem.SkystonePosition.CENTER;
+                position = SkystonePosition.NONE;
             }
 
             opMode.telemetry.addData("Skystone Position", position);

@@ -1,6 +1,6 @@
 {
 
-	"debug servo": "left foundation",
+	"debug servo": "red pivot",
 
 	"left foundation open": "0.93",
 	"left foundation closed": "0.45",
@@ -22,11 +22,11 @@
 	"blue claw closed": "0",
 	"blue claw rest": "0",
 
-	"red pivot open": "0.56",
-	"red pivot closed": "0.24",
-	"red pivot rest": "0.51",
-	"red pivot inside": "0.24",
-	"red pivot deploy": "0.29",
+	"red pivot open": "0.34",
+	"red pivot closed": "0.0",
+	"red pivot rest": "0.24",
+	"red pivot inside": "0.04",
+	"red pivot deploy": "0.05",
 
 	"red claw open": "0.35",
 	"red claw closed": "0.65",

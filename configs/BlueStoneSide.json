@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream
+=======
+
+
+
 {
 	"properties": {
 		"angle unit": "deg",
@@ -478,4 +483,5 @@
 		{ "command": "STOP" }
 	]
 }
+>>>>>>> Stashed changes
 

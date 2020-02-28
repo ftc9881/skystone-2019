@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
 import org.firstinspires.ftc.teamcode.hardware.sensor.IDistanceSensor;
 import org.firstinspires.ftc.teamcode.hardware.sensor.MaxSonarAnalogSensor;
+import org.firstinspires.ftc.teamcode.hardware.sensor.RevDistanceSensor;
 import org.firstinspires.ftc.teamcode.robot.Intake;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
@@ -60,9 +62,9 @@ public class BatMobile extends Robot {
 
         odometryY = new OdometryWheel(intake.right);
         frontSensor = new MaxSonarAnalogSensor(hardwareMap, "front sensor");
-        // TODO: Sensors
-//        leftSensor = new MaxSonarAnalogSensor(hardwareMap, "left sensor");
-//        rightSensor = new MaxSonarAnalogSensor(hardwareMap, "right sensor");
+
+        leftSensor = new RevDistanceSensor(hardwareMap, "left side sensor");
+        rightSensor = new RevDistanceSensor(hardwareMap, "right side sensor");
     }
 
     public SideArm getSideArm() {
@@ -75,6 +77,6 @@ public class BatMobile extends Robot {
     }
 
     public IDistanceSensor getSideSensor() {
-        return AutoRunner.getSide() == AutoRunner.Side.RED ? rightSensor : leftSensor;
+        return AutoRunner.getSide() == AutoRunner.Side.RED ? leftSensor : rightSensor;
     }
 }

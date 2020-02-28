@@ -3,27 +3,26 @@ package org.firstinspires.ftc.teamcode.auto.endconditions;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
+import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 
-public class DeployServoByDistance extends Watcher {
+public class DeployElevatorByDistance extends Watcher {
 
-    private ToggleServo toggleServo;
+    private double liftPower;
     private IWatchableDistance watchable;
     private double targetValue;
     private boolean deployed = false;
-    private ToggleServo.State state;
     private double currentValue;
 
-    public DeployServoByDistance(ToggleServo toggleServo, ToggleServo.State state, IWatchableDistance watchable, double targetValue) {
-        this.toggleServo = toggleServo;
-        this.state = state;
+    public DeployElevatorByDistance(double liftPower, IWatchableDistance watchable, double targetValue) {
+        this.liftPower = liftPower;
         this.watchable = watchable;
         this.targetValue = targetValue;
         this.currentValue = watchable.getDistance();
     }
 
     private void deploy() {
-        toggleServo.set(state);
-        AutoRunner.log("Watcher", "Deployed servo: " + toggleServo.servo.getName());
+        BatMobile.getInstance().elevator.setPowerLE(liftPower, 0);
+        AutoRunner.log("Watcher", "Deployed lift: " + liftPower);
         deployed = true;
     }
 

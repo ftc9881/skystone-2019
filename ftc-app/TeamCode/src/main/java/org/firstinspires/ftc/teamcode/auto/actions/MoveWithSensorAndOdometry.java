@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.auto.actions;
 import com.qualcomm.robotcore.util.MovingStatistics;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+import org.firstinspires.ftc.teamcode.auto.endconditions.IWatchableDistance;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 
-public class MoveWithSensorAndOdometry extends Action {
+public class MoveWithSensorAndOdometry extends Action implements IWatchableDistance {
 
     private PIDController xPid;
     private PIDController yPid;
@@ -36,13 +37,17 @@ public class MoveWithSensorAndOdometry extends Action {
     private Angle moveAngle;
     private double powerFactor;
 
+    private MovingStatistics sensorReadings;
+    private int sensorReadingsSize;
+    private double deltaThreshold;
+    private double currentSensorReading;
+
     private OdometryWheel odometryWheel;
-    private IDistanceSensor frontSensor;
     private IDistanceSensor sideSensor;
 
     private MovingStatistics odometryReadings;
     private int odometryStuckSize;
-
+    private double previousSensorReading;
 
     public MoveWithSensorAndOdometry(Command command) {
         tag = "MoveWithSensorAndOdometry";
@@ -55,8 +60,8 @@ public class MoveWithSensorAndOdometry extends Action {
         robot = Robot.getInstance();
         BatMobile batMobile = BatMobile.getInstance();
         odometryWheel = batMobile.odometryY;
-        frontSensor = batMobile.frontSensor;
-        sideSensor= batMobile.getSideSensor();
+
+        sideSensor = batMobile.getSideSensor();
 
         closeY = command.getDouble("y close threshold", 0.5);
         String conditionalString = command.getString("y stop when", "close");
@@ -69,8 +74,15 @@ public class MoveWithSensorAndOdometry extends Action {
         targetPose.y = command.getDouble("target y", 0);
         targetPose.r = command.getAngle("target r", 0).getDegrees();
 
+        deltaThreshold = command.getDouble("x delta threshold", 5);
+
         odometryStuckSize = command.getInt("odometry stuck size", 5);
         odometryReadings = new MovingStatistics(odometryStuckSize);
+
+        sensorReadingsSize = command.getInt("sensor statistics size", 3);
+        sensorReadings = new MovingStatistics(sensorReadingsSize);
+
+        currentSensorReading = sideSensor.getDistance();
     }
 
     public MoveWithSensorAndOdometry(Command command, VisionSystem.SkystonePosition skystonePosition) {
@@ -89,6 +101,7 @@ public class MoveWithSensorAndOdometry extends Action {
         rPid = new PIDController(command, "r", targetPose.r);
 
         pose.y = odometryWheel.getInches();
+        previousSensorReading = targetPose.x;
 
         AutoRunner.log("TargetPose", targetPose.toString("\t"));
     }
@@ -97,17 +110,29 @@ public class MoveWithSensorAndOdometry extends Action {
     protected void insideRun() {
         Pose correctedDrivePose = new Pose(drivePose);
 
-//        pose.x = sideSensor.getDistance();
+        currentSensorReading = sideSensor.getDistance();
+        AutoRunner.log("Sensor", sideSensor.getDistance());
+
+        if (Math.abs(currentSensorReading - previousSensorReading) < deltaThreshold) {
+            previousSensorReading = currentSensorReading;
+            sensorReadings.add(currentSensorReading);
+            if (sensorReadings.getCount() >= sensorReadingsSize) {
+                pose.x = sensorReadings.getMean();
+            }
+        } else {
+            pose.x = targetPose.x;
+        }
+
         pose.y = odometryWheel.getInches();
         pose.r = robot.imu.getHeading().getDegrees();
 
         odometryReadings.add(pose.y);
 
         correctedDrivePose.x += xPid.getCorrectedOutput(pose.x);
-        correctedDrivePose.y = GeneralMath.clipPower(yPid.getCorrectedOutput(pose.y), basePower);
+        correctedDrivePose.y = GeneralMath.clipPower(yPid.getCorrectedOutput(pose.y), basePower) * powerFactor;
         correctedDrivePose.r = rPid.getCorrectedOutput(pose.r);
 
-        robot.driveTrain.drive(correctedDrivePose, powerFactor);
+        robot.driveTrain.drive(correctedDrivePose);
 
         AutoRunner.log("DrivePose", correctedDrivePose.toString("\t"));
         AutoRunner.log("GuessPose", pose.toString("\t"));
@@ -122,6 +147,11 @@ public class MoveWithSensorAndOdometry extends Action {
     @Override
     protected void onEndRun() {
         robot.driveTrain.stop();
+    }
+
+    @Override
+    public double getDistance() {
+        return odometryWheel.getInches();
     }
 
 }

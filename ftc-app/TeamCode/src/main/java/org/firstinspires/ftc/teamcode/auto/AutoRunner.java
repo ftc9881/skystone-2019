@@ -8,7 +8,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.actions.MoveWithSensorAndOdometry;
 import org.firstinspires.ftc.teamcode.auto.actions.Turn;
+import org.firstinspires.ftc.teamcode.auto.endconditions.DeployElevatorByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
+import org.firstinspires.ftc.teamcode.auto.endconditions.IWatchableDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.Timeout;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
@@ -160,31 +162,50 @@ public class AutoRunner {
 
             case "MOVE": {
                 boolean deployArm = command.getBoolean("deploy arm", false);
+                boolean deployFoundation = command.getBoolean("deploy foundation", false);
+                boolean deployLift = command.getBoolean("deploy lift", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
 
-                Action move = new MoveWithSensorAndOdometry(command, skystonePosition);
+                MoveWithSensorAndOdometry move = new MoveWithSensorAndOdometry(command, skystonePosition);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
                 CombinedConditions conditions = new CombinedConditions(timeoutCondition);
 
+                IWatchableDistance trackingWatchable = command.getBoolean("track odometry", false) ? move : batMobile.driveTrain.rb;
+
                 if (deployArm) {
-                    String pivotState = command.getString("pivot state", batMobile.getSideArm().pivot.getState().name());
-                    String clawState = command.getString("claw state", batMobile.getSideArm().claw.getState().name());
-                    boolean trackOdometry = command.getBoolean("track odometry", false);
-                    Watcher deployPivot;
-                    Watcher deployClaw;
-                    if (trackOdometry) {
-                        double clicksPerInch = batMobile.odometryY.getClicksToInches();
-                        int pivotDeployClicks = (int) (command.getDouble("pivot deploy inches", 0) * clicksPerInch);
-                        int clawDeployClicks = (int) (command.getDouble("claw deploy inches", 0) * clicksPerInch);
-                        deployPivot = new DeployServoByDistance(batMobile.getSideArm().pivot, ToggleServo.stringToState(pivotState), batMobile.odometryY.getMotor(), pivotDeployClicks);
-                        deployClaw = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(clawState), batMobile.odometryY.getMotor(), clawDeployClicks);
-                    } else {
-                        int pivotDeployClicks = command.getInt("pivot deploy clicks", 0);
-                        int clawDeployClicks = command.getInt("claw deploy clicks", 0);
-                        deployPivot = new DeployServoByDistance(batMobile.getSideArm().pivot, ToggleServo.stringToState(pivotState), batMobile.driveTrain.rb, pivotDeployClicks);
-                        deployClaw = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(clawState), batMobile.driveTrain.rb, clawDeployClicks);
+                    double pivotDeployDistance = command.getDouble("pivot deploy at", -999);
+                    if (pivotDeployDistance != -999) {
+                        String pivotState = command.getString("pivot state", batMobile.getSideArm().pivot.getState().name());
+                        Watcher deployPivot = new DeployServoByDistance(batMobile.getSideArm().pivot, ToggleServo.stringToState(pivotState), trackingWatchable, pivotDeployDistance);
+                        conditions.add(deployPivot);
                     }
-                    conditions.add(deployClaw, deployPivot);
+                    double clawDeployDistance = command.getDouble("claw deploy at", -999);
+                    if (clawDeployDistance != -999) {
+                        String clawState = command.getString("claw state", batMobile.getSideArm().claw.getState().name());
+                        Watcher deployClaw = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(clawState), trackingWatchable, clawDeployDistance);
+                        conditions.add(deployClaw);
+                    }
+
+                }
+
+                if (deployFoundation) {
+                    double foundationDeployDistance = command.getDouble("foundation deploy at", -999);
+                    if (foundationDeployDistance != -999) {
+                        String foundationState = command.getString("foundation state", batMobile.leftFoundationServo.getState().name());
+                        Watcher deployLeftFoundation = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(foundationState), trackingWatchable, foundationDeployDistance);
+                        Watcher deployRightFoundation = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(foundationState), trackingWatchable, foundationDeployDistance);
+                        conditions.add(deployLeftFoundation, deployRightFoundation);
+                    }
+                }
+
+                if (deployLift) {
+                    double liftPower1 = command.getDouble("lift power 1", 0);
+                    double liftPower2 = command.getDouble("lift power 2", 0);
+                    double deployDistance1 = command.getDouble("deploy inches 1", 0f);
+                    double deployDistance2 = command.getDouble("pivot deploy inches 2", 0);
+                    Watcher deployElevator1 = new DeployElevatorByDistance(liftPower1, move, deployDistance1);
+                    Watcher deployElevator2 = new DeployElevatorByDistance(liftPower2, move, deployDistance2);
+                    conditions.add(deployElevator1, deployElevator2);
                 }
 
                 move.runSynchronized(conditions);
@@ -202,6 +223,13 @@ public class AutoRunner {
                 break;
             }
 
+            case "FOUNDATION": {
+                String state = command.getString("state", "REST");
+                batMobile.rightFoundationServo.set(ToggleServo.stringToState(state));
+                batMobile.leftFoundationServo.set(ToggleServo.stringToState(state));
+                break;
+            }
+
             case "CLAW": {
                 String state = command.getString("state", "REST");
                 batMobile.getSideArm().claw.set(ToggleServo.stringToState(state));
@@ -216,8 +244,10 @@ public class AutoRunner {
 
             case "PIVOT WAIT": {
                 boolean feedbackState = command.getBoolean("touch", true);
-                int minWait = command.getInt("min wait", 100);
-                int maxWait = command.getInt("max wait", 1000);
+                int defaultMinPivotWait = config.properties.getInt("pivot min wait", 0);
+                int defaultMaxPivotWait = config.properties.getInt("pivot max wait", 1000);
+                int minWait = command.getInt("min wait", defaultMinPivotWait);
+                int maxWait = command.getInt("max wait", defaultMaxPivotWait);
                 sleep(minWait);
                 long start = System.currentTimeMillis();
 
@@ -233,7 +263,7 @@ public class AutoRunner {
 
             case "ELEVATOR": {
                 double liftPower = command.getDouble("lift power", 0);
-                double extendPower = command.getDouble("extendPower", 0);
+                double extendPower = command.getDouble("extend power", 0);
                 batMobile.elevator.setPowerLE(liftPower, extendPower);
                 break;
             }

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.apache.commons.math3.stat.descriptive.moment.GeometricMean;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotorEx;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotor;
@@ -15,10 +16,10 @@ import java.util.List;
 
 public class DriveTrain {
 
-    public DcMotor lf;
-    public DcMotor rf;
-    public DcMotor lb;
-    public DcMotor rb;
+    public CachingMotorEx lf;
+    public CachingMotorEx rf;
+    public CachingMotorEx lb;
+    public CachingMotorEx rb;
 
     /*
         CD: Try to have a consistent object life cycle across all Robot and "component" classes.  That is,
@@ -36,10 +37,10 @@ public class DriveTrain {
      */
 
     public DriveTrain(HardwareMap hardwareMap) {
-        lf = new CachingMotor(hardwareMap, "lf");
-        rf = new CachingMotor(hardwareMap, "rf");
-        lb = new CachingMotor(hardwareMap, "lb");
-        rb = new CachingMotor(hardwareMap, "rb");
+        lf = new CachingMotorEx(hardwareMap, "lf");
+        rf = new CachingMotorEx(hardwareMap, "rf");
+        lb = new CachingMotorEx(hardwareMap, "lb");
+        rb = new CachingMotorEx(hardwareMap, "rb");
 
         lf.setDirection(DcMotor.Direction.FORWARD);
         rf.setDirection(DcMotor.Direction.REVERSE);

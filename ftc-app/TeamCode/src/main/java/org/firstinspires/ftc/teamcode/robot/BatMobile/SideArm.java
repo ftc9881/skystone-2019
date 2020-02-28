@@ -21,8 +21,8 @@ public class SideArm {
         pivot = new ToggleServo(hardwareMap, side.getKey() + " pivot");
 
         Configuration hardwareConstantsConfig = new Configuration("HardwareConstants");
-        pivotInsideRestingPosition = hardwareConstantsConfig.getDouble("pivot inside", 0.31);
-        pivotDeployIntakePosition = hardwareConstantsConfig.getDouble("pivot deploy", 0.31);
+        pivotInsideRestingPosition = hardwareConstantsConfig.getDouble(side.getKey() + " pivot inside", 0);
+        pivotDeployIntakePosition = hardwareConstantsConfig.getDouble(side.getKey() + " pivot deploy", 0);
     }
 
     public boolean feedbackIsPressed() {
