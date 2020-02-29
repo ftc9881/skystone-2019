@@ -27,162 +27,67 @@
 
 
 	"commands": [
-
-		{
-"comment": "turn so imitate ",
-			"command": "TURN",
-			"power": "1.0",
-			"kp": "0.02",
-			"ki": "0",
-			"kd": "0.001",
-			"angle": "-90",
-			"error": "0.4",
-			"base power": "0.2",
-			"timeout": "3000"
-		},
-
-		{ "command": "BREAKPOINT" },
-
-		{
-"comment": "turn so can grab",
-			"command": "TURN",
-			"power": "1.0",
-			"kp": "0.02",
-			"ki": "0",
-			"kd": "0.001",
-			"angle": "-180",
-			"error": "0.5",
-			"base power": "0.2",
-			"timeout": "3000"
-		},
-
-		{ "command": "RESET CLICKS" },
-
 		{
 "comment": "Moves backwards to grab",
 			"command": "MOVE",
-			"power": "1.0",
-			"base power": "0.05",
-			"move angle": "0",
-			"target y": "-7.5",
-			"y kp": "0.06",
-			"y ki": "0",
-			"y kd": "0",
-			"y close threshold": "1",
-			"timeout": "3000"
-		},
-
-		{
-			"command": "FOUNDATION",
-			"state": "OPEN"
-		},
-		{
-			"command": "SLEEP",
-			"time": "500"
-		},
-
-		{
-"comment": "Move forwards toward build site",
-			"command": "MOVE",
-			"power": "1.0",
-			"base power": "0.05",
-			"move angle": "0",
-			"target y": "20",
-			"y kp": "1",
-			"y stop when": "greater",
-			"timeout": "3000"
-		},
-
-		{
-"comment": "turn so foundation in site",
-			"command": "TURN",
-			"power": "1.0",
-			"kp": "0.03",
-			"ki": "0",
-			"kd": "0.001",
-			"angle": "-90",
-			"error": "0.5",
-			"base power": "0.3",
-			"timeout": "3000"
-		},
-		{
-			"command": "FOUNDATION",
-			"state": "OPEN"
-		},
-
-		{ "command": "RESET CLICKS" },
-
-		{ "command": "BREAKPOINT" },
-
-		{
-"comment": "Move forwards to park",
-			"command": "MOVE",
-			"power": "1.0",
-			"base power": "0.05",
-			"move angle": "180",
-			"target y": "20",
-			"y kp": "0.05",
-			"y ki": "0",
-			"y kd": "0",
-			"y close threshold": "1",
-			"target r": "-90",
-			"r kp": "0.05",
-			"r ki": "0",
-			"r kd": "0.002",
-			"timeout": "3000"
-		},
-
-
-		{ "command": "STOP" },
-
-
-
-
-
-
-
-		{
-"comment": "second skystone",
-			"command": "MOVE",
-			"power": "1.0",
+			"power": "0.7",
 			"base power": "0.1",
 
+			"deploy foundation": "true",
+				"track odometry": "true",
+				"foundation deploy at": "7",
+				"foundation state": "open",
+
 			"move angle": "0",
-			"target x": "23.3",
-			"x kp": "0.06",
+			"target y": "10",
+			"y kp": "0.04",
+			"y ki": "0",
+			"y kd": "0",
+			"y close threshold": "1",
+			"timeout": "3000"
+		},
+
+
+
+		{
+			"command": "MOVE",
+			"power": "1.0",
+			"base power": "0.06",
+
+			"move angle": "0",
+			"target x": "24",
+			"x kp": "0.1",
 			"x ki": "0",
 			"x kd": "0.000",
-			"target y": "-60",
-			"y kp": "0.05",
+			"x reading range": "20",
+			"target y": "-90",
+			"y kp": "0.03",
+			"y kp under": "0.03",
+			"y kp over": "0.08",
 			"y ki": "0",
 			"y kd": "0",
 			"y close threshold": "0.2",
-
 			"target r": "0",
-			"r kp": "0.05",
+			"r kp": "0.04",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "5000"
 		},
-
 		{
 			"command": "MOVE",
 			"power": "1.0",
-			"base power": "0.1",
+			"base power": "0.06",
 
 			"move angle": "0",
-			"target x": "23.3",
-			"x kp": "0.06",
+			"target x": "23",
+			"x kp": "0.1",
 			"x ki": "0",
 			"x kd": "0.000",
 			"target y": "0",
-			"y kp": "0.05",
-			"y ki": "0",
-			"y kd": "0",
+			"y kp": "0.08",
 			"y close threshold": "0.2",
-
 			"target r": "0",
-			"r kp": "0.05",
+			"r kp": "0.04",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "5000"

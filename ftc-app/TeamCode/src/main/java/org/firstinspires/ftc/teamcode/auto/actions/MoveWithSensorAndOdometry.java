@@ -5,12 +5,14 @@ import com.qualcomm.robotcore.util.MovingStatistics;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.endconditions.IWatchableDistance;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
+import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
 import org.firstinspires.ftc.teamcode.hardware.sensor.IDistanceSensor;
 import org.firstinspires.ftc.teamcode.math.Angle;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.GeneralMath.Conditional;
+import org.firstinspires.ftc.teamcode.math.MoveController;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
@@ -20,7 +22,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 public class MoveWithSensorAndOdometry extends Action implements IWatchableDistance {
 
     private PIDController xPid;
-    private PIDController yPid;
+    private MoveController yPid;
     private PIDController rPid;
     private Conditional conditionalY;
     private double closeY;
@@ -31,6 +33,7 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
     private Pose pose = new Pose();
 
     private Robot robot;
+    private BatMobile batMobile;
     private Command command;
     private Pose drivePose;
     private double basePower;
@@ -48,6 +51,7 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
     private MovingStatistics odometryReadings;
     private int odometryStuckSize;
     private double previousSensorReading;
+    private double validXRange;
 
     public MoveWithSensorAndOdometry(Command command) {
         tag = "MoveWithSensorAndOdometry";
@@ -58,7 +62,7 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
         powerFactor = command.getDouble("power", 0.5);
 
         robot = Robot.getInstance();
-        BatMobile batMobile = BatMobile.getInstance();
+        batMobile = BatMobile.getInstance();
         odometryWheel = batMobile.odometryY;
 
         sideSensor = batMobile.getSideSensor();
@@ -79,6 +83,7 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
         odometryStuckSize = command.getInt("odometry stuck size", 5);
         odometryReadings = new MovingStatistics(odometryStuckSize);
 
+        validXRange = command.getDouble("x reading range", 20);
         sensorReadingsSize = command.getInt("sensor statistics size", 3);
         sensorReadings = new MovingStatistics(sensorReadingsSize);
 
@@ -97,7 +102,7 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
         drivePose.y = Math.cos(moveAngle.getRadians());
 
         xPid = new PIDController(command, "x", targetPose.x);
-        yPid = new PIDController(command, "y", targetPose.y);
+        yPid = new MoveController(command, "y", targetPose.y);
         rPid = new PIDController(command, "r", targetPose.r);
 
         pose.y = odometryWheel.getInches();
@@ -107,13 +112,19 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
     }
 
     @Override
-    protected void insideRun() {
+    protected void insideRun() throws SomethingBadHappened {
         Pose correctedDrivePose = new Pose(drivePose);
 
         currentSensorReading = sideSensor.getDistance();
         AutoRunner.log("Sensor", sideSensor.getDistance());
 
-        if (Math.abs(currentSensorReading - previousSensorReading) < deltaThreshold) {
+        if (!batMobile.sensorsAreWorking()) {
+            throw new SomethingBadHappened("Uh oh, side sensor is dead");
+        }
+        else if (Math.abs(targetPose.x - currentSensorReading) < validXRange && sensorReadings.getCount() < sensorReadingsSize) {
+            sensorReadings.add(currentSensorReading);
+            pose.x = targetPose.x;
+        } else if (Math.abs(currentSensorReading - previousSensorReading) < deltaThreshold) {
             previousSensorReading = currentSensorReading;
             sensorReadings.add(currentSensorReading);
             if (sensorReadings.getCount() >= sensorReadingsSize) {
@@ -134,8 +145,8 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
 
         robot.driveTrain.drive(correctedDrivePose);
 
-        AutoRunner.log("DrivePose", correctedDrivePose.toString("\t"));
-        AutoRunner.log("GuessPose", pose.toString("\t"));
+        AutoRunner.log("DrivePose   ", correctedDrivePose.toString("\t"));
+        AutoRunner.log("LocationPose", pose.toString("\t"));
     }
 
     @Override

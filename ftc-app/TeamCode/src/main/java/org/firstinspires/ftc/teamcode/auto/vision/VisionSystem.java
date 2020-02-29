@@ -10,7 +10,7 @@ public interface VisionSystem {
         LEFT("stone l"),
         CENTER("stone c"),
         RIGHT("stone r"),
-        NONE("stone ?");
+        NONE("stone r");
 
         public final String key;
         SkystonePosition(String key) {

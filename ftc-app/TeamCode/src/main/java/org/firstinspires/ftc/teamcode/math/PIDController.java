@@ -40,9 +40,9 @@ public class PIDController {
         previousTime = currentTime;
         currentTime = getTimeSeconds();
         deltaTime = currentTime - previousTime;
+        currentError = processValue - targetValue;
 
         if (deltaTime > 0) {
-            currentError = processValue - targetValue;
             deltaError = currentError - previousError;
 
             derivative =  deltaError/deltaTime;
@@ -64,8 +64,12 @@ public class PIDController {
         previousError = currentTime;
         deltaTime = 0;
         previousError = currentError;
-        deltaTime = derivative = 0;
+        derivative = 0;
         integral = 0;
+    }
+
+    public double getError() {
+        return currentError;
     }
 
     public double getTargetValue() {

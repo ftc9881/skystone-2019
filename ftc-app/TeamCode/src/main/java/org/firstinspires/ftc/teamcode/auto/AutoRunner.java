@@ -81,7 +81,10 @@ public class AutoRunner {
 
         robot = Robot.newInstance(opMode);
         robot.initializeIMU();
+        robot.driveTrain.setVelocityPIDF();
         batMobile = BatMobile.createInstance();
+
+        stopped = !batMobile.sensorsAreWorking();
 
         for (Command command : config.initCommands) {
             String comment = command.getString("comment", "no comment.");
@@ -141,6 +144,11 @@ public class AutoRunner {
 
         switch (command.name) {
 
+            case "USE ENCODERS": {
+                batMobile.setToUseEncoder();
+                break;
+            }
+
             case "PIVOTS INSIDE": {
                 batMobile.redSideArm.setPivotToInsideRestingPosition();
                 batMobile.blueSideArm.setPivotToInsideRestingPosition();
@@ -192,8 +200,8 @@ public class AutoRunner {
                     double foundationDeployDistance = command.getDouble("foundation deploy at", -999);
                     if (foundationDeployDistance != -999) {
                         String foundationState = command.getString("foundation state", batMobile.leftFoundationServo.getState().name());
-                        Watcher deployLeftFoundation = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(foundationState), trackingWatchable, foundationDeployDistance);
-                        Watcher deployRightFoundation = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(foundationState), trackingWatchable, foundationDeployDistance);
+                        Watcher deployLeftFoundation = new DeployServoByDistance(batMobile.leftFoundationServo, ToggleServo.stringToState(foundationState), trackingWatchable, foundationDeployDistance);
+                        Watcher deployRightFoundation = new DeployServoByDistance(batMobile.rightFoundationServo, ToggleServo.stringToState(foundationState), trackingWatchable, foundationDeployDistance);
                         conditions.add(deployLeftFoundation, deployRightFoundation);
                     }
                 }

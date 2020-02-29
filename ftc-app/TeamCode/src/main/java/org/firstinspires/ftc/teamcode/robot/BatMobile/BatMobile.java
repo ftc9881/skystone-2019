@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
+import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
 import org.firstinspires.ftc.teamcode.hardware.sensor.IDistanceSensor;
 import org.firstinspires.ftc.teamcode.hardware.sensor.MaxSonarAnalogSensor;
@@ -67,6 +69,14 @@ public class BatMobile extends Robot {
         rightSensor = new RevDistanceSensor(hardwareMap, "right side sensor");
     }
 
+    public void setToUseEncoder() {
+        driveTrain.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        elevator.left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        elevator.right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+//        driveTrain.rb.setP;
+    }
+
     public SideArm getSideArm() {
         AutoRunner.Side side = AutoRunner.getSide();
         return side == AutoRunner.Side.RED ? redSideArm : blueSideArm;
@@ -79,4 +89,9 @@ public class BatMobile extends Robot {
     public IDistanceSensor getSideSensor() {
         return AutoRunner.getSide() == AutoRunner.Side.RED ? leftSensor : rightSensor;
     }
+
+    public boolean sensorsAreWorking() {
+        return (leftSensor.getDistance() < 2000 && rightSensor.getDistance() < 2000 && getSideSensor().getDistance() < 300);
+    }
+
 }

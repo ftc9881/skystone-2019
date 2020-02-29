@@ -29,7 +29,7 @@ public abstract class SnapshotTest extends TeleOpBase {
     }
 
     private void updateShutter() {
-        shutterButton.update(gamepad1.right_bumper || gamepad1.left_bumper);
+        shutterButton.update(gamepad1.right_bumper || gamepad1.left_bumper || gamepad2.left_bumper || gamepad2.right_bumper);
         if (shutterButton.is(Button.State.DOWN)) {
             onClick();
         }

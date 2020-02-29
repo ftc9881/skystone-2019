@@ -1,0 +1,153 @@
+2020-02-28 18:59:58.507 1413-1680/com.qualcomm.ftcrobotcontroller D/TeamCode@Sensor: 22.322834645669293
+2020-02-28 18:59:58.511 1413-1680/com.qualcomm.ftcrobotcontroller D/TeamCode@MoveController: 0.07
+2020-02-28 18:59:58.524 1413-1680/com.qualcomm.ftcrobotcontroller D/TeamCode@DrivePose: 0.178	-1.0	0.003
+2020-02-28 18:59:58.524 1413-1680/com.qualcomm.ftcrobotcontroller D/TeamCode@LocationPose: 22.217	-34.677	-89.813
+2020-02-28 18:59:58.545 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.545 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.545 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: placeholder: readStatusQuery
+2020-02-28 18:59:58.547 1413-1629/com.qualcomm.ftcrobotcontroller D/RobotCore: system telemetry: key=$System$Warning$ msg="problem with "left side sensor"; problem with "Expansion Hub I2C Device [USB (embedded); module 2; bus 0; addr7=0x28]""
+2020-02-28 18:59:58.549 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.549 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.554 1413-1524/com.qualcomm.ftcrobotcontroller D/SoundPlayer: playing volume=0.000000 samp=3|ms=2509
+2020-02-28 18:59:58.555 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.555 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.559 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.559 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.563 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.564 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.569 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.569 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.574 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.574 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.578 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.578 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.582 1413-1628/com.qualcomm.ftcrobotcontroller V/Robocol: sending CMD_PLAY_SOUND(6206), attempt: 0
+2020-02-28 18:59:58.583 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.583 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.588 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.588 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.592 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.592 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.596 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.597 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.601 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.601 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.608 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.608 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.618 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.618 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.622 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.623 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.629 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.629 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.636 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.636 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.640 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.640 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.645 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.645 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.651 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.652 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.656 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.657 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.661 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.661 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.666 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.667 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.671 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.671 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.677 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.677 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.682 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.683 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.687 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.687 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.694 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.694 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.699 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.699 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.704 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.705 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.710 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.710 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.719 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.719 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.724 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.724 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.730 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.730 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.735 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.736 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.741 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.741 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.752 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.753 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.758 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.758 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.765 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.765 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.770 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.770 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.779 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.779 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.784 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.784 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.790 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.790 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.795 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.796 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.800 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.800 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.805 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.805 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.809 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.809 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.815 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.815 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.829 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.829 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.833 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.834 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.841 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.841 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.847 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.847 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.852 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.852 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.856 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.857 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.861 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.861 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.865 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.865 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.870 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.870 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.875 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.875 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.880 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.880 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.885 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.885 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.890 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.890 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.895 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.895 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.911 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.911 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.915 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.915 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.921 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.921 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.927 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.927 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.931 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.931 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.935 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.936 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.940 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.940 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.944 1413-1680/com.qualcomm.ftcrobotcontroller V/RobotCore: addr=true data=true arb=true clock=false
+2020-02-28 18:59:58.944 1413-1680/com.qualcomm.ftcrobotcontroller E/LynxI2cDeviceSynch: readStatusQuery: cbExpected=1 cbRead=0
+2020-02-28 18:59:58.945 1413-1680/com.qualcomm.ftcrobotcontroller D/TeamCode@Sensor: 2580.1181102362207
+2020-02-28 18:59:58.945 1413-1680/com.qualcomm.ftcrobotcontroller D/TeamCode@SomethingBadHappened: Uh oh, side sensor is dead
+2020-02-28 18:59:58.945 1413-1680/com.qualcomm.ftcrobotcontroller E/SomethingBadHappened: Uh oh, side sensor is dead

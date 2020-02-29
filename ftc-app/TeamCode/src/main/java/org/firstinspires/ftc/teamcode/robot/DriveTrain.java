@@ -10,6 +10,8 @@ import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotorEx;
 import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotor;
+import org.firstinspires.ftc.teamcode.teleop.utility.Command;
+import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +90,19 @@ public class DriveTrain {
         rf.setPower(rfp * powerFactor);
         lb.setPower(lbp * powerFactor);
         rb.setPower(rbp * powerFactor);
+    }
+
+    public void setVelocityPIDF() {
+        Configuration config = new Configuration("HardwareConstants");
+        setVelocityPIDF(config);
+    }
+
+
+    public void setVelocityPIDF(Command config) {
+        lf.setVelocityPIDFCoefficients(config, "dt");
+        rf.setVelocityPIDFCoefficients(config, "dt");
+        lb.setVelocityPIDFCoefficients(config, "dt");
+        rb.setVelocityPIDFCoefficients(config, "dt");
     }
 
     public void stop() {

@@ -49,27 +49,24 @@ public class SkystoneDetector extends OpenCVDetector {
 
         List<MatOfPoint> contoursYellow = findContours(yellowFilter, yellowMask);
         List<Rect> rectsYellow = contoursToRects(contoursYellow);
-//        if (cropRect.width > 0 && cropRect.height > 0) {
-//            draw(cropRect, new Scalar(255, 255, 255));
-//            rectsYellow = filterByBound(rectsYellow, cropRect);
-//        }
         List<List<Rect>> listOfYellowBlobs = groupIntoBlobs(rectsYellow, yellowBlobbingThreshold);
         Rect yellowBoundingRect = chooseBestYellow(listOfYellowBlobs);
 
         List<MatOfPoint> contoursBlack = findContours(blackFilter, blackMask);
         List<Rect> rectsBlack = contoursToRects(contoursBlack);
-        List<Rect> rectsBlackInYellow = filterByBound(rectsBlack, yellowBoundingRect);
-        List<List<Rect>> listOfBlackBlobs = groupIntoBlobs(rectsBlackInYellow, blackBlobbingThreshold);
+//        List<Rect> rectsBlackInYellow = filterByBound(rectsBlack, yellowBoundingRect);
+//        List<List<Rect>> listOfBlackBlobs = groupIntoBlobs(rectsBlackInYellow, blackBlobbingThreshold);
+        List<List<Rect>> listOfBlackBlobs = groupIntoBlobs(rectsBlack, blackBlobbingThreshold);
         Rect bestSkystoneRect = chooseBestBlack(listOfBlackBlobs);
 
         draw(contoursYellow, new Scalar(255, 150, 0));
         draw(contoursBlack, new Scalar(80, 80, 80));
         draw(yellowBoundingRect, new Scalar(255, 255, 0));
+        draw(bestSkystoneRect, new Scalar(0, 255, 0));
+        draw(getCenterPoint(bestSkystoneRect), new Scalar(0, 255, 0));
 
         found = bestSkystoneRect.area() > 0;
         if (found && bestSkystoneRect.area() > foundRect.area()) {
-            draw(bestSkystoneRect, new Scalar(0, 255, 0));
-            draw(getCenterPoint(bestSkystoneRect), new Scalar(0, 255, 0));
             foundRect = bestSkystoneRect;
         }
 

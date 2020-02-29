@@ -2,6 +2,11 @@
 
 	"debug servo": "red pivot",
 
+	"dt kp": "1.10",
+	"dt ki": "0.10",
+	"dt kd": "0.0",
+	"dt kf": "11.3",
+	
 	"left foundation open": "0.93",
 	"left foundation closed": "0.45",
 
@@ -22,11 +27,11 @@
 	"blue claw closed": "0",
 	"blue claw rest": "0",
 
-	"red pivot open": "0.34",
-	"red pivot closed": "0.0",
-	"red pivot rest": "0.24",
-	"red pivot inside": "0.04",
-	"red pivot deploy": "0.05",
+	"red pivot open": "0.68",
+	"red pivot closed": "0.34",
+	"red pivot rest": "0.58",
+	"red pivot inside": "0.38",
+	"red pivot deploy": "0.39",
 
 	"red claw open": "0.35",
 	"red claw closed": "0.65",
