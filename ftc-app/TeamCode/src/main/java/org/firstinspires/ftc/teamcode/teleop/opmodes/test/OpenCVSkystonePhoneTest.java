@@ -2,24 +2,21 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
-import org.firstinspires.ftc.teamcode.teleop.utility.Button;
-import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 import org.opencv.core.Rect;
 
 @TeleOp(group="Test")
 @Disabled
-public class OpenCVSkystoneTest extends SnapshotTest {
+public class OpenCVSkystonePhoneTest extends SnapshotTest {
 
     private OpenCV openCV;
 
     @Override
     protected void initialize() {
         super.initialize();
-        openCV = new OpenCV(config, VisionSystem.CameraType.FRONT_WEBCAM);
+        openCV = new OpenCV(config, VisionSystem.CameraType.PHONE);
         openCV.startLook(VisionSystem.TargetType.SKYSTONE);
     }
 

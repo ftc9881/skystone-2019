@@ -11,11 +11,11 @@ public class SideArm {
 
     public ToggleServo claw;
     public ToggleServo pivot;
-    public TouchSensor pivotFeedback;
+    private TouchSensor pivotFeedback;
     private double pivotInsideRestingPosition;
     private double pivotDeployIntakePosition;
 
-    public SideArm(AutoRunner.Side side, HardwareMap hardwareMap) {
+    SideArm(AutoRunner.Side side, HardwareMap hardwareMap) {
         pivotFeedback = hardwareMap.touchSensor.get(side.getKey() + " pivot feedback");
         claw = new ToggleServo(hardwareMap, side.getKey() + " claw");
         pivot = new ToggleServo(hardwareMap, side.getKey() + " pivot");

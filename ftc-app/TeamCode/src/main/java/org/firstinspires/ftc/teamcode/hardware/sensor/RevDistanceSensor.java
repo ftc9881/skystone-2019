@@ -20,4 +20,8 @@ public class RevDistanceSensor implements IDistanceSensor {
     public double getDistance() {
         return delegate.getDistance(DistanceUnit.INCH);
     }
+
+    public boolean isDead() {
+        return getDistance() > 2000;
+    }
 }

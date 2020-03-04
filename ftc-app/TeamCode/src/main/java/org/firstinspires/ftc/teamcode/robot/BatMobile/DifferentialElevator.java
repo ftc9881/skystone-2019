@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.auto.structure.Action;
 import org.firstinspires.ftc.teamcode.hardware.motor.CachingMotorEx;
+import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.math.PIDController;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.teleop.utility.Configuration;
@@ -17,10 +18,10 @@ public class DifferentialElevator {
     public CachingMotorEx right;
     private Command pidConfig;
     private double minPower;
-    private RunToPosition leftRunToPositionAction;
-    private RunToPosition rightRunToPositionAction;
 
-    public DifferentialElevator(HardwareMap hardwareMap) {
+    private PIDController positionPid;
+
+    DifferentialElevator(HardwareMap hardwareMap) {
         left = new CachingMotorEx(hardwareMap.dcMotor.get("left lift"));
         right = new CachingMotorEx(hardwareMap.dcMotor.get("right lift"));
 
@@ -48,53 +49,22 @@ public class DifferentialElevator {
         return right.getCurrentPosition() - left.getCurrentPosition();
     }
 
-    public void setRunToRelativePosition(int liftClicks, int extendClicks) {
-        int leftClicks = left.getCurrentPosition() + extendClicks + liftClicks;
-//        int rightClicks = right.getCurrentPosition() + extendClicks - liftClicks;
-        AutoRunner.log("LeftTargetPosition", leftClicks);
-//        AutoRunner.log("RightTargetPosition", rightClicks);
-        leftRunToPositionAction = new RunToPosition(left, leftClicks);
-//        rightRunToPositionAction = new RunToPosition(right, rightClicks);
+    public void setRunToRelativePosition(int liftClicks) {
+        int target = left.getCurrentPosition() + liftClicks;
+        positionPid = new PIDController(pidConfig, "elevator", target);
+        AutoRunner.log("Elevator:Target", target);
     }
 
     public void updateRunToRelativePosition() {
-//        if (leftRunToPositionAction != null) {
-//            leftRunToPositionAction.insideRun();
-//        }
-//        if (rightRunToPositionAction != null) {
-//            double power = rightRunToPositionAction.getCorrectedPower();
-//            setPowerLR(power, power);
-//        }
-        if (leftRunToPositionAction != null) {
-            double power = leftRunToPositionAction.getCorrectedPower();
-            setPowerLR(power, power);
-            AutoRunner.log("LiftPIDPower", power);
+        if (positionPid != null) {
+            int currentPosition = left.getCurrentPosition();
+//            double power = Range.clip(positionPid.getCorrectedOutput(currentPosition), minPower, 1);
+            double power = GeneralMath.clipPower(-positionPid.getCorrectedOutput(currentPosition) + minPower);
+            setPowerLE(power, 0);
         }
     }
 
-    @Deprecated
-    public void runToRelativePositionTraditional(int liftClicks, int extendClicks) {
-        cancelRunToPositionActions();
-        int leftClicks = left.getCurrentPosition() + extendClicks + liftClicks;
-        int rightClicks = right.getCurrentPosition() + extendClicks - liftClicks;
-        AutoRunner.log("LeftTargetPosition", leftClicks);
-        AutoRunner.log("RightTargetPosition", rightClicks);
-        left.setTargetPosition(leftClicks);
-        right.setTargetPosition(rightClicks);
-        checkAndSetMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left.setVelocity(100);
-        right.setVelocity(100);
-    }
-
-    public void setVelocity(double leftVelocity, double rightVelocity) {
-        cancelRunToPositionActions();
-        checkAndSetMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        left.setVelocity(leftVelocity);
-        right.setVelocity(rightVelocity);
-    }
-
     public void setPowerLR(double left, double right, double powerFactor) {
-        cancelRunToPositionActions();
         checkAndSetMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.left.setPower(left * powerFactor);
         this.right.setPower(right * powerFactor);
@@ -115,46 +85,6 @@ public class DifferentialElevator {
     private void checkAndSetMode(DcMotor.RunMode mode) {
         left.checkAndSetMode(mode);
         right.checkAndSetMode(mode);
-    }
-
-    private void cancelRunToPositionActions() {
-        leftRunToPositionAction = null;
-        rightRunToPositionAction = null;
-    }
-
-    public class RunToPosition extends Action {
-        private PIDController pid;
-        private DcMotor motor;
-
-        RunToPosition(CachingMotorEx motor, int target) {
-            this.motor = motor;
-            motor.checkAndSetMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            pid = new PIDController(pidConfig, "elevator", target);
-        }
-
-        @Override
-        protected void onRun() {
-        }
-
-        @Override
-        protected void insideRun() {
-            motor.setPower(getCorrectedPower());
-        }
-
-        public double getCorrectedPower() {
-            int currentPosition = motor.getCurrentPosition();
-            return Range.clip(pid.getCorrectedOutput(currentPosition), minPower, 1);
-        }
-
-        @Override
-        protected boolean runIsComplete() {
-            return false;
-        }
-
-        @Override
-        protected void onEndRun() {
-//            motor.setPower(0);
-        }
     }
 
 }

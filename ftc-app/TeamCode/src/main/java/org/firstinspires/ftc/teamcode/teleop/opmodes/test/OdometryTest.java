@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -13,6 +14,8 @@ import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
 import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
 import org.firstinspires.ftc.teamcode.teleop.utility.Button;
+
+import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 
 @TeleOp(group="Test")
 //@Disabled
@@ -34,6 +37,9 @@ public class OdometryTest extends BaseDrive {
         super.update();
 
         toggleFloatButton.update(gamepad1.a);
+        if (toggleFloatButton.is(DOWN)) {
+            robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        }
 
         telemetry.addData("odometry y (clicks)", odometryY.getClicks());
         telemetry.addData("odometry y (in)", odometryY.getInches());

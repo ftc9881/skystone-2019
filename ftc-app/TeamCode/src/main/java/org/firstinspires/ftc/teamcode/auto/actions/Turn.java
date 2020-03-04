@@ -32,7 +32,7 @@ public class Turn extends Action {
 
     protected Robot robot;
     protected PIDController pidController;
-    protected Angle turnAngle;
+    protected double turnDegrees;
     protected double powerFactor;
     protected double basePower;
     protected Angle errorRange;
@@ -40,22 +40,22 @@ public class Turn extends Action {
 
     public Turn(Command command) {
         this.robot = Robot.getInstance();
-        turnAngle = command.getAngle("angle", 0);
+        turnDegrees = command.getAngle("angle", 0).getDegrees() * AutoRunner.signIfFlipForBlue();
         powerFactor = command.getDouble("power", 1.0);
         errorRange = command.getAngle("error", 10, AngleUnit.DEGREES);
         basePower = command.getDouble("base power", 0.1);
-        pidController = new PIDController(command, turnAngle.getDegrees());
+        pidController = new PIDController(command, turnDegrees);
     }
 
     @Override
     protected void onRun() {
         currentDegrees = robot.imu.getIntegratedHeading().getDegrees();
-        AutoRunner.log("AngleToTurn", turnAngle.getDegrees());
+        AutoRunner.log("AngleToTurn", turnDegrees);
     }
 
     @Override
     protected boolean runIsComplete() {
-        double error = Math.abs(currentDegrees - turnAngle.getDegrees());
+        double error = Math.abs(currentDegrees - turnDegrees);
         return error < errorRange.getDegrees();
     }
 
@@ -74,7 +74,7 @@ public class Turn extends Action {
     @Override
     protected void onEndRun() throws SomethingBadHappened {
         robot.driveTrain.stop();
-        if (Math.abs(currentDegrees - turnAngle.getDegrees()) > 10) {
+        if (Math.abs(currentDegrees - turnDegrees) > 10) {
             throw new SomethingBadHappened("IMU probably died");
         }
     }

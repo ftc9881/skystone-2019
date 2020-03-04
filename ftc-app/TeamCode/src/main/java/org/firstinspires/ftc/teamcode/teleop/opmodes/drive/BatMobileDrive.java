@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
@@ -17,6 +18,7 @@ import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.HELD;
 
 @TeleOp(group="Drive")
+//@Disabled
 public class BatMobileDrive extends BaseDrive {
 
     enum LiftState {
@@ -61,6 +63,9 @@ public class BatMobileDrive extends BaseDrive {
     private boolean liftIsUp = false;
     private boolean liftWasUp = false;
 
+    private long timeAtCapstone = 0;
+    private int returnTimeAfterCapstone;
+
     private InitIMUOnThread initIMUAction;
     private PIDController anglePID;
     private PIDCoefficients anglePIDCoefficients;
@@ -88,7 +93,7 @@ public class BatMobileDrive extends BaseDrive {
 
         double m = config.getDouble("m battery drive power", 0.05);
         double b = config.getDouble("b battery drive power", 1.4);
-        double batteryBasedDrivePower = -m * robot.getBatteryVoltage() + b;
+        double batteryBasedDrivePower = GeneralMath.round(-m * robot.getBatteryVoltage() + b, 3);
         defaultDrivePower = config.getDouble("default drive power", batteryBasedDrivePower);
 
         slowLiftPowerFactor = config.getDouble("slow lift power", 0.3);
@@ -97,6 +102,7 @@ public class BatMobileDrive extends BaseDrive {
         anglePIDCoefficients = config.getKPID("angle");
 
         clicksPerLevel = config.getInt("clicks per level", 300);
+        returnTimeAfterCapstone = config.getInt("return time after capstone", 600);
 
         maxStickWindow = config.getDouble("max stick window", 0.97);
         fullDownTimeWindow = config.getDouble("full down time window", 300);
@@ -126,10 +132,12 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateDrivePower() {
-        if (gamepad1.left_bumper) {
-            drivePowerFactor = lbDrivePower;
+        if (gamepad1.left_bumper && gamepad1.right_bumper) {
+            drivePowerFactor = defaultDrivePower;
         } else if (gamepad1.right_bumper) {
             drivePowerFactor = liftIsUp ? defaultDrivePower : rbDrivePower;
+        } else if (gamepad1.left_bumper) {
+            drivePowerFactor = lbDrivePower;
         } else {
             drivePowerFactor = liftIsUp ? liftIsUpDrivePower : defaultDrivePower;
         }
@@ -184,10 +192,10 @@ public class BatMobileDrive extends BaseDrive {
         } else if (goToLiftLevelButton.is(DOWN)) {
             liftLevel += 1;
             state = LiftState.RUN_TO_POSITION;
-            batMobile.elevator.setRunToRelativePosition(liftLevel * clicksPerLevel, 0);
+            batMobile.elevator.setRunToRelativePosition(liftLevel * clicksPerLevel);
         } else if (state != LiftState.HOLD && state != LiftState.COAST && state != LiftState.RUN_TO_POSITION) {
             state = LiftState.HOLD;
-            batMobile.elevator.setRunToRelativePosition(0, 0);
+            batMobile.elevator.setRunToRelativePosition(0);
         }
 
         switch (state) {
@@ -237,12 +245,13 @@ public class BatMobileDrive extends BaseDrive {
             toggleDepositUpWhenIntake = !toggleDepositUpWhenIntake;
         }
 
-        double intakePower = (gamepad1.right_trigger - gamepad1.left_trigger);
+        double input = gamepad1.right_trigger - gamepad1.left_trigger;
+        double intakePower = isInputting(input) ? ((input) > 0 ? input : -1) : 0;
         if (intakePower > 0 && toggleDepositUpWhenIntake) {
             batMobile.depositServo.set(ToggleServo.State.OPEN);
         }
 
-        double powerFactor = intakePower < 0 && intakePower > -1 ? outtakePowerFactor : 1;
+        double powerFactor = intakePower < 0 && !gamepad1.left_bumper ? outtakePowerFactor : 1;
         batMobile.intake.setPower(intakePower * powerFactor);
     }
 
@@ -271,6 +280,10 @@ public class BatMobileDrive extends BaseDrive {
     private void updateCapstone() {
         if (capstoneButton.is(DOWN)) {
             batMobile.depositServo.set(ToggleServo.State.REST);
+            timeAtCapstone = System.currentTimeMillis();
+        }
+        if (System.currentTimeMillis() - timeAtCapstone > returnTimeAfterCapstone && batMobile.depositServo.getState() == ToggleServo.State.REST) {
+            batMobile.depositServo.set(ToggleServo.State.OPEN);
         }
     }
 
@@ -342,20 +355,19 @@ public class BatMobileDrive extends BaseDrive {
     private void updateTelemetry() {
         telemetry.addData("===P1","===");
         telemetry.addData("Drive Power", drivePowerFactor);
-        telemetry.addData("GoingToAngle?", goingToAngle);
-        telemetry.addData("Deposit up when intake?", toggleDepositUpWhenIntake);
         telemetry.addData("Angle PID Setpoint", anglePID != null ? degreesSetpoint : "?");
         telemetry.addData("IMU", initIMUAction.runIsComplete() ? robot.imu.getHeading().getDegrees() : "Initializing...");
-        telemetry.addData("DriveR", drivePose.r);
+        telemetry.addData("Side", side.name());
+        telemetry.addData("Going to angle?", goingToAngle);
+        telemetry.addData("Toggle deposit when intake?", toggleDepositUpWhenIntake);
         telemetry.addData("===P2","===");
         telemetry.addData("Lift State", state.name());
-        telemetry.addData("Lift Power", getLiftInputPower());
+        telemetry.addData("Lift Power", GeneralMath.round(batMobile.elevator.left.getPower(), 3));
+        telemetry.addData("Lift Clicks", batMobile.elevator.left.getCurrentPosition());
         telemetry.addData("Lift Level", liftLevel);
         telemetry.addData("===DEBUG","===");
 //        telemetry.addData("LeftClicks ", batMobile.elevator.left.getCurrentPosition());
 //        telemetry.addData("RightClicks", batMobile.elevator.right.getCurrentPosition());
-        telemetry.addData("Side", side.name());
-        telemetry.addData("InvertXY?", invertXY);
         telemetry.addData("Battery", robot.getBatteryVoltage());
         telemetry.update();
     }

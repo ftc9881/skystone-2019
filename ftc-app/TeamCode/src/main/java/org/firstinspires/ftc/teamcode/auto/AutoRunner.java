@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.auto.actions.MoveWithSensorAndOdometry;
 import org.firstinspires.ftc.teamcode.auto.actions.Turn;
+import org.firstinspires.ftc.teamcode.auto.endconditions.ChangeDriveModeByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployElevatorByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.DeployServoByDistance;
 import org.firstinspires.ftc.teamcode.auto.endconditions.IWatchableDistance;
@@ -63,6 +65,7 @@ public class AutoRunner {
     private static AngleUnit angleUnit = AngleUnit.DEGREES;
     private boolean debugMode;
     private boolean stopped = false;
+    private static boolean flipForBlue = false;
 
     public AutoRunner(String name, LinearOpMode opMode) {
         this(Side.RED, name, opMode);
@@ -84,14 +87,16 @@ public class AutoRunner {
         robot.driveTrain.setVelocityPIDF();
         batMobile = BatMobile.createInstance();
 
-        stopped = !batMobile.sensorsAreWorking();
+        flipForBlue = side == Side.BLUE && config.properties.getBoolean("flip for blue", false);
+
+        stopped = batMobile.sensorDead() || batMobile.getSideSensor().getDistance() > 300;
 
         for (Command command : config.initCommands) {
             String comment = command.getString("comment", "no comment.");
             if (!comment.equals("no comment.")) {
-                AutoRunner.log(command.name, comment);
+                AutoRunner.log("Comment:"+command.name, comment);
             }
-            logAndTelemetry(TAG, "Init Command: " + command.name);
+            logAndTelemetry(TAG, "Init Command:" + command.name);
             execute(command);
         }
 
@@ -172,7 +177,9 @@ public class AutoRunner {
                 boolean deployArm = command.getBoolean("deploy arm", false);
                 boolean deployFoundation = command.getBoolean("deploy foundation", false);
                 boolean deployLift = command.getBoolean("deploy lift", false);
+                boolean changeMode = command.getBoolean("change drive mode", false);
                 double timeoutMs = command.getDouble("timeout", 5 * 1000);
+                double blueOffsetY = AutoRunner.getSide() == AutoRunner.Side.BLUE ? command.getDouble("y blue offset", 0) : 0;
 
                 MoveWithSensorAndOdometry move = new MoveWithSensorAndOdometry(command, skystonePosition);
                 IEndCondition timeoutCondition = new Timeout(timeoutMs);
@@ -184,16 +191,21 @@ public class AutoRunner {
                     double pivotDeployDistance = command.getDouble("pivot deploy at", -999);
                     if (pivotDeployDistance != -999) {
                         String pivotState = command.getString("pivot state", batMobile.getSideArm().pivot.getState().name());
-                        Watcher deployPivot = new DeployServoByDistance(batMobile.getSideArm().pivot, ToggleServo.stringToState(pivotState), trackingWatchable, pivotDeployDistance);
+                        Watcher deployPivot = new DeployServoByDistance(batMobile.getSideArm().pivot, ToggleServo.stringToState(pivotState), trackingWatchable, pivotDeployDistance + blueOffsetY);
                         conditions.add(deployPivot);
+                    }
+                    double pivotDeployDistance2 = command.getDouble("pivot deploy at 2", -999);
+                    if (pivotDeployDistance2 != -999) {
+                        String pivotState2 = command.getString("pivot state 2", batMobile.getSideArm().pivot.getState().name());
+                        Watcher deployPivot2 = new DeployServoByDistance(batMobile.getSideArm().pivot, ToggleServo.stringToState(pivotState2), trackingWatchable, pivotDeployDistance2 + blueOffsetY);
+                        conditions.add(deployPivot2);
                     }
                     double clawDeployDistance = command.getDouble("claw deploy at", -999);
                     if (clawDeployDistance != -999) {
                         String clawState = command.getString("claw state", batMobile.getSideArm().claw.getState().name());
-                        Watcher deployClaw = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(clawState), trackingWatchable, clawDeployDistance);
+                        Watcher deployClaw = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(clawState), trackingWatchable, clawDeployDistance + blueOffsetY);
                         conditions.add(deployClaw);
                     }
-
                 }
 
                 if (deployFoundation) {
@@ -210,13 +222,27 @@ public class AutoRunner {
                     double liftPower1 = command.getDouble("lift power 1", 0);
                     double liftPower2 = command.getDouble("lift power 2", 0);
                     double deployDistance1 = command.getDouble("deploy inches 1", 0f);
-                    double deployDistance2 = command.getDouble("pivot deploy inches 2", 0);
+                    double deployDistance2 = command.getDouble("deploy inches 2", 0);
                     Watcher deployElevator1 = new DeployElevatorByDistance(liftPower1, move, deployDistance1);
                     Watcher deployElevator2 = new DeployElevatorByDistance(liftPower2, move, deployDistance2);
                     conditions.add(deployElevator1, deployElevator2);
                 }
 
+                if (changeMode) {
+                    double deployDistance = command.getDouble("change at", 0);
+                    boolean useVelocity = command.getBoolean("use velocity", false);
+                    DcMotor.RunMode mode = useVelocity ? DcMotor.RunMode.RUN_USING_ENCODER : DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+                    Watcher changeModeWatcher = new ChangeDriveModeByDistance(move, deployDistance, mode);
+                    conditions.add(changeModeWatcher);
+                }
+
                 move.runSynchronized(conditions);
+                break;
+            }
+
+            case "SET DRIVE MODE": {
+                boolean useVelocity = command.getBoolean("use velocity", false);
+                robot.driveTrain.setMode(useVelocity ? DcMotor.RunMode.RUN_USING_ENCODER : DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 break;
             }
 
@@ -228,6 +254,7 @@ public class AutoRunner {
             case "LOG": {
                 logAndTelemetry("Odometry:Clicks", batMobile.odometryY.getClicks());
                 logAndTelemetry("Odometry:Inches", batMobile.odometryY.getInches());
+                logAndTelemetry("FrontSensor:Inc", batMobile.frontSensor.getDistance());
                 break;
             }
 
@@ -277,18 +304,6 @@ public class AutoRunner {
             }
 
             case "TURN": {
-                boolean deployArm = command.getBoolean("deploy arm", false);
-                double timeoutMs = command.getDouble("timeout", 5 * 1000);
-                int deployClicks = command.getInt("deploy clicks", 0);
-                IEndCondition timeoutCondition = new Timeout(timeoutMs);
-                CombinedConditions conditions = new CombinedConditions(timeoutCondition);
-                if (deployArm) {
-                    String pivotState = command.getString("pivot state", batMobile.getSideArm().pivot.getState().name());
-                    String clawState = command.getString("claw state", batMobile.getSideArm().claw.getState().name());
-                    Watcher deployPivot = new DeployServoByDistance(batMobile.getSideArm().pivot, ToggleServo.stringToState(pivotState), robot.driveTrain.rf, deployClicks);
-                    Watcher deployClaw = new DeployServoByDistance(batMobile.getSideArm().claw, ToggleServo.stringToState(clawState), robot.driveTrain.rf, deployClicks);
-                    conditions.add(deployClaw, deployPivot);
-                }
                 Action turn = new Turn(command);
                 runActionWithTimeout(turn, command);
                 break;
@@ -358,12 +373,30 @@ public class AutoRunner {
         opMode.telemetry.update();
     }
 
+    public static int signIfFlipForBlue() {
+        return flipForBlue ? -1 : 1;
+    }
+
     public void logAndTelemetry(Object message) {
         logAndTelemetry("Somewhere", message);
     }
 
     public static void setSkystonePosition(VisionSystem.SkystonePosition position) {
-        AutoRunner.skystonePosition = position;
+        if (!flipForBlue) {
+            AutoRunner.skystonePosition = position;
+        } else {
+            switch (position) {
+                case LEFT:
+                    AutoRunner.skystonePosition = VisionSystem.SkystonePosition.RIGHT;
+                    break;
+                case RIGHT:
+                    AutoRunner.skystonePosition = VisionSystem.SkystonePosition.LEFT;
+                    break;
+                default:
+                    AutoRunner.skystonePosition = position;
+                    break;
+            }
+        }
     }
 
 

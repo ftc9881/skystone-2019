@@ -3,17 +3,14 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.robot.BatMobile.BatMobile;
-import org.firstinspires.ftc.teamcode.teleop.opmodes.drive.BaseDrive;
-import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp(group="Test")
-//@Disabled
-public class GetVelocityTest extends SnapshotTest {
+@Disabled
+public class VelocityDataTest extends SnapshotTest {
 
     private BatMobile batMobile;
 

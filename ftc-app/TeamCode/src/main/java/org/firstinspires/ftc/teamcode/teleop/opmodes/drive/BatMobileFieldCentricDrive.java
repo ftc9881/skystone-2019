@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.TeleOpBase;
 
 @TeleOp(group="Drive")
-//@Disabled
+@Disabled
 public class BatMobileFieldCentricDrive extends BatMobileDrive {
 
     protected void updateDrive() {

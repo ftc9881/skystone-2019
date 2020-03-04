@@ -4,12 +4,12 @@ import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
 import com.disnodeteam.dogecv.filters.GrayscaleFilter;
 import com.disnodeteam.dogecv.filters.LeviColorFilter;
 
+import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 import org.firstinspires.ftc.teamcode.math.Pose;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -82,10 +82,12 @@ public class SkystoneDetector extends OpenCVDetector {
         yellowBlobbingThreshold = config.getInt("yellow blobbing", 100);
         blackBlobbingThreshold = config.getInt("black blobbing", 50);
         minimumArea = config.getInt("min area", 100);
-        cropRect.x = config.getInt("crop x", 0);
-        cropRect.y = config.getInt("crop y", 0);
-        cropRect.width = config.getInt("crop w", 0);
-        cropRect.height= config.getInt("crop h", 0);
+
+        String sideKey = AutoRunner.getSide().getKey();
+        cropRect.x = config.getInt(sideKey + " crop x", 0);
+        cropRect.y = config.getInt(sideKey + " crop y", 0);
+        cropRect.width = config.getInt(sideKey + " crop w", 0);
+        cropRect.height= config.getInt(sideKey + " crop h", 0);
     }
 
     @Override

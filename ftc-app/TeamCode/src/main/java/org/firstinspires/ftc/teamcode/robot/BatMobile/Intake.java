@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot;
+package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -13,7 +13,7 @@ public class Intake {
     public CachingMotorEx left;
     public CachingMotorEx right;
 
-    public Intake(HardwareMap hardwareMap) {
+    Intake(HardwareMap hardwareMap) {
         left = new CachingMotorEx(hardwareMap, "left intake");
         right = new CachingMotorEx(hardwareMap, "right intake");
         left.setDirection(DcMotor.Direction.FORWARD);

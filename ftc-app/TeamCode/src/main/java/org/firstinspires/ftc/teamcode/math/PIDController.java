@@ -76,6 +76,10 @@ public class PIDController {
         return targetValue;
     }
 
+    public double getkP() {
+        return kP;
+    }
+
     private double getTimeSeconds() {
         return System.currentTimeMillis() / 1000.0;
     }

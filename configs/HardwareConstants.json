@@ -1,14 +1,15 @@
 {
-
-	"debug servo": "red pivot",
-
-	"dt kp": "1.10",
-	"dt ki": "0.10",
-	"dt kd": "0.0",
-	"dt kf": "11.3",
+	"dt kp": "1.365",
+	"dt ki": "0.1365",
+	"dt kd": "0",
+	"dt kf": "13.65",
+	"dt velocity": "2400",
 	
-	"left foundation open": "0.93",
-	"left foundation closed": "0.45",
+
+	"debug servo": "left foundation",
+
+	"left foundation open": "0.74",
+	"left foundation closed": "0.25",
 
 	"right foundation open": "0.31",
 	"right foundation closed": "0.8",
@@ -21,17 +22,17 @@
 	"blue pivot closed": "0.37",
 	"blue pivot rest": "0.11",
 	"blue pivot inside": "0.37",
-	"blue pivot deploy": "0.34",
+	"blue pivot deploy": "0.28",
 
-	"blue claw open": "0.3",
+	"blue claw open": "0.32",
 	"blue claw closed": "0",
 	"blue claw rest": "0",
 
-	"red pivot open": "0.68",
-	"red pivot closed": "0.34",
-	"red pivot rest": "0.58",
-	"red pivot inside": "0.38",
-	"red pivot deploy": "0.39",
+	"red pivot open": "0.9",
+	"red pivot closed": "0.58",
+	"red pivot rest": "0.8",
+	"red pivot inside": "0.6",
+	"red pivot deploy": "0.65",
 
 	"red claw open": "0.35",
 	"red claw closed": "0.65",

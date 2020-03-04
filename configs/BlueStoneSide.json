@@ -2,16 +2,19 @@
 	"properties": {
 		"angle unit": "deg",
 		"debug mode": "false",
+		"flip for blue": "true",
 
 		"pivot min wait": "0",
-		"pivot max wait": "300",
-		"pivot min wait": "0",
-		"pivot max wait": "400",
+		"pivot max wait": "500",
 
-		"crop x": "0",
-		"crop y": "105",
-		"crop w": "250",
-		"crop h": "50",
+		"blue crop x": "40",
+		"blue crop y": "90",
+		"blue crop w": "250",
+		"blue crop h": "50",
+		"red crop x": "0",
+		"red crop y": "90",
+		"red crop w": "250",
+		"red crop h": "50",
 		"max detection list size": "10",
 		"yellow blobbing": "200",
 		"black blobbing": "60",
@@ -22,10 +25,14 @@
 
 	"init": [
 		{ 
-			"command": "--USE ENCODERS"
+			"command": "USE ENCODERS"
 		},
 		{ 
 			"command": "PIVOTS INSIDE"
+		},
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "true"
 		},
 		{ 
 			"command": "CLAW",
@@ -41,28 +48,37 @@
 			"command": "MOVE",
 			"power": "1.0",
 			"move angle": "0",
-			"target y": "11",
+			"target y": "10",
 			"y kp": "0.1",
 			"y stop when": "greater",
 			"target r": "0",
-			"timeout": "5000"
+			"timeout": "2000"
+		},
+
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "false"
 		},
 
 		{
 "comment": "turn so side arm faces stones",
 			"command": "TURN",
 			"power": "1.0",
-			"angle": "90",
-			"error": "1",
+			"angle": "-90",
+			"error": "0.6",
 			"base power": "0.1",
-			"kp": "0.03",
+			"kp": "0.02",
 			"ki": "0",
 			"kd": "0.001",
 			"timeout": "2000"
 		},
 
-
 		{ "command": "RESET CLICKS" },
+
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "true"
+		},
 
 		{
 "comment": "first skystone (near wall)",
@@ -79,22 +95,26 @@
 
 			"move angle": "0",
 			"target x": "25",
-			"x kp": "0.1",
+			"x kp": "0.08",
 			"x ki": "0",
-			"x kd": "0.000",
-			"x reading range": "20",
-			"target y stone l": "29",
-			"target y stone c": "18",
-			"target y stone r": "12",
-			"y kp": "0.03",
-			"y kp under": "0.02",
-			"y kp over": "0.06",
+			"x kd": "0.0001",
+			"x reading range": "5",
+			"x delta threshold": "5",
+			"target y stone l": "32",
+			"target y stone c": "25",
+			"target y stone r": "15",
+			"--red target y stone l": "30",
+			"--red target y stone c": "23",
+			"--red target y stone r": "13",
+			"y kp": "0.04",
+			"y kp under": "0.027",
+			"y kp over": "0.05",
 			"y ki": "0",
 			"y kd": "0",
 			"--y stop when": "greater",
 			"y close threshold": "0.2",
-			"target r": "90",
-			"r kp": "0.03",
+			"target r": "-90",
+			"r kp": "0.02",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "5000"
@@ -111,23 +131,20 @@
 			"command": "PIVOT WAIT",
 			"touch": "false"
 		},
-		{ 
-			"command": "SLEEP", "time":"200" 
-		},
-		{ 
-			"command": "CLAW",
-			"state": "closed"
-		},
 		{
 			"command": "ELEVATOR",
 			"lift power": "0.8"
 		},
 		{ 
-			"command": "SLEEP", "time":"300" 
+			"command": "SLEEP", "time":"200" 
 		},
 		{
 			"command": "ELEVATOR",
 			"lift power": "0.2"
+		},
+		{ 
+			"command": "CLAW",
+			"state": "closed"
 		},
 		{ 
 			"command": "PIVOT",
@@ -140,8 +157,10 @@
 		{ 
 			"command": "PIVOTS DEPLOY"
 		},
-		{ "command": "LOG" },
-
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "false"
+		},
 
 		{
 "comment": "first to foundation",
@@ -152,33 +171,34 @@
 			"deploy arm": "true",
 				"track odometry": "true",
 				"pivot state": "closed",
-				"pivot deploy at": "0",
+				"pivot deploy at": "5",
+				"pivot state 2": "open",
+				"pivot deploy at 2": "-92",
 
 			"deploy lift": "true",
 				"lift power 1": "-1.0",
 				"deploy inches 1": "10",
 				"lift power 2": "0",
-				"deploy inches 2": "0",
+				"deploy inches 2": "-4",
+
+			"change drive mode": "true",
+				"use velocity": "true",
+				"change at": "-85",
 
 			"move angle": "0",
-			"target x": "26",
+			"target x": "26.5",
 			"x kp": "0.08",
 			"x ki": "0",
-			"x kd": "0.000",
-			"x stop when": "greater",
-			"target y": "-98",
-			"y kp": "0.07",
+			"x kd": "0.0001",
+			"x close threshold": "10",
+			"target y": "-95",
+			"y kp": "0.05",
 			"y stop when": "less",
-			"target r": "90",
-			"r kp": "0.04",
+			"target r": "-90",
+			"r kp": "0.02",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "5000"
-		},
-
-		{
-			"command": "PIVOT",
-			"state": "open"
 		},
 		{
 			"command": "CLAW",
@@ -186,7 +206,7 @@
 		},
 		{ 
 			"command": "SLEEP",
-			"time": "200" 
+			"time": "300" 
 		},
 		{
 			"command": "PIVOT",
@@ -199,6 +219,10 @@
 		{ 
 			"command": "PIVOT WAIT",
 			"touch": "true"
+		},
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "false"
 		},
 
 
@@ -215,22 +239,28 @@
 				"claw state": "open",
 				"claw deploy at": "-14",
 
+			"change drive mode": "true",
+				"use velocity": "true",
+				"change at": "-20",
+
 			"move angle": "0",
 			"target x": "25",
-			"x kp": "0.1",
+			"x kp": "0.10",
 			"x ki": "0",
-			"x kd": "0.000",
-			"target y stone l": "3",
-			"target y stone c": "-5",
-			"target y stone r": "-14",
+			"x kd": "0.0001",
+			"x delta threshold": "5",
+			"x reading range": "5",
+			"target y stone l": "5",
+			"target y stone c": "-3",
+			"target y stone r": "-12",
 			"y kp": "0.03",
 			"y kp under": "0.015",
-			"y kp over": "0.06",
+			"y kp over": "0.04",
 			"y ki": "0",
 			"y kd": "0",
 			"y close threshold": "0.2",
-			"target r": "90",
-			"r kp": "0.04",
+			"target r": "-90",
+			"r kp": "0.02",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "5000"
@@ -257,8 +287,11 @@
 			"command": "PIVOT WAIT",
 			"touch": "true"
 		},
-		{ "command": "LOG" },
 
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "false"
+		},
 
 
 		{
@@ -270,29 +303,29 @@
 			"deploy arm": "true",
 				"track odometry": "true",
 				"pivot state": "open",
-				"pivot deploy at": "-90",
+				"pivot deploy at": "-82",
+
+			"change drive mode": "true",
+				"use velocity": "true",
+				"change at": "-78",
 
 			"move angle": "0",
-			"target x": "26",
+			"target x": "26.5",
 			"x kp": "0.08",
 			"x ki": "0",
-			"x kd": "0.000",
-			"x stop when": "greater",
-			"target y": "-90",
-			"y kp": "0.07",
+			"x kd": "0.0001",
+			"--x stop when": "greater",
+			"x close threshold": "10",
+			"target y": "-85",
+			"y kp": "0.04",
 			"y ki": "0",
 			"y kd": "0",
 			"y stop when": "less",
-			"target r": "90",
-			"r kp": "0.04",
+			"target r": "-90",
+			"r kp": "0.02",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "5000"
-		},
-
-		{ 
-			"command": "SLEEP",
-			"time": "200" 
 		},
 		{
 			"command": "CLAW",
@@ -300,7 +333,7 @@
 		},
 		{ 
 			"command": "SLEEP",
-			"time": "200" 
+			"time": "300" 
 		},
 		{
 			"command": "PIVOT",
@@ -315,6 +348,10 @@
 			"touch": "true"
 		},
 
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "false"
+		},
 
 		{
 "comment": "third skystone",
@@ -329,22 +366,28 @@
 				"claw state": "open",
 				"claw deploy at": "-14",
 
+			"change drive mode": "true",
+				"use velocity": "true",
+				"change at": "-20",
+
 			"move angle": "0",
 			"target x": "25",
-			"x kp": "0.1",
+			"x kp": "0.10",
 			"x ki": "0",
-			"x kd": "0.000",
-			"target y stone l": "-14",
-			"target y stone c": "-14",
-			"target y stone r": "-5",
+			"x kd": "0.0001",
+			"x delta threshold": "5",
+			"x reading range": "5",
+			"target y stone l": "-12",
+			"target y stone c": "-12",
+			"target y stone r": "-3",
 			"y kp": "0.03",
 			"y kp under": "0.015",
-			"y kp over": "0.06",
+			"y kp over": "0.04",
 			"y ki": "0",
 			"y kd": "0",
 			"y close threshold": "0.2",
-			"target r": "90",
-			"r kp": "0.04",
+			"target r": "-90",
+			"r kp": "0.02",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "10000"
@@ -371,8 +414,11 @@
 			"command": "PIVOT WAIT",
 			"touch": "true"
 		},
-		{ "command": "LOG" },
 
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "false"
+		},
 
 		{
 "comment": "third to foundation",
@@ -383,35 +429,42 @@
 			"deploy arm": "true",
 				"track odometry": "true",
 				"pivot state": "open",
-				"pivot deploy at": "-82",
+				"pivot deploy at": "-73",
+
+			"change drive mode": "true",
+				"use velocity": "true",
+				"change at": "-66",
 
 			"move angle": "0",
-			"target x": "26",
+			"target x": "26.5",
 			"x kp": "0.08",
 			"x ki": "0",
-			"x kd": "0.000",
-			"x stop when": "greater",
-
-			"target y": "-82",
-			"y kp": "0.07",
+			"x kd": "0.0001",
+			"--x stop when": "greater",
+			"x close threshold": "10",
+			"target y": "-76",
+			"y kp": "0.04",
 			"y ki": "0",
 			"y kd": "0",
 			"y stop when": "less",
 
-			"target r": "90",
-			"r kp": "0.04",
+			"target r": "-90",
+			"r kp": "0.02",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "5000"
 		},
-
+		{ 
+			"command": "SLEEP",
+			"time": "250" 
+		},
 		{
 			"command": "CLAW",
 			"state": "open"
 		},
 		{ 
 			"command": "SLEEP",
-			"time": "200" 
+			"time": "300" 
 		},
 		{
 			"command": "PIVOT",
@@ -425,6 +478,10 @@
 			"command": "CLAW",
 			"state": "closed"
 		},
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "false"
+		},
 
 
 		{
@@ -434,7 +491,7 @@
 			"kp": "0.02",
 			"ki": "0",
 			"kd": "0.001",
-			"angle": "180",
+			"angle": "-180",
 			"error": "0.5",
 			"base power": "0.2",
 			"timeout": "3000"
@@ -442,26 +499,29 @@
 
 		{ "command": "RESET CLICKS" },
 
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "true"
+		},
+		{
+			"command": "FOUNDATION",
+			"state": "OPEN"
+		},
+
 		{
 "comment": "Moves backwards to grab",
 			"command": "MOVE",
 			"power": "1.0",
-			"base power": "0.1",
-
-			"deploy foundation": "true",
-				"track odometry": "true",
-				"foundation deploy at": "-1",
-				"foundation state": "open",
+			"base power": "0.2",
 
 			"move angle": "0",
-			"target y": "-11",
-			"y kp": "0.04",
+			"target y": "-10",
+			"y kp": "0.06",
 			"y ki": "0",
 			"y kd": "0",
 			"y close threshold": "1",
-			"timeout": "3000"
+			"timeout": "1500"
 		},
-
 
 		{
 "comment": "Move forwards toward build site",
@@ -469,63 +529,49 @@
 			"power": "1.0",
 			"base power": "0.05",
 			"move angle": "0",
-			"target y": "20",
-			"y kp": "0.06",
+			"target y": "10",
+			"y kp": "0.08",
 			"y stop when": "greater",
-			"timeout": "3000"
+			"timeout": "2000"
 		},
 
 		{
 "comment": "turn so foundation in site",
 			"command": "TURN",
 			"power": "1.0",
-			"kp": "0.05",
+			"kp": "0.022",
 			"ki": "0",
 			"kd": "0.001",
 			"angle": "-90",
 			"error": "1",
-			"base power": "0.2",
-			"timeout": "3000"
+			"base power": "0.22",
+			"timeout": "2000"
 		},
 		{
 			"command": "FOUNDATION",
 			"state": "CLOSED"
 		},
-
-		{
-"comment": "Moves backwards against wall",
-			"command": "MOVE",
-			"power": "0.8",
-			"base power": "0.07",
-			"move angle": "0",
-			"target y": "-4",
-			"y kp": "0.06",
-			"y stop when": "less",
-			"timeout": "1000"
-		},
-
-
 		{ "command": "RESET CLICKS" },
-
 		{
-"comment": "Move forwards to park",
+"comment": "Move forwards at angle to park",
 			"command": "MOVE",
 			"power": "1.0",
 			"base power": "0.05",
-			"move angle": "45",
-			"target y": "34",
-			"y kp": "0.06",
+			"move angle": "60",
+			"target x": "28",
+			"x kp": "0.1",
+			"target y": "30",
+			"y kp": "1",
 			"y ki": "0",
 			"y kd": "0",
 			"y stop when": "greater",
-			"target r": "90",
-			"r kp": "0.04",
+			"target r": "-90",
+			"r kp": "0.02",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "3000"
 		},
-
-		{ "command": "STOP" }
+	{ "command": "STOP" }
 	]
 }
 

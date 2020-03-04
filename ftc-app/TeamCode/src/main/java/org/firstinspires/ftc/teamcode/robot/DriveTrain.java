@@ -23,22 +23,10 @@ public class DriveTrain {
     public CachingMotorEx lb;
     public CachingMotorEx rb;
 
-    /*
-        CD: Try to have a consistent object life cycle across all Robot and "component" classes.  That is,
-            you should have the constructor set up the original fields, etc.  Then have methods like:
-                initialize() - do things like setMode(. . .), only called once after constructing
-                start() - called right before operating
-                update() - called while operating (driving, etc.)
-                finish() - called at completion of operation
-                terminate() - called once, as a bookend to initialize() to free up resources
-            Objects that are containers of other objects (such as Robot -> DriveTrain) would propagate
-                calls to each of their contained objects.
-            Objects that have specialized behaviors (such as drive() here) should have a corresponding
-                method in the containing object (i.e. Robot.drive()) which forms the interface which
-                invokes drive() here
-     */
+    private DcMotor.RunMode mode;
+    private double targetVelocity = 2900;
 
-    public DriveTrain(HardwareMap hardwareMap) {
+    DriveTrain(HardwareMap hardwareMap) {
         lf = new CachingMotorEx(hardwareMap, "lf");
         rf = new CachingMotorEx(hardwareMap, "rf");
         lb = new CachingMotorEx(hardwareMap, "lb");
@@ -51,9 +39,11 @@ public class DriveTrain {
 
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     public void setMode(DcMotor.RunMode mode) {
+        this.mode = mode;
         lf.setMode(mode);
         lb.setMode(mode);
         rf.setMode(mode);
@@ -86,10 +76,17 @@ public class DriveTrain {
         double lbp = GeneralMath.clipPower(pose.y + pose.r - pose.x);
         double rbp = GeneralMath.clipPower(pose.y - pose.r + pose.x);
 
-        lf.setPower(lfp * powerFactor);
-        rf.setPower(rfp * powerFactor);
-        lb.setPower(lbp * powerFactor);
-        rb.setPower(rbp * powerFactor);
+        if (mode == DcMotor.RunMode.RUN_USING_ENCODER) {
+            lf.setVelocity(lfp * targetVelocity * powerFactor);
+            rf.setVelocity(rfp * targetVelocity * powerFactor);
+            lb.setVelocity(lbp * targetVelocity * powerFactor);
+            rb.setVelocity(rbp * targetVelocity * powerFactor);
+        } else {
+            lf.setPower(lfp * powerFactor);
+            rf.setPower(rfp * powerFactor);
+            lb.setPower(lbp * powerFactor);
+            rb.setPower(rbp * powerFactor);
+        }
     }
 
     public void setVelocityPIDF() {
@@ -99,10 +96,19 @@ public class DriveTrain {
 
 
     public void setVelocityPIDF(Command config) {
+        targetVelocity = config.getDouble("dt velocity", targetVelocity);
         lf.setVelocityPIDFCoefficients(config, "dt");
         rf.setVelocityPIDFCoefficients(config, "dt");
         lb.setVelocityPIDFCoefficients(config, "dt");
         rb.setVelocityPIDFCoefficients(config, "dt");
+    }
+
+    public double getMaxTargetVelocity() {
+        return targetVelocity;
+    }
+
+    public DcMotor.RunMode getMode() {
+        return mode;
     }
 
     public void stop() {

@@ -37,7 +37,7 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
     private Command command;
     private Pose drivePose;
     private double basePower;
-    private Angle moveAngle;
+    private double moveAngleRadians;
     private double powerFactor;
 
     private MovingStatistics sensorReadings;
@@ -47,18 +47,26 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
 
     private OdometryWheel odometryWheel;
     private IDistanceSensor sideSensor;
+    private IDistanceSensor skystoneSideSensor;
+    private IDistanceSensor frontSensor;
 
     private MovingStatistics odometryReadings;
     private int odometryStuckSize;
     private double previousSensorReading;
     private double validXRange;
 
+    private boolean useFrontSensor;
+    private boolean doCorrectX;
+
+    private double blueOffsetY;
+    private double blueOffsetX;
+
     public MoveWithSensorAndOdometry(Command command) {
         tag = "MoveWithSensorAndOdometry";
         this.command = command;
 
         basePower = command.getDouble("base power", 0.3);
-        moveAngle = command.getAngle("move angle", 0);
+        moveAngleRadians = command.getAngle("move angle", 0).getRadians() * AutoRunner.signIfFlipForBlue();
         powerFactor = command.getDouble("power", 0.5);
 
         robot = Robot.getInstance();
@@ -66,6 +74,10 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
         odometryWheel = batMobile.odometryY;
 
         sideSensor = batMobile.getSideSensor();
+        skystoneSideSensor = batMobile.getOtherSideSensor();
+        frontSensor = batMobile.frontSensor;
+        useFrontSensor = command.getBoolean("use front sensor", false);
+//        useSkystoneSensor = command.getBoolean("use skystone sensor", false);
 
         closeY = command.getDouble("y close threshold", 0.5);
         String conditionalString = command.getString("y stop when", "close");
@@ -74,9 +86,12 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
         closeX = command.getDouble("x close threshold", 1);
         conditionalX = Conditional.CLOSE;
 
-        targetPose.x = command.getDouble("target x", 0);
-        targetPose.y = command.getDouble("target y", 0);
-        targetPose.r = command.getAngle("target r", 0).getDegrees();
+
+        blueOffsetY = AutoRunner.getSide() == AutoRunner.Side.BLUE ? command.getDouble("y blue offset", 0) : 0;
+        blueOffsetX = AutoRunner.getSide() == AutoRunner.Side.BLUE ? command.getDouble("x blue offset", 0) : 0;
+        targetPose.x = command.getDouble("target x", 0) + blueOffsetX;
+        targetPose.y = command.getDouble("target y", 0) + blueOffsetY;
+        targetPose.r = command.getAngle("target r", 0).getDegrees() * AutoRunner.signIfFlipForBlue();
 
         deltaThreshold = command.getDouble("x delta threshold", 5);
 
@@ -84,7 +99,7 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
         odometryReadings = new MovingStatistics(odometryStuckSize);
 
         validXRange = command.getDouble("x reading range", 20);
-        sensorReadingsSize = command.getInt("sensor statistics size", 3);
+        sensorReadingsSize = command.getInt("sensor statistics size", 2);
         sensorReadings = new MovingStatistics(sensorReadingsSize);
 
         currentSensorReading = sideSensor.getDistance();
@@ -92,20 +107,22 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
 
     public MoveWithSensorAndOdometry(Command command, VisionSystem.SkystonePosition skystonePosition) {
         this(command);
-        targetPose.y = command.getDouble("target y " + skystonePosition.key, targetPose.y);
+        targetPose.y = command.getDouble("target y " + skystonePosition.key, targetPose.y) + blueOffsetY;
     }
 
     @Override
     protected void onRun() {
         drivePose = new Pose(0, 0, 0);
-        drivePose.x = Math.sin(moveAngle.getRadians());
-        drivePose.y = Math.cos(moveAngle.getRadians());
+        drivePose.x = Math.sin(moveAngleRadians);
+        drivePose.y = Math.cos(moveAngleRadians);
 
         xPid = new PIDController(command, "x", targetPose.x);
         yPid = new MoveController(command, "y", targetPose.y);
         rPid = new PIDController(command, "r", targetPose.r);
 
-        pose.y = odometryWheel.getInches();
+        doCorrectX = xPid.getkP() != 0;
+
+        pose.y = getY();
         previousSensorReading = targetPose.x;
 
         AutoRunner.log("TargetPose", targetPose.toString("\t"));
@@ -116,12 +133,12 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
         Pose correctedDrivePose = new Pose(drivePose);
 
         currentSensorReading = sideSensor.getDistance();
-        AutoRunner.log("Sensor", sideSensor.getDistance());
+        AutoRunner.log("Sensor", currentSensorReading);
 
-        if (!batMobile.sensorsAreWorking()) {
-            throw new SomethingBadHappened("Uh oh, side sensor is dead");
-        }
-        else if (Math.abs(targetPose.x - currentSensorReading) < validXRange && sensorReadings.getCount() < sensorReadingsSize) {
+        if (batMobile.sensorDead()) {
+            // TODO: At competition, keep going even if sensor die
+            throw new SomethingBadHappened("Uh oh, a sensor is dead");
+        } else if (Math.abs(targetPose.x - currentSensorReading) < validXRange && sensorReadings.getCount() < sensorReadingsSize) {
             sensorReadings.add(currentSensorReading);
             pose.x = targetPose.x;
         } else if (Math.abs(currentSensorReading - previousSensorReading) < deltaThreshold) {
@@ -134,25 +151,29 @@ public class MoveWithSensorAndOdometry extends Action implements IWatchableDista
             pose.x = targetPose.x;
         }
 
-        pose.y = odometryWheel.getInches();
+        pose.y = getY();
         pose.r = robot.imu.getHeading().getDegrees();
 
         odometryReadings.add(pose.y);
 
-        correctedDrivePose.x += xPid.getCorrectedOutput(pose.x);
+        correctedDrivePose.x += xPid.getCorrectedOutput(pose.x) * AutoRunner.signIfFlipForBlue();
         correctedDrivePose.y = GeneralMath.clipPower(yPid.getCorrectedOutput(pose.y), basePower) * powerFactor;
         correctedDrivePose.r = rPid.getCorrectedOutput(pose.r);
 
         robot.driveTrain.drive(correctedDrivePose);
 
-        AutoRunner.log("DrivePose   ", correctedDrivePose.toString("\t"));
+        AutoRunner.log("DrivePose---", correctedDrivePose.toString("\t"));
         AutoRunner.log("LocationPose", pose.toString("\t"));
+    }
+
+    private double getY() {
+        return useFrontSensor ? frontSensor.getDistance() : odometryWheel.getInches();
     }
 
     @Override
     protected boolean runIsComplete() {
         boolean odometryIsStuck = odometryReadings.getCount() >= odometryStuckSize && odometryReadings.getStandardDeviation() == 0;
-        return ( odometryIsStuck || conditionalY.evaluate(pose.y, targetPose.y, closeY) ) && conditionalX.evaluate(pose.x, targetPose.x, closeX);
+        return odometryIsStuck || (conditionalY.evaluate(pose.y, targetPose.y, closeY) && (conditionalX.evaluate(pose.x, targetPose.x, closeX) || !doCorrectX));
     }
 
     @Override

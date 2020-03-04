@@ -36,7 +36,7 @@ public class OdometrySystem {
     private DcMotor centerEncoder;
 
 
-    public OdometrySystem(HardwareMap hardwareMap) {
+    OdometrySystem(HardwareMap hardwareMap) {
         // TODO: Map odometry encoders
 //        rightEncoder = hardwareMap.dcMotor.get("right odometry");
 //        leftEncoder = hardwareMap.dcMotor.get("left odometry");

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auto.opmodes;
+package org.firstinspires.ftc.teamcode.roadrunner;
 
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.drive.DriveSignal;
@@ -14,13 +14,15 @@ import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous
+@Autonomous(group = "roadrunner")
 @Disabled
 public class RoadrunnerTestAutoOp extends LinearOpMode {
 
@@ -29,6 +31,7 @@ public class RoadrunnerTestAutoOp extends LinearOpMode {
 
         final Robot robot = Robot.newInstance(this);
         robot.initializeIMU();
+        robot.driveTrain.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         Path path = new PathBuilder(new Pose2d(0, 0, 0))
                 .splineTo(new Pose2d(15, 15, 0))

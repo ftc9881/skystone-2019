@@ -8,10 +8,11 @@
 
 	"lb drive power": "0.3",
 	"rb drive power": "1.0",
-	"default drive power": "0.73",
+	"--default drive power": "0.7",
+	"m battery drive power": "0.05",
+	"b battery drive power": "1.35",
 
-	"outtake power": "0.3",
-	"outtake time": "350",
+	"outtake power": "0.4",
 
 	"angle kp": "0.022",
 	"angle ki": "0",
@@ -21,17 +22,11 @@
 	"trigger lift power": "0.5",
 	"slow lift power": "0.02",
 
-	"clicks per level": "100",
-	"elevator min power": "0.2",
-	"elevator kp": "0.03",
-	"elevator ki": "0.0",
-	"elevator kd": "0.0001",
-
-	"dt kp": "1.13",
-	"dt ki": "0.113",
-	"dt kd": "0",
-	"dt kf": "11.3",
-
+	"clicks per level": "-100",
+	"elevator min power": ".15",
+	"elevator kp": "0.02",
+	"elevator ki": "0.001",
+	"elevator kd": "0.00",
 
 
 		"crop x": "0",

@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode.robot.BatMobile;
 
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
-import org.firstinspires.ftc.teamcode.auto.structure.SomethingBadHappened;
 import org.firstinspires.ftc.teamcode.hardware.motor.OdometryWheel;
 import org.firstinspires.ftc.teamcode.hardware.sensor.IDistanceSensor;
 import org.firstinspires.ftc.teamcode.hardware.sensor.MaxSonarAnalogSensor;
 import org.firstinspires.ftc.teamcode.hardware.sensor.RevDistanceSensor;
-import org.firstinspires.ftc.teamcode.robot.Intake;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.hardware.servo.ToggleServo;
 
@@ -42,9 +39,9 @@ public class BatMobile extends Robot {
     public ToggleServo rightFoundationServo;
 
     public OdometryWheel odometryY;
-    public IDistanceSensor frontSensor;
-    public IDistanceSensor leftSensor;
-    public IDistanceSensor rightSensor;
+    public RevDistanceSensor frontSensor;
+    public RevDistanceSensor leftSensor;
+    public RevDistanceSensor rightSensor;
 
     private BatMobile(Robot robot) {
         this.opMode = robot.opMode;
@@ -63,8 +60,8 @@ public class BatMobile extends Robot {
         rightFoundationServo = new ToggleServo(hardwareMap, "right foundation");
 
         odometryY = new OdometryWheel(intake.right);
-        frontSensor = new MaxSonarAnalogSensor(hardwareMap, "front sensor");
 
+        frontSensor = new RevDistanceSensor(hardwareMap, "front sensor");
         leftSensor = new RevDistanceSensor(hardwareMap, "left side sensor");
         rightSensor = new RevDistanceSensor(hardwareMap, "right side sensor");
     }
@@ -90,8 +87,12 @@ public class BatMobile extends Robot {
         return AutoRunner.getSide() == AutoRunner.Side.RED ? leftSensor : rightSensor;
     }
 
-    public boolean sensorsAreWorking() {
-        return (leftSensor.getDistance() < 2000 && rightSensor.getDistance() < 2000 && getSideSensor().getDistance() < 300);
+    public IDistanceSensor getOtherSideSensor() {
+        return AutoRunner.getSide() == AutoRunner.Side.RED ? rightSensor : leftSensor;
+    }
+
+    public boolean sensorDead() {
+        return frontSensor.isDead() || leftSensor.isDead() || rightSensor.isDead();
     }
 
 }
