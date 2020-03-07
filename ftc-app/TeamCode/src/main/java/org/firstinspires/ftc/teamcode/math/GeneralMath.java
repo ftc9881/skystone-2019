@@ -12,7 +12,7 @@ public class GeneralMath {
 
 
     public enum Conditional {
-        GREATER, LESS, CLOSE;
+        GREATER, LESS, CLOSE, NONE;
 
         static public Conditional convertString(String string) {
             switch (string.toUpperCase()) {
@@ -20,6 +20,8 @@ public class GeneralMath {
                     return GREATER;
                 case "LESS":
                     return LESS;
+                case "NONE":
+                    return NONE;
                 default:
                     return CLOSE;
             }
@@ -33,6 +35,8 @@ public class GeneralMath {
                     return actual <= target;
                 case CLOSE:
                     return Math.abs(actual - target) < closeThreshold;
+                case NONE:
+                    return true;
             }
             return false;
         }

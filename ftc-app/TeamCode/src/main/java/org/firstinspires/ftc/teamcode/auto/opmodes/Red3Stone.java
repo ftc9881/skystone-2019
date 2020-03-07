@@ -5,19 +5,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
-import org.firstinspires.ftc.teamcode.robot.Robot;
 
-@Autonomous(name = "TestAuto", group = "TeamCode")
+@Autonomous
 //@Disabled
-public class TestAutoOp extends LinearOpMode {
+public class Red3Stone extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        AutoRunner auto = new AutoRunner("Test", this);
+        AutoRunner auto = new AutoRunner("RedStoneSide", this);
         waitForStart();
         auto.run();
     }
 
 }
-
 

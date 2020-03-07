@@ -34,12 +34,12 @@ public class BatMobile extends Robot {
     public SideArm blueSideArm;
     public DifferentialElevator elevator;
 
-    public ToggleServo depositServo;
+    public ToggleServo frontDepositServo;
+    public ToggleServo backDepositServo;
     public ToggleServo leftFoundationServo;
     public ToggleServo rightFoundationServo;
 
     public OdometryWheel odometryY;
-    public RevDistanceSensor frontSensor;
     public RevDistanceSensor leftSensor;
     public RevDistanceSensor rightSensor;
 
@@ -55,13 +55,14 @@ public class BatMobile extends Robot {
         elevator = new DifferentialElevator(hardwareMap);
         intake = new Intake(hardwareMap);
 
-        depositServo = new ToggleServo(hardwareMap, "deposit");
+        frontDepositServo = new ToggleServo(hardwareMap, "front deposit");
+        backDepositServo = new ToggleServo(hardwareMap, "back deposit");
+
         leftFoundationServo = new ToggleServo(hardwareMap, "left foundation");
         rightFoundationServo = new ToggleServo(hardwareMap, "right foundation");
 
         odometryY = new OdometryWheel(intake.right);
 
-        frontSensor = new RevDistanceSensor(hardwareMap, "front sensor");
         leftSensor = new RevDistanceSensor(hardwareMap, "left side sensor");
         rightSensor = new RevDistanceSensor(hardwareMap, "right side sensor");
     }
@@ -92,7 +93,7 @@ public class BatMobile extends Robot {
     }
 
     public boolean sensorDead() {
-        return frontSensor.isDead() || leftSensor.isDead() || rightSensor.isDead();
+        return leftSensor.isDead() || rightSensor.isDead();
     }
 
 }

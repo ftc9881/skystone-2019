@@ -7,14 +7,15 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 
 @Autonomous
 //@Disabled
-public class BlueStoneSideByRedFlipAutoOp extends LinearOpMode {
+public class TestBlue extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        AutoRunner auto = new AutoRunner(AutoRunner.Side.BLUE, "RedStoneSide", this);
+        AutoRunner auto = new AutoRunner(AutoRunner.Side.BLUE, "Test", this);
         waitForStart();
         auto.run();
     }
 
 }
+
 

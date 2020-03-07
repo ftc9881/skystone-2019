@@ -8,11 +8,11 @@ import org.firstinspires.ftc.teamcode.auto.AutoRunner;
 
 @Autonomous
 //@Disabled
-public class RedStoneSideAutoOp extends LinearOpMode {
+public class DeployAndPark extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        AutoRunner auto = new AutoRunner("RedStoneSide", this);
+        AutoRunner auto = new AutoRunner("DeployAndPark", this);
         waitForStart();
         auto.run();
     }

@@ -194,8 +194,7 @@ public class OpenCV implements VisionSystem {
                 position = SkystonePosition.NONE;
             }
 
-            opMode.telemetry.addData("Skystone Position", position);
-            opMode.telemetry.update();
+            AutoRunner.setSkystonePosition(position);
         }
 
         @Override
@@ -206,7 +205,7 @@ public class OpenCV implements VisionSystem {
         @Override
         protected void onEndRun() {
             writeCurrentImage();
-            AutoRunner.setSkystonePosition(position);
+            openCvCamera.closeCameraDevice();
         }
 
     }

@@ -6,7 +6,7 @@
 	"dt velocity": "2400",
 	
 
-	"debug servo": "left foundation",
+	"debug servo": "right foundation",
 
 	"left foundation open": "0.74",
 	"left foundation closed": "0.25",
@@ -14,25 +14,29 @@
 	"right foundation open": "0.31",
 	"right foundation closed": "0.8",
 
-	"deposit open": "0.67",
-	"deposit closed": "0.25",
-	"deposit rest": "1.00",
+	"front deposit open": "0.67",
+	"front deposit closed": "0.25",
+	"front deposit rest": "0.84",
 
-	"blue pivot open": "0.04",
-	"blue pivot closed": "0.37",
-	"blue pivot rest": "0.11",
-	"blue pivot inside": "0.37",
-	"blue pivot deploy": "0.28",
+	"back deposit open": "0.42",
+	"back deposit closed": "0.89",
+	"back deposit rest": "0.3",
+
+	"blue pivot open": "0.69",
+	"blue pivot closed": "0.18",
+	"blue pivot rest": "0.29",
+	"blue pivot inside": "0.19",
+	"blue pivot deploy": "0.29",
 
 	"blue claw open": "0.32",
 	"blue claw closed": "0",
 	"blue claw rest": "0",
 
-	"red pivot open": "0.9",
-	"red pivot closed": "0.58",
-	"red pivot rest": "0.8",
-	"red pivot inside": "0.6",
-	"red pivot deploy": "0.65",
+	"red pivot open": "0.29",
+	"red pivot closed": "0.77",
+	"red pivot rest": "0.67",
+	"red pivot inside": "0.76",
+	"red pivot deploy": "0.67",
 
 	"red claw open": "0.35",
 	"red claw closed": "0.65",

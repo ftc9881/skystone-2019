@@ -30,11 +30,13 @@ public class OdometryTest extends BaseDrive {
         super.initialize();
         odometryY = BatMobile.getInstance().odometryY;
         odometryY.resetEncoder();
+
+        robot.driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
     @Override
     protected void update() {
-        super.update();
+//        super.update();
 
         toggleFloatButton.update(gamepad1.a);
         if (toggleFloatButton.is(DOWN)) {

@@ -2,20 +2,40 @@
 	"properties": {
 		"angle unit": "deg",
 		"debug mode": "false",
+		"flip for blue": "true",
 
-		"move clicks error": "50",
-		"move angle kp": "3.6",
-		"move angle ki": "0.0",
-		"move angle kd": "0.1"
+		"pivot min wait": "0",
+		"pivot max wait": "500",
+
+		"max detection list size": "10",
+		"yellow blobbing": "200",
+		"black blobbing": "60",
+		"stone min area": "50",
+		"skystone left": "70",
+		"skystone right": "180"
 	},
 
 	"init": [
+		{
+			"command": "FOUNDATION",
+			"state": "CLOSED"
+		},
 		{ 
-			"command": "PIVOTS INSIDE"
+			"command": "USE ENCODERS"
+		},
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "true"
 		},
 		{ 
 			"command": "CLAW",
 			"state": "REST"
+		},
+		{ 
+			"command": "PIVOTS INSIDE"
+		},
+		{
+			"command": "INIT LOG"
 		}
 	],
 
@@ -25,58 +45,94 @@
 		},
 		{
 			"command": "ELEVATOR",
-			"lift power": "1"
+			"lift power": "0.8"
 		},
-		{
-			"command": "SLEEP",
-			"time": "200"
+		{ 
+			"command": "SLEEP", "time":"300" 
 		},
 		{
 			"command": "ELEVATOR",
 			"lift power": "0.2"
 		},
 		{
+"comment": "Moves backwards to grab",
 			"command": "MOVE",
-			"use odometry": "true",
-			"target angle": "0",
-			"move angle": "0",
-			"inches": "8",
-			"timeout": "5000",
-			"power": "1.0"
-		},
-		{
-			"command": "SLEEP",
-			"time": "350"
-		},
-		{
-			"command": "ELEVATOR",
-			"lift power": "-1.0"
-		},
-		{ 
-			"command": "CLAW",
-			"state": "REST"
-		},
-			"command": "SLEEP",
-			"time": "350"
-		},
-		{
-			"command": "ELEVATOR",
-			"lift power": "0"
+			"power": "0.8",
+
+			"deploy lift": "true",
+				"lift power 1": "-1.0",
+				"deploy inches 1": "-20",
+				"lift power 2": "0",
+				"deploy inches 2": "-30",
+
+			"base power": "0.2",
+			"move angle": "-10",
+			"target y": "-34",
+			"y kp": "0.03",
+			"y ki": "0",
+			"y kd": "0",
+			"y close threshold": "3",
+			"timeout": "2000"
 		},
 		{ 
 			"command": "PIVOTS INSIDE"
 		},
 		{
-			"command": "MOVE",
-			"use odometry": "true",
-			"target angle": "0",
-			"move angle": "180",
-			"inches": "20",
-			"timeout": "5000",
-			"ramp down": "12",
-			"power": "1"
+			"command": "FOUNDATION",
+			"state": "open"
 		},
-		{ "command": "STOP" }
+		{
+			"command": "SLEEP",
+			"time": "700"
+		},
+		{ "command": "RESET CLICKS" },
+		{
+"comment": "Move forwards toward build site",
+			"command": "MOVE",
+			"power": "0.8",
+			"base power": "0.1",
+			"move angle": "0",
+			"target y": "5",
+			"y kp": "1",
+			"y stop when": "greater",
+			"timeout": "2000"
+		},
+		{
+"comment": "turn so foundation in site",
+			"command": "TURN",
+			"power": "1.0",
+			"kp": "0.015",
+			"ki": "0",
+			"kd": "0.001",
+			"angle": "90",
+			"error": "1",
+			"base power": "0.22",
+			"timeout": "2000"
+		},
+		{
+			"command": "FOUNDATION",
+			"state": "CLOSED"
+		},
+		{ "command": "RESET CLICKS" },
+		{
+"comment": "Move strafe ",
+			"command": "MOVE",
+			"power": "0.9",
+			"base power": "0.05",
+			"move angle": "30",
+			"target y": "26",
+			"y kp": "0.1",
+			"y ki": "0",
+			"y kd": "0",
+			"y stop when": "greater",
+			"target r": "90",
+			"r kp": "0.02",
+			"r ki": "0",
+			"r kd": "0.002",
+			"timeout": "3000"
+		},
+
+	{ "command": "STOP" }
 	]
 }
 

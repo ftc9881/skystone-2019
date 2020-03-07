@@ -2,100 +2,194 @@
 	"properties": {
 		"debug mode": "true",
 		"angle unit": "deg",
-
-		"move clicks error": "50",
-		"move base power": "0.05",
-
-		"crop x": "120",
-		"crop y": "140",
-		"crop w": "420",
-		"crop h": "100",
-		"std dev threshold": "100",
-		"max detection list size": "10",
-		"yellow blobbing": "300",
-		"black blobbing": "200",
-		"stone min area": "200",
-		"skystone left": "260",
-		"skystone right": "400"
+		"flip for blue": "true"
 	},
 
+	
 	"init": [
-		{ "command": "RESET CLICKS" },
-		{ "command": "no IDENTIFY SKYSTONE" }
-
+		{ 
+			"command": "USE ENCODERS"
+		},
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "true"
+		},
+		{ 
+			"command": "CLAW",
+			"state": "REST"
+		},
+		{ 
+			"command": "--PIVOTS INSIDE"
+		},
+		{
+			"command": "--IDENTIFY SKYSTONE"
+		},
+		{
+			"command": "INIT LOG"
+		}
 	],
 
 
 	"commands": [
-		{
-"comment": "Moves backwards to grab",
-			"command": "MOVE",
-			"power": "0.7",
-			"base power": "0.1",
-
-			"deploy foundation": "true",
-				"track odometry": "true",
-				"foundation deploy at": "7",
-				"foundation state": "open",
-
-			"move angle": "0",
-			"target y": "10",
-			"y kp": "0.04",
-			"y ki": "0",
-			"y kd": "0",
-			"y close threshold": "1",
-			"timeout": "3000"
-		},
-
-
 
 		{
+	"comment": "Moves forwards",
 			"command": "MOVE",
 			"power": "1.0",
-			"base power": "0.06",
-
+			"base power": "0.07",
 			"move angle": "0",
-			"target x": "24",
-			"x kp": "0.1",
-			"x ki": "0",
-			"x kd": "0.000",
-			"x reading range": "20",
-			"target y": "-90",
+			"target y": "24.6",
 			"y kp": "0.03",
-			"y kp under": "0.03",
-			"y kp over": "0.08",
+			"y close threshold": "0.1",
+			"y stop when": "close",
+			"target r": "0",
+			"timeout": "4000"
+		},
+
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "false"
+		},
+
+		{
+"comment": "turn so side arm faces stones",
+			"command": "TURN",
+			"power": "1.0",
+			"angle": "-90",
+			"error": "0.3",
+			"base power": "0.1",
+			"kp": "0.02",
+			"ki": "0",
+			"kd": "0.001",
+			"timeout": "2000"
+		},
+
+		{ "command": "RESET CLICKS" },
+
+		{ 
+			"command": "SET DRIVE MODE",
+			"use velocity": "true"
+		},
+
+		{
+"comment": "left skystone (near wall)",
+			"command": "MOVE",
+			"power": "1.0",
+			"base power": "0.07",
+			"move angle": "0",
+			"target y": "32",
+			"y kp": "0.04",
+			"y kp under": "0.025",
+			"y kp over": "0.04",
 			"y ki": "0",
 			"y kd": "0",
 			"y close threshold": "0.2",
-			"target r": "0",
-			"r kp": "0.04",
+			"target r": "-90",
+			"r kp": "0.03",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "5000"
 		},
 		{
+"comment": "center skystone (near wall)",
 			"command": "MOVE",
 			"power": "1.0",
-			"base power": "0.06",
-
+			"base power": "0.07",
 			"move angle": "0",
-			"target x": "23",
-			"x kp": "0.1",
-			"x ki": "0",
-			"x kd": "0.000",
-			"target y": "0",
-			"y kp": "0.08",
+			"target y": "23",
+			"y kp": "0.04",
+			"y kp under": "0.025",
+			"y kp over": "0.04",
+			"y ki": "0",
+			"y kd": "0",
 			"y close threshold": "0.2",
-			"target r": "0",
-			"r kp": "0.04",
+			"target r": "-90",
+			"r kp": "0.03",
 			"r ki": "0",
 			"r kd": "0.002",
 			"timeout": "5000"
 		},
-
-
-
-
+{
+"comment": "right skystone (near wall)",
+			"command": "MOVE",
+			"power": "1.0",
+			"base power": "0.07",
+			"move angle": "0",
+			"target y": "14",
+			"y kp": "0.04",
+			"y kp under": "0.025",
+			"y kp over": "0.04",
+			"y ki": "0",
+			"y kd": "0",
+			"y close threshold": "0.2",
+			"target r": "-90",
+			"r kp": "0.03",
+			"r ki": "0",
+			"r kd": "0.002",
+			"timeout": "5000"
+		},
+		
+{
+"comment": "center skystone (near wall)",
+			"command": "MOVE",
+			"power": "1.0",
+			"base power": "0.07",
+			"move angle": "0",
+			"target y": "5",
+			"y kp": "0.04",
+			"y kp under": "0.025",
+			"y kp over": "0.04",
+			"y ki": "0",
+			"y kd": "0",
+			"y close threshold": "0.2",
+			"target r": "-90",
+			"r kp": "0.03",
+			"r ki": "0",
+			"r kd": "0.002",
+			"timeout": "5000"
+		},
+		
+{
+"comment": "center skystone (near wall)",
+			"command": "MOVE",
+			"power": "1.0",
+			"base power": "0.07",
+			"move angle": "0",
+			"target y": "-4",
+			"y kp": "0.04",
+			"y kp under": "0.025",
+			"y kp over": "0.04",
+			"y ki": "0",
+			"y kd": "0",
+			"y close threshold": "0.2",
+			"target r": "-90",
+			"r kp": "0.03",
+			"r ki": "0",
+			"r kd": "0.002",
+			"timeout": "5000"
+		},
+		
+{
+"comment": "center skystone (near wall)",
+			"command": "MOVE",
+			"power": "1.0",
+			"base power": "0.07",
+			"move angle": "0",
+			"target y": "-12",
+			"y kp": "0.04",
+			"y kp under": "0.025",
+			"y kp over": "0.04",
+			"y ki": "0",
+			"y kd": "0",
+			"y close threshold": "0.2",
+			"target r": "-90",
+			"r kp": "0.03",
+			"r ki": "0",
+			"r kd": "0.002",
+			"timeout": "5000"
+		},
+		
+		
 		{ "command": "STOP" }
 	]
 }

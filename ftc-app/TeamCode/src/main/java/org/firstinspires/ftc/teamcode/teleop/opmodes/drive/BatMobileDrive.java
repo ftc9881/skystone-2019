@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.drive;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 import org.firstinspires.ftc.teamcode.auto.AutoRunner;
@@ -41,12 +41,15 @@ public class BatMobileDrive extends BaseDrive {
     private double defaultDrivePower;
     private double outtakePowerFactor;
 
+    private CRServo tapeServo;
+
     private Button pivotButton = new Button();
     private Button clawButton = new Button();
     private Button goToAngleButton = new Button();
     private Button foundationButton = new Button();
     private Button capstoneButton = new Button();
-    private Button depositButton = new Button();
+    private Button frontDepositButton = new Button();
+    private Button backDepositButton = new Button();
     private Button toggleSideButton = new Button();
     private Button toggleDepositUpWhenIntakeButton = new Button();
     private Button setAngleSetpointButton = new Button();
@@ -107,10 +110,10 @@ public class BatMobileDrive extends BaseDrive {
         maxStickWindow = config.getDouble("max stick window", 0.97);
         fullDownTimeWindow = config.getDouble("full down time window", 300);
 
-//        batMobile.redSideArm.setPivotToInsideRestingPosition();
-//        batMobile.blueSideArm.setPivotToInsideRestingPosition();
-        batMobile.redSideArm.pivot.set(ToggleServo.State.CLOSED);
-        batMobile.blueSideArm.pivot.set(ToggleServo.State.CLOSED);
+        batMobile.redSideArm.setPivotToInsideRestingPosition();
+        batMobile.blueSideArm.setPivotToInsideRestingPosition();
+
+        tapeServo = hardwareMap.crservo.get("tape");
 
         initIMUAction = new InitIMUOnThread();
         initIMUAction.start();
@@ -127,6 +130,8 @@ public class BatMobileDrive extends BaseDrive {
         updateIntake();
         updateServos();
         updatePID();
+
+        updateTape();
 
         updateTelemetry();
     }
@@ -153,7 +158,8 @@ public class BatMobileDrive extends BaseDrive {
         foundationButton.update(gamepad1.b);
         capstoneButton.update(gamepad2.y);
         goToLiftLevelButton.update(gamepad2.x);
-        depositButton.update(gamepad2.right_bumper);
+        backDepositButton.update(gamepad2.left_bumper);
+        frontDepositButton.update(gamepad2.right_bumper);
         increaseLiftLevelButton.update(gamepad2.dpad_up);
         decreaseLiftLevelButton.update(gamepad2.dpad_down);
     }
@@ -232,7 +238,7 @@ public class BatMobileDrive extends BaseDrive {
     }
 
     private void updateElevatorManual() {
-        double powerFactor = gamepad2.left_bumper ? slowLiftPowerFactor : 1.0;
+        double powerFactor = isInputting(gamepad2.left_trigger) || isInputting(gamepad2.right_trigger) ? slowLiftPowerFactor : 1.0;
         batMobile.elevator.setPowerLE(getLiftInputPower(), getExtendInputPower(), powerFactor);
     }
 
@@ -248,7 +254,7 @@ public class BatMobileDrive extends BaseDrive {
         double input = gamepad1.right_trigger - gamepad1.left_trigger;
         double intakePower = isInputting(input) ? ((input) > 0 ? input : -1) : 0;
         if (intakePower > 0 && toggleDepositUpWhenIntake) {
-            batMobile.depositServo.set(ToggleServo.State.OPEN);
+            batMobile.frontDepositServo.set(ToggleServo.State.OPEN);
         }
 
         double powerFactor = intakePower < 0 && !gamepad1.left_bumper ? outtakePowerFactor : 1;
@@ -260,7 +266,8 @@ public class BatMobileDrive extends BaseDrive {
         updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.REST, pivotButton, batMobile.blueSideArm.pivot);
         updateToggle(ToggleServo.State.OPEN, ToggleServo.State.REST, clawButton, batMobile.redSideArm.claw);
         updateToggle(ToggleServo.State.OPEN, ToggleServo.State.REST, clawButton, batMobile.blueSideArm.claw);
-        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.OPEN, depositButton, batMobile.depositServo);
+        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.OPEN, frontDepositButton, batMobile.frontDepositServo);
+        updateToggle(ToggleServo.State.CLOSED, ToggleServo.State.OPEN, backDepositButton, batMobile.backDepositServo);
         updateCapstone();
         updateFoundationServos();
     }
@@ -279,11 +286,13 @@ public class BatMobileDrive extends BaseDrive {
 
     private void updateCapstone() {
         if (capstoneButton.is(DOWN)) {
-            batMobile.depositServo.set(ToggleServo.State.REST);
+            batMobile.frontDepositServo.set(ToggleServo.State.REST);
+            batMobile.backDepositServo.set(ToggleServo.State.REST);
             timeAtCapstone = System.currentTimeMillis();
         }
-        if (System.currentTimeMillis() - timeAtCapstone > returnTimeAfterCapstone && batMobile.depositServo.getState() == ToggleServo.State.REST) {
-            batMobile.depositServo.set(ToggleServo.State.OPEN);
+        if (System.currentTimeMillis() - timeAtCapstone > returnTimeAfterCapstone && batMobile.frontDepositServo.getState() == ToggleServo.State.REST) {
+            batMobile.frontDepositServo.set(ToggleServo.State.OPEN);
+            batMobile.backDepositServo.set(ToggleServo.State.OPEN);
         }
     }
 
@@ -325,6 +334,10 @@ public class BatMobileDrive extends BaseDrive {
 
     private double getAnglePIDPower() {
         return anglePID.getCorrectedOutput(robot.imu.getIntegratedHeading().getDegrees());
+    }
+
+    private void updateTape() {
+        tapeServo.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
     }
 
     @Override

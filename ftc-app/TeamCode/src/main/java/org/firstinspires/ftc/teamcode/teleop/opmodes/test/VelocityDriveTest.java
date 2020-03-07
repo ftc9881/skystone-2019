@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.test;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.teleop.utility.Button;
 import static org.firstinspires.ftc.teamcode.teleop.utility.Button.State.DOWN;
 
 @TeleOp(group="Test")
-//@Disabled
+@Disabled
 public class VelocityDriveTest extends BaseDrive {
 
     Button button = new Button();

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.auto.actions.MoveWithClicks;
 import org.firstinspires.ftc.teamcode.auto.actions.MoveWithSensorAndOdometry;
 import org.firstinspires.ftc.teamcode.auto.actions.Turn;
 import org.firstinspires.ftc.teamcode.auto.endconditions.ChangeDriveModeByDistance;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.auto.structure.CombinedConditions;
 import org.firstinspires.ftc.teamcode.auto.structure.Watcher;
 import org.firstinspires.ftc.teamcode.auto.vision.OpenCV;
 import org.firstinspires.ftc.teamcode.auto.vision.VisionSystem;
+import org.firstinspires.ftc.teamcode.math.GeneralMath;
 import org.firstinspires.ftc.teamcode.teleop.utility.Command;
 import org.firstinspires.ftc.teamcode.auto.structure.AutoOpConfiguration;
 import org.firstinspires.ftc.teamcode.auto.structure.IEndCondition;
@@ -173,6 +175,26 @@ public class AutoRunner {
                 break;
             }
 
+            case "INIT LOG": {
+                while (!opMode.isStarted()) {
+                    opMode.telemetry.addData("Skystone-", side == Side.RED ? skystonePosition : getFlipped(skystonePosition));
+                    opMode.telemetry.addData("IMU------", GeneralMath.round(robot.imu.getIntegratedHeading().getDegrees(), 3));
+                    opMode.telemetry.addData("OdometryY", GeneralMath.round(batMobile.odometryY.getInches(), 3));
+                    opMode.telemetry.addData("SensorL--", GeneralMath.round(batMobile.leftSensor.getDistance(), 3));
+                    opMode.telemetry.addData("SensorR--", GeneralMath.round(batMobile.rightSensor.getDistance(), 3));
+                    opMode.telemetry.update();
+                }
+                break;
+            }
+
+
+            case "MOVE BY CLICKS": {
+                MoveWithClicks move = new MoveWithClicks(command);
+                runActionWithTimeout(move, command);
+                break;
+            }
+
+
             case "MOVE": {
                 boolean deployArm = command.getBoolean("deploy arm", false);
                 boolean deployFoundation = command.getBoolean("deploy foundation", false);
@@ -252,9 +274,7 @@ public class AutoRunner {
             }
 
             case "LOG": {
-                logAndTelemetry("Odometry:Clicks", batMobile.odometryY.getClicks());
                 logAndTelemetry("Odometry:Inches", batMobile.odometryY.getInches());
-                logAndTelemetry("FrontSensor:Inc", batMobile.frontSensor.getDistance());
                 break;
             }
 
@@ -289,10 +309,6 @@ public class AutoRunner {
                 while (batMobile.getSideArm().feedbackIsPressed() != feedbackState && System.currentTimeMillis() - start < maxWait) {
                     sleep(20);
                 }
-//                if (feedbackState) {
-//                    // after touching, set so servo not stalling
-//                    batMobile.getSideArm().setPivotToInsideRestingPosition();
-//                }
                 break;
             }
 
@@ -385,17 +401,19 @@ public class AutoRunner {
         if (!flipForBlue) {
             AutoRunner.skystonePosition = position;
         } else {
-            switch (position) {
-                case LEFT:
-                    AutoRunner.skystonePosition = VisionSystem.SkystonePosition.RIGHT;
-                    break;
-                case RIGHT:
-                    AutoRunner.skystonePosition = VisionSystem.SkystonePosition.LEFT;
-                    break;
-                default:
-                    AutoRunner.skystonePosition = position;
-                    break;
-            }
+            AutoRunner.skystonePosition = getFlipped(position);
+
+        }
+    }
+
+    private static VisionSystem.SkystonePosition getFlipped(VisionSystem.SkystonePosition position) {
+        switch (position) {
+            case LEFT:
+                return VisionSystem.SkystonePosition.RIGHT;
+            case RIGHT:
+                return VisionSystem.SkystonePosition.LEFT;
+            default:
+                return AutoRunner.skystonePosition = position;
         }
     }
 
